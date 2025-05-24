@@ -27,15 +27,30 @@ const getApiEndpoint = (): string => {
   return "/api/py/generateERC7730";
 };
 
+// Define a new type for input that can handle proxy contracts
+export type ERC7730Input = 
+  | string  // Regular address or ABI string
+  | {
+      proxyAddress: string;
+      implementationAddress: string;
+    };
+
 export default async function generateERC7730({
   input,
   inputType,
 }: {
-  inputType: "address" | "abi";
-  input: string;
+  inputType: "address" | "abi" | "proxy";
+  input: ERC7730Input;
 }): Promise<GenerateResponse | null> {
   // Create a unique key for this request
-  const requestKey = `${inputType}:${input}`;
+  let requestKey: string;
+  
+  if (typeof input === 'string') {
+    requestKey = `${inputType}:${input}`;
+  } else {
+    // For proxy contracts, include both addresses in the key
+    requestKey = `proxy:${input.proxyAddress}:impl:${input.implementationAddress}`;
+  }
   
   // Check if this exact request is already in-flight
   if (pendingRequests[requestKey]) {
@@ -49,10 +64,23 @@ export default async function generateERC7730({
     }
   }
   
-  const body: GenerateBody = {
-    address: inputType === "address" ? input : undefined,
-    abi: inputType === "abi" ? input : undefined,
-  };
+  // Prepare the request body based on the input type
+  let body: GenerateBody;
+  
+  if (typeof input === 'string') {
+    // Handle string input (regular address or ABI)
+    body = {
+      address: inputType === "address" ? input : undefined,
+      abi: inputType === "abi" ? input : undefined,
+    };
+  } else {
+    // Handle proxy contract input
+    body = {
+      proxyAddress: input.proxyAddress,
+      implementationAddress: input.implementationAddress,
+      isProxy: true
+    };
+  }
 
   // Maximum number of retry attempts
   const MAX_RETRIES = 5;
@@ -62,6 +90,9 @@ export default async function generateERC7730({
   // Get the appropriate API endpoint
   const apiEndpoint = getApiEndpoint();
   console.log(`Using API endpoint: ${apiEndpoint}`);
+  
+  // Log the request body for debugging
+  console.log('Request body:', JSON.stringify(body));
 
   // Store the promise in our pending requests
   pendingRequests[requestKey] = (async () => {

@@ -17,6 +17,10 @@ const predefinedAddresses = [
     label: "Apecoin: Staking",
     value: "0x5954ab967bc958940b7eb73ee84797dc8a2afbb9",
   },
+  {
+    label: "ERC20 Token",
+    value: "0x43506849D7C04F9138D1A2050bbF3A0c054402dd",
+  },
 ];
 
 const predefinedABIs = [

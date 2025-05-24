@@ -784,6 +784,12 @@ export interface components {
             address?: string | null;
             /** Chain Id */
             chain_id?: number | null;
+            /** Proxy Address */
+            proxyAddress?: string | null;
+            /** Implementation Address */
+            implementationAddress?: string | null;
+            /** Is Proxy */
+            isProxy?: boolean | null;
         };
         /** Receive */
         Receive: {

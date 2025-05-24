@@ -9,8 +9,9 @@ import { Textarea } from "~/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import SampleAddressAbiCard from "./sampleAddressAbiCard";
 import { Button } from "~/components/ui/button";
-import { FileJson, Loader2 } from "lucide-react";
+import { FileJson, Loader2, Shield } from "lucide-react";
 import Image from "next/image";
+import { Switch } from "~/components/ui/switch";
 
 import { ZodError } from "zod";
 import { useMutation } from "@tanstack/react-query";
@@ -65,7 +66,9 @@ const checkApiHealth = async (): Promise<boolean> => {
 
 const CardErc7730 = () => {
   const [input, setInput] = useState("");
-  const [inputType, setInputType] = useState<"address" | "abi">("address");
+  const [inputType, setInputType] = useState<"address" | "abi" | "proxy">("address");
+  const [implementationAddress, setImplementationAddress] = useState("");
+  const [isProxyContract, setIsProxyContract] = useState(false);
   const { setErc7730 } = useErc7730Store((state) => state);
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -121,10 +124,12 @@ const CardErc7730 = () => {
     isPending: loading,
     error,
   } = useMutation({
-    mutationFn: (input: string) =>
+    mutationFn: (input: string | { proxyAddress: string; implementationAddress: string }) =>
       generateFromERC7730({
         input,
-        inputType,
+        inputType: typeof input === 'string' 
+          ? (inputType === 'proxy' ? 'address' : inputType) 
+          : 'proxy',
       }),
   });
 
@@ -146,7 +151,18 @@ const CardErc7730 = () => {
     }
     
     try {
-      const erc7730 = await fetchERC7730Metadata(input);
+      let erc7730;
+      
+      if (isProxyContract && implementationAddress) {
+        // Pass both proxy and implementation addresses
+        erc7730 = await fetchERC7730Metadata({
+          proxyAddress: input,
+          implementationAddress: implementationAddress
+        });
+      } else {
+        // Original behavior
+        erc7730 = await fetchERC7730Metadata(input);
+      }
 
       if (erc7730) {
         console.log(erc7730);
@@ -165,8 +181,14 @@ const CardErc7730 = () => {
   };
 
   const onTabChange = (value: string) => {
-    setInputType(value as "address" | "abi");
+    setInputType(value as "address" | "abi" | "proxy");
     setInput("");
+    if (value !== "proxy") {
+      setIsProxyContract(false);
+      setImplementationAddress("");
+    } else {
+      setIsProxyContract(true);
+    }
   };
   
   const handleSkipToVerification = () => {
@@ -203,6 +225,12 @@ const CardErc7730 = () => {
                   Contract Address
                 </TabsTrigger>
                 <TabsTrigger 
+                  value="proxy" 
+                  className="flex-1 rounded-none py-4 text-center data-[state=active]:bg-[#F9CB28] data-[state=active]:text-white data-[state=inactive]:bg-transparent"
+                >
+                  Proxy Contract
+                </TabsTrigger>
+                <TabsTrigger 
                   value="abi" 
                   className="flex-1 rounded-none py-4 text-center data-[state=active]:bg-[#5379FF] data-[state=active]:text-white data-[state=inactive]:bg-transparent"
                 >
@@ -221,6 +249,47 @@ const CardErc7730 = () => {
                   onChange={(e) => setInput(e.target.value)}
                   className="h-12 rounded-lg border-[#1f0f4c] bg-[#0f051d] text-white placeholder:text-gray-500"
                 />
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="proxy" className="mt-6">
+              <div className="space-y-4">
+                <div>
+                  <Label className="mb-2 block font-normal text-white">Proxy Contract Address</Label>
+                  <div className="flex items-center gap-2">
+                    <Shield className="h-5 w-5 text-amber-400" />
+                    <Input
+                      id="proxy-address"
+                      placeholder="0x... (the address users interact with)"
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      className="h-12 rounded-lg border-amber-500/30 bg-[#0f051d] text-white placeholder:text-gray-500"
+                    />
+                  </div>
+                </div>
+                
+                <div>
+                  <Label className="mb-2 block font-normal text-white">Implementation Contract Address</Label>
+                  <div className="flex items-center gap-2">
+                    <Shield className="h-5 w-5 text-blue-400" />
+                    <Input
+                      id="implementation-address"
+                      placeholder="0x... (the address with logic implementation)"
+                      value={implementationAddress}
+                      onChange={(e) => setImplementationAddress(e.target.value)}
+                      className="h-12 rounded-lg border-blue-500/30 bg-[#0f051d] text-white placeholder:text-gray-500"
+                    />
+                  </div>
+                </div>
+                
+                <div className="rounded-md border border-amber-500/30 bg-amber-900/10 p-3 text-sm">
+                  <p className="text-amber-300">How Proxy Contracts Work:</p>
+                  <p className="mt-1 text-gray-400">
+                    • <span className="text-amber-400">Proxy Address</span>: The contract users interact with<br />
+                    • <span className="text-blue-400">Implementation Address</span>: Contains the actual logic & ABI
+                  </p>
+                  <p className="mt-2 text-white">Both addresses are needed for correct ERC7730 registration.</p>
+                </div>
               </div>
             </TabsContent>
 
@@ -306,6 +375,16 @@ const CardErc7730 = () => {
                 >
                   ApeCoin: Staking
                 </button>
+                <button
+                  onClick={() => {
+                    const value = "0x43506849D7C04F9138D1A2050bbF3A0c054402dd";
+                    void navigator.clipboard.writeText(value);
+                    setInput(value);
+                  }}
+                  className="rounded-lg border border-[#41b1e1]/30 bg-[#0f051d] px-4 py-2 text-[#41b1e1] transition-all hover:-translate-y-1 hover:border-[#41b1e1]/70"
+                >
+                  USDC
+                </button>
               </>
             ) : (
               <button
@@ -328,6 +407,38 @@ const CardErc7730 = () => {
                 Poap
               </button>
             )}
+          </div>
+          
+          {/* Proxy Contract Section */}
+          <div className="mt-6 border-t border-[#664bda]/30 pt-4">
+            <h4 className="mb-2 text-lg font-medium text-white">Upgradeable/Proxy Contracts</h4>
+            <p className="mb-3 text-sm text-gray-400">
+              For upgradeable contracts, you must register the <span className="text-amber-400">proxy contract address</span>, but our system will 
+              automatically fetch the <span className="text-blue-400">implementation contract's logic</span> for accurate function descriptions.
+            </p>
+            
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => {
+                  const value = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
+                  void navigator.clipboard.writeText(value);
+                  setInput(value);
+                }}
+                className="rounded-lg border border-amber-500/50 bg-[#0f051d] px-4 py-2 text-amber-400 transition-all hover:-translate-y-1 hover:border-amber-500"
+              >
+                USDC Proxy
+              </button>
+            </div>
+            
+            <div className="mt-3 rounded-md border border-amber-500/30 bg-amber-900/10 p-3 text-sm">
+              <p className="text-amber-300">How It Works:</p>
+              <p className="mt-1 text-gray-400">
+                1. <span className="text-amber-400">Enter the proxy address</span> (e.g., <span className="font-mono text-xs">0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48</span> for USDC)<br />
+                2. Our backend automatically fetches the <span className="text-blue-400">implementation logic</span> (e.g., <span className="font-mono text-xs">0x43506849D7C04F9138D1A2050bbF3A0c054402dd</span>)<br />
+                3. The generated ERC7730 file contains the proxy address while using the implementation's ABI
+              </p>
+              <p className="mt-2 text-yellow-300 font-medium">This ensures you get the correct function signatures while properly directing transactions to the proxy contract.</p>
+            </div>
           </div>
         </div>
       </div>

@@ -69,6 +69,9 @@ class Props(BaseModel):
     abi: str | None = None
     address: str | None = None
     chain_id: int | None = None
+    proxyAddress: str | None = None
+    implementationAddress: str | None = None
+    isProxy: bool | None = None
 
 @app.exception_handler(StarletteHTTPException)
 async def http_exception_handler(request, exc):
@@ -191,10 +194,42 @@ async def run_erc7730(params: Props):
         
         if USE_MOCK:
             # Use mock data in testing/development
-            address = params.address or "0x0000000000000000000000000000000000000000"
+            address = params.address or params.proxyAddress or "0x0000000000000000000000000000000000000000"
             return JSONResponse(content=generate_mock_descriptor(address, chain_id))
         
-        if (params.abi):
+        # Handle proxy contracts (implement address + logic address)
+        if params.proxyAddress and params.implementationAddress:
+            try:
+                # First get the ABI from the implementation address
+                implementation_abi = None
+                try:
+                    # Generate a temporary descriptor to get the ABI
+                    temp_result = generate_descriptor(
+                        chain_id=chain_id,
+                        contract_address=params.implementationAddress
+                    )
+                    # Extract the ABI from the temporary result
+                    if temp_result and 'context' in temp_result and 'contract' in temp_result['context'] and 'abi' in temp_result['context']['contract']:
+                        implementation_abi = temp_result['context']['contract']['abi']
+                except Exception as impl_err:
+                    error_detail = f"Error fetching implementation ABI: {str(impl_err)}"
+                    raise HTTPException(status_code=500, detail=error_detail)
+                
+                if not implementation_abi:
+                    raise HTTPException(status_code=500, detail="Failed to fetch implementation contract ABI")
+                
+                # Now generate the descriptor with proxy address but using implementation ABI
+                result = generate_descriptor(
+                    chain_id=chain_id,
+                    contract_address=params.proxyAddress,
+                    abi=json.dumps(implementation_abi)
+                )
+            except Exception as e:
+                error_detail = f"Error with proxy contract: {str(e)}"
+                raise HTTPException(status_code=500, detail=error_detail)
+        
+        # Handle ABI input
+        elif params.abi:
             try:
                 result = generate_descriptor(
                     chain_id=chain_id,
@@ -205,7 +240,8 @@ async def run_erc7730(params: Props):
                 error_detail = f"Error with ABI: {str(e)}"
                 raise HTTPException(status_code=500, detail=error_detail)
        
-        if (params.address and not result):
+        # Handle regular address
+        elif params.address and not result:
             try:
                 result = generate_descriptor(
                     chain_id=chain_id,
@@ -221,7 +257,7 @@ async def run_erc7730(params: Props):
                 raise HTTPException(status_code=500, detail=error_detail)
             
         if result is None:
-            raise HTTPException(status_code=400, detail="No ABI or address provided")
+            raise HTTPException(status_code=400, detail="No valid input provided (ABI, address, or proxy configuration)")
 
         # The result should already be a serializable dict thanks to our patch
         # But we'll add a fallback just in case
