@@ -48,8 +48,8 @@ export function ReviewJson() {
     // Close the dialog
     setOpen(false);
     
-    // Navigate to the verification-results page
-    router.push("/verification-results");
+    // Navigate to the review-results page
+    router.push("/review-results");
   };
 
   return (
@@ -62,7 +62,7 @@ export function ReviewJson() {
       <div className="space-y-4 p-4 md:p-0">
         <p className="text-sm text-gray-600">
           Before submitting, please review your JSON. If everything looks good,
-          download the JSON file and press the \"Continue to Verification\" button.
+          download the JSON file and press the \"Continue to Review\" button.
         </p>
         <pre className="max-h-64 overflow-auto rounded border bg-gray-100 p-4 text-sm dark:text-black">
           {JSON.stringify(erc7730, null, 2)}
@@ -79,7 +79,7 @@ export function ReviewJson() {
         </div>
         <div className="mt-4 flex justify-end">
           <Button onClick={handleContinue}>
-            Continue to Verification
+            Continue to Review
           </Button>
         </div>
       </div>

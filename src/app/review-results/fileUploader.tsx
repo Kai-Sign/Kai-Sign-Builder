@@ -14,7 +14,7 @@ import { getQuestionData, hasFinalizationTimePassed, getTimeRemainingUntilFinali
 export default function FileUploader() {
   const [file, setFile] = useState<File | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
-  const [verificationStatus, setVerificationStatus] = useState<"idle" | "success" | "error">("idle");
+  const [reviewStatus, setReviewStatus] = useState<"idle" | "success" | "error">("idle");
   const [jsonData, setJsonData] = useState<any>(null);
   const [ipfsHash, setIpfsHash] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -46,7 +46,7 @@ export default function FileUploader() {
       // Use a non-null assertion since we already checked length > 0
       const selectedFile = e.target.files[0]!;
       setFile(selectedFile);
-      setVerificationStatus("idle");
+      setReviewStatus("idle");
       setIpfsHash(null);
       setTransactionHash(null);
     }
@@ -70,11 +70,11 @@ export default function FileUploader() {
         "metadata" in parsedData;
       
       if (isValidFormat) {
-        setVerificationStatus("success");
+        setReviewStatus("success");
         setJsonData(parsedData);
         setErc7730(parsedData);
         toast({
-          title: "File Verification Process Started",
+          title: "File Review Process Started",
           description: "The ERC7730 JSON file is valid. Uploading to IPFS...",
           variant: "default",
         });
@@ -82,7 +82,7 @@ export default function FileUploader() {
         // Upload to IPFS
         await uploadToIpfs(parsedData);
       } else {
-        setVerificationStatus("error");
+        setReviewStatus("error");
         toast({
           title: "Invalid File Format",
           description: "The uploaded file does not appear to be a valid ERC7730 JSON specification.",
@@ -90,7 +90,7 @@ export default function FileUploader() {
         });
       }
     } catch (error) {
-      setVerificationStatus("error");
+      setReviewStatus("error");
       toast({
         title: "Error Parsing JSON",
         description: "The file could not be parsed as valid JSON.",
@@ -203,7 +203,7 @@ export default function FileUploader() {
     }
   };
 
-  const checkVerificationStatus = async () => {
+  const checkReviewStatus = async () => {
     if (!ipfsHash || !walletConnected) {
       toast({
         title: "Action Required",
@@ -292,8 +292,8 @@ export default function FileUploader() {
           );
           setTimeRemaining(timeRemaining);
           
-          // Navigate to the verification status page
-          router.push(`/verification-status?ipfsHash=${ipfsHash}&questionId=${questionId}`);
+          // Navigate to the review status page
+          router.push(`/review-status?ipfsHash=${ipfsHash}&questionId=${questionId}`);
           return;
         }
         
@@ -318,19 +318,19 @@ export default function FileUploader() {
         if (canFinalize) {
           toast({
             title: "Finalization Available",
-            description: "The waiting period has ended. You can now fetch the verification result.",
+            description: "The waiting period has ended. You can now fetch the review result.",
             variant: "default",
           });
         } else {
           toast({
             title: "Waiting Period",
-            description: `Verification is still in the waiting period. ${timeRemaining}`,
+            description: `Review is still in the waiting period. ${timeRemaining}`,
             variant: "default",
           });
         }
         
-        // Navigate to the verification status page
-        router.push(`/verification-status?ipfsHash=${ipfsHash}&questionId=${questionId}`);
+        // Navigate to the review status page
+        router.push(`/review-status?ipfsHash=${ipfsHash}&questionId=${questionId}`);
       } catch (error: any) {
         console.error("Error fetching question data:", error);
         
@@ -344,16 +344,16 @@ export default function FileUploader() {
         } else {
           toast({
             title: "Error Checking Status",
-            description: `${error.message || "Failed to check verification status. Please try again."}`,
+            description: `${error.message || "Failed to check review status. Please try again."}`,
             variant: "destructive",
           });
         }
       }
     } catch (error: any) {
-      console.error("Error checking verification status:", error);
+      console.error("Error checking review status:", error);
       toast({
         title: "Error Checking Status",
-        description: `${error.message || "Failed to check verification status. Please try again."}`,
+        description: `${error.message || "Failed to check review status. Please try again."}`,
         variant: "destructive",
       });
     } finally {
@@ -492,10 +492,10 @@ export default function FileUploader() {
           )}
         </div>
         
-        {verificationStatus === "success" && !ipfsHash && (
+        {reviewStatus === "success" && !ipfsHash && (
           <div className="flex items-center gap-2 text-green-500 mt-4">
             <CheckCircle className="h-5 w-5" />
-            <span>File verification process started!</span>
+            <span>File review process started!</span>
           </div>
         )}
         
@@ -509,7 +509,7 @@ export default function FileUploader() {
                 </span>
               </div>
               <Button
-                onClick={checkVerificationStatus}
+                onClick={checkReviewStatus}
                 size="lg"
                 className="ml-auto bg-blue-600 hover:bg-blue-700 px-8 py-6"
                 disabled={isCheckingStatus}
@@ -520,7 +520,7 @@ export default function FileUploader() {
                     Checking...
                   </>
                 ) : (
-                  "Check Verification Status"
+                  "Check Review Status"
                 )}
               </Button>
             </div>
@@ -587,7 +587,7 @@ export default function FileUploader() {
             </div>
             {timeRemaining && (
               <div className="mt-1 p-2 bg-gray-800 rounded-md text-sm">
-                <p className="text-amber-500">Verification Status: <span className="font-medium">In Progress</span></p>
+                <p className="text-amber-500">Review Status: <span className="font-medium">In Progress</span></p>
                 <p className="text-gray-300 mt-1">{timeRemaining}</p>
               </div>
             )}
@@ -597,7 +597,7 @@ export default function FileUploader() {
           </div>
         )}
         
-        {verificationStatus === "error" && (
+        {reviewStatus === "error" && (
           <div className="flex items-center gap-2 text-red-500 mt-4">
             <AlertCircle className="h-5 w-5" />
             <span>Invalid JSON format. Please upload a valid ERC7730 specification.</span>
