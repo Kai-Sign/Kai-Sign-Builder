@@ -24,6 +24,12 @@ export default function FileUploader() {
   const [transactionHash, setTransactionHash] = useState<string | null>(null);
   const [currentWalletAddress, setCurrentWalletAddress] = useState<string | null>(null);
   const [minBond, setMinBond] = useState<string | null>(null);
+  const [bondInfo, setBondInfo] = useState<{
+    currentBond: bigint;
+    minBond: bigint;
+    requiredNextBond: bigint;
+    hasAnswers: boolean;
+  } | null>(null);
   const { setErc7730 } = useErc7730Store((state) => state);
   const { toast } = useToast();
   const [isCheckingStatus, setIsCheckingStatus] = useState(false);
@@ -138,9 +144,15 @@ export default function FileUploader() {
       setCurrentWalletAddress(account);
       setWalletConnected(true);
       
-      // Get minimum bond amount
-      const minBondAmount = await web3Service.getMinBond();
-      setMinBond(minBondAmount.toString());
+      // Get bond information - if we have an IPFS hash, get specific info, otherwise get general minimum
+      if (ipfsHash) {
+        const bondData = await web3Service.getBondInfo(ipfsHash);
+        setBondInfo(bondData);
+        setMinBond(bondData.requiredNextBond.toString());
+      } else {
+        const minBondAmount = await web3Service.getMinBond();
+        setMinBond(minBondAmount.toString());
+      }
       
       toast({
         title: "Wallet Connected",
@@ -165,8 +177,10 @@ export default function FileUploader() {
     setIsSendingTransaction(true);
     
     try {
-      // Get minimum bond amount again to make sure it's current
-      const bondAmount = await web3Service.getMinBond();
+      // Get the current required bond amount for this specific question
+      const bondData = await web3Service.getBondInfo(ipfsHash);
+      setBondInfo(bondData);
+      const bondAmount = bondData.requiredNextBond;
       
       // Submit to blockchain
       const txHash = await web3Service.proposeSpec(ipfsHash, bondAmount);
@@ -453,7 +467,12 @@ export default function FileUploader() {
                       Submitting Transaction...
                     </>
                   ) : (
-                    `Submit with Bond (${minBond ? (Number(minBond) / 10**18).toFixed(5) : "..."} ETH)`
+                    <>
+                      {bondInfo?.hasAnswers 
+                        ? `Challenge Answer (${bondInfo ? (Number(bondInfo.requiredNextBond) / 10**18).toFixed(5) : "..."} ETH)`
+                        : `Submit with Bond (${bondInfo ? (Number(bondInfo.requiredNextBond) / 10**18).toFixed(5) : minBond ? (Number(minBond) / 10**18).toFixed(5) : "..."} ETH)`
+                      }
+                    </>
                   )}
                 </Button>
               ) : (
@@ -505,6 +524,38 @@ export default function FileUploader() {
                 )}
               </Button>
             </div>
+            
+            {bondInfo && (
+              <div className="mt-3 p-4 bg-gray-800 rounded-lg border border-gray-700">
+                <h4 className="text-sm font-medium text-white mb-2">Bond Information</h4>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                  <div>
+                    <span className="text-gray-400">Minimum Bond:</span>
+                    <div className="text-white font-mono">{(Number(bondInfo.minBond) / 10**18).toFixed(5)} ETH</div>
+                  </div>
+                  <div>
+                    <span className="text-gray-400">Current Bond:</span>
+                    <div className="text-white font-mono">
+                      {bondInfo.hasAnswers 
+                        ? `${(Number(bondInfo.currentBond) / 10**18).toFixed(5)} ETH`
+                        : "No answers yet"
+                      }
+                    </div>
+                  </div>
+                  <div>
+                    <span className="text-gray-400">Required Next Bond:</span>
+                    <div className="text-white font-mono">{(Number(bondInfo.requiredNextBond) / 10**18).toFixed(5)} ETH</div>
+                  </div>
+                </div>
+                <div className="mt-2 text-xs text-gray-400">
+                  {bondInfo.hasAnswers 
+                    ? "⚠️ This question has existing answers. Your bond must be double the current bond to challenge."
+                    : "✅ This is the first answer. You only need to meet the minimum bond requirement."
+                  }
+                </div>
+              </div>
+            )}
+            
             <div className="text-sm text-gray-400">
               View on: 
               <a 

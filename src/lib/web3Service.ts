@@ -19,6 +19,26 @@ type ContractWithMethods = ethers.Contract & {
   getQuestionId: (ipfsHash: string) => Promise<string>;
   getStatus: (ipfsHash: string) => Promise<number>;
   isAccepted: (ipfsHash: string) => Promise<boolean>;
+  realityETH: () => Promise<string>;
+};
+
+// Type for Reality.eth contract methods
+type RealityEthContract = ethers.Contract & {
+  getBond: (questionId: string) => Promise<bigint>;
+  getMinBond: (questionId: string) => Promise<bigint>;
+  questions: (questionId: string) => Promise<{
+    content_hash: string;
+    arbitrator: string;
+    opening_ts: bigint;
+    timeout: bigint;
+    finalize_ts: bigint;
+    is_pending_arbitration: boolean;
+    bounty: bigint;
+    best_answer: string;
+    history_hash: string;
+    bond: bigint;
+    min_bond: bigint;
+  }>;
 };
 
 // ABI for the KaiSign contract (based on the contract functions we need)
@@ -71,6 +91,50 @@ const CONTRACT_ABI = [
     "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
     "stateMutability": "view",
     "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "realityETH",
+    "outputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "stateMutability": "view",
+    "type": "function"
+  }
+];
+
+// Reality.eth contract ABI (minimal for bond calculations)
+const REALITY_ETH_ABI = [
+  {
+    "inputs": [{"internalType": "bytes32", "name": "question_id", "type": "bytes32"}],
+    "name": "getBond",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "bytes32", "name": "question_id", "type": "bytes32"}],
+    "name": "getMinBond",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "bytes32", "name": "", "type": "bytes32"}],
+    "name": "questions",
+    "outputs": [
+      {"internalType": "bytes32", "name": "content_hash", "type": "bytes32"},
+      {"internalType": "address", "name": "arbitrator", "type": "address"},
+      {"internalType": "uint32", "name": "opening_ts", "type": "uint32"},
+      {"internalType": "uint32", "name": "timeout", "type": "uint32"},
+      {"internalType": "uint32", "name": "finalize_ts", "type": "uint32"},
+      {"internalType": "bool", "name": "is_pending_arbitration", "type": "bool"},
+      {"internalType": "uint256", "name": "bounty", "type": "uint256"},
+      {"internalType": "bytes32", "name": "best_answer", "type": "bytes32"},
+      {"internalType": "bytes32", "name": "history_hash", "type": "bytes32"},
+      {"internalType": "uint256", "name": "bond", "type": "uint256"},
+      {"internalType": "uint256", "name": "min_bond", "type": "uint256"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
   }
 ];
 
@@ -81,58 +145,187 @@ const SEPOLIA_CHAIN_ID = 11155111;
 
 export class Web3Service {
   private provider: ethers.BrowserProvider | null = null;
-  private signer: ethers.Signer | null = null;
+  private signer: ethers.JsonRpcSigner | null = null;
   private contract: ContractWithMethods | null = null;
+  private realityEthContract: RealityEthContract | null = null;
   
   /**
-   * Connect to MetaMask and set up the provider, signer, and contract
+   * Connect to MetaMask and initialize the contract
    */
   async connect(): Promise<string> {
+    if (!window.ethereum) {
+      throw new Error("MetaMask is not installed. Please install MetaMask to continue.");
+    }
+
     try {
-      // Check if ethereum object is available
-      if (typeof window === 'undefined' || !window.ethereum) {
-        throw new Error("MetaMask not found. Please install MetaMask extension.");
-      }
-      
       // Request account access
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
+
       if (!accounts || accounts.length === 0) {
-        throw new Error("No accounts found. Please unlock MetaMask.");
+        throw new Error("No accounts found. Please make sure MetaMask is unlocked.");
       }
-      
-      console.log("Connected accounts:", accounts);
-      
-      // Create provider and signer
+
+      // Initialize provider and signer
       this.provider = new ethers.BrowserProvider(window.ethereum);
       this.signer = await this.provider.getSigner();
-      console.log("Signer address:", await this.signer.getAddress());
-      
-      // Get checksummed address
-      const checksummedAddress = ethers.getAddress(RAW_CONTRACT_ADDRESS);
-      console.log("Using contract address:", checksummedAddress);
-      
-      // Create contract instance with checksummed address
-      this.contract = new ethers.Contract(
-        checksummedAddress,
+
+      // Check if we're on the correct network
+      const isCorrectNetwork = await this.checkNetwork();
+      if (!isCorrectNetwork) {
+        throw new Error("Please switch to the Sepolia network to continue.");
+      }
+
+      // Initialize contract
+      const kaisignContract = new ethers.Contract(
+        RAW_CONTRACT_ADDRESS,
         CONTRACT_ABI,
         this.signer
-      ) as unknown as ContractWithMethods;
-      
+      ) as ContractWithMethods;
+
+      // Initialize Reality.eth contract
+      const realityEthAddress = await kaisignContract.realityETH();
+      const realityContract = new ethers.Contract(
+        realityEthAddress,
+        REALITY_ETH_ABI,
+        this.signer
+      ) as RealityEthContract;
+
+      // Assign to instance variables after successful initialization
+      this.contract = kaisignContract;
+      this.realityEthContract = realityContract;
+
+      console.log("Connected to account:", accounts[0]);
+      console.log("Contract address:", RAW_CONTRACT_ADDRESS);
+      console.log("Reality.eth address:", realityEthAddress);
+
       return accounts[0];
     } catch (error) {
-      console.error("Failed to connect to MetaMask:", error);
+      console.error("Error connecting to MetaMask:", error);
       throw error;
     }
   }
   
   /**
-   * Get the minimum bond amount required from the contract
+   * Check if we're on the Sepolia network
+   */
+  async checkNetwork(): Promise<boolean> {
+    if (!this.provider) return false;
+    
+    try {
+      const network = await this.provider.getNetwork();
+      return Number(network.chainId) === SEPOLIA_CHAIN_ID;
+    } catch (error) {
+      console.error("Error checking network:", error);
+      return false;
+    }
+  }
+  
+  /**
+   * Get the minimum bond amount required for a new question from the KaiSign contract
    */
   async getMinBond(): Promise<bigint> {
-    // Always use the hardcoded value
-    const fixedBond = BigInt("100000000000000"); // 0.0001 ETH
-    console.log("Using fixed bond amount:", fixedBond.toString());
-    return fixedBond;
+    try {
+      if (!this.contract) {
+        throw new Error("Contract not initialized. Please connect first.");
+      }
+
+      const minBond = await this.contract.minBond();
+      console.log("Contract minimum bond:", minBond.toString());
+      return minBond;
+    } catch (error) {
+      console.error("Error getting minimum bond from contract:", error);
+      // Fallback to a reasonable default if contract call fails
+      const fallbackBond = BigInt("100000000000000"); // 0.0001 ETH
+      console.log("Using fallback bond amount:", fallbackBond.toString());
+      return fallbackBond;
+    }
+  }
+  
+  /**
+   * Calculate the required bond for answering a specific question
+   * Based on Reality.eth rules: first answer needs min_bond, subsequent answers need 2x previous bond
+   */
+  async getRequiredBondForQuestion(questionId: string): Promise<bigint> {
+    try {
+      if (!this.realityEthContract) {
+        throw new Error("Reality.eth contract not initialized. Please connect first.");
+      }
+
+      // Get the current bond for this question
+      const currentBond = await this.realityEthContract.getBond(questionId);
+      
+      if (currentBond === BigInt(0)) {
+        // No previous answers, use minimum bond
+        const minBond = await this.realityEthContract.getMinBond(questionId);
+        console.log("No previous answers, using min bond:", minBond.toString());
+        return minBond;
+      } else {
+        // Previous answers exist, need to double the current bond
+        const requiredBond = currentBond * BigInt(2);
+        console.log("Previous bond exists:", currentBond.toString(), "Required bond:", requiredBond.toString());
+        return requiredBond;
+      }
+    } catch (error) {
+      console.error("Error calculating required bond for question:", error);
+      // Fallback to contract minimum bond
+      return await this.getMinBond();
+    }
+  }
+  
+  /**
+   * Get bond information for a question (current bond, minimum bond, and required next bond)
+   */
+  async getBondInfo(ipfsHash: string): Promise<{
+    currentBond: bigint;
+    minBond: bigint;
+    requiredNextBond: bigint;
+    hasAnswers: boolean;
+  }> {
+    try {
+      if (!this.contract || !this.realityEthContract) {
+        throw new Error("Contracts not initialized. Please connect first.");
+      }
+
+      // Get the question ID for this IPFS hash
+      const questionId = await this.contract.getQuestionId(ipfsHash);
+      
+      if (questionId === "0x0000000000000000000000000000000000000000000000000000000000000000") {
+        // Question doesn't exist yet, return contract minimum bond
+        const contractMinBond = await this.getMinBond();
+        return {
+          currentBond: BigInt(0),
+          minBond: contractMinBond,
+          requiredNextBond: contractMinBond,
+          hasAnswers: false
+        };
+      }
+
+      // Get bond information from Reality.eth
+      const currentBond = await this.realityEthContract.getBond(questionId);
+      const minBond = await this.realityEthContract.getMinBond(questionId);
+      
+      const hasAnswers = currentBond > BigInt(0);
+      const requiredNextBond = hasAnswers ? currentBond * BigInt(2) : minBond;
+
+      return {
+        currentBond,
+        minBond,
+        requiredNextBond,
+        hasAnswers
+      };
+    } catch (error) {
+      console.error("Error getting bond info:", error);
+      // Fallback to contract minimum bond
+      const contractMinBond = await this.getMinBond();
+      return {
+        currentBond: BigInt(0),
+        minBond: contractMinBond,
+        requiredNextBond: contractMinBond,
+        hasAnswers: false
+      };
+    }
   }
   
   /**
@@ -180,75 +373,6 @@ export class Web3Service {
     }
   }
   
-  /**
-   * Check if we're on the correct network, and if not, prompt to switch
-   */
-  async checkNetwork(): Promise<boolean> {
-    if (!this.provider) return false;
-    
-    try {
-      const network = await this.provider.getNetwork();
-      const chainId = Number(network.chainId);
-      console.log("Current network chainId:", chainId);
-      
-      if (chainId !== SEPOLIA_CHAIN_ID) {
-        console.log("Wrong network. Switching to Sepolia...");
-        await this.switchToSepolia();
-        return false;
-      }
-      
-      return true;
-    } catch (error) {
-      console.error("Error checking network:", error);
-      return false;
-    }
-  }
-  
-  /**
-   * Request MetaMask to switch to the Sepolia network
-   */
-  async switchToSepolia(): Promise<void> {
-    if (typeof window === 'undefined' || !window.ethereum) return;
-    
-    const sepoliaChainIdHex = '0x' + SEPOLIA_CHAIN_ID.toString(16);
-    console.log("Switching to Sepolia with chainId:", sepoliaChainIdHex);
-    
-    try {
-      // Try to switch to Sepolia
-      await window.ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: sepoliaChainIdHex }],
-      });
-      console.log("Network switched successfully");
-    } catch (error: any) {
-      console.error("Error switching network:", error);
-      
-      // If the chain hasn't been added, add it
-      if (error.code === 4902) {
-        console.log("Sepolia not found in wallet. Adding network...");
-        await window.ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: sepoliaChainIdHex,
-              chainName: 'Sepolia Testnet',
-              nativeCurrency: {
-                name: 'Sepolia ETH',
-                symbol: 'ETH',
-                decimals: 18,
-              },
-              rpcUrls: ['https://rpc.sepolia.org'],
-              blockExplorerUrls: ['https://sepolia.etherscan.io'],
-            },
-          ],
-        });
-        console.log("Sepolia network added");
-      } else {
-        throw error;
-      }
-    }
-  }
-
   /**
    * Get the questionId from the contract for a given IPFS hash
    */
