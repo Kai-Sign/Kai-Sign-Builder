@@ -256,7 +256,7 @@ const CardErc7730 = () => {
                 className="flex items-center gap-2 rounded-lg border border-[#41b1e1]/50 bg-transparent px-4 py-3 text-[#41b1e1] transition-all hover:bg-[#41b1e1]/10"
               >
                 <FileJson className="h-5 w-5" />
-                <span>I already have a JSON file</span>
+                <span>I already have <br />Clear Sign JSON file</span>
               </button>
             </div>
           </Tabs>

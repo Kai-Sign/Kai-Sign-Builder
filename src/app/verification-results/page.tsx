@@ -14,19 +14,48 @@ export default function VerificationResultsPage() {
         <div className="mb-12 rounded-lg bg-blue-950 p-8 text-white">
           <h2 className="mb-4 text-2xl font-medium">What is ERC7730?</h2>
           <p className="text-gray-300">
-            ERC7730 is a standard for smart contract clear signing, providing structured JSON specifications 
-            that hardware wallets can use to display transaction details in a user-friendly way.
+            Learn more about the ERC7730 standard for smart contract clear signing at{" "}
+            <a 
+              href="https://developers.ledger.com/docs/clear-signing/references/erc7730-standard" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-400 hover:text-blue-300 underline"
+            >
+              Ledger's official documentation
+            </a>.
           </p>
         </div>
-        
-        <div className="mb-12 space-y-6">
-          <h2 className="text-2xl font-medium">Benefits of Using ERC7730</h2>
-          <ul className="list-inside list-disc space-y-4 text-gray-300">
-            <li>Improved transaction transparency for end users</li>
-            <li>Clearer display of contract interactions on hardware wallets</li>
-            <li>Reduced risk of phishing and blind signing attacks</li>
-            <li>Standardized format for describing smart contract operations</li>
-          </ul>
+
+        <div className="mb-12 rounded-lg bg-purple-950 p-8 text-white">
+          <h2 className="mb-4 text-2xl font-medium">Reality.eth Verification</h2>
+          <p className="mb-4 text-gray-300">
+            Reality.eth's optimistic oracle verifies metadata CIDs on Ethereum by treating each CID as a "question." 
+            Anyone can stake ETH to assert that the spec is correct. If no one challenges that assertion within the 
+            designated window, the metadata is marked as verified. <br />
+            <br />
+            Once verified, this metadata serves as a trusted 
+            reference in the Kleros Community Curation Registry for exact submission, but it does not itself complete 
+            the on-chain registration. Final submission to the registry still requires the usual Kleros curation process.
+          </p>
+          
+          <div className="mt-6">
+            <h3 className="mb-3 text-lg font-medium text-purple-200">Key Requirements:</h3>
+            <ul className="list-inside list-disc space-y-2 text-gray-300">
+              <li>Minimum bond requirement varies based on question complexity</li>
+              <li>Timeout period for challenges (typically 24-48 hours)</li>
+              <li>Gas costs for question creation and answer submission</li>
+              <li>Potential arbitration fees if disputes arise</li>
+              <li>Bond doubling mechanism for subsequent answers</li>
+            </ul>
+          </div>
+
+          <div className="mt-6 p-4 bg-purple-900 rounded-lg">
+            <p className="text-sm text-purple-200">
+              <strong>Note:</strong> The verification process involves smart contract interactions with associated 
+              gas costs and potential bond requirements. Review the Reality.eth contract documentation for current 
+              fee structures and timeout parameters.
+            </p>
+          </div>
         </div>
         
         <div className="flex justify-between">
