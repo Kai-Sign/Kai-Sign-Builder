@@ -129,7 +129,7 @@ export default function ContractEventsPage() {
 
   return (
     <div className="container mx-auto py-10">
-      <h1 className="text-3xl font-bold mb-6">Validated ERC7730 metadata</h1>
+      <h1 className="text-3xl font-bold mb-6">Reviewed ERC7730 metadata</h1>
       <Card>
         <CardHeader>
           <CardTitle>Past results (Query powered by Curvegrid)</CardTitle>

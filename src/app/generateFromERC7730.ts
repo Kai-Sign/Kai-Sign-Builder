@@ -30,12 +30,36 @@ const getApiEndpoint = (): string => {
 export default async function generateERC7730({
   input,
   inputType,
+  chainId,
 }: {
   inputType: "address" | "abi";
   input: string;
+  chainId?: number;
 }): Promise<GenerateResponse | null> {
+  // Validate inputs
+  if (!input || input.trim() === "") {
+    throw new Error("Input cannot be empty");
+  }
+  
+  if (inputType === "address") {
+    // Basic Ethereum address validation
+    if (!input.match(/^0x[a-fA-F0-9]{40}$/)) {
+      throw new Error("Invalid Ethereum address format. Address must be 42 characters long and start with 0x");
+    }
+  } else if (inputType === "abi") {
+    // Basic ABI validation - should be valid JSON array
+    try {
+      const parsed = JSON.parse(input);
+      if (!Array.isArray(parsed)) {
+        throw new Error("ABI must be a valid JSON array");
+      }
+    } catch (e) {
+      throw new Error("Invalid ABI format. ABI must be valid JSON");
+    }
+  }
+  
   // Create a unique key for this request
-  const requestKey = `${inputType}:${input}`;
+  const requestKey = `${inputType}:${input}:${chainId || 'no-chain'}`;
   
   // Check if this exact request is already in-flight
   if (pendingRequests[requestKey]) {
@@ -52,6 +76,7 @@ export default async function generateERC7730({
   const body: GenerateBody = {
     address: inputType === "address" ? input : undefined,
     abi: inputType === "abi" ? input : undefined,
+    chain_id: chainId,
   };
 
   // Maximum number of retry attempts
@@ -62,6 +87,7 @@ export default async function generateERC7730({
   // Get the appropriate API endpoint
   const apiEndpoint = getApiEndpoint();
   console.log(`Using API endpoint: ${apiEndpoint}`);
+  console.log(`Request body:`, JSON.stringify(body, null, 2));
 
   // Store the promise in our pending requests
   pendingRequests[requestKey] = (async () => {
@@ -94,14 +120,45 @@ export default async function generateERC7730({
         }
 
         if (!response.ok) {
+          let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+          
           try {
             const errorData = await response.json();
             console.error("API Error Details:", errorData);
-            throw new Error(`API Error: ${errorData.message || JSON.stringify(errorData)}`);
+            
+            // Handle different error response formats
+            if (errorData.detail) {
+              // FastAPI HTTPException format
+              errorMessage = `API Error: ${errorData.detail}`;
+            } else if (errorData.message) {
+              // Custom message format
+              errorMessage = `API Error: ${errorData.message}`;
+            } else if (Object.keys(errorData).length === 0) {
+              // Empty object - provide more context
+              errorMessage = `API Error: Server returned empty error response (${response.status} ${response.statusText}). This may indicate a server configuration issue.`;
+            } else {
+              // Other error formats
+              errorMessage = `API Error: ${JSON.stringify(errorData)}`;
+            }
+            
+            throw new Error(errorMessage);
           } catch (jsonError) {
-            // If we can't parse the error as JSON, use the status text
+            // If we can't parse the error as JSON, get the raw response text
             console.error("Error parsing API error response:", jsonError);
-            throw new Error(`API Error: ${response.statusText} (${response.status})`);
+            
+            try {
+              const errorText = await response.text();
+              if (errorText.trim()) {
+                errorMessage = `API Error: ${errorText.substring(0, 500)}`;
+              } else {
+                errorMessage = `API Error: Server returned empty response (${response.status} ${response.statusText})`;
+              }
+            } catch (textError) {
+              console.error("Error reading response text:", textError);
+              errorMessage = `API Error: Unable to read error response (${response.status} ${response.statusText})`;
+            }
+            
+            throw new Error(errorMessage);
           }
         }
 
