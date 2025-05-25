@@ -18,6 +18,8 @@ import { useRouter } from "next/navigation";
 import { useErc7730Store } from "~/store/erc7730Provider";
 import useFunctionStore from "~/store/useOperationStore";
 import generateFromERC7730 from "./generateFromERC7730";
+import { NetworkSelector } from "~/components/ui/network-selector";
+import { DEFAULT_NETWORK } from "~/lib/networks";
 
 // Sample data
 const POAP_ABI = '[{"inputs":[{"internalType":"address","name":"_poapContractAddress","type":"address"},{"internalType":"address","name":"_validSigner","type":"address"},{"internalType":"address payable","name":"_feeReceiver","type":"address"},{"internalType":"uint256","name":"_migrationFee","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousFeeReceiver","type":"address"},{"indexed":true,"internalType":"address","name":"newFeeReceiver","type":"address"}],"name":"FeeReceiverChange","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"previousFeeReceiver","type":"uint256"},{"indexed":true,"internalType":"uint256","name":"newFeeReceiver","type":"uint256"}],"name":"MigrationFeeChange","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousValidSigner","type":"address"},{"indexed":true,"internalType":"address","name":"newValidSigner","type":"address"}],"name":"ValidSignerChange","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bytes","name":"_signature","type":"bytes"}],"name":"VerifiedSignature","type":"event"},{"inputs":[],"name":"NAME","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feeReceiver","outputs":[{"internalType":"address payable","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"migrationFee","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"mockEventId","type":"uint256"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"address","name":"receiver","type":"address"},{"internalType":"uint256","name":"expirationTime","type":"uint256"},{"internalType":"bytes","name":"signature","type":"bytes"}],"name":"mintToken","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes","name":"","type":"bytes"}],"name":"processed","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renouncePoapAdmin","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address payable","name":"_feeReceiver","type":"address"}],"name":"setFeeReceiver","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_migrationFee","type":"uint256"}],"name":"setMigrationFee","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_validSigner","type":"address"}],"name":"setValidSigner","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"validSigner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}]';
@@ -69,6 +71,7 @@ const checkApiHealth = async (): Promise<boolean> => {
 const CardErc7730 = () => {
   const [input, setInput] = useState("");
   const [inputType, setInputType] = useState<"address" | "abi">("address");
+  const [selectedChainId, setSelectedChainId] = useState<number>(DEFAULT_NETWORK.id);
   const { setErc7730 } = useErc7730Store((state) => state);
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -124,15 +127,23 @@ const CardErc7730 = () => {
     isPending: loading,
     error,
   } = useMutation({
-    mutationFn: (input: string) =>
+    mutationFn: ({ input, chainId }: { input: string; chainId: number }) =>
       generateFromERC7730({
         input,
         inputType,
+        chainId,
       }),
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    console.log("Form submission started:", {
+      input: input.substring(0, 50) + (input.length > 50 ? "..." : ""),
+      inputType,
+      selectedChainId,
+      inputLength: input.length
+    });
     
     // Skip API health check on production
     if (apiReady === false && !window.location.hostname.includes('vercel.app')) {
@@ -144,24 +155,49 @@ const CardErc7730 = () => {
       
       if (!isReady) {
         // Show error message
+        console.error("API health check failed");
         return;
       }
     }
     
     try {
-      const erc7730 = await fetchERC7730Metadata(input);
+      console.log("Calling fetchERC7730Metadata with:", { 
+        input: input.substring(0, 50) + (input.length > 50 ? "..." : ""),
+        chainId: selectedChainId 
+      });
+      
+      const erc7730 = await fetchERC7730Metadata({ 
+        input, 
+        chainId: selectedChainId 
+      });
 
       if (erc7730) {
-        console.log(erc7730);
+        console.log("Successfully received ERC7730 data:", {
+          hasContext: !!erc7730.context,
+          hasMetadata: !!erc7730.metadata,
+          hasDisplay: !!erc7730.display,
+          schema: erc7730.$schema || "not set",
+          displayFormatsCount: erc7730.display?.formats ? Object.keys(erc7730.display.formats).length : 0
+        });
         useFunctionStore.persist.clearStorage();
 
         setErc7730(erc7730);
         router.push("/metadata");
+      } else {
+        console.warn("Received null/undefined ERC7730 data");
       }
     } catch (error) {
-      console.error("Error fetching metadata:", error);
+      console.error("Error in form submission:", {
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+        input: input.substring(0, 50) + (input.length > 50 ? "..." : ""),
+        inputType,
+        chainId: selectedChainId
+      });
+      
       // Continue anyway on production
       if (window.location.hostname.includes('vercel.app')) {
+        console.log("Production environment - continuing to metadata page despite error");
         router.push("/metadata");
       }
     }
@@ -196,6 +232,13 @@ const CardErc7730 = () => {
 
       <div className="rounded-xl border border-[#664bda]/50 bg-[#140a33]/50 p-6 backdrop-blur-sm">
         <form onSubmit={handleSubmit} className="flex w-full flex-col gap-6">
+          {/* Network Selector */}
+          <NetworkSelector
+            value={selectedChainId}
+            onValueChange={setSelectedChainId}
+            placeholder="Select blockchain network..."
+          />
+
           <Tabs defaultValue="address" onValueChange={onTabChange}>
             <div className="relative overflow-hidden rounded-lg border border-[#1f0f4c] bg-[#0f051d]">
               <TabsList className="flex w-full">
@@ -297,7 +340,7 @@ const CardErc7730 = () => {
                   }}
                   className="rounded-lg border border-[#41b1e1]/30 bg-[#0f051d] px-4 py-2 text-[#41b1e1] transition-all hover:-translate-y-1 hover:border-[#41b1e1]/70"
                 >
-                  Poap
+                  Poap (mainnet)
                 </button>
                 <button
                   onClick={() => {
@@ -307,7 +350,7 @@ const CardErc7730 = () => {
                   }}
                   className="rounded-lg border border-[#41b1e1]/30 bg-[#0f051d] px-4 py-2 text-[#41b1e1] transition-all hover:-translate-y-1 hover:border-[#41b1e1]/70"
                 >
-                  ApeCoin: Staking
+                  ApeCoin: Staking (mainnet)
                 </button>
               </>
             ) : (
