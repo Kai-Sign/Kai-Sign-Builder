@@ -252,7 +252,7 @@ export default function ContractEventsPage() {
           asChild
           className="px-8 py-6 text-base border border-gray-700 hover:bg-gray-800 hover:border-gray-600"
         >
-          <Link href="/review-results">Back to Review</Link>
+          <Link href="/verification-results">Back to Verification</Link>
         </Button>
       </div>
     </div>

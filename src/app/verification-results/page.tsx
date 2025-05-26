@@ -3,11 +3,11 @@ import { Button } from "~/components/ui/button";
 import Link from "next/link";
 import FileUploader from "./fileUploader";
 
-export default function ReviewResultsPage() {
+export default function VerificationResultsPage() {
   return (
     <HydrateClient>
       <div className="container mx-auto max-w-4xl p-6 text-white">
-        <h1 className="mb-8 text-4xl font-bold">ERC7730 JSON Review</h1>
+        <h1 className="mb-8 text-4xl font-bold">ERC7730 JSON Verification</h1>
         
         <FileUploader />
         
@@ -27,13 +27,13 @@ export default function ReviewResultsPage() {
         </div>
 
         <div className="mb-12 rounded-lg bg-purple-950 p-8 text-white">
-          <h2 className="mb-4 text-2xl font-medium">Reality.eth Review</h2>
+          <h2 className="mb-4 text-2xl font-medium">Reality.eth Verification</h2>
           <p className="mb-4 text-gray-300">
-            Reality.eth's optimistic oracle reviews metadata CIDs on Ethereum by treating each CID as a "question." 
+            Reality.eth's optimistic oracle verifies metadata CIDs on Ethereum by treating each CID as a "question." 
             Anyone can stake ETH to assert that the spec is correct. If no one challenges that assertion within the 
-            designated window, the metadata is marked as reviewed. <br />
+            designated window, the metadata is marked as verified. <br />
             <br />
-            Once reviewed, this metadata serves as a trusted 
+            Once verified, this metadata serves as a trusted 
             reference in the Kleros Community Curation Registry for exact submission, but it does not itself complete 
             the on-chain registration. Final submission to the registry still requires the usual Kleros curation process.
           </p>
@@ -51,7 +51,7 @@ export default function ReviewResultsPage() {
 
           <div className="mt-6 p-4 bg-purple-900 rounded-lg">
             <p className="text-sm text-purple-200">
-              <strong>Note:</strong> The review process involves smart contract interactions with associated 
+              <strong>Note:</strong> The verification process involves smart contract interactions with associated 
               gas costs and potential bond requirements. Review the Reality.eth contract documentation for current 
               fee structures and timeout parameters.
             </p>
