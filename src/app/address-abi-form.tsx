@@ -208,8 +208,8 @@ const CardErc7730 = () => {
     setInput("");
   };
   
-  const handleSkipToReview = () => {
-    router.push("/review-results");
+  const handleSkipToVerification = () => {
+    router.push("/verification-results");
   };
 
   if (!mounted) return null;
@@ -295,7 +295,7 @@ const CardErc7730 = () => {
               
               <button
                 type="button"
-                onClick={handleSkipToReview}
+                onClick={handleSkipToVerification}
                 className="flex items-center gap-2 rounded-lg border border-[#41b1e1]/50 bg-transparent px-4 py-3 text-[#41b1e1] transition-all hover:bg-[#41b1e1]/10"
               >
                 <FileJson className="h-5 w-5" />

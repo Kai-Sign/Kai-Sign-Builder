@@ -10,7 +10,7 @@ import { web3Service } from "~/lib/web3Service";
 import { getQuestionData, hasFinalizationTimePassed, getTimeRemainingUntilFinalization, formatFinalizationTime, getQuestionsByUser } from "~/lib/realityEthService";
 import Link from "next/link";
 
-function ReviewStatusContent() {
+function VerificationStatusContent() {
   const searchParams = useSearchParams();
   const ipfsHash = searchParams?.get("ipfsHash");
   const questionId = searchParams?.get("questionId");
@@ -123,8 +123,8 @@ function ReviewStatusContent() {
             
             // Notify the user
             toast({
-              title: "Review Challenge Detected",
-              description: "The review time has been extended due to a challenge.",
+              title: "Verification Challenge Detected",
+              description: "The verification time has been extended due to a challenge.",
               variant: "default",
             });
           }
@@ -159,7 +159,7 @@ function ReviewStatusContent() {
         const questionData = await getQuestionData(questionId);
         
         if (!questionData) {
-          console.warn("Question data is null in review status page");
+          console.warn("Question data is null in verification status page");
           
           // Use estimated values instead of throwing an error
           const defaultCreatedTimestamp = Math.floor(Date.now() / 1000 - 900).toString(); // 15 minutes ago
@@ -268,9 +268,15 @@ function ReviewStatusContent() {
           console.error("Error getting spec status:", statusError);
           // Don't set an error as the status might not be available yet
         }
-      } catch (err: any) {
-        console.error("Error fetching review data:", err);
-        setError(err.message || "Failed to fetch review data. Please try again.");
+      } catch (questionError: any) {
+        console.error("Error fetching question data:", questionError);
+        
+        // Handle question not found errors specifically
+        if (questionError.message.includes("Question not found") || questionError.message.includes("No question data found")) {
+          setError("This question hasn't been registered in Reality.eth yet. Please wait a few minutes for the transaction to be processed and try again.");
+        } else {
+          setError(questionError.message || "Failed to fetch verification data. Please try again.");
+        }
       }
     } catch (err: any) {
       console.error("Error fetching verification data:", err);
@@ -281,30 +287,42 @@ function ReviewStatusContent() {
   };
   
   const handleResult = async () => {
-    if (!ipfsHash) return;
+    if (!ipfsHash || !canFinalize) {
+      toast({
+        title: "Action Required",
+        description: "Please connect your wallet first.",
+        variant: "destructive",
+      });
+      return;
+    }
     
     setIsProcessingResult(true);
     
     try {
+      // Call handleResult on the contract
       const txHash = await web3Service.handleResult(ipfsHash);
       setTransactionHash(txHash);
       
       toast({
         title: "Transaction Submitted",
-        description: `Successfully submitted transaction to fetch the review result.`,
+        description: `Successfully submitted transaction to fetch the verification result.`,
         variant: "default",
       });
       
-      // Wait a bit then refresh the status
-      setTimeout(() => {
-        refreshStatus();
+      // Wait a bit and then fetch the new status
+      setTimeout(async () => {
+        try {
+          const newStatus = await web3Service.getSpecStatus(ipfsHash);
+          setSpecStatus(newStatus);
+        } catch (statusError) {
+          console.error("Error getting updated spec status:", statusError);
+        }
       }, 3000);
-      
     } catch (error: any) {
-      console.error("Error processing result:", error);
+      console.error("Error handling result:", error);
       toast({
-        title: "Transaction Failed",
-        description: error.message || "Failed to process review result. Please try again.",
+        title: "Error Processing Result",
+        description: error.message || "Failed to process verification result. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -315,22 +333,41 @@ function ReviewStatusContent() {
   const refreshStatus = async () => {
     if (!ipfsHash) return;
     
+    setIsLoading(true);
+    
     try {
-      const newStatus = await web3Service.getSpecStatus(ipfsHash);
-      setSpecStatus(newStatus);
+      // Get the latest question data
+      if (questionId) {
+        const questionData = await getQuestionData(questionId);
+        
+        if (questionData && questionData.currentScheduledFinalizationTimestamp) {
+          setFinalizationTimestamp(questionData.currentScheduledFinalizationTimestamp);
+          setLastPolledTimestamp(questionData.currentScheduledFinalizationTimestamp);
+        }
+        
+        // Check if finalization time has passed
+        const canFinalizeCheck = await hasFinalizationTimePassed(questionId);
+        setCanFinalize(canFinalizeCheck);
+      }
+      
+      // Get spec status if available
+      const status = await web3Service.getSpecStatus(ipfsHash);
+      setSpecStatus(status);
       
       toast({
-        title: "Status Updated",
-        description: "The review status has been updated.",
+        title: "Status Refreshed",
+        description: "The verification status has been updated.",
         variant: "default",
       });
-    } catch (error: any) {
-      console.error("Error refreshing status:", error);
+    } catch (err: any) {
+      console.error("Error refreshing status:", err);
       toast({
-        title: "Error",
-        description: "Failed to refresh status. Please try again.",
+        title: "Error Refreshing Status",
+        description: err.message || "Failed to refresh status. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
   
@@ -347,16 +384,16 @@ function ReviewStatusContent() {
     switch (specStatus) {
       case 0: // Submitted
         return (
-          <div className="flex items-center gap-2">
-            <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
-            <span className="text-blue-500">Submitted - Waiting for review</span>
+          <div className="flex items-center p-3 bg-blue-900/30 border border-blue-700 rounded-lg">
+            <AlertTriangle className="h-5 w-5 text-blue-500 mr-2" />
+            <span className="text-blue-500">Submitted - Waiting for verification</span>
           </div>
         );
       case 1: // Accepted
         return (
           <div className="flex items-center p-3 bg-green-900/30 border border-green-700 rounded-lg">
             <CheckCircle className="h-5 w-5 text-green-500 mr-2" />
-            <span className="text-green-500">Accepted - Specification reviewed as valid</span>
+            <span className="text-green-500">Accepted - Specification verified as valid</span>
           </div>
         );
       case 2: // Rejected
@@ -381,11 +418,11 @@ function ReviewStatusContent() {
       <div className="container mx-auto max-w-2xl py-8 px-4">
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl">Loading Review Status</CardTitle>
+            <CardTitle className="text-2xl">Loading Verification Status</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <Loader2 className="h-12 w-12 animate-spin text-blue-500 mb-4" />
-            <p className="text-gray-400">Fetching review data...</p>
+            <p className="text-gray-400">Fetching verification data...</p>
           </CardContent>
         </Card>
       </div>
@@ -403,7 +440,7 @@ function ReviewStatusContent() {
             <div className="p-4 bg-red-900/30 border border-red-700 rounded-lg mb-6">
               <p className="text-red-500">{error}</p>
             </div>
-            <Link href="/review-results">
+            <Link href="/verification-results">
               <Button variant="outline" className="flex items-center">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Upload
@@ -420,7 +457,7 @@ function ReviewStatusContent() {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-2xl">Review Status</CardTitle>
+            <CardTitle className="text-2xl">Verification Status</CardTitle>
             <Button variant="outline" size="sm" onClick={refreshStatus} disabled={isProcessingResult}>
               <RotateCcw className="h-4 w-4 mr-2" />
               Refresh
@@ -459,12 +496,12 @@ function ReviewStatusContent() {
           </div>
           
           <div className="mb-6">
-            <h3 className="text-lg font-medium mb-2">Review Status</h3>
+            <h3 className="text-lg font-medium mb-2">Verification Status</h3>
             {getStatusDisplay()}
           </div>
           
           <div className="mb-6">
-            <h3 className="text-lg font-medium mb-2">Review Timing</h3>
+            <h3 className="text-lg font-medium mb-2">Verification Timing</h3>
             <div className="p-4 bg-gray-800 rounded-lg">
               <div className="flex items-center">
                 <Clock className="h-5 w-5 text-blue-400 mr-3" />
@@ -498,7 +535,7 @@ function ReviewStatusContent() {
                 <div className="mt-3 p-3 bg-green-900/30 border border-green-600 rounded-lg">
                   <p className="text-green-400 font-medium flex items-center">
                     <CheckCircle className="h-4 w-4 mr-2" />
-                    Review period has ended. You can now fetch the result.
+                    Verification period has ended. You can now fetch the result.
                   </p>
                 </div>
               )}
@@ -506,7 +543,7 @@ function ReviewStatusContent() {
           </div>
           
           <div className="flex justify-between mt-8">
-            <Link href="/review-results">
+            <Link href="/verification-results">
               <Button variant="outline" className="flex items-center">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Back to Upload
@@ -525,7 +562,7 @@ function ReviewStatusContent() {
                     Processing...
                   </>
                 ) : (
-                  "Fetch Review Result"
+                  "Fetch Verification Result"
                 )}
               </Button>
             )}
@@ -554,16 +591,22 @@ function ReviewStatusContent() {
   );
 }
 
-export default function ReviewStatusPage() {
+export default function VerificationStatusPage() {
   return (
-    <div className="container mx-auto max-w-4xl p-6">
-      <Suspense fallback={
-        <div className="flex items-center justify-center min-h-[400px]">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
-        </div>
-      }>
-        <ReviewStatusContent />
-      </Suspense>
-    </div>
+    <Suspense fallback={
+      <div className="container mx-auto max-w-2xl py-8 px-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">Loading Verification Status</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col items-center justify-center py-12">
+            <Loader2 className="h-12 w-12 animate-spin text-blue-500 mb-4" />
+            <p className="text-gray-400">Fetching verification data...</p>
+          </CardContent>
+        </Card>
+      </div>
+    }>
+      <VerificationStatusContent />
+    </Suspense>
   );
-}
+} 
