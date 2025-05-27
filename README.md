@@ -54,6 +54,55 @@ src/                         # Next.js frontend
    - Copy the `.env.example` file to `.env`
    - Update the values in `.env` with your own configuration
 
+### Configuration
+
+#### Using Local Backend (Default)
+
+By default, the application uses the local FastAPI backend running on `http://localhost:8000`. No additional configuration is needed.
+
+#### Using Railway Backend
+
+To use the deployed Railway backend instead of the local backend:
+
+1. Create or update your `.env` file with:
+   ```bash
+   NEXT_PUBLIC_API_URL=https://your-railway-app-url.railway.app
+   ```
+
+2. Replace `your-railway-app-url` with your actual Railway deployment URL.
+
+3. Restart your development server:
+   ```bash
+   npm run dev
+   ```
+
+**Note**: When `NEXT_PUBLIC_API_URL` is set, the frontend will make API calls to the Railway backend instead of the local backend. This is useful for:
+- Testing against production data
+- Development without running the local Python backend
+- Sharing a common backend across multiple developers
+
+#### Environment Variables
+
+**Backend Variables** (for local development):
+```bash
+ALCHEMY_RPC_URL=your_alchemy_rpc_endpoint
+KAISIGN_CONTRACT_ADDRESS=0x2d2f90786a365a2044324f6861697e9EF341F858
+CURVEGRID_JWT=your_curvegrid_jwt_token
+ETHERSCAN_API_KEY=your_etherscan_api_key
+USE_MOCK=false
+```
+
+**Frontend Variables**:
+```bash
+NEXT_PUBLIC_API_URL=https://your-railway-app-url.railway.app  # Optional: Use Railway backend
+NEXT_PUBLIC_GTM=your_google_tag_manager_id
+NEXT_PUBLIC_ONETRUST=your_onetrust_id
+NEXT_PUBLIC_IPFS_API_KEY=your_ipfs_api_key
+NEXT_PUBLIC_IPFS_API_SECRET=your_ipfs_api_secret
+NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS=0x2d2f90786a365a2044324f6861697e9EF341F858
+NEXT_PUBLIC_IPFS_GATEWAY_URL=https://ipfs.io/ipfs/
+```
+
 ### Running Locally
 
 Start the development server:
@@ -84,7 +133,25 @@ For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
 ## API Endpoints
 
 - `POST /api/py/generateERC7730`: Generate ERC7730 descriptor
+- `POST /api/py/getIPFSMetadata`: Fetch IPFS metadata from contract specID
+- `GET /api/py`: Health check endpoint
 - `GET /api/healthcheck`: Health check endpoint
+
+### API Usage Examples
+
+#### Generate ERC7730 Descriptor
+```bash
+curl -X POST https://your-railway-app.railway.app/api/py/generateERC7730 \
+  -H "Content-Type: application/json" \
+  -d '{"address": "0x1234567890123456789012345678901234567890", "chain_id": 1}'
+```
+
+#### Fetch IPFS Metadata
+```bash
+curl -X POST https://your-railway-app.railway.app/api/py/getIPFSMetadata \
+  -H "Content-Type: application/json" \
+  -d '{"spec_id": "0xa0ffcaf51795d9c96dcdab2deadf864f458480f629eb683d591916369df49316"}'
+```
 
 ## Contributing
 
