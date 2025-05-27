@@ -5,7 +5,9 @@ from dotenv import load_dotenv
 import os
 import json
 import requests
-from typing import Optional
+from typing import Optional, List
+import asyncio
+import aiohttp
 
 # Import patched version first to apply the monkeypatches
 import api.patched_erc7730
@@ -85,6 +87,12 @@ class IPFSMetadataResponse(BaseModel):
     contract_address: Optional[str] = None
     chain_id: Optional[int] = None
     error: Optional[str] = None
+
+class BatchIPFSMetadataRequest(BaseModel):
+    spec_ids: List[str]
+
+class BatchIPFSMetadataResponse(BaseModel):
+    results: List[IPFSMetadataResponse]
 
 @app.exception_handler(StarletteHTTPException)
 async def http_exception_handler(request, exc):
@@ -212,42 +220,43 @@ async def fetch_ipfs_hash_from_contract(spec_id: str) -> Optional[str]:
             "id": 1
         }
         
-        response = requests.post(ALCHEMY_RPC_URL, json=contract_call_data, timeout=30)
-        response.raise_for_status()
-        
-        result = response.json()
-        if "error" in result:
-            raise Exception(f"RPC error: {result['error']}")
-        
-        # Decode the hex response to get the IPFS hash
-        hex_result = result["result"]
-        if hex_result == "0x":
-            return None
-            
-        # Remove 0x prefix and decode
-        hex_data = hex_result[2:]
-        if len(hex_data) < 128:  # Minimum length for string response
-            return None
-            
-        # Skip the first 64 characters (offset) and next 64 characters (length)
-        # Then decode the actual string data
-        try:
-            # Get the length of the string (bytes 32-63)
-            length_hex = hex_data[64:128]
-            length = int(length_hex, 16)
-            
-            if length == 0:
-                return None
+        async with aiohttp.ClientSession() as session:
+            async with session.post(ALCHEMY_RPC_URL, json=contract_call_data, timeout=30) as response:
+                response.raise_for_status()
+                result = await response.json()
                 
-            # Get the actual string data
-            string_hex = hex_data[128:128 + (length * 2)]
-            ipfs_hash = bytes.fromhex(string_hex).decode('utf-8')
-            
-            return ipfs_hash if ipfs_hash else None
-            
-        except Exception as decode_error:
-            print(f"Error decoding contract response: {decode_error}")
-            return None
+                if "error" in result:
+                    raise Exception(f"RPC error: {result['error']}")
+                
+                # Decode the hex response to get the IPFS hash
+                hex_result = result["result"]
+                if hex_result == "0x":
+                    return None
+                    
+                # Remove 0x prefix and decode
+                hex_data = hex_result[2:]
+                if len(hex_data) < 128:  # Minimum length for string response
+                    return None
+                    
+                # Skip the first 64 characters (offset) and next 64 characters (length)
+                # Then decode the actual string data
+                try:
+                    # Get the length of the string (bytes 32-63)
+                    length_hex = hex_data[64:128]
+                    length = int(length_hex, 16)
+                    
+                    if length == 0:
+                        return None
+                        
+                    # Get the actual string data
+                    string_hex = hex_data[128:128 + (length * 2)]
+                    ipfs_hash = bytes.fromhex(string_hex).decode('utf-8')
+                    
+                    return ipfs_hash if ipfs_hash else None
+                    
+                except Exception as decode_error:
+                    print(f"Error decoding contract response: {decode_error}")
+                    return None
             
     except Exception as e:
         print(f"Error fetching IPFS hash from contract: {e}")
@@ -263,41 +272,42 @@ async def fetch_ipfs_metadata(ipfs_hash: str) -> dict:
             f"https://cloudflare-ipfs.com/ipfs/{ipfs_hash}"
         ]
         
-        for gateway_url in gateways:
-            try:
-                response = requests.get(gateway_url, timeout=10)
-                response.raise_for_status()
-                metadata = response.json()
-                
-                # Extract contract address and chain ID from metadata
-                contract_address = None
-                chain_id = None
-                
-                # Check new ERC7730 format first: context.contract.deployments
-                if (metadata.get("context", {}).get("contract", {}).get("deployments")):
-                    deployments = metadata["context"]["contract"]["deployments"]
-                    if deployments and len(deployments) > 0:
-                        deployment = deployments[0]
-                        contract_address = deployment.get("address")
-                        chain_id = deployment.get("chainId")
-                
-                # Fall back to old format: context.eip712.deployments
-                if not contract_address and (metadata.get("context", {}).get("eip712", {}).get("deployments")):
-                    deployments = metadata["context"]["eip712"]["deployments"]
-                    if deployments and len(deployments) > 0:
-                        deployment = deployments[0]
-                        contract_address = deployment.get("address")
-                        chain_id = deployment.get("chainId")
-                
-                return {
-                    "contract_address": contract_address,
-                    "chain_id": chain_id,
-                    "metadata": metadata
-                }
-                
-            except Exception as gateway_error:
-                print(f"Failed to fetch from {gateway_url}: {gateway_error}")
-                continue
+        async with aiohttp.ClientSession() as session:
+            for gateway_url in gateways:
+                try:
+                    async with session.get(gateway_url, timeout=10) as response:
+                        response.raise_for_status()
+                        metadata = await response.json()
+                        
+                        # Extract contract address and chain ID from metadata
+                        contract_address = None
+                        chain_id = None
+                        
+                        # Check new ERC7730 format first: context.contract.deployments
+                        if (metadata.get("context", {}).get("contract", {}).get("deployments")):
+                            deployments = metadata["context"]["contract"]["deployments"]
+                            if deployments and len(deployments) > 0:
+                                deployment = deployments[0]
+                                contract_address = deployment.get("address")
+                                chain_id = deployment.get("chainId")
+                        
+                        # Fall back to old format: context.eip712.deployments
+                        if not contract_address and (metadata.get("context", {}).get("eip712", {}).get("deployments")):
+                            deployments = metadata["context"]["eip712"]["deployments"]
+                            if deployments and len(deployments) > 0:
+                                deployment = deployments[0]
+                                contract_address = deployment.get("address")
+                                chain_id = deployment.get("chainId")
+                        
+                        return {
+                            "contract_address": contract_address,
+                            "chain_id": chain_id,
+                            "metadata": metadata
+                        }
+                        
+                except Exception as gateway_error:
+                    print(f"Failed to fetch from {gateway_url}: {gateway_error}")
+                    continue
         
         raise Exception("Failed to fetch from all IPFS gateways")
         
@@ -421,6 +431,82 @@ async def get_ipfs_metadata(request: IPFSMetadataRequest):
     except Exception as e:
         error_detail = f"Unexpected error: {str(e)}"
         raise HTTPException(status_code=500, detail=error_detail)
+
+async def process_single_spec_id(spec_id: str) -> IPFSMetadataResponse:
+    """Process a single specID asynchronously and independently."""
+    try:
+        # Validate specID format
+        if not spec_id or not spec_id.startswith("0x") or len(spec_id) != 66:
+            return IPFSMetadataResponse(
+                spec_id=spec_id,
+                error="Invalid specID format. Expected 32-byte hex string with 0x prefix."
+            )
+        
+        # Fetch IPFS hash from contract
+        ipfs_hash = await fetch_ipfs_hash_from_contract(spec_id)
+        
+        if not ipfs_hash:
+            return IPFSMetadataResponse(
+                spec_id=spec_id,
+                error="No IPFS hash found for this specID"
+            )
+        
+        # Fetch metadata from IPFS
+        try:
+            metadata_result = await fetch_ipfs_metadata(ipfs_hash)
+            
+            return IPFSMetadataResponse(
+                spec_id=spec_id,
+                ipfs_hash=ipfs_hash,
+                contract_address=metadata_result.get("contract_address"),
+                chain_id=metadata_result.get("chain_id")
+            )
+            
+        except Exception as ipfs_error:
+            return IPFSMetadataResponse(
+                spec_id=spec_id,
+                ipfs_hash=ipfs_hash,
+                error=f"Failed to fetch IPFS metadata: {str(ipfs_error)}"
+            )
+            
+    except Exception as e:
+        return IPFSMetadataResponse(
+            spec_id=spec_id,
+            error=f"Unexpected error: {str(e)}"
+        )
+
+@app.post("/getBatchIPFSMetadata")
+@app.post("/api/py/getBatchIPFSMetadata")
+async def get_batch_ipfs_metadata(request: BatchIPFSMetadataRequest):
+    """Fetch IPFS metadata for multiple specIDs asynchronously and independently."""
+    try:
+        # Process all specIDs concurrently using asyncio.gather
+        # This makes each fetch independent and asynchronous
+        tasks = [process_single_spec_id(spec_id) for spec_id in request.spec_ids]
+        results = await asyncio.gather(*tasks, return_exceptions=True)
+        
+        # Convert any exceptions to error responses
+        processed_results = []
+        for i, result in enumerate(results):
+            if isinstance(result, Exception):
+                processed_results.append(IPFSMetadataResponse(
+                    spec_id=request.spec_ids[i],
+                    error=f"Processing error: {str(result)}"
+                ))
+            else:
+                processed_results.append(result)
+        
+        return BatchIPFSMetadataResponse(results=processed_results)
+        
+    except Exception as e:
+        # If there's a general error, return error responses for all specIDs
+        error_results = [
+            IPFSMetadataResponse(
+                spec_id=spec_id,
+                error=f"Batch processing error: {str(e)}"
+            ) for spec_id in request.spec_ids
+        ]
+        return BatchIPFSMetadataResponse(results=error_results)
 
 # Add a simple test route for health check
 @app.get("/")
