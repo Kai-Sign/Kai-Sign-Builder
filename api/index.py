@@ -205,7 +205,7 @@ async def fetch_ipfs_hash_from_contract(spec_id: str) -> Optional[str]:
             "params": [
                 {
                     "to": KAISIGN_CONTRACT_ADDRESS,
-                    "data": f"0x29092d0e{spec_id[2:].zfill(64)}"  # getIPFSByHash function selector + padded specID
+                    "data": f"0x5616d4f3{spec_id[2:].zfill(64)}"  # getIPFSByHash function selector + padded specID
                 },
                 "latest"
             ],

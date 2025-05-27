@@ -8,9 +8,11 @@ interface IPFSMetadataResponse {
 
 export async function fetchIPFSMetadataFromAPI(specID: string): Promise<IPFSMetadataResponse> {
   try {
-    // Get the API URL from environment variables or use default
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || '';
-    const endpoint = apiUrl ? `${apiUrl}/getIPFSMetadata` : '/api/py/getIPFSMetadata';
+    // Use Railway API by default, allow override with NEXT_PUBLIC_API_URL
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://kai-sign-production.up.railway.app';
+    const endpoint = `${apiUrl}/api/py/getIPFSMetadata`;
+    
+    console.log('Calling Railway API:', endpoint);
     
     const response = await fetch(endpoint, {
       method: 'POST',

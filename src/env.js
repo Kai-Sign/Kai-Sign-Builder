@@ -18,16 +18,15 @@ export const env = createEnv({
    * Specify your client-side environment variables schema here. This way you can ensure the app
    * isn't built with invalid env vars. To expose them to the client, prefix them with
    * `NEXT_PUBLIC_`.
+   * 
+   * WARNING: Only add variables here that are safe to expose publicly!
    */
   client: {
     NEXT_PUBLIC_GTM: z.string(),
     NEXT_PUBLIC_ONETRUST: z.string(),
     NEXT_PUBLIC_API_URL: z.string().optional(),
-    NEXT_PUBLIC_IPFS_API_KEY: z.string().optional(),
-    NEXT_PUBLIC_IPFS_API_SECRET: z.string().optional(),
     NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS: z.string().optional(),
     NEXT_PUBLIC_IPFS_GATEWAY_URL: z.string().optional(),
-    NEXT_PUBLIC_ALCHEMY_RPC_URL: z.string().optional(),
   },
 
   /**
@@ -43,12 +42,8 @@ export const env = createEnv({
     ETHERSCAN_API_KEY: process.env.ETHERSCAN_API_KEY,
     ALCHEMY_RPC_URL: process.env.ALCHEMY_RPC_URL,
     USE_MOCK: process.env.USE_MOCK,
-    NEXT_PUBLIC_IPFS_API_KEY: process.env.NEXT_PUBLIC_IPFS_API_KEY,
-    NEXT_PUBLIC_IPFS_API_SECRET: process.env.NEXT_PUBLIC_IPFS_API_SECRET,
     NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS: process.env.NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS,
     NEXT_PUBLIC_IPFS_GATEWAY_URL: process.env.NEXT_PUBLIC_IPFS_GATEWAY_URL,
-    NEXT_PUBLIC_ALCHEMY_RPC_URL: process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL,
-    // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
