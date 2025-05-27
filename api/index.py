@@ -4,6 +4,8 @@ from subprocess import Popen, PIPE
 from dotenv import load_dotenv
 import os
 import json
+import requests
+from typing import Optional
 
 # Import patched version first to apply the monkeypatches
 import api.patched_erc7730
@@ -27,6 +29,10 @@ load_dotenv()
 
 # Define USE_MOCK environment variable - set to False by default
 USE_MOCK = os.getenv("USE_MOCK", "false").lower() == "true"
+
+# Environment variables for contract interaction
+ALCHEMY_RPC_URL = os.getenv("ALCHEMY_RPC_URL")
+KAISIGN_CONTRACT_ADDRESS = os.getenv("KAISIGN_CONTRACT_ADDRESS", "0x2d2f90786a365a2044324f6861697e9EF341F858")
 
 def load_env():
     etherscan_api_key = os.getenv("ETHERSCAN_API_KEY")
@@ -69,6 +75,16 @@ class Props(BaseModel):
     abi: str | None = None
     address: str | None = None
     chain_id: int | None = None
+
+class IPFSMetadataRequest(BaseModel):
+    spec_id: str
+
+class IPFSMetadataResponse(BaseModel):
+    spec_id: str
+    ipfs_hash: Optional[str] = None
+    contract_address: Optional[str] = None
+    chain_id: Optional[int] = None
+    error: Optional[str] = None
 
 @app.exception_handler(StarletteHTTPException)
 async def http_exception_handler(request, exc):
@@ -176,6 +192,119 @@ def generate_mock_descriptor(address: str, chain_id: int = 1):
         }
     }
 
+async def fetch_ipfs_hash_from_contract(spec_id: str) -> Optional[str]:
+    """Fetch IPFS hash from the contract using the specID."""
+    try:
+        if not ALCHEMY_RPC_URL:
+            raise Exception("ALCHEMY_RPC_URL environment variable is not set")
+        
+        # Prepare the JSON-RPC request for eth_call
+        contract_call_data = {
+            "jsonrpc": "2.0",
+            "method": "eth_call",
+            "params": [
+                {
+                    "to": KAISIGN_CONTRACT_ADDRESS,
+                    "data": f"0x29092d0e{spec_id[2:].zfill(64)}"  # getIPFSByHash function selector + padded specID
+                },
+                "latest"
+            ],
+            "id": 1
+        }
+        
+        response = requests.post(ALCHEMY_RPC_URL, json=contract_call_data, timeout=30)
+        response.raise_for_status()
+        
+        result = response.json()
+        if "error" in result:
+            raise Exception(f"RPC error: {result['error']}")
+        
+        # Decode the hex response to get the IPFS hash
+        hex_result = result["result"]
+        if hex_result == "0x":
+            return None
+            
+        # Remove 0x prefix and decode
+        hex_data = hex_result[2:]
+        if len(hex_data) < 128:  # Minimum length for string response
+            return None
+            
+        # Skip the first 64 characters (offset) and next 64 characters (length)
+        # Then decode the actual string data
+        try:
+            # Get the length of the string (bytes 32-63)
+            length_hex = hex_data[64:128]
+            length = int(length_hex, 16)
+            
+            if length == 0:
+                return None
+                
+            # Get the actual string data
+            string_hex = hex_data[128:128 + (length * 2)]
+            ipfs_hash = bytes.fromhex(string_hex).decode('utf-8')
+            
+            return ipfs_hash if ipfs_hash else None
+            
+        except Exception as decode_error:
+            print(f"Error decoding contract response: {decode_error}")
+            return None
+            
+    except Exception as e:
+        print(f"Error fetching IPFS hash from contract: {e}")
+        return None
+
+async def fetch_ipfs_metadata(ipfs_hash: str) -> dict:
+    """Fetch metadata from IPFS and extract contract address and chain ID."""
+    try:
+        # Try multiple IPFS gateways
+        gateways = [
+            f"https://ipfs.io/ipfs/{ipfs_hash}",
+            f"https://gateway.pinata.cloud/ipfs/{ipfs_hash}",
+            f"https://cloudflare-ipfs.com/ipfs/{ipfs_hash}"
+        ]
+        
+        for gateway_url in gateways:
+            try:
+                response = requests.get(gateway_url, timeout=10)
+                response.raise_for_status()
+                metadata = response.json()
+                
+                # Extract contract address and chain ID from metadata
+                contract_address = None
+                chain_id = None
+                
+                # Check new ERC7730 format first: context.contract.deployments
+                if (metadata.get("context", {}).get("contract", {}).get("deployments")):
+                    deployments = metadata["context"]["contract"]["deployments"]
+                    if deployments and len(deployments) > 0:
+                        deployment = deployments[0]
+                        contract_address = deployment.get("address")
+                        chain_id = deployment.get("chainId")
+                
+                # Fall back to old format: context.eip712.deployments
+                if not contract_address and (metadata.get("context", {}).get("eip712", {}).get("deployments")):
+                    deployments = metadata["context"]["eip712"]["deployments"]
+                    if deployments and len(deployments) > 0:
+                        deployment = deployments[0]
+                        contract_address = deployment.get("address")
+                        chain_id = deployment.get("chainId")
+                
+                return {
+                    "contract_address": contract_address,
+                    "chain_id": chain_id,
+                    "metadata": metadata
+                }
+                
+            except Exception as gateway_error:
+                print(f"Failed to fetch from {gateway_url}: {gateway_error}")
+                continue
+        
+        raise Exception("Failed to fetch from all IPFS gateways")
+        
+    except Exception as e:
+        print(f"Error fetching IPFS metadata: {e}")
+        raise e
+
 # Explicitly remove response_model validation to avoid Pydantic validation issues in deployment
 @app.post("/generateERC7730")
 @app.post("/api/py/generateERC7730")
@@ -240,6 +369,53 @@ async def run_erc7730(params: Props):
                 error_msg = f"Failed to serialize: {str(e)}. Nested error: {str(nested_exc)}"
                 raise HTTPException(status_code=500, detail=error_msg)
 
+    except HTTPException as e:
+        raise e
+    except Exception as e:
+        error_detail = f"Unexpected error: {str(e)}"
+        raise HTTPException(status_code=500, detail=error_detail)
+
+@app.post("/getIPFSMetadata")
+@app.post("/api/py/getIPFSMetadata")
+async def get_ipfs_metadata(request: IPFSMetadataRequest):
+    """Fetch IPFS metadata for a given specID."""
+    try:
+        spec_id = request.spec_id
+        
+        # Validate specID format
+        if not spec_id or not spec_id.startswith("0x") or len(spec_id) != 66:
+            raise HTTPException(
+                status_code=400, 
+                detail="Invalid specID format. Expected 32-byte hex string with 0x prefix."
+            )
+        
+        # Fetch IPFS hash from contract
+        ipfs_hash = await fetch_ipfs_hash_from_contract(spec_id)
+        
+        if not ipfs_hash:
+            return IPFSMetadataResponse(
+                spec_id=spec_id,
+                error="No IPFS hash found for this specID"
+            )
+        
+        # Fetch metadata from IPFS
+        try:
+            metadata_result = await fetch_ipfs_metadata(ipfs_hash)
+            
+            return IPFSMetadataResponse(
+                spec_id=spec_id,
+                ipfs_hash=ipfs_hash,
+                contract_address=metadata_result.get("contract_address"),
+                chain_id=metadata_result.get("chain_id")
+            )
+            
+        except Exception as ipfs_error:
+            return IPFSMetadataResponse(
+                spec_id=spec_id,
+                ipfs_hash=ipfs_hash,
+                error=f"Failed to fetch IPFS metadata: {str(ipfs_error)}"
+            )
+            
     except HTTPException as e:
         raise e
     except Exception as e:

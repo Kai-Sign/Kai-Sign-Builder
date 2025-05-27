@@ -19,6 +19,7 @@ type ContractWithMethods = ethers.Contract & {
   getQuestionId: (ipfsHash: string) => Promise<string>;
   getStatus: (ipfsHash: string) => Promise<number>;
   isAccepted: (ipfsHash: string) => Promise<boolean>;
+  getIPFSByHash: (specID: string) => Promise<string>;
   realityETH: () => Promise<string>;
 };
 
@@ -44,6 +45,13 @@ type RealityEthContract = ethers.Contract & {
 // ABI for the KaiSign contract (based on the contract functions we need)
 const CONTRACT_ABI = [
   {
+    "inputs": [{"internalType": "uint256", "name": "_minBond", "type": "uint256"}],
+    "name": "setMinBond",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "minBond",
     "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
@@ -54,7 +62,7 @@ const CONTRACT_ABI = [
     "inputs": [{"internalType": "string", "name": "ipfs", "type": "string"}],
     "name": "createSpec",
     "outputs": [],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -62,13 +70,6 @@ const CONTRACT_ABI = [
     "name": "proposeSpec",
     "outputs": [],
     "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "string", "name": "ipfs", "type": "string"}],
-    "name": "handleResult",
-    "outputs": [],
-    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -81,7 +82,7 @@ const CONTRACT_ABI = [
   {
     "inputs": [{"internalType": "string", "name": "ipfs", "type": "string"}],
     "name": "getStatus",
-    "outputs": [{"internalType": "enum KaiSign.Status", "name": "", "type": "uint8"}],
+    "outputs": [{"internalType": "uint8", "name": "", "type": "uint8"}],
     "stateMutability": "view",
     "type": "function"
   },
@@ -89,6 +90,20 @@ const CONTRACT_ABI = [
     "inputs": [{"internalType": "string", "name": "ipfs", "type": "string"}],
     "name": "isAccepted",
     "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "string", "name": "ipfs", "type": "string"}],
+    "name": "handleResult",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "bytes32", "name": "id", "type": "bytes32"}],
+    "name": "getIPFSByHash",
+    "outputs": [{"internalType": "string", "name": "", "type": "string"}],
     "stateMutability": "view",
     "type": "function"
   },
@@ -459,6 +474,25 @@ export class Web3Service {
       return tx.hash;
     } catch (error) {
       console.error("Error handling result:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get the IPFS hash from the contract for a given specID
+   */
+  async getIPFSByHash(specID: string): Promise<string> {
+    try {
+      if (!this.contract || !this.signer) {
+        throw new Error("Not connected to MetaMask. Please connect first.");
+      }
+      
+      // We know contract is not null here
+      const ipfsHash = await this.contract.getIPFSByHash(specID);
+      console.log("IPFS hash for specID:", specID, "is", ipfsHash);
+      return ipfsHash;
+    } catch (error) {
+      console.error("Error getting IPFS hash:", error);
       throw error;
     }
   }

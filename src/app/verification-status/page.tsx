@@ -4,10 +4,11 @@ import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
-import { Loader2, CheckCircle, XCircle, AlertTriangle, ArrowLeft, ExternalLink, RotateCcw, Clock } from "lucide-react";
+import { Loader2, CheckCircle, XCircle, AlertTriangle, ArrowLeft, ExternalLink, RotateCcw, Clock, FileText } from "lucide-react";
 import { useToast } from "~/hooks/use-toast";
 import { web3Service } from "~/lib/web3Service";
 import { getQuestionData, hasFinalizationTimePassed, getTimeRemainingUntilFinalization, formatFinalizationTime, getQuestionsByUser } from "~/lib/realityEthService";
+import { fetchIPFSMetadata, formatContractAddress, getChainName, type ERC7730Metadata } from "~/lib/ipfsMetadataService";
 import Link from "next/link";
 
 function VerificationStatusContent() {
@@ -26,6 +27,8 @@ function VerificationStatusContent() {
   const [transactionHash, setTransactionHash] = useState<string | null>(null);
   const [specStatus, setSpecStatus] = useState<number>(-1);
   const [lastPolledTimestamp, setLastPolledTimestamp] = useState<string | null>(null);
+  const [ipfsMetadata, setIpfsMetadata] = useState<ERC7730Metadata | null>(null);
+  const [isLoadingMetadata, setIsLoadingMetadata] = useState(false);
   const { toast } = useToast();
   
   useEffect(() => {
@@ -146,6 +149,30 @@ function VerificationStatusContent() {
     }
   }, [ipfsHash, questionId]);
   
+  const fetchIPFSMetadataData = async () => {
+    if (!ipfsHash) return;
+    
+    setIsLoadingMetadata(true);
+    
+    try {
+      console.log("Fetching IPFS metadata for hash:", ipfsHash);
+      const metadata = await fetchIPFSMetadata(ipfsHash);
+      setIpfsMetadata(metadata);
+      
+      console.log("Successfully fetched IPFS metadata:", metadata);
+    } catch (error: any) {
+      console.error("Error fetching IPFS metadata:", error);
+      // Don't set error state for metadata fetch failures, just log them
+      toast({
+        title: "IPFS Metadata Warning",
+        description: "Could not fetch IPFS metadata. The file might still be propagating across the network.",
+        variant: "default",
+      });
+    } finally {
+      setIsLoadingMetadata(false);
+    }
+  };
+  
   const fetchData = async () => {
     if (!ipfsHash || !questionId) return;
     
@@ -153,6 +180,9 @@ function VerificationStatusContent() {
     setError(null);
     
     try {
+      // Fetch IPFS metadata in parallel
+      fetchIPFSMetadataData();
+      
       // Get question data from Reality.eth
       try {
         console.log("Trying to get question data for ID:", questionId);
@@ -336,6 +366,9 @@ function VerificationStatusContent() {
     setIsLoading(true);
     
     try {
+      // Refresh IPFS metadata
+      await fetchIPFSMetadataData();
+      
       // Get the latest question data
       if (questionId) {
         const questionData = await getQuestionData(questionId);
@@ -478,6 +511,112 @@ function VerificationStatusContent() {
                 <ExternalLink className="h-4 w-4" />
               </a>
             </div>
+          </div>
+          
+          {/* IPFS Metadata Section */}
+          <div className="mb-6">
+            <h3 className="text-lg font-medium mb-2 flex items-center">
+              <FileText className="h-5 w-5 mr-2" />
+              ERC7730 Specification Details
+            </h3>
+            {isLoadingMetadata ? (
+              <div className="p-4 bg-gray-800 rounded-lg">
+                <div className="flex items-center">
+                  <Loader2 className="h-4 w-4 animate-spin text-blue-400 mr-2" />
+                  <span className="text-gray-300">Loading specification metadata...</span>
+                </div>
+              </div>
+            ) : ipfsMetadata ? (
+              <div className="p-4 bg-gray-800 rounded-lg space-y-3">
+                {ipfsMetadata.contractAddress && (
+                  <div>
+                    <label className="text-sm font-medium text-gray-400">Contract Address:</label>
+                    <div className="flex items-center mt-1">
+                      <code className="font-mono text-sm bg-gray-700 px-2 py-1 rounded text-green-400">
+                        {formatContractAddress(ipfsMetadata.contractAddress)}
+                      </code>
+                      {ipfsMetadata.chainId === 1 && (
+                        <a 
+                          href={`https://etherscan.io/address/${formatContractAddress(ipfsMetadata.contractAddress)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="ml-2 text-blue-400 hover:text-blue-300"
+                        >
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                )}
+                
+                {ipfsMetadata.chainId && (
+                  <div>
+                    <label className="text-sm font-medium text-gray-400">Chain ID:</label>
+                    <div className="mt-1">
+                      <span className="inline-flex items-center px-2 py-1 rounded text-sm bg-blue-900/30 text-blue-400 border border-blue-700">
+                        {ipfsMetadata.chainId} - {getChainName(ipfsMetadata.chainId)}
+                      </span>
+                    </div>
+                  </div>
+                )}
+                
+                {ipfsMetadata.domain?.name && (
+                  <div>
+                    <label className="text-sm font-medium text-gray-400">Domain Name:</label>
+                    <div className="mt-1">
+                      <span className="text-gray-300">{ipfsMetadata.domain.name}</span>
+                    </div>
+                  </div>
+                )}
+                
+                {ipfsMetadata.metadata?.owner && (
+                  <div>
+                    <label className="text-sm font-medium text-gray-400">Owner:</label>
+                    <div className="mt-1">
+                      <span className="text-gray-300">{ipfsMetadata.metadata.owner}</span>
+                    </div>
+                  </div>
+                )}
+                
+                <div>
+                  <label className="text-sm font-medium text-gray-400">IPFS Link:</label>
+                  <div className="mt-1">
+                    <a 
+                      href={ipfsMetadata.ipfsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-400 hover:text-blue-300 text-sm flex items-center"
+                    >
+                      {ipfsMetadata.ipfsUrl}
+                      <ExternalLink className="h-3 w-3 ml-1" />
+                    </a>
+                  </div>
+                </div>
+                
+                {ipfsMetadata.deployments && ipfsMetadata.deployments.length > 1 && (
+                  <div>
+                    <label className="text-sm font-medium text-gray-400">Additional Deployments:</label>
+                    <div className="mt-1 space-y-1">
+                      {ipfsMetadata.deployments.slice(1).map((deployment, index) => (
+                        <div key={index} className="text-sm text-gray-300">
+                          <span className="text-blue-400">{getChainName(deployment.chainId)}</span>: {formatContractAddress(deployment.address)}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="p-4 bg-gray-800 rounded-lg">
+                <div className="flex items-center">
+                  <AlertTriangle className="h-4 w-4 text-yellow-500 mr-2" />
+                  <span className="text-gray-300">Specification metadata not available</span>
+                </div>
+                <p className="text-sm text-gray-400 mt-1">
+                  The IPFS content might still be propagating across the network.
+                </p>
+              </div>
+            )}
           </div>
           
           <div className="mb-6">

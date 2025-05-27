@@ -9,6 +9,9 @@ export const env = createEnv({
   server: {
     NODE_ENV: z.enum(["development", "test", "production"]),
     CURVEGRID_JWT: z.string().optional(),
+    ETHERSCAN_API_KEY: z.string().optional(),
+    ALCHEMY_RPC_URL: z.string().optional(),
+    USE_MOCK: z.string().optional(),
   },
 
   /**
@@ -20,6 +23,11 @@ export const env = createEnv({
     NEXT_PUBLIC_GTM: z.string(),
     NEXT_PUBLIC_ONETRUST: z.string(),
     NEXT_PUBLIC_API_URL: z.string().optional(),
+    NEXT_PUBLIC_IPFS_API_KEY: z.string().optional(),
+    NEXT_PUBLIC_IPFS_API_SECRET: z.string().optional(),
+    NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS: z.string().optional(),
+    NEXT_PUBLIC_IPFS_GATEWAY_URL: z.string().optional(),
+    NEXT_PUBLIC_ALCHEMY_RPC_URL: z.string().optional(),
   },
 
   /**
@@ -32,6 +40,14 @@ export const env = createEnv({
     NEXT_PUBLIC_ONETRUST: process.env.NEXT_PUBLIC_ONETRUST,
     CURVEGRID_JWT: process.env.CURVEGRID_JWT,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    ETHERSCAN_API_KEY: process.env.ETHERSCAN_API_KEY,
+    ALCHEMY_RPC_URL: process.env.ALCHEMY_RPC_URL,
+    USE_MOCK: process.env.USE_MOCK,
+    NEXT_PUBLIC_IPFS_API_KEY: process.env.NEXT_PUBLIC_IPFS_API_KEY,
+    NEXT_PUBLIC_IPFS_API_SECRET: process.env.NEXT_PUBLIC_IPFS_API_SECRET,
+    NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS: process.env.NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS,
+    NEXT_PUBLIC_IPFS_GATEWAY_URL: process.env.NEXT_PUBLIC_IPFS_GATEWAY_URL,
+    NEXT_PUBLIC_ALCHEMY_RPC_URL: process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

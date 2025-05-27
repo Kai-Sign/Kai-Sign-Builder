@@ -7,10 +7,9 @@ import {
 } from '@3loop/transaction-decoder';
 import { InMemoryAbiStoreLive } from '@3loop/transaction-decoder/in-memory';
 import { InMemoryContractMetaStoreLive } from '@3loop/transaction-decoder/in-memory';
+import { ALCHEMY_RPC_URL, ETHERSCAN_API_KEY } from './config';
 
-// Get environment variables
-const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "KUWBJDA7HB557IVPDC4HCY5XK3WBJURPTR";
-const ALCHEMY_RPC_URL = process.env.ALCHEMY_RPC_URL || "https://eth-mainnet.g.alchemy.com/v2/mnvC3BfLvzJlyk82vCLgBCD1gVCg_XX9";
+// Get environment variables from shared config
 
 // 1. RPC Provider Setup
 const getPublicClient = (chainId: number) => {
@@ -27,9 +26,6 @@ const getPublicClient = (chainId: number) => {
   let rpcUrl = 'https://rpc.ankr.com/eth'; // Default to Ethereum Mainnet
   if (chainId === 137) { // Polygon
     rpcUrl = 'https://rpc.ankr.com/polygon';
-  } else if (chainId === 11155111) { // Sepolia
-    // Use the provided Alchemy endpoint for Sepolia
-    rpcUrl = 'https://eth-sepolia.g.alchemy.com/v2/mnvC3BfLvzJlyk82vCLgBCD1gVCg_XX9';
   } else if (chainId === 10) { // Optimism
     rpcUrl = 'https://rpc.ankr.com/optimism';
   } else if (chainId === 42161) { // Arbitrum

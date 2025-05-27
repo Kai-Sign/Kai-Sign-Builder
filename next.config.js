@@ -12,6 +12,13 @@ const config = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  env: {
+    NEXT_PUBLIC_ALCHEMY_RPC_URL: process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL,
+    NEXT_PUBLIC_IPFS_API_KEY: process.env.NEXT_PUBLIC_IPFS_API_KEY,
+    NEXT_PUBLIC_IPFS_API_SECRET: process.env.NEXT_PUBLIC_IPFS_API_SECRET,
+    NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS: process.env.NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS,
+    NEXT_PUBLIC_IPFS_GATEWAY_URL: process.env.NEXT_PUBLIC_IPFS_GATEWAY_URL,
+  },
   rewrites: async () => {
     // Use environment variable or fallback to production URL
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://kai-sign-production.up.railway.app";
