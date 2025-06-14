@@ -12,6 +12,7 @@ import { useToast } from "~/hooks/use-toast";
 export function ReviewJson() {
   const [open, setOpen] = React.useState(false);
   const erc7730 = useErc7730Store((s) => s.finalErc7730);
+  const setShouldAutoSubmit = useErc7730Store((s) => s.setShouldAutoSubmit);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -47,6 +48,9 @@ export function ReviewJson() {
   const handleContinue = () => {
     // Close the dialog
     setOpen(false);
+    
+    // Set the auto-submit flag to trigger automatic processing in FileUploader
+    setShouldAutoSubmit(true);
     
     // Navigate to the verification-results page
     router.push("/verification-results");
