@@ -30,16 +30,85 @@ export default function FileUploader() {
     requiredNextBond: bigint;
     hasAnswers: boolean;
   } | null>(null);
-  const { setErc7730 } = useErc7730Store((state) => state);
+  const { setErc7730, shouldAutoSubmit, setShouldAutoSubmit } = useErc7730Store((state) => state);
+  const erc7730Data = useErc7730Store((state) => state.finalErc7730);
   const { toast } = useToast();
   const [isCheckingStatus, setIsCheckingStatus] = useState(false);
   const [questionId, setQuestionId] = useState<string | null>(null);
   const [finalizationTimestamp, setFinalizationTimestamp] = useState<string | null>(null);
-  const [timeout, setTimeout] = useState<string | null>(null);
+  const [timeout, setTimeoutValue] = useState<string | null>(null);
   const [createdTimestamp, setCreatedTimestamp] = useState<string | null>(null);
   const [timeRemaining, setTimeRemaining] = useState<string | null>(null);
   const [isCheckingResult, setIsCheckingResult] = useState(false);
   const router = useRouter();
+
+  // Auto-submit effect when coming from review page
+  useEffect(() => {
+    if (shouldAutoSubmit && erc7730Data) {
+      // Reset the auto-submit flag
+      setShouldAutoSubmit(false);
+      
+      // Create a virtual file from the ERC7730 data
+      const jsonString = JSON.stringify(erc7730Data, null, 2);
+      const blob = new Blob([jsonString], { type: "application/json" });
+      const virtualFile = new File([blob], "erc7730-specification.json", { type: "application/json" });
+      
+      // Set the file and trigger verification
+      setFile(virtualFile);
+      setVerificationStatus("idle");
+      setIpfsHash(null);
+      setTransactionHash(null);
+      
+             // Automatically start the verification process
+       setTimeout(() => {
+         void handleAutoVerification(erc7730Data);
+       }, 100); // Small delay to ensure state is updated
+    }
+  }, [shouldAutoSubmit, erc7730Data, setShouldAutoSubmit]);
+
+  const handleAutoVerification = async (data: any) => {
+    setIsVerifying(true);
+    
+    try {
+      // Basic validation - check if it has the expected ERC7730 structure
+      const isValidFormat = 
+        data && 
+        typeof data === "object" &&
+        "$schema" in data &&
+        "context" in data &&
+        "metadata" in data;
+      
+      if (isValidFormat) {
+        setVerificationStatus("success");
+        setJsonData(data);
+        setErc7730(data);
+        toast({
+          title: "Auto-Verification Started",
+          description: "Processing your ERC7730 JSON file automatically. Uploading to IPFS...",
+          variant: "default",
+        });
+        
+        // Upload to IPFS
+        await uploadToIpfs(data);
+      } else {
+        setVerificationStatus("error");
+        toast({
+          title: "Invalid File Format",
+          description: "The ERC7730 data does not appear to be valid.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      setVerificationStatus("error");
+      toast({
+        title: "Error Processing Data",
+        description: "Failed to process the ERC7730 data.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsVerifying(false);
+    }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -282,7 +351,7 @@ export default function FileUploader() {
           };
           
           setFinalizationTimestamp(null);
-          setTimeout(null);
+          setTimeoutValue(null);
           setCreatedTimestamp(defaultData.createdTimestamp);
           
           const timeRemaining = getTimeRemainingUntilFinalization(
@@ -301,7 +370,7 @@ export default function FileUploader() {
         
         // Set state with available data, handling optional fields
         setFinalizationTimestamp(questionData.currentScheduledFinalizationTimestamp || null);
-        setTimeout(questionData.timeout || null);
+        setTimeoutValue(questionData.timeout || null);
         setCreatedTimestamp(questionData.createdTimestamp || null);
         
         // Calculate time remaining based on available data
@@ -375,7 +444,7 @@ export default function FileUploader() {
       
       return () => clearInterval(interval);
     }
-  }, [finalizationTimestamp]);
+  }, [finalizationTimestamp, timeout, createdTimestamp]);
 
   return (
     <Card className="p-6 mb-8 bg-gray-950 border-gray-800">

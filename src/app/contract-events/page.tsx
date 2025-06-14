@@ -252,7 +252,7 @@ export default function ContractEventsPage() {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle>Past results (Query powered by Curvegrid)</CardTitle>
+            <CardTitle>Past results</CardTitle>
             <Button variant="outline" size="sm" onClick={() => refetch()}>
               <RotateCcw className="h-4 w-4 mr-2" />
               Refresh

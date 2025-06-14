@@ -5,7 +5,9 @@ import { persist, createJSONStorage } from "zustand/middleware";
 export interface Erc7730Store {
   generatedErc7730: Erc7730 | null;
   finalErc7730: Erc7730 | null;
+  shouldAutoSubmit: boolean;
   setErc7730: (by: Erc7730) => void;
+  setShouldAutoSubmit: (shouldAutoSubmit: boolean) => void;
   getMetadata: () => Erc7730["metadata"] | null;
   getContractAddress: () => string | null;
   setMetadata: (metadata: Erc7730["metadata"]) => void;
@@ -28,6 +30,8 @@ export const createErc7730Store = () => {
       (set, get) => ({
         generatedErc7730: null,
         finalErc7730: null,
+        shouldAutoSubmit: false,
+        setShouldAutoSubmit: (shouldAutoSubmit) => set(() => ({ shouldAutoSubmit })),
         getOperationsByName: (name) => {
           if (!name) return null;
           const formats = get().generatedErc7730?.display?.formats ?? {};
