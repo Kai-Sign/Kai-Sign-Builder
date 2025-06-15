@@ -90,7 +90,13 @@ export const createErc7730Store = () => {
           }
           return "";
         },
-        setErc7730: (generatedErc7730) => set(() => ({ generatedErc7730 })),
+        setErc7730: (generatedErc7730) => {
+          // Ensure $schema field is present (required by ERC7730 spec)
+          if (!generatedErc7730.$schema) {
+            generatedErc7730.$schema = "https://eips.ethereum.org/assets/eip-7730/erc7730-v1.schema.json";
+          }
+          set(() => ({ generatedErc7730 }));
+        },
         getOperations: () => get().generatedErc7730?.display ?? null,
         getMetadata: () => get().generatedErc7730?.metadata ?? null,
         getOperationsMetadata: (name) => {
@@ -120,7 +126,7 @@ export const createErc7730Store = () => {
               metadata,
             },
             finalErc7730: {
-              $schema: state.generatedErc7730!.$schema,
+              $schema: state.generatedErc7730!.$schema || "https://eips.ethereum.org/assets/eip-7730/erc7730-v1.schema.json",
               context: state.generatedErc7730!.context,
               metadata,
               display: state.finalErc7730
