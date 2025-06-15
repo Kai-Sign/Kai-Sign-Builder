@@ -59,10 +59,10 @@ export default function FileUploader() {
       setIpfsHash(null);
       setTransactionHash(null);
       
-             // Automatically start the verification process
-       setTimeout(() => {
-         void handleAutoVerification(erc7730Data);
-       }, 100); // Small delay to ensure state is updated
+      // Automatically start the verification process
+      setTimeout(() => {
+        void handleAutoVerification(erc7730Data);
+      }, 100); // Small delay to ensure state is updated
     }
   }, [shouldAutoSubmit, erc7730Data, setShouldAutoSubmit]);
 
@@ -74,11 +74,20 @@ export default function FileUploader() {
       const isValidFormat = 
         data && 
         typeof data === "object" &&
-        "$schema" in data &&
         "context" in data &&
         "metadata" in data;
       
       if (isValidFormat) {
+        // Add $schema field if missing (required by ERC7730 spec)
+        if (!("$schema" in data)) {
+          data.$schema = "https://eips.ethereum.org/assets/eip-7730/erc7730-v1.schema.json";
+          toast({
+            title: "Schema Field Added",
+            description: "Added missing $schema field as required by ERC7730 specification.",
+            variant: "default",
+          });
+        }
+        
         setVerificationStatus("success");
         setJsonData(data);
         setErc7730(data);
@@ -134,11 +143,20 @@ export default function FileUploader() {
       const isValidFormat = 
         parsedData && 
         typeof parsedData === "object" &&
-        "$schema" in parsedData &&
         "context" in parsedData &&
         "metadata" in parsedData;
       
       if (isValidFormat) {
+        // Add $schema field if missing (required by ERC7730 spec)
+        if (!("$schema" in parsedData)) {
+          parsedData.$schema = "https://eips.ethereum.org/assets/eip-7730/erc7730-v1.schema.json";
+          toast({
+            title: "Schema Field Added",
+            description: "Added missing $schema field as required by ERC7730 specification.",
+            variant: "default",
+          });
+        }
+        
         setVerificationStatus("success");
         setJsonData(parsedData);
         setErc7730(parsedData);
