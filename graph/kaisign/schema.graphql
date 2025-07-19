@@ -1,11 +1,54 @@
+type Contract @entity {
+  id: ID!                           # contract address + chainID
+  address: Bytes!
+  chainID: String!
+  name: String!                     # from ERC7730 metadata
+  version: String!                  # from ERC7730 metadata  
+  description: String
+  hasApprovedMetadata: Boolean!
+  
+  # Latest spec tracking for disputes/replacements
+  latestApprovedSpecID: String!     # ID of most recent approved spec
+  latestSpecTimestamp: BigInt!      # timestamp of latest spec
+  
+  functionCount: Int!
+  functions: [Function!]! @derivedFrom(field: "contract")
+  createdAt: BigInt!
+  updatedAt: BigInt!
+}
+
+type Function @entity {
+  id: ID!                    # contract-chainID-selector
+  contract: Contract!
+  selector: String!          # 0xa9059cbb
+  chainID: String!
+  name: String!              # "transfer"
+  intent: String!            # "Transfer {{amount}} to {{to}}"
+  displayFormat: String!     # "transfer" 
+  parameterTypes: [String!]! # ["address", "uint256"]
+  createdAt: BigInt!
+}
+
 type Spec @entity(immutable: false) {
   id: Bytes!
-  user: Bytes! # address
-  ipfs: String! # string
-  questionId: Bytes # bytes32
-  blockTimestamp: BigInt
+  targetContract: Bytes!            # contract this spec is for
+  user: Bytes!                      # creator address
+  ipfs: String!                     # IPFS CID
+  questionId: Bytes                 # RealityETH question ID
+  chainID: String                   # extracted from IPFS metadata
+  status: SpecStatus!
+  blockTimestamp: BigInt!
+  proposedTimestamp: BigInt
   isFinalized: Boolean
   isAccepted: Boolean
+}
+
+enum SpecStatus {
+  COMMITTED
+  SUBMITTED
+  PROPOSED  
+  FINALIZED
+  CANCELLED
 }
 
 type LogAssertSpecInvalid @entity(immutable: true) {

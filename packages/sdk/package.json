@@ -1,0 +1,77 @@
+{
+  "name": "@kai-sign/sdk",
+  "version": "1.0.0",
+  "description": "KaiSign SDK for contract metadata integration",
+  "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./components": {
+      "import": "./dist/components/index.esm.js",
+      "require": "./dist/components/index.js",
+      "types": "./dist/components/index.d.ts"
+    },
+    "./hooks": {
+      "import": "./dist/hooks/index.esm.js",
+      "require": "./dist/hooks/index.js",
+      "types": "./dist/hooks/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "ethereum",
+    "smart-contracts",
+    "metadata",
+    "erc7730",
+    "wallet",
+    "dapp",
+    "transaction-preview",
+    "clear-signing"
+  ],
+  "author": "KaiSign Team",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kai-Sign/Kai-Sign-Builder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Kai-Sign/Kai-Sign-Builder/issues"
+  },
+  "homepage": "https://github.com/Kai-Sign/Kai-Sign-Builder#readme",
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "dependencies": {
+    "graphql-request": "^6.1.0",
+    "graphql": "^16.8.1",
+    "lucide-react": "^0.263.1",
+    "class-variance-authority": "^0.7.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "tsup": "^7.2.0",
+    "typescript": "^5.0.2"
+  }
+}

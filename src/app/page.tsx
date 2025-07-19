@@ -1,6 +1,8 @@
 import { HydrateClient } from "~/trpc/server";
 import CardErc7730 from "./address-abi-form";
 import Image from "next/image";
+import Link from "next/link";
+import { Button } from "~/components/ui/button";
 
 export default async function Home() {
   return (
@@ -48,6 +50,15 @@ export default async function Home() {
           className="nft-icon animation-delay-4" 
           style={{ top: '20%', left: '65%' }}
         />
+
+        {/* Demo Link */}
+        <div className="fixed top-4 right-4 z-50">
+          <Button asChild>
+            <Link href="/demo">
+              🚀 View KaiSign SDK Demo
+            </Link>
+          </Button>
+        </div>
         <Image 
           src="/assets/eth.svg" 
           alt="ETH Icon" 
