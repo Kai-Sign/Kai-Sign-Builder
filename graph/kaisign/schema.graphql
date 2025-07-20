@@ -1,4 +1,4 @@
-type Contract @entity {
+type Contract @entity(immutable: false) {
   id: ID!                           # contract address + chainID
   address: Bytes!
   chainID: String!
@@ -17,7 +17,7 @@ type Contract @entity {
   updatedAt: BigInt!
 }
 
-type Function @entity {
+type Function @entity(immutable: false) {
   id: ID!                    # contract-chainID-selector
   contract: Contract!
   selector: String!          # 0xa9059cbb
