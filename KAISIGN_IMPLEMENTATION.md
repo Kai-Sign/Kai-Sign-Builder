@@ -98,7 +98,7 @@ npm run dev
 ### **Test API Endpoints**
 ```bash
 curl "http://localhost:3000/api/contracts?chainId=11155111"
-curl "http://localhost:3000/api/contracts/0x2d2f90786a365a2044324f6861697e9EF341F858?chainId=11155111"
+curl "http://localhost:3000/api/contracts/0x17f74AD98Baff1E73884710A203dB7De867A5eA4?chainId=11155111"
 ```
 
 ### **Test Subgraph**
@@ -198,7 +198,8 @@ vercel --prod
 
 # Environment Variables for Vercel:
 NEXT_PUBLIC_API_URL=https://your-railway-app.railway.app
-NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS=0x2d2f90786a365a2044324f6861697e9EF341F858
+NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS=0x17f74AD98Baff1E73884710A203dB7De867A5eA4
+NEXT_PUBLIC_TREASURY_MULTISIG_ADDRESS=0x7D8730aD11f0D421bd41c6E5584F20c744CBAf29
 ```
 
 ### **Backend Deployment (Railway)**
@@ -212,7 +213,8 @@ railway up
 # Environment Variables for Railway:
 ETHERSCAN_API_KEY=your_etherscan_api_key
 USE_MOCK=false
-KAISIGN_CONTRACT_ADDRESS=0x2d2f90786a365a2044324f6861697e9EF341F858
+KAISIGN_CONTRACT_ADDRESS=0x17f74AD98Baff1E73884710A203dB7De867A5eA4
+TREASURY_MULTISIG_ADDRESS=0x7D8730aD11f0D421bd41c6E5584F20c744CBAf29
 ```
 
 ### **Subgraph Deployment (The Graph)**

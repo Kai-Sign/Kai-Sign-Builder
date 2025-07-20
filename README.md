@@ -24,6 +24,11 @@ src/                         # Next.js frontend
 - **Smart Contracts**: Foundry, Solidity
 - **Deployment**: Vercel (frontend), Railway (backend)
 
+## Contract Addresses (Sepolia Testnet)
+
+- **KaiSign Contract**: `0x17f74AD98Baff1E73884710A203dB7De867A5eA4`
+- **Treasury Multisig**: `0x7D8730aD11f0D421bd41c6E5584F20c744CBAf29`
+
 ## Getting Started
 
 ### Prerequisites
@@ -86,7 +91,8 @@ To use the deployed Railway backend instead of the local backend:
 **Backend Variables** (for local development):
 ```bash
 ALCHEMY_RPC_URL=your_alchemy_rpc_endpoint
-KAISIGN_CONTRACT_ADDRESS=0x2d2f90786a365a2044324f6861697e9EF341F858
+KAISIGN_CONTRACT_ADDRESS=0x17f74AD98Baff1E73884710A203dB7De867A5eA4
+TREASURY_MULTISIG_ADDRESS=0x7D8730aD11f0D421bd41c6E5584F20c744CBAf29
 CURVEGRID_JWT=your_curvegrid_jwt_token
 ETHERSCAN_API_KEY=your_etherscan_api_key
 USE_MOCK=false
@@ -99,7 +105,8 @@ NEXT_PUBLIC_GTM=your_google_tag_manager_id
 NEXT_PUBLIC_ONETRUST=your_onetrust_id
 NEXT_PUBLIC_IPFS_API_KEY=your_ipfs_api_key
 NEXT_PUBLIC_IPFS_API_SECRET=your_ipfs_api_secret
-NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS=0x2d2f90786a365a2044324f6861697e9EF341F858
+NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS=0x17f74AD98Baff1E73884710A203dB7De867A5eA4
+NEXT_PUBLIC_TREASURY_MULTISIG_ADDRESS=0x7D8730aD11f0D421bd41c6E5584F20c744CBAf29
 NEXT_PUBLIC_IPFS_GATEWAY_URL=https://ipfs.io/ipfs/
 ```
 
