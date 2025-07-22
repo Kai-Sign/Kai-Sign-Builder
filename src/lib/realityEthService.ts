@@ -186,9 +186,9 @@ export const getQuestionData = async (questionId: string): Promise<RealityEthQue
           
           // If createdTimestamp is missing but we have other timestamps, add a default
           if (!questionData.createdTimestamp && questionData.currentScheduledFinalizationTimestamp) {
-            // Estimate createdTimestamp by subtracting 15 minutes (900 seconds) from finalization
+            // Estimate createdTimestamp by subtracting 2 days (172800 seconds) from finalization
             const finalizationTime = parseInt(questionData.currentScheduledFinalizationTimestamp);
-            questionData.createdTimestamp = String(finalizationTime - 900);
+            questionData.createdTimestamp = String(finalizationTime - 172800);
             console.log("Added estimated createdTimestamp:", questionData.createdTimestamp);
           }
           
@@ -325,19 +325,19 @@ export const formatFinalizationTime = (timestamp?: string, timeout?: string, cre
     const creationTime = parseInt(createdTimestamp);
     finalizeTime = (creationTime + timeoutSeconds) * 1000; // Convert to milliseconds
   } 
-  // If we only have createdTimestamp, assume a default 15-minute timeout
+  // If we only have createdTimestamp, assume a default 2-day timeout
   else if (createdTimestamp) {
     const creationTime = parseInt(createdTimestamp);
-    // Use 15 minutes (900 seconds) as default timeout
-    finalizeTime = (creationTime + 900) * 1000; // Convert to milliseconds
+    // Use 2 days (172800 seconds) as default timeout
+    finalizeTime = (creationTime + 172800) * 1000; // Convert to milliseconds
   }
   // If we have a timestamp (currentScheduledFinalizationTimestamp), use it
   else if (timestamp) {
     finalizeTime = parseInt(timestamp) * 1000; // Convert to milliseconds
   }
-  // Fallback to current time + 15 minutes if all else fails
+  // Fallback to current time + 2 days if all else fails
   else {
-    finalizeTime = Date.now() + (15 * 60 * 1000); // Current time + 15 minutes
+    finalizeTime = Date.now() + (172800 * 1000); // Current time + 2 days
   }
   
   const date = new Date(finalizeTime);
@@ -389,8 +389,8 @@ export const hasFinalizationTimePassed = async (questionId: string): Promise<boo
     }
     else if (questionData.createdTimestamp) {
       const creationTime = parseInt(questionData.createdTimestamp);
-      finalizationTime = (creationTime + 900) * 1000; // Default 15 min timeout
-      console.log("Using default timeout (900s) + createdTimestamp:", new Date(finalizationTime).toISOString());
+      finalizationTime = (creationTime + 172800) * 1000; // Default 2 day timeout
+      console.log("Using default timeout (172800s) + createdTimestamp:", new Date(finalizationTime).toISOString());
     }
     else {
       console.warn("Insufficient data to calculate finalization time, defaulting to false");
@@ -427,7 +427,7 @@ export const getTimeRemainingUntilFinalization = (timestamp?: string, timeout?: 
   }
   else if (createdTimestamp) {
     const creationTime = parseInt(createdTimestamp);
-    finalizationTime = (creationTime + 900) * 1000; // Default 15 min timeout
+    finalizationTime = (creationTime + 172800) * 1000; // Default 2 day timeout
   }
   else if (timestamp) {
     finalizationTime = parseInt(timestamp) * 1000;

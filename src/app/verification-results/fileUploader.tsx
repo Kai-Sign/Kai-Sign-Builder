@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "~/components/ui/button";
-import { FileJson, Upload, CheckCircle, AlertCircle, Loader2, ExternalLink, Gift, DollarSign } from "lucide-react";
+import { FileJson, Upload, CheckCircle, AlertCircle, Loader2, ExternalLink, Gift, DollarSign, Clock, Gavel } from "lucide-react";
 import { Card } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -402,7 +402,7 @@ export default function FileUploader() {
           // Continue anyway but with minimal data
           const defaultData = {
             id: questionId,
-            createdTimestamp: Math.floor(Date.now() / 1000 - 900).toString(), // 15 minutes ago
+            createdTimestamp: Math.floor(Date.now() / 1000 - 172800).toString(), // 2 days ago
           };
           
           setFinalizationTimestamp(null);
@@ -411,7 +411,7 @@ export default function FileUploader() {
           
           const timeRemaining = getTimeRemainingUntilFinalization(
             undefined,
-            "900", // 15 minute timeout
+            "172800", // 2 day timeout
             defaultData.createdTimestamp
           );
           setTimeRemaining(timeRemaining);
@@ -510,10 +510,99 @@ export default function FileUploader() {
 
   return (
     <Card className="p-6 mb-8 bg-gray-950 border-gray-800">
-      <div className="flex flex-col gap-4">
-        <h2 className="text-xl font-medium">Upload ERC7730 JSON File</h2>
+      <div className="flex flex-col gap-6">
+        {/* Enhanced Header with Process Information */}
+        <div className="border-b border-gray-700 pb-4">
+          <h2 className="text-2xl font-medium text-white mb-2">Submit ERC7730 Specification</h2>
+          <p className="text-gray-400">
+            Upload your ERC7730 JSON file to the decentralized verification system using a 
+            <strong className="text-blue-400"> commit-reveal scheme</strong> with a 
+            <strong className="text-green-400"> 2-day challenge period</strong>.
+          </p>
+          <div className="flex items-center gap-4 mt-3 text-sm">
+            <div className="flex items-center gap-2 text-blue-400">
+              <Clock className="h-4 w-4" />
+              <span>2-day verification period</span>
+            </div>
+            <div className="flex items-center gap-2 text-purple-400">
+              <Gavel className="h-4 w-4" />
+              <span>Commit-reveal protection</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Step 1: Target Contract Input - Make this prominent and first */}
+        <div className="bg-gradient-to-r from-blue-950/50 to-purple-950/50 p-5 rounded-lg border border-blue-800/50">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">1</div>
+            <div>
+              <Label htmlFor="targetContract" className="text-lg font-medium text-white">
+                Target Contract Address
+              </Label>
+              <p className="text-sm text-gray-400 mt-1">
+                Specify the contract this ERC7730 metadata describes (can be from any chain)
+              </p>
+            </div>
+          </div>
+          <Input
+            id="targetContract"
+            type="text"
+            placeholder="0x... (Required: Enter the contract address for this specification)"
+            value={targetContract}
+            onChange={(e) => setTargetContract(e.target.value)}
+            className="bg-gray-900 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 h-12 text-base"
+          />
+          <div className="mt-4 space-y-3">
+            <div className="p-3 bg-amber-900/20 border border-amber-700/50 rounded-lg">
+              <div className="flex items-center gap-2 text-amber-400 mb-2">
+                <AlertCircle className="h-4 w-4" />
+                <strong>V1 Contract Limitation</strong>
+              </div>
+              <p className="text-amber-300 text-sm">
+                For verification purposes, the contract must exist on <strong>Sepolia testnet</strong>. 
+                If your target contract is on another chain, the system will use KaiSign as a proxy for verification.
+              </p>
+            </div>
+            <details className="group">
+              <summary className="text-blue-400 cursor-pointer hover:text-blue-300 text-sm flex items-center gap-2">
+                <span>📋 Show example Sepolia contracts</span>
+                <span className="text-xs text-gray-500 group-open:hidden">(click to expand)</span>
+              </summary>
+              <div className="mt-3 p-3 bg-gray-800 border border-gray-700 rounded-lg text-sm space-y-2">
+                <div className="grid grid-cols-1 gap-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-300">KaiSign V1:</span>
+                    <code className="text-blue-400 bg-gray-900 px-2 py-1 rounded text-xs">0x79D0e06350CfCE33A7a73A7549248fd6AeD774f2</code>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-300">USDC Sepolia:</span>
+                    <code className="text-blue-400 bg-gray-900 px-2 py-1 rounded text-xs">0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238</code>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-300">Wrapped ETH:</span>
+                    <code className="text-blue-400 bg-gray-900 px-2 py-1 rounded text-xs">0xfff9976782d46cc05630d1f6ebab18b2324d6b14</code>
+                  </div>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        {/* Step 2: File Upload */}
+        <div className="bg-gradient-to-r from-purple-950/50 to-green-950/50 p-5 rounded-lg border border-purple-800/50">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">2</div>
+            <div>
+              <Label className="text-lg font-medium text-white">
+                Upload ERC7730 JSON File
+              </Label>
+              <p className="text-sm text-gray-400 mt-1">
+                Upload your ERC7730 specification file for verification
+              </p>
+            </div>
+          </div>
         
-        <div className="flex flex-col items-center justify-center gap-6 border-2 border-dashed border-gray-700 rounded-lg p-8">
+        <div className="flex flex-col items-center justify-center gap-6 border-2 border-dashed border-gray-600 rounded-lg p-8">
           <FileJson size={52} className="text-gray-400" />
           <p className="text-sm text-gray-400 text-center">
             {file ? `Selected: ${file.name}` : "Drag and drop your JSON file here or click to browse"}
@@ -556,17 +645,19 @@ export default function FileUploader() {
               {!ipfsHash ? (
                 <Button
                   onClick={handleUpload}
-                  disabled={isVerifying || isUploading}
+                  disabled={isVerifying || isUploading || !targetContract.trim()}
                   size="lg"
-                  className="w-full px-8 py-6 mt-2 text-base bg-white text-black hover:bg-gray-100"
+                  className="w-full px-8 py-6 mt-2 text-base bg-white text-black hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isVerifying || isUploading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      {isVerifying ? "Verifying..." : "Uploading to IPFS..."}
+                      {isVerifying ? "Verifying JSON..." : "Uploading to IPFS..."}
                     </>
+                  ) : !targetContract.trim() ? (
+                    "Enter Contract Address First"
                   ) : (
-                    "Verify JSON"
+                    "Verify & Upload to IPFS"
                   )}
                 </Button>
               ) : !walletConnected ? (
@@ -622,42 +713,6 @@ export default function FileUploader() {
             </div>
           )}
         </div>
-        
-        {/* Target Contract Input - V1 Feature */}
-        <div className="flex flex-col gap-2 mt-4">
-          <Label htmlFor="targetContract" className="text-sm font-medium text-gray-300">
-            Target Contract Address (Optional)
-          </Label>
-          <Input
-            id="targetContract"
-            type="text"
-            placeholder="0x... (leave empty for general specification)"
-            value={targetContract}
-            onChange={(e) => setTargetContract(e.target.value)}
-            className="bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:border-gray-500"
-          />
-          <p className="text-xs text-gray-500">
-            Specify a contract address if this ERC7730 specification is for a specific contract.
-            <strong>Must be deployed on Sepolia testnet</strong> or leave empty for general specifications.
-          </p>
-          {targetContract && (
-            <div className="mt-2 p-2 bg-amber-900/30 border border-amber-700 rounded text-xs text-amber-400">
-              <strong>V1 Limitation:</strong> The contract must exist on Sepolia testnet. 
-              If the contract doesn't exist on Sepolia, the system will automatically use KaiSign as the target.
-            </div>
-          )}
-          <div className="mt-2 p-3 bg-gray-800 border border-gray-700 rounded text-xs text-gray-300">
-            <strong>Valid Sepolia contracts you can use:</strong>
-            <ul className="mt-1 space-y-1">
-              <li>• KaiSign V1: <code className="text-blue-400">0x79D0e06350CfCE33A7a73A7549248fd6AeD774f2</code></li>
-              <li>• USDC Sepolia: <code className="text-blue-400">0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238</code></li>
-              <li>• Or leave empty for general specs (will use KaiSign as target)</li>
-            </ul>
-            <p className="mt-2 text-amber-400">
-              <strong>Note:</strong> For cross-chain ERC7730 specifications, the metadata itself can reference any chain/contract, 
-              but the V1 verification system requires a Sepolia target for the validation process.
-            </p>
-          </div>
         </div>
         
         {/* Available Incentives Section */}
