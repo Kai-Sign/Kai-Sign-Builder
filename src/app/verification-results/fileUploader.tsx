@@ -2,8 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "~/components/ui/button";
-import { FileJson, Upload, CheckCircle, AlertCircle, Loader2, ExternalLink } from "lucide-react";
+import { FileJson, Upload, CheckCircle, AlertCircle, Loader2, ExternalLink, Gift, DollarSign } from "lucide-react";
 import { Card } from "~/components/ui/card";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { Badge } from "~/components/ui/badge";
+import Link from "next/link";
 import { useErc7730Store } from "~/store/erc7730Provider";
 import { useToast } from "~/hooks/use-toast";
 import { uploadToIPFS } from "~/lib/ipfsService";
@@ -30,6 +34,10 @@ export default function FileUploader() {
     requiredNextBond: bigint;
     hasAnswers: boolean;
   } | null>(null);
+  const [targetContract, setTargetContract] = useState<string>("");
+  const [selectedIncentiveId, setSelectedIncentiveId] = useState<string>("");
+  const [availableIncentives, setAvailableIncentives] = useState<any[]>([]);
+  const [isLoadingIncentives, setIsLoadingIncentives] = useState(false);
   const { setErc7730, shouldAutoSubmit, setShouldAutoSubmit } = useErc7730Store((state) => state);
   const erc7730Data = useErc7730Store((state) => state.finalErc7730);
   const { toast } = useToast();
@@ -210,6 +218,9 @@ export default function FileUploader() {
       
       // Connect wallet after IPFS upload
       await connectWallet();
+      
+      // Load available incentives for the target contract
+      await loadAvailableIncentives();
     } catch (error) {
       console.error("Error uploading to IPFS:", error);
       toast({
@@ -257,6 +268,30 @@ export default function FileUploader() {
       setIsConnectingWallet(false);
     }
   };
+
+  const loadAvailableIncentives = async () => {
+    if (!targetContract) return;
+    
+    setIsLoadingIncentives(true);
+    try {
+      // Get available incentives for this target contract
+      const incentives = await web3Service.getAvailableIncentives(targetContract);
+      setAvailableIncentives(incentives);
+      
+      if (incentives.length > 0) {
+        toast({
+          title: "Incentives Available",
+          description: `Found ${incentives.length} available incentive(s) for this contract!`,
+          variant: "default",
+        });
+      }
+    } catch (error: any) {
+      console.error("Error loading incentives:", error);
+      // Don't show error toast as this is not critical
+    } finally {
+      setIsLoadingIncentives(false);
+    }
+  };
   
   const submitToBlockchain = async () => {
     if (!ipfsHash || !walletConnected) return;
@@ -269,8 +304,10 @@ export default function FileUploader() {
       setBondInfo(bondData);
       const bondAmount = bondData.requiredNextBond;
       
-      // Submit to blockchain
-      const txHash = await web3Service.proposeSpec(ipfsHash, bondAmount);
+      // Submit to blockchain using V1 contract (commit-reveal pattern)
+      // Convert selectedIncentiveId to bytes32, or use zero bytes if none selected
+      const incentiveId = selectedIncentiveId || "0x0000000000000000000000000000000000000000000000000000000000000000";
+      const txHash = await web3Service.submitSpec(ipfsHash, bondAmount, targetContract || undefined, incentiveId);
       setTransactionHash(txHash);
       
       toast({
@@ -464,6 +501,13 @@ export default function FileUploader() {
     }
   }, [finalizationTimestamp, timeout, createdTimestamp]);
 
+  // Load incentives when target contract changes
+  useEffect(() => {
+    if (walletConnected && targetContract) {
+      loadAvailableIncentives();
+    }
+  }, [walletConnected, targetContract]);
+
   return (
     <Card className="p-6 mb-8 bg-gray-950 border-gray-800">
       <div className="flex flex-col gap-4">
@@ -578,6 +622,137 @@ export default function FileUploader() {
             </div>
           )}
         </div>
+        
+        {/* Target Contract Input - V1 Feature */}
+        <div className="flex flex-col gap-2 mt-4">
+          <Label htmlFor="targetContract" className="text-sm font-medium text-gray-300">
+            Target Contract Address (Optional)
+          </Label>
+          <Input
+            id="targetContract"
+            type="text"
+            placeholder="0x... (leave empty for general specification)"
+            value={targetContract}
+            onChange={(e) => setTargetContract(e.target.value)}
+            className="bg-gray-900 border-gray-700 text-white placeholder-gray-500 focus:border-gray-500"
+          />
+          <p className="text-xs text-gray-500">
+            Specify a contract address if this ERC7730 specification is for a specific contract.
+            <strong>Must be deployed on Sepolia testnet</strong> or leave empty for general specifications.
+          </p>
+          {targetContract && (
+            <div className="mt-2 p-2 bg-amber-900/30 border border-amber-700 rounded text-xs text-amber-400">
+              <strong>V1 Limitation:</strong> The contract must exist on Sepolia testnet. 
+              If the contract doesn't exist on Sepolia, the system will automatically use KaiSign as the target.
+            </div>
+          )}
+          <div className="mt-2 p-3 bg-gray-800 border border-gray-700 rounded text-xs text-gray-300">
+            <strong>Valid Sepolia contracts you can use:</strong>
+            <ul className="mt-1 space-y-1">
+              <li>• KaiSign V1: <code className="text-blue-400">0x79D0e06350CfCE33A7a73A7549248fd6AeD774f2</code></li>
+              <li>• USDC Sepolia: <code className="text-blue-400">0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238</code></li>
+              <li>• Or leave empty for general specs (will use KaiSign as target)</li>
+            </ul>
+            <p className="mt-2 text-amber-400">
+              <strong>Note:</strong> For cross-chain ERC7730 specifications, the metadata itself can reference any chain/contract, 
+              but the V1 verification system requires a Sepolia target for the validation process.
+            </p>
+          </div>
+        </div>
+        
+        {/* Available Incentives Section */}
+        {walletConnected && targetContract && (
+          <div className="flex flex-col gap-2 mt-4">
+            <div className="flex items-center justify-between">
+              <Label className="text-sm font-medium text-gray-300 flex items-center">
+                <Gift className="mr-2 h-4 w-4 text-green-500" />
+                Available Incentives for this Contract
+                {isLoadingIncentives && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
+              </Label>
+              <Button
+                onClick={loadAvailableIncentives}
+                size="sm"
+                variant="outline"
+                className="text-xs"
+                disabled={isLoadingIncentives}
+              >
+                Refresh
+              </Button>
+            </div>
+            
+            {availableIncentives.length > 0 ? (
+              <div className="space-y-2">
+                <div className="grid gap-2">
+                  <div 
+                    className={`p-3 border rounded-lg cursor-pointer transition-colors ${
+                      selectedIncentiveId === "" 
+                        ? "border-blue-500 bg-blue-900/20" 
+                        : "border-gray-700 bg-gray-900 hover:border-gray-600"
+                    }`}
+                    onClick={() => setSelectedIncentiveId("")}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-300">No Incentive (Standard Submission)</span>
+                      {selectedIncentiveId === "" && (
+                        <CheckCircle className="h-4 w-4 text-blue-500" />
+                      )}
+                    </div>
+                  </div>
+                  
+                  {availableIncentives.map((incentive: any) => (
+                    <div 
+                      key={incentive.id}
+                      className={`p-3 border rounded-lg cursor-pointer transition-colors ${
+                        selectedIncentiveId === incentive.id 
+                          ? "border-green-500 bg-green-900/20" 
+                          : "border-gray-700 bg-gray-900 hover:border-gray-600"
+                      }`}
+                      onClick={() => setSelectedIncentiveId(incentive.id)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <DollarSign className="h-4 w-4 text-green-500" />
+                          <span className="text-sm font-medium">
+                            {incentive.amount} {incentive.token === "0x0000000000000000000000000000000000000000" ? "ETH" : "Tokens"}
+                          </span>
+                          <Badge variant="secondary" className="bg-green-600">
+                            Active
+                          </Badge>
+                        </div>
+                        {selectedIncentiveId === incentive.id && (
+                          <CheckCircle className="h-4 w-4 text-green-500" />
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-400 mt-1">{incentive.description}</p>
+                      <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
+                        <span>Creator: {incentive.creator?.substring(0, 8)}...</span>
+                        <span>Expires: {new Date(incentive.deadline * 1000).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-2 p-2 bg-green-900/30 border border-green-700 rounded text-xs text-green-400">
+                  <strong>💡 Tip:</strong> Select an incentive to earn additional rewards if your submission is accepted!
+                  The incentive will be automatically claimed when your specification is finalized.
+                </div>
+              </div>
+            ) : !isLoadingIncentives ? (
+              <div className="p-3 bg-gray-800 border border-gray-700 rounded text-center">
+                <Gift className="mx-auto h-6 w-6 text-gray-400 mb-2" />
+                <p className="text-sm text-gray-400">No incentives available for this contract</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Be the first to create an incentive in the <Link href="/kaisign-v1" className="text-blue-400 hover:underline">V1 Manager</Link>
+                </p>
+              </div>
+            ) : (
+              <div className="p-3 bg-gray-800 border border-gray-700 rounded text-center">
+                <Loader2 className="mx-auto h-6 w-6 animate-spin text-gray-400 mb-2" />
+                <p className="text-sm text-gray-400">Loading available incentives...</p>
+              </div>
+            )}
+          </div>
+        )}
         
         {verificationStatus === "success" && !ipfsHash && (
           <div className="flex items-center gap-2 text-green-500 mt-4">
