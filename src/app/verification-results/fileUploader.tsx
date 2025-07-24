@@ -363,13 +363,13 @@ export default function FileUploader() {
       
       try {
         // Log subgraph URL for debugging
-        console.log("Using Reality.eth subgraph URL:", process.env.NEXT_PUBLIC_REALITY_ETH_GRAPH_URL || 
-          "https://gateway.thegraph.com/api/73380b22a17017c081123ec9c0e34677/subgraphs/id/F3XjWNiNFUTbZhNQjXuhP7oDug2NaPwMPZ5XCRx46h5U");
+        console.log("Using KaiSign subgraph URL:", process.env.NEXT_PUBLIC_KAISIGN_GRAPH_URL || 
+          "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.1");
         
         // Add a simple direct request to test connectivity
         try {
-          const testResponse = await fetch(process.env.NEXT_PUBLIC_REALITY_ETH_GRAPH_URL || 
-            "https://gateway.thegraph.com/api/73380b22a17017c081123ec9c0e34677/subgraphs/id/F3XjWNiNFUTbZhNQjXuhP7oDug2NaPwMPZ5XCRx46h5U", {
+          const testResponse = await fetch(process.env.NEXT_PUBLIC_KAISIGN_GRAPH_URL || 
+            "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.1", {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

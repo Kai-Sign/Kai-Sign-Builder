@@ -192,7 +192,7 @@ export class KaiSignGraphClient {
 export const createKaiSignClient = (network: 'mainnet' | 'sepolia' | string) => {
   const endpoints = {
     mainnet: 'https://api.thegraph.com/subgraphs/name/kai-sign/kaisign-mainnet',
-    sepolia: 'https://api.thegraph.com/subgraphs/name/kai-sign/kaisign-sepolia',
+    sepolia: 'https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.1',
   };
 
   const endpoint = endpoints[network as keyof typeof endpoints] || network;

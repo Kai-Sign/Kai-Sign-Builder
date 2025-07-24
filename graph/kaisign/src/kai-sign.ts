@@ -1,4 +1,4 @@
-import { BigInt, Bytes, ipfs, json, JSONValue } from "@graphprotocol/graph-ts"
+import { BigInt, Bytes, ipfs, json, JSONValue, TypedMap } from "@graphprotocol/graph-ts"
 import {
   LogAssertSpecInvalid as LogAssertSpecInvalidEvent,
   LogAssertSpecValid as LogAssertSpecValidEvent,
@@ -169,14 +169,15 @@ function processApprovedSpecIfLatest(spec: Spec): void {
   if (!spec.chainID || !spec.targetContract) return
   
   // Create contract ID: address + chainID
-  let contractId = spec.targetContract.toHex() + "-" + spec.chainID
+  let chainIdString = spec.chainID !== null ? spec.chainID!.toString() : "unknown"
+  let contractId = spec.targetContract.toHex() + "-" + chainIdString
   let contract = Contract.load(contractId)
   
   if (!contract) {
     // First approved spec for this contract+chain
     contract = new Contract(contractId)
     contract.address = spec.targetContract
-    contract.chainID = spec.chainID
+    contract.chainID = chainIdString
     contract.hasApprovedMetadata = false
     contract.functionCount = 0
     contract.createdAt = spec.blockTimestamp
@@ -252,7 +253,7 @@ function processSpecMetadata(contract: Contract, spec: Spec): void {
       if (formats) {
         let formatsObj = formats.toObject()
         if (formatsObj) {
-          processSelectors(contract, selectorsObj, formatsObj, spec.blockTimestamp)
+          processSelectors(contract, selectorsObj as TypedMap<string, JSONValue>, formatsObj as TypedMap<string, JSONValue>, spec.blockTimestamp)
         }
       }
     }
@@ -263,14 +264,16 @@ function processSpecMetadata(contract: Contract, spec: Spec): void {
 
 function processSelectors(
   contract: Contract,
-  selectors: Map<string, JSONValue>,
-  formats: Map<string, JSONValue>,
+  selectors: TypedMap<string, JSONValue>,
+  formats: TypedMap<string, JSONValue>,
   timestamp: BigInt
 ): void {
   let functionCount = 0
   
-  for (let i = 0; i < selectors.entries.length; i++) {
-    let entry = selectors.entries[i]
+  // Get entries as array for iteration
+  let selectorEntries = selectors.entries
+  for (let i = 0; i < selectorEntries.length; i++) {
+    let entry = selectorEntries[i]
     let selector = entry.key
     let selectorData = entry.value.toObject()
     

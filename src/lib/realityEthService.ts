@@ -6,10 +6,10 @@ const getEnvVar = (key: string, fallback: string = ""): string => {
   return value;
 };
 
-// GraphQL endpoint for Reality.eth
-const REALITY_ETH_GRAPH_URL = getEnvVar(
-  "REALITY_ETH_GRAPH_URL",
-  "https://gateway.thegraph.com/api/73380b22a17017c081123ec9c0e34677/subgraphs/id/F3XjWNiNFUTbZhNQjXuhP7oDug2NaPwMPZ5XCRx46h5U"
+// GraphQL endpoint for KaiSign subgraph
+const KAISIGN_GRAPH_URL = getEnvVar(
+  "KAISIGN_GRAPH_URL",
+  "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.1"
 );
 
 // Structure for the Reality.eth question data
@@ -67,7 +67,7 @@ export const getQuestionData = async (questionId: string): Promise<RealityEthQue
       
       console.log("Sending introspection query to check API schema...");
       
-      const introspectionResponse = await fetch(REALITY_ETH_GRAPH_URL, {
+      const introspectionResponse = await fetch(KAISIGN_GRAPH_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -148,7 +148,7 @@ export const getQuestionData = async (questionId: string): Promise<RealityEthQue
       try {
         console.log(`Trying ${queryName} query:`, query);
         
-        const response = await fetch(REALITY_ETH_GRAPH_URL, {
+        const response = await fetch(KAISIGN_GRAPH_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -218,7 +218,7 @@ export const getQuestionData = async (questionId: string): Promise<RealityEthQue
         
         console.log("Trying prefix search query:", prefixQuery);
         
-        const prefixResponse = await fetch(REALITY_ETH_GRAPH_URL, {
+        const prefixResponse = await fetch(KAISIGN_GRAPH_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -281,7 +281,7 @@ export const getQuestionsByUser = async (userAddress: string): Promise<RealityEt
     `;
 
     // Make the GraphQL request
-    const response = await fetch(REALITY_ETH_GRAPH_URL, {
+    const response = await fetch(KAISIGN_GRAPH_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
