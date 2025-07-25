@@ -12,7 +12,7 @@ dataSources:
     source:
       address: "0x79D0e06350CfCE33A7a73A7549248fd6AeD774f2"
       abi: KaiSign
-      startBlock: 8053722
+      startBlock: 8200000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
