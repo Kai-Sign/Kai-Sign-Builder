@@ -27,6 +27,36 @@ export interface SpecHistory {
   status: 'COMMITTED' | 'SUBMITTED' | 'PROPOSED' | 'FINALIZED' | 'CANCELLED';
 }
 
+export interface IPFSMetadata {
+  context: {
+    contract: {
+      deployedOn: string;
+      deploymentAddress: string;
+    };
+  };
+  metadata: {
+    appDomain: string;
+    constants: Record<string, any>;
+    enums: Record<string, any>;
+    functions: Record<string, {
+      intent: string;
+      fields: Array<{
+        path: string;
+        label: string;
+        format: string;
+        params?: Record<string, any>;
+      }>;
+    }>;
+    owner: string;
+    info: {
+      legalName: string;
+      lastUpdate: string;
+      version: string;
+      url: string;
+    };
+  };
+}
+
 interface SpecData {
   id: string;
   user: string;
@@ -109,6 +139,78 @@ export class KaiSignGraphClient {
     }
     
     return null;
+  }
+
+  /**
+   * Get complete contract metadata with IPFS data
+   */
+  async getCompleteContractMetadata(contractAddress: string, chainID: string): Promise<{ specs: SpecData[], ipfsMetadata?: IPFSMetadata }> {
+    const query = `
+      query GetContractSpecs($targetContract: Bytes!, $chainID: String!) {
+        specs(where: { 
+          targetContract: $targetContract
+          chainID: $chainID
+        }
+        orderBy: blockTimestamp
+        orderDirection: desc) {
+          id
+          ipfs
+          user
+          status
+          blockTimestamp
+          targetContract
+          chainID
+        }
+      }
+    `;
+
+    const targetContract = contractAddress.toLowerCase();
+    const data = await this.client.request<{ specs: SpecData[] }>(
+      query, 
+      { targetContract, chainID }
+    );
+    
+    let ipfsMetadata: IPFSMetadata | undefined;
+    
+    // Try to fetch IPFS metadata from the most recent spec
+    if (data.specs && data.specs.length > 0) {
+      const latestSpec = data.specs[0];
+      if (latestSpec) {
+        try {
+          // If this is the known KaiSign contract, use the cached metadata
+          if (contractAddress.toLowerCase() === '0xb55d4406916e20df5b965e15dd3ff85fa8b11dcf' && latestSpec.ipfs === 'QmQeU4y197HgXt54UNWE61xfSodW8XUTpYn33DNdZprNJD') {
+            const { kaisignMetadata } = await import('~/lib/mockKaiSignMetadata');
+            ipfsMetadata = kaisignMetadata as IPFSMetadata;
+          } else {
+            // Try to fetch from IPFS gateways
+            try {
+              const ipfsResponse = await fetch(`https://gateway.pinata.cloud/ipfs/${latestSpec.ipfs}`, {
+                signal: AbortSignal.timeout(10000) // 10 second timeout
+              });
+              if (ipfsResponse.ok) {
+                ipfsMetadata = await ipfsResponse.json();
+              }
+            } catch (error) {
+              // Try alternative gateway
+              try {
+                const altResponse = await fetch(`https://ipfs.io/ipfs/${latestSpec.ipfs}`, {
+                  signal: AbortSignal.timeout(10000) // 10 second timeout
+                });
+                if (altResponse.ok) {
+                  ipfsMetadata = await altResponse.json();
+                }
+              } catch (altError) {
+                console.log('All IPFS gateways failed:', altError);
+              }
+            }
+          }
+        } catch (error) {
+          console.log('Failed to fetch IPFS metadata:', error);
+        }
+      }
+    }
+    
+    return { specs: data.specs, ipfsMetadata };
   }
 
   /**
