@@ -17,7 +17,7 @@ const SAMPLE_CONTRACTS = [
   },
   {
     name: 'KaiSign Contract',
-    address: '0x79D0e06350CfCE33A7a73A7549248fd6AeD774f2',
+    address: '0x1e405904a01EC1CD3A1560EeEA36DccDB5CC82FB',
     chainId: 11155111,
     description: 'KaiSign on Sepolia'
   },

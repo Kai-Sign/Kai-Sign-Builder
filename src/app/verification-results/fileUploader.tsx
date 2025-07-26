@@ -35,6 +35,7 @@ export default function FileUploader() {
     hasAnswers: boolean;
   } | null>(null);
   const [targetContract, setTargetContract] = useState<string>("");
+  const [targetChainId, setTargetChainId] = useState<string>("1"); // Default to Ethereum mainnet
   const [selectedIncentiveId, setSelectedIncentiveId] = useState<string>("");
   const [availableIncentives, setAvailableIncentives] = useState<any[]>([]);
   const [isLoadingIncentives, setIsLoadingIncentives] = useState(false);
@@ -307,7 +308,7 @@ export default function FileUploader() {
       // Submit to blockchain using V1 contract (commit-reveal pattern)
       // Convert selectedIncentiveId to bytes32, or use zero bytes if none selected
       const incentiveId = selectedIncentiveId || "0x0000000000000000000000000000000000000000000000000000000000000000";
-      const txHash = await web3Service.submitSpec(ipfsHash, bondAmount, targetContract || undefined, incentiveId);
+      const txHash = await web3Service.submitSpec(ipfsHash, bondAmount, targetContract || undefined, parseInt(targetChainId), incentiveId);
       setTransactionHash(txHash);
       
       toast({
@@ -537,30 +538,64 @@ export default function FileUploader() {
             <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">1</div>
             <div>
               <Label htmlFor="targetContract" className="text-lg font-medium text-white">
-                Target Contract Address
+                Target Contract Details
               </Label>
               <p className="text-sm text-gray-400 mt-1">
-                Specify the contract this ERC7730 metadata describes (can be from any chain)
+                Specify the contract and chain this ERC7730 metadata describes
               </p>
             </div>
           </div>
-          <Input
-            id="targetContract"
-            type="text"
-            placeholder="0x... (Required: Enter the contract address for this specification)"
-            value={targetContract}
-            onChange={(e) => setTargetContract(e.target.value)}
-            className="bg-gray-900 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 h-12 text-base"
-          />
+          
+          {/* Chain Selection */}
+          <div className="mb-4">
+            <Label htmlFor="chainSelect" className="text-sm font-medium text-gray-300 mb-2 block">
+              Target Blockchain
+            </Label>
+            <select
+              id="chainSelect"
+              value={targetChainId}
+              onChange={(e) => {
+                setTargetChainId(e.target.value);
+                // Clear incentives when chain changes
+                setAvailableIncentives([]);
+                setSelectedIncentiveId("");
+              }}
+              className="w-full p-3 bg-gray-900 border border-gray-600 rounded text-white text-base focus:border-blue-500"
+            >
+              <option value="1">Ethereum Mainnet</option>
+              <option value="11155111">Sepolia Testnet</option>
+              <option value="137">Polygon</option>
+              <option value="8453">Base</option>
+              <option value="42161">Arbitrum</option>
+              <option value="10">Optimism</option>
+              <option value="56">BNB Smart Chain</option>
+              <option value="43114">Avalanche</option>
+            </select>
+          </div>
+          
+          {/* Contract Address */}
+          <div>
+            <Label htmlFor="targetContract" className="text-sm font-medium text-gray-300 mb-2 block">
+              Contract Address
+            </Label>
+            <Input
+              id="targetContract"
+              type="text"
+              placeholder="0x... (Required: Enter the contract address for this specification)"
+              value={targetContract}
+              onChange={(e) => setTargetContract(e.target.value)}
+              className="bg-gray-900 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 h-12 text-base"
+            />
+          </div>
           <div className="mt-4 space-y-3">
             <div className="p-3 bg-amber-900/20 border border-amber-700/50 rounded-lg">
               <div className="flex items-center gap-2 text-amber-400 mb-2">
                 <AlertCircle className="h-4 w-4" />
-                <strong>V1 Contract Limitation</strong>
+                <strong>Chain ID Support</strong>
               </div>
               <p className="text-amber-300 text-sm">
-                For verification purposes, the contract must exist on <strong>Sepolia testnet</strong>. 
-                If your target contract is on another chain, the system will use KaiSign as a proxy for verification.
+                KaiSign V1 now supports cross-chain specifications! Your metadata will include the target chain ID ({targetChainId}) 
+                and contract address. The verification system runs on <strong>Sepolia testnet</strong> but can validate specs for any chain.
               </p>
             </div>
             <details className="group">
@@ -572,7 +607,7 @@ export default function FileUploader() {
                 <div className="grid grid-cols-1 gap-2">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-300">KaiSign V1:</span>
-                    <code className="text-blue-400 bg-gray-900 px-2 py-1 rounded text-xs">0x79D0e06350CfCE33A7a73A7549248fd6AeD774f2</code>
+                    <code className="text-blue-400 bg-gray-900 px-2 py-1 rounded text-xs">0x1e405904a01EC1CD3A1560EeEA36DccDB5CC82FB</code>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-300">USDC Sepolia:</span>
@@ -645,7 +680,7 @@ export default function FileUploader() {
               {!ipfsHash ? (
                 <Button
                   onClick={handleUpload}
-                  disabled={isVerifying || isUploading || !targetContract.trim()}
+                  disabled={isVerifying || isUploading || !targetContract.trim() || !targetChainId}
                   size="lg"
                   className="w-full px-8 py-6 mt-2 text-base bg-white text-black hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
@@ -656,6 +691,8 @@ export default function FileUploader() {
                     </>
                   ) : !targetContract.trim() ? (
                     "Enter Contract Address First"
+                  ) : !targetChainId ? (
+                    "Select Target Chain First"
                   ) : (
                     "Verify & Upload to IPFS"
                   )}
@@ -781,7 +818,7 @@ export default function FileUploader() {
                       <p className="text-xs text-gray-400 mt-1">{incentive.description}</p>
                       <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
                         <span>Creator: {incentive.creator?.substring(0, 8)}...</span>
-                        <span>Expires: {new Date(incentive.deadline * 1000).toLocaleDateString()}</span>
+                        <span>Expires: {new Date(incentive.deadline * 1000).toLocaleDateString('en-US', { timeZone: 'UTC' })}</span>
                       </div>
                     </div>
                   ))}

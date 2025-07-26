@@ -13,7 +13,7 @@ declare global {
 // Type for contract methods to handle TS errors (V1 contract)
 type ContractWithMethods = ethers.Contract & {
   minBond: () => Promise<bigint>;
-  commitSpec: (commitment: string, targetContract: string, incentiveId: string, options: { value: bigint }) => Promise<any>;
+  commitSpec: (commitment: string, targetContract: string, targetChainId: number, incentiveId: string, options: { value: bigint }) => Promise<any>;
   revealSpec: (commitmentId: string, ipfs: string, nonce: bigint) => Promise<any>;
   proposeSpec: (specID: string, options: { value: bigint }) => Promise<any>;
   assertSpecValid: (specID: string, options: { value: bigint }) => Promise<any>;
@@ -22,7 +22,7 @@ type ContractWithMethods = ethers.Contract & {
   getStatus: (ipfsHash: string) => Promise<number>;
   isAccepted: (ipfsHash: string) => Promise<boolean>;
   getCreatedTimestamp: (ipfsHash: string) => Promise<bigint>;
-  createIncentive: (targetContract: string, token: string, amount: bigint, duration: bigint, description: string, options: { value: bigint }) => Promise<any>;
+  createIncentive: (targetContract: string, targetChainId: number, token: string, amount: bigint, duration: bigint, description: string, options: { value: bigint }) => Promise<any>;
   getSpecsByContract: (targetContract: string) => Promise<string[]>;
   getContractSpecCount: (targetContract: string) => Promise<bigint>;
   specs: (specID: string) => Promise<any>;
@@ -63,6 +63,7 @@ const CONTRACT_ABI = [
     "inputs": [
       {"internalType": "bytes32", "name": "commitment", "type": "bytes32"},
       {"internalType": "address", "name": "targetContract", "type": "address"},
+      {"internalType": "uint256", "name": "targetChainId", "type": "uint256"},
       {"internalType": "bytes32", "name": "incentiveId", "type": "bytes32"}
     ],
     "name": "commitSpec",
@@ -105,6 +106,7 @@ const CONTRACT_ABI = [
   {
     "inputs": [
       {"internalType": "address", "name": "targetContract", "type": "address"},
+      {"internalType": "uint256", "name": "targetChainId", "type": "uint256"},
       {"internalType": "address", "name": "token", "type": "address"},
       {"internalType": "uint256", "name": "amount", "type": "uint256"},
       {"internalType": "uint64", "name": "duration", "type": "uint64"},
@@ -135,6 +137,7 @@ const CONTRACT_ABI = [
       {"internalType": "bool", "name": "isClaimed", "type": "bool"},
       {"internalType": "bool", "name": "isActive", "type": "bool"},
       {"internalType": "uint80", "name": "reserved", "type": "uint80"},
+      {"internalType": "uint256", "name": "chainId", "type": "uint256"},
       {"internalType": "string", "name": "description", "type": "string"}
     ],
     "stateMutability": "view",
@@ -196,6 +199,7 @@ const CONTRACT_ABI = [
   {
     "inputs": [
       {"internalType": "address", "name": "targetContract", "type": "address"},
+      {"internalType": "uint256", "name": "targetChainId", "type": "uint256"},
       {"internalType": "address", "name": "token", "type": "address"},
       {"internalType": "uint256", "name": "amount", "type": "uint256"},
       {"internalType": "uint64", "name": "duration", "type": "uint64"},
@@ -267,6 +271,7 @@ const CONTRACT_ABI = [
       {"internalType": "bool", "name": "isClaimed", "type": "bool"},
       {"internalType": "bool", "name": "isActive", "type": "bool"},
       {"internalType": "uint80", "name": "reserved", "type": "uint80"},
+      {"internalType": "uint256", "name": "chainId", "type": "uint256"},
       {"internalType": "string", "name": "description", "type": "string"}
     ],
     "stateMutability": "view",
@@ -326,7 +331,7 @@ const REALITY_ETH_ABI = [
 ];
 
 // Fixed contract address on Sepolia - V1 contract address
-const RAW_CONTRACT_ADDRESS = "0x79D0e06350CfCE33A7a73A7549248fd6AeD774f2";
+const RAW_CONTRACT_ADDRESS = "0x1e405904a01EC1CD3A1560EeEA36DccDB5CC82FB";
 // Sepolia chain ID
 const SEPOLIA_CHAIN_ID = 11155111;
 
@@ -533,7 +538,7 @@ export class Web3Service {
    * Submit spec using V1 contract's commit-reveal pattern
    * This properly implements the two-step process: commitSpec -> revealSpec
    */
-  async submitSpec(ipfsHash: string, bondAmount: bigint, targetContract?: string, incentiveId?: string): Promise<string> {
+  async submitSpec(ipfsHash: string, bondAmount: bigint, targetContract?: string, targetChainId?: number, incentiveId?: string): Promise<string> {
     try {
       if (!this.contract || !this.signer) {
         throw new Error("Not connected to MetaMask. Please connect first.");
@@ -729,16 +734,18 @@ export class Web3Service {
         // Try a raw call to see if the function exists
         console.log("Trying raw contract call...");
         const calldata = ethers.concat([
-          "0x1349f73f", // commitSpec selector
+          ethers.id("commitSpec(bytes32,address,uint256,bytes32)").slice(0, 10), // commitSpec selector
           ethers.zeroPadValue(commitment, 32),
           ethers.zeroPadValue(target, 32),
+          ethers.zeroPadValue(ethers.toBeHex(targetChainId || 1), 32),
           ethers.zeroPadValue(incentiveId, 32)
         ]);
         
         console.log("Calldata breakdown:");
-        console.log("- Selector:", "0x1349f73f");
+        console.log("- Selector:", ethers.id("commitSpec(bytes32,address,uint256,bytes32)").slice(0, 10));
         console.log("- Commitment (32 bytes):", ethers.hexlify(ethers.zeroPadValue(commitment, 32)));
         console.log("- Target (32 bytes):", ethers.hexlify(ethers.zeroPadValue(target, 32)));
+        console.log("- TargetChainId (32 bytes):", ethers.hexlify(ethers.zeroPadValue(ethers.toBeHex(targetChainId || 1), 32)));
         console.log("- Incentive (32 bytes):", ethers.hexlify(ethers.zeroPadValue(incentiveId, 32)));
         
         console.log("Raw calldata:", ethers.hexlify(calldata));
@@ -763,6 +770,7 @@ export class Web3Service {
         const staticResult = await this.contract.commitSpec.staticCall(
           commitment,
           target,
+          targetChainId || 1,
           incentiveId,
           { value: bondAmount }
         );
@@ -785,6 +793,7 @@ export class Web3Service {
         const gasEstimate = await this.contract.commitSpec.estimateGas(
           commitment, 
           target, 
+          targetChainId || 1,
           incentiveId,
           { value: bondAmount }
         );
@@ -794,7 +803,7 @@ export class Web3Service {
         throw new Error(`Gas estimation failed: ${gasError.message}`);
       }
       
-      const commitTx = await this.contract.commitSpec(commitment, target, finalIncentiveId, {
+      const commitTx = await this.contract.commitSpec(commitment, target, targetChainId || 1, finalIncentiveId, {
         value: bondAmount
       });
       
@@ -809,8 +818,8 @@ export class Web3Service {
       // Step 2: Generate the commitment ID as the contract does
       // commitmentId = keccak256(abi.encodePacked(commitment, msg.sender, targetContract, block.timestamp))
       const commitmentId = ethers.keccak256(ethers.solidityPacked(
-        ["bytes32", "address", "address", "uint256"],
-        [commitment, await this.signer.getAddress(), target, commitTimestamp]
+        ["bytes32", "address", "address", "uint256", "uint256"],
+        [commitment, await this.signer.getAddress(), target, targetChainId || 1, commitTimestamp]
       ));
       
       console.log("Generated commitment ID:", commitmentId);
@@ -1126,10 +1135,11 @@ export class Web3Service {
       const incentiveId = "0x0000000000000000000000000000000000000000000000000000000000000000";
 
       // Manually encode the function call
-      const functionSelector = "0x1349f73f"; // commitSpec(bytes32,address,bytes32)
+      const functionSelector = ethers.id("commitSpec(bytes32,address,uint256,bytes32)").slice(0, 10); // commitSpec(bytes32,address,uint256,bytes32)
       const encodedParams = ethers.concat([
         ethers.zeroPadValue(commitment, 32),
         ethers.zeroPadValue(target, 32), 
+        ethers.zeroPadValue(ethers.toBeHex(targetChainId || 1), 32),
         ethers.zeroPadValue(incentiveId, 32)
       ]);
       
@@ -1384,6 +1394,7 @@ export class Web3Service {
         await this.contract.commitSpec.staticCall(
           testCommitment,
           targetContract,
+          1, // Default to mainnet for test
           testIncentive,
           { value: bondAmount, from: userAddress }
         );
@@ -1426,6 +1437,7 @@ export class Web3Service {
         const gasEstimate = await this.contract.commitSpec.estimateGas(
           testCommitment,
           targetContract,
+          1, // Default to mainnet for test
           testIncentive,
           { value: bondAmount }
         );
@@ -1475,7 +1487,7 @@ export class Web3Service {
       // 2. Test function selectors to identify which contract is deployed
       const selectors = {
         "minBond()": "0x1bb659ae",
-        "commitSpec(bytes32,address,bytes32)": "0x1349f73f", // V1
+        "commitSpec(bytes32,address,uint256,bytes32)": "0x" + ethers.id("commitSpec(bytes32,address,uint256,bytes32)").slice(2, 10), // V1
         "createSpec(string)": "0x8cd8db49", // Original
         "paused()": "0x5c975abb", // V1 (Pausable)
         "ADMIN_ROLE()": "0x75b238fc", // V1 (AccessControl)
@@ -1509,9 +1521,10 @@ export class Web3Service {
 
         // Encode the call
         const encodedCall = ethers.concat([
-          "0x1349f73f", // commitSpec selector
+          ethers.id("commitSpec(bytes32,address,uint256,bytes32)").slice(0, 10), // commitSpec selector
           ethers.zeroPadValue(testCommitment, 32),
           ethers.zeroPadValue(testTarget, 32),
+          ethers.zeroPadValue(ethers.toBeHex(1), 32), // chainId = 1 for test
           ethers.zeroPadValue(testIncentive, 32)
         ]);
 
@@ -1785,8 +1798,8 @@ export class Web3Service {
         console.log("Checking if commitSpec function exists...");
         
         // Try to call the function selector directly
-        const commitSpecSelector = "0x1349f73f";
-        const testCalldata = commitSpecSelector + "0".repeat(192); // Minimal calldata
+        const commitSpecSelector = ethers.id("commitSpec(bytes32,address,uint256,bytes32)").slice(0, 10);
+        const testCalldata = commitSpecSelector + "0".repeat(256); // Minimal calldata for 4 parameters (32 bytes each)
         
         const testCall = await this.provider!.call({
           to: RAW_CONTRACT_ADDRESS,
@@ -1824,6 +1837,7 @@ export class Web3Service {
         const gasEstimate = await this.contract.commitSpec.estimateGas(
           testCommitment,
           testTarget, 
+          1, // Default to mainnet for test
           testIncentive,
           { value: await this.contract.minBond() }
         );
@@ -1851,6 +1865,7 @@ export class Web3Service {
 
   async createIncentive(
     targetContract: string,
+    targetChainId: number,
     token: string, // address(0) for ETH
     amount: string,
     durationSeconds: number,
@@ -1866,6 +1881,7 @@ export class Web3Service {
       console.log("🎯 Creating incentive on contract:", this.contract.target);
       console.log("💰 Parameters:", {
         targetContract,
+        targetChainId,
         token,
         amount,
         durationSeconds,
@@ -1884,6 +1900,7 @@ export class Web3Service {
       console.log("📝 Calling createIncentive...");
       const tx = await this.contract.createIncentive(
         targetContract,
+        targetChainId,
         token,
         amount,
         durationSeconds,
@@ -1964,7 +1981,8 @@ export class Web3Service {
         isClaimed: incentive[6],            // bool isClaimed
         isActive: incentive[7],             // bool isActive
         reserved: Number(incentive[8]),     // uint80 reserved
-        description: incentive[9]           // string description
+        chainId: Number(incentive[9]),      // uint256 chainId
+        description: incentive[10]          // string description
       };
       
       return result;
@@ -2020,22 +2038,65 @@ export class Web3Service {
     }
 
     try {
+      console.log("🔍 Getting spec data for specId:", specId);
+      
+      // Call the specs function and handle potential structure variations
       const spec = await this.contract.specs(specId);
-      return {
-        createdTimestamp: Number(spec.createdTimestamp),
-        proposedTimestamp: Number(spec.proposedTimestamp),
-        status: Number(spec.status),
-        bondsSettled: spec.bondsSettled,
-        totalBonds: spec.totalBonds.toString(),
-        creator: spec.creator,
-        targetContract: spec.targetContract,
-        ipfs: spec.ipfs,
-        questionId: spec.questionId,
-        incentiveId: spec.incentiveId
-      };
+      console.log("📋 Raw spec data:", spec);
+      
+      // The contract might have different struct layouts, so we need to handle both cases
+      // Try to parse assuming the newer format with 'reserved' field
+      let parsedSpec;
+      
+      if (Array.isArray(spec) && spec.length >= 10) {
+        // Handle tuple/array format
+        parsedSpec = {
+          createdTimestamp: Number(spec[0]),
+          proposedTimestamp: Number(spec[1]),
+          status: Number(spec[2]),
+          bondsSettled: Boolean(spec[3]),
+          totalBonds: spec[4].toString(),
+          // Skip reserved field at index 5 if it exists
+          creator: spec.length > 10 ? spec[6] : spec[5],
+          targetContract: spec.length > 10 ? spec[7] : spec[6],
+          ipfs: spec.length > 10 ? spec[8] : spec[7],
+          questionId: spec.length > 10 ? spec[9] : spec[8],
+          incentiveId: spec.length > 10 ? spec[10] : spec[9]
+        };
+      } else {
+        // Handle named struct format
+        parsedSpec = {
+          createdTimestamp: Number(spec.createdTimestamp || 0),
+          proposedTimestamp: Number(spec.proposedTimestamp || 0),
+          status: Number(spec.status || 0),
+          bondsSettled: Boolean(spec.bondsSettled),
+          totalBonds: (spec.totalBonds || 0).toString(),
+          creator: spec.creator || "0x0000000000000000000000000000000000000000",
+          targetContract: spec.targetContract || "0x0000000000000000000000000000000000000000",
+          ipfs: spec.ipfs || "",
+          questionId: spec.questionId || "0x0000000000000000000000000000000000000000000000000000000000000000",
+          incentiveId: spec.incentiveId || "0x0000000000000000000000000000000000000000000000000000000000000000"
+        };
+      }
+      
+      console.log("✅ Parsed spec data:", parsedSpec);
+      return parsedSpec;
+      
     } catch (error: any) {
-      console.error("Error getting spec data:", error);
-      throw error;
+      console.error("💥 Error getting spec data:", error);
+      console.error("📋 SpecId that failed:", specId);
+      
+      // Try to provide more helpful error information
+      if (error.message?.includes("could not decode result data")) {
+        console.error("🔧 This looks like an ABI mismatch. The contract struct might have changed.");
+        
+        // Try to extract some basic info from the raw error if possible
+        if (error.value) {
+          console.error("📊 Raw contract return value:", error.value);
+        }
+      }
+      
+      throw new Error(`Failed to decode specification data. This might be due to a contract version mismatch. Original error: ${error.message}`);
     }
   }
 
@@ -2157,7 +2218,7 @@ export class Web3Service {
     }
   }
 
-  async getAvailableIncentives(targetContract: string): Promise<any[]> {
+  async getAvailableIncentives(targetContract: string, targetChainId?: number): Promise<any[]> {
     if (!this.contract) {
       throw new Error("Not connected to contract.");
     }
@@ -2169,7 +2230,7 @@ export class Web3Service {
       const incentives = [];
       
       // Add mock incentives for KaiSign contract for testing
-      const kaisignContract = "0x79d0e06350cfce33a7a73a7549248fd6aed774f2".toLowerCase();
+      const kaisignContract = "0x1e405904a01EC1CD3A1560EeEA36DccDB5CC82FB".toLowerCase();
       if (targetContract.toLowerCase() === kaisignContract) {
         incentives.push({
           id: "0x1234567890123456789012345678901234567890123456789012345678901234",
