@@ -2,8 +2,12 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "~/components/ui/button";
-import { FileJson, Upload, CheckCircle, AlertCircle, Loader2, ExternalLink } from "lucide-react";
+import { FileJson, Upload, CheckCircle, AlertCircle, Loader2, ExternalLink, Gift, DollarSign, Clock, Gavel } from "lucide-react";
 import { Card } from "~/components/ui/card";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import { Badge } from "~/components/ui/badge";
+import Link from "next/link";
 import { useErc7730Store } from "~/store/erc7730Provider";
 import { useToast } from "~/hooks/use-toast";
 import { uploadToIPFS } from "~/lib/ipfsService";
@@ -30,6 +34,10 @@ export default function FileUploader() {
     requiredNextBond: bigint;
     hasAnswers: boolean;
   } | null>(null);
+  const [targetContract, setTargetContract] = useState<string>("");
+  const [selectedIncentiveId, setSelectedIncentiveId] = useState<string>("");
+  const [availableIncentives, setAvailableIncentives] = useState<any[]>([]);
+  const [isLoadingIncentives, setIsLoadingIncentives] = useState(false);
   const { setErc7730, shouldAutoSubmit, setShouldAutoSubmit } = useErc7730Store((state) => state);
   const erc7730Data = useErc7730Store((state) => state.finalErc7730);
   const { toast } = useToast();
@@ -210,6 +218,9 @@ export default function FileUploader() {
       
       // Connect wallet after IPFS upload
       await connectWallet();
+      
+      // Load available incentives for the target contract
+      await loadAvailableIncentives();
     } catch (error) {
       console.error("Error uploading to IPFS:", error);
       toast({
@@ -257,6 +268,30 @@ export default function FileUploader() {
       setIsConnectingWallet(false);
     }
   };
+
+  const loadAvailableIncentives = async () => {
+    if (!targetContract) return;
+    
+    setIsLoadingIncentives(true);
+    try {
+      // Get available incentives for this target contract
+      const incentives = await web3Service.getAvailableIncentives(targetContract);
+      setAvailableIncentives(incentives);
+      
+      if (incentives.length > 0) {
+        toast({
+          title: "Incentives Available",
+          description: `Found ${incentives.length} available incentive(s) for this contract!`,
+          variant: "default",
+        });
+      }
+    } catch (error: any) {
+      console.error("Error loading incentives:", error);
+      // Don't show error toast as this is not critical
+    } finally {
+      setIsLoadingIncentives(false);
+    }
+  };
   
   const submitToBlockchain = async () => {
     if (!ipfsHash || !walletConnected) return;
@@ -269,8 +304,10 @@ export default function FileUploader() {
       setBondInfo(bondData);
       const bondAmount = bondData.requiredNextBond;
       
-      // Submit to blockchain
-      const txHash = await web3Service.proposeSpec(ipfsHash, bondAmount);
+      // Submit to blockchain using V1 contract (commit-reveal pattern)
+      // Convert selectedIncentiveId to bytes32, or use zero bytes if none selected
+      const incentiveId = selectedIncentiveId || "0x0000000000000000000000000000000000000000000000000000000000000000";
+      const txHash = await web3Service.submitSpec(ipfsHash, bondAmount, targetContract || undefined, incentiveId);
       setTransactionHash(txHash);
       
       toast({
@@ -326,13 +363,13 @@ export default function FileUploader() {
       
       try {
         // Log subgraph URL for debugging
-        console.log("Using Reality.eth subgraph URL:", process.env.NEXT_PUBLIC_REALITY_ETH_GRAPH_URL || 
-          "https://gateway.thegraph.com/api/73380b22a17017c081123ec9c0e34677/subgraphs/id/F3XjWNiNFUTbZhNQjXuhP7oDug2NaPwMPZ5XCRx46h5U");
+        console.log("Using KaiSign subgraph URL:", process.env.NEXT_PUBLIC_KAISIGN_GRAPH_URL || 
+          "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.2");
         
         // Add a simple direct request to test connectivity
         try {
-          const testResponse = await fetch(process.env.NEXT_PUBLIC_REALITY_ETH_GRAPH_URL || 
-            "https://gateway.thegraph.com/api/73380b22a17017c081123ec9c0e34677/subgraphs/id/F3XjWNiNFUTbZhNQjXuhP7oDug2NaPwMPZ5XCRx46h5U", {
+          const testResponse = await fetch(process.env.NEXT_PUBLIC_KAISIGN_GRAPH_URL || 
+            "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.2", {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -365,7 +402,7 @@ export default function FileUploader() {
           // Continue anyway but with minimal data
           const defaultData = {
             id: questionId,
-            createdTimestamp: Math.floor(Date.now() / 1000 - 900).toString(), // 15 minutes ago
+            createdTimestamp: Math.floor(Date.now() / 1000 - 172800).toString(), // 2 days ago
           };
           
           setFinalizationTimestamp(null);
@@ -374,7 +411,7 @@ export default function FileUploader() {
           
           const timeRemaining = getTimeRemainingUntilFinalization(
             undefined,
-            "900", // 15 minute timeout
+            "172800", // 2 day timeout
             defaultData.createdTimestamp
           );
           setTimeRemaining(timeRemaining);
@@ -464,12 +501,108 @@ export default function FileUploader() {
     }
   }, [finalizationTimestamp, timeout, createdTimestamp]);
 
+  // Load incentives when target contract changes
+  useEffect(() => {
+    if (walletConnected && targetContract) {
+      loadAvailableIncentives();
+    }
+  }, [walletConnected, targetContract]);
+
   return (
     <Card className="p-6 mb-8 bg-gray-950 border-gray-800">
-      <div className="flex flex-col gap-4">
-        <h2 className="text-xl font-medium">Upload ERC7730 JSON File</h2>
+      <div className="flex flex-col gap-6">
+        {/* Enhanced Header with Process Information */}
+        <div className="border-b border-gray-700 pb-4">
+          <h2 className="text-2xl font-medium text-white mb-2">Submit ERC7730 Specification</h2>
+          <p className="text-gray-400">
+            Upload your ERC7730 JSON file to the decentralized verification system using a 
+            <strong className="text-blue-400"> commit-reveal scheme</strong> with a 
+            <strong className="text-green-400"> 2-day challenge period</strong>.
+          </p>
+          <div className="flex items-center gap-4 mt-3 text-sm">
+            <div className="flex items-center gap-2 text-blue-400">
+              <Clock className="h-4 w-4" />
+              <span>2-day verification period</span>
+            </div>
+            <div className="flex items-center gap-2 text-purple-400">
+              <Gavel className="h-4 w-4" />
+              <span>Commit-reveal protection</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Step 1: Target Contract Input - Make this prominent and first */}
+        <div className="bg-gradient-to-r from-blue-950/50 to-purple-950/50 p-5 rounded-lg border border-blue-800/50">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">1</div>
+            <div>
+              <Label htmlFor="targetContract" className="text-lg font-medium text-white">
+                Target Contract Address
+              </Label>
+              <p className="text-sm text-gray-400 mt-1">
+                Specify the contract this ERC7730 metadata describes (can be from any chain)
+              </p>
+            </div>
+          </div>
+          <Input
+            id="targetContract"
+            type="text"
+            placeholder="0x... (Required: Enter the contract address for this specification)"
+            value={targetContract}
+            onChange={(e) => setTargetContract(e.target.value)}
+            className="bg-gray-900 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 h-12 text-base"
+          />
+          <div className="mt-4 space-y-3">
+            <div className="p-3 bg-amber-900/20 border border-amber-700/50 rounded-lg">
+              <div className="flex items-center gap-2 text-amber-400 mb-2">
+                <AlertCircle className="h-4 w-4" />
+                <strong>V1 Contract Limitation</strong>
+              </div>
+              <p className="text-amber-300 text-sm">
+                For verification purposes, the contract must exist on <strong>Sepolia testnet</strong>. 
+                If your target contract is on another chain, the system will use KaiSign as a proxy for verification.
+              </p>
+            </div>
+            <details className="group">
+              <summary className="text-blue-400 cursor-pointer hover:text-blue-300 text-sm flex items-center gap-2">
+                <span>📋 Show example Sepolia contracts</span>
+                <span className="text-xs text-gray-500 group-open:hidden">(click to expand)</span>
+              </summary>
+              <div className="mt-3 p-3 bg-gray-800 border border-gray-700 rounded-lg text-sm space-y-2">
+                <div className="grid grid-cols-1 gap-2">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-300">KaiSign V1:</span>
+                    <code className="text-blue-400 bg-gray-900 px-2 py-1 rounded text-xs">0x79D0e06350CfCE33A7a73A7549248fd6AeD774f2</code>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-300">USDC Sepolia:</span>
+                    <code className="text-blue-400 bg-gray-900 px-2 py-1 rounded text-xs">0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238</code>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-300">Wrapped ETH:</span>
+                    <code className="text-blue-400 bg-gray-900 px-2 py-1 rounded text-xs">0xfff9976782d46cc05630d1f6ebab18b2324d6b14</code>
+                  </div>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+
+        {/* Step 2: File Upload */}
+        <div className="bg-gradient-to-r from-purple-950/50 to-green-950/50 p-5 rounded-lg border border-purple-800/50">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">2</div>
+            <div>
+              <Label className="text-lg font-medium text-white">
+                Upload ERC7730 JSON File
+              </Label>
+              <p className="text-sm text-gray-400 mt-1">
+                Upload your ERC7730 specification file for verification
+              </p>
+            </div>
+          </div>
         
-        <div className="flex flex-col items-center justify-center gap-6 border-2 border-dashed border-gray-700 rounded-lg p-8">
+        <div className="flex flex-col items-center justify-center gap-6 border-2 border-dashed border-gray-600 rounded-lg p-8">
           <FileJson size={52} className="text-gray-400" />
           <p className="text-sm text-gray-400 text-center">
             {file ? `Selected: ${file.name}` : "Drag and drop your JSON file here or click to browse"}
@@ -512,17 +645,19 @@ export default function FileUploader() {
               {!ipfsHash ? (
                 <Button
                   onClick={handleUpload}
-                  disabled={isVerifying || isUploading}
+                  disabled={isVerifying || isUploading || !targetContract.trim()}
                   size="lg"
-                  className="w-full px-8 py-6 mt-2 text-base bg-white text-black hover:bg-gray-100"
+                  className="w-full px-8 py-6 mt-2 text-base bg-white text-black hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isVerifying || isUploading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      {isVerifying ? "Verifying..." : "Uploading to IPFS..."}
+                      {isVerifying ? "Verifying JSON..." : "Uploading to IPFS..."}
                     </>
+                  ) : !targetContract.trim() ? (
+                    "Enter Contract Address First"
                   ) : (
-                    "Verify JSON"
+                    "Verify & Upload to IPFS"
                   )}
                 </Button>
               ) : !walletConnected ? (
@@ -578,6 +713,101 @@ export default function FileUploader() {
             </div>
           )}
         </div>
+        </div>
+        
+        {/* Available Incentives Section */}
+        {walletConnected && targetContract && (
+          <div className="flex flex-col gap-2 mt-4">
+            <div className="flex items-center justify-between">
+              <Label className="text-sm font-medium text-gray-300 flex items-center">
+                <Gift className="mr-2 h-4 w-4 text-green-500" />
+                Available Incentives for this Contract
+                {isLoadingIncentives && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
+              </Label>
+              <Button
+                onClick={loadAvailableIncentives}
+                size="sm"
+                variant="outline"
+                className="text-xs"
+                disabled={isLoadingIncentives}
+              >
+                Refresh
+              </Button>
+            </div>
+            
+            {availableIncentives.length > 0 ? (
+              <div className="space-y-2">
+                <div className="grid gap-2">
+                  <div 
+                    className={`p-3 border rounded-lg cursor-pointer transition-colors ${
+                      selectedIncentiveId === "" 
+                        ? "border-blue-500 bg-blue-900/20" 
+                        : "border-gray-700 bg-gray-900 hover:border-gray-600"
+                    }`}
+                    onClick={() => setSelectedIncentiveId("")}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-300">No Incentive (Standard Submission)</span>
+                      {selectedIncentiveId === "" && (
+                        <CheckCircle className="h-4 w-4 text-blue-500" />
+                      )}
+                    </div>
+                  </div>
+                  
+                  {availableIncentives.map((incentive: any) => (
+                    <div 
+                      key={incentive.id}
+                      className={`p-3 border rounded-lg cursor-pointer transition-colors ${
+                        selectedIncentiveId === incentive.id 
+                          ? "border-green-500 bg-green-900/20" 
+                          : "border-gray-700 bg-gray-900 hover:border-gray-600"
+                      }`}
+                      onClick={() => setSelectedIncentiveId(incentive.id)}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                          <DollarSign className="h-4 w-4 text-green-500" />
+                          <span className="text-sm font-medium">
+                            {incentive.amount} {incentive.token === "0x0000000000000000000000000000000000000000" ? "ETH" : "Tokens"}
+                          </span>
+                          <Badge variant="secondary" className="bg-green-600">
+                            Active
+                          </Badge>
+                        </div>
+                        {selectedIncentiveId === incentive.id && (
+                          <CheckCircle className="h-4 w-4 text-green-500" />
+                        )}
+                      </div>
+                      <p className="text-xs text-gray-400 mt-1">{incentive.description}</p>
+                      <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
+                        <span>Creator: {incentive.creator?.substring(0, 8)}...</span>
+                        <span>Expires: {new Date(incentive.deadline * 1000).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="mt-2 p-2 bg-green-900/30 border border-green-700 rounded text-xs text-green-400">
+                  <strong>💡 Tip:</strong> Select an incentive to earn additional rewards if your submission is accepted!
+                  The incentive will be automatically claimed when your specification is finalized.
+                </div>
+              </div>
+            ) : !isLoadingIncentives ? (
+              <div className="p-3 bg-gray-800 border border-gray-700 rounded text-center">
+                <Gift className="mx-auto h-6 w-6 text-gray-400 mb-2" />
+                <p className="text-sm text-gray-400">No incentives available for this contract</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  Be the first to create an incentive in the <Link href="/kaisign-v1" className="text-blue-400 hover:underline">V1 Manager</Link>
+                </p>
+              </div>
+            ) : (
+              <div className="p-3 bg-gray-800 border border-gray-700 rounded text-center">
+                <Loader2 className="mx-auto h-6 w-6 animate-spin text-gray-400 mb-2" />
+                <p className="text-sm text-gray-400">Loading available incentives...</p>
+              </div>
+            )}
+          </div>
+        )}
         
         {verificationStatus === "success" && !ipfsHash && (
           <div className="flex items-center gap-2 text-green-500 mt-4">

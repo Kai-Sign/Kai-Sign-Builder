@@ -54,7 +54,7 @@ function VerificationStatusContent() {
           finalizationTime = (parseInt(createdTimestampValue) + parseInt(timeoutValue)) * 1000;
           console.log("Using timeout + createdTimestamp for calculation:", new Date(finalizationTime).toISOString());
         } else if (createdTimestampValue) {
-          finalizationTime = (parseInt(createdTimestampValue) + 900) * 1000;
+          finalizationTime = (parseInt(createdTimestampValue) + 172800) * 1000;
           console.log("Using default timeout + createdTimestamp for calculation:", new Date(finalizationTime).toISOString());
         } else {
           console.log("No timing data available for finalization check");
@@ -192,21 +192,21 @@ function VerificationStatusContent() {
           console.warn("Question data is null in verification status page");
           
           // Use estimated values instead of throwing an error
-          const defaultCreatedTimestamp = Math.floor(Date.now() / 1000 - 900).toString(); // 15 minutes ago
+          const defaultCreatedTimestamp = Math.floor(Date.now() / 1000 - 172800).toString(); // 2 days ago
           setCreatedTimestampValue(defaultCreatedTimestamp);
-          setTimeoutValue("900"); // 15 minute timeout as default
+          setTimeoutValue("172800"); // 2 day timeout as default
           
           // Calculate time with defaults
           const remaining = getTimeRemainingUntilFinalization(
             undefined,
-            "900",
+            "172800",
             defaultCreatedTimestamp
           );
           setTimeRemaining(remaining);
           
           // Direct calculation for finalization status
           const now = Date.now();
-          const estimatedFinalizationTime = (parseInt(defaultCreatedTimestamp) + 900) * 1000;
+          const estimatedFinalizationTime = (parseInt(defaultCreatedTimestamp) + 172800) * 1000;
           const directCanFinalize = now > estimatedFinalizationTime;
           
           console.log("Fallback calculation of canFinalize:", directCanFinalize);
@@ -272,7 +272,7 @@ function VerificationStatusContent() {
         } else if (questionData.timeout && questionData.createdTimestamp) {
           calculatedFinalizationTime = (parseInt(questionData.createdTimestamp) + parseInt(questionData.timeout)) * 1000;
         } else if (questionData.createdTimestamp) {
-          calculatedFinalizationTime = (parseInt(questionData.createdTimestamp) + 900) * 1000;
+          calculatedFinalizationTime = (parseInt(questionData.createdTimestamp) + 172800) * 1000;
         }
         
         if (calculatedFinalizationTime) {
@@ -657,11 +657,11 @@ function VerificationStatusContent() {
                   ) : createdTimestampValue ? (
                     <>
                       <p className="text-gray-300 font-medium">
-                        Estimated Finalization Time: {new Date((parseInt(createdTimestampValue) + (parseInt(timeoutValue || '900'))) * 1000).toLocaleString()}
+                        Estimated Finalization Time: {new Date((parseInt(createdTimestampValue) + (parseInt(timeoutValue || '172800'))) * 1000).toLocaleString()}
                       </p>
                       <p className="text-xs text-gray-400 mt-1">
                         Based on creation time ({new Date(parseInt(createdTimestampValue) * 1000).toLocaleString()}) + 
-                        {timeoutValue ? ` timeout (${parseInt(timeoutValue) / 60} minutes)` : " default timeout (15 minutes)"}
+                        {timeoutValue ? ` timeout (${Math.round(parseInt(timeoutValue) / 3600)} hours)` : " default timeout (2 days)"}
                       </p>
                     </>
                   ) : (

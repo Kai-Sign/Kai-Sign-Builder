@@ -10,7 +10,7 @@ contract KaiSignTest is Test {
     RealityETH_v3_0 public realityETH = new RealityETH_v3_0();
     address public arbitrator;
     uint256 minBond = 1000000000000000;
-    uint32 timeout = 86400;
+    uint32 timeout = 172800; // 2 days instead of 24 hours
 
     function setUp() public {
         kaisign = new KaiSign(address(realityETH), arbitrator, minBond, timeout);
