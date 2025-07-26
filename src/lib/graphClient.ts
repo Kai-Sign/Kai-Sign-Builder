@@ -75,28 +75,40 @@ export class KaiSignGraphClient {
     selector: string, 
     chainID: string
   ): Promise<FunctionMetadata | null> {
+    // Query for specs that target this contract
     const query = `
-      query GetTransactionMetadata($contractId: String!, $selector: String!) {
-        functions(where: { 
-          contract: $contractId
-          selector: $selector
+      query GetContractSpecs($targetContract: Bytes!, $chainID: String!) {
+        specs(where: { 
+          targetContract: $targetContract
+          chainID: $chainID
         }) {
-          selector
-          name
-          intent
-          parameterTypes
-          displayFormat
+          id
+          ipfs
+          user
+          status
+          blockTimestamp
         }
       }
     `;
 
-    const contractId = `${contractAddress.toLowerCase()}-${chainID}`;
-    const data = await this.client.request<{ functions: FunctionMetadata[] }>(
+    const targetContract = contractAddress.toLowerCase();
+    const data = await this.client.request<{ specs: SpecData[] }>(
       query, 
-      { contractId, selector }
+      { targetContract, chainID }
     );
     
-    return data.functions[0] || null;
+    // If we have specs, return a placeholder indicating metadata is available
+    if (data.specs && data.specs.length > 0) {
+      return {
+        selector: selector,
+        name: `Contract Function ${selector}`,
+        intent: `Execute function ${selector} on contract`,
+        parameterTypes: [],
+        displayFormat: `function_${selector.slice(2, 10)}`
+      };
+    }
+    
+    return null;
   }
 
   /**
