@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { KaiSignGraphClient } from '~/lib/graphClient';
 
 // Get the graph endpoint from environment variables
-const GRAPH_ENDPOINT = process.env.KAISIGN_GRAPH_ENDPOINT || 'https://api.thegraph.com/subgraphs/name/kai-sign/kaisign-sepolia';
+const GRAPH_ENDPOINT = process.env.NEXT_PUBLIC_KAISIGN_GRAPH_URL || 'https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.5';
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
