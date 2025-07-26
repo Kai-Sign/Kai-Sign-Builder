@@ -244,41 +244,6 @@ export default function FileUploader() {
     }
   };
   
-  const connectWallet = async () => {
-    setIsConnectingWallet(true);
-    
-    try {
-      // Connect to MetaMask
-      const account = await web3Service.connect();
-      setCurrentWalletAddress(account);
-      setWalletConnected(true);
-      
-      // Get bond information - if we have an IPFS hash, get specific info, otherwise get general minimum
-      if (ipfsHash) {
-        const bondData = await web3Service.getBondInfo(ipfsHash);
-        setBondInfo(bondData);
-        setMinBond(bondData.requiredNextBond.toString());
-      } else {
-        const minBondAmount = await web3Service.getMinBond();
-        setMinBond(minBondAmount.toString());
-      }
-      
-      toast({
-        title: "Wallet Connected",
-        description: `Connected to wallet: ${account.substring(0, 6)}...${account.substring(account.length - 4)}`,
-        variant: "default",
-      });
-    } catch (error: any) {
-      console.error("Error connecting wallet:", error);
-      toast({
-        title: "Wallet Connection Failed",
-        description: error.message || "Failed to connect to wallet. Please try again.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsConnectingWallet(false);
-    }
-  };
 
   const loadAvailableIncentives = async () => {
     if (!targetContract) return;
@@ -388,7 +353,7 @@ export default function FileUploader() {
     try {
       // Connect to wallet if not already connected
       if (!walletConnected) {
-        await connectWallet();
+        await walletContextConnect();
       }
       
       // Get the questionId from the contract
@@ -744,12 +709,12 @@ export default function FileUploader() {
                 </Button>
               ) : !walletConnected ? (
                 <Button
-                  onClick={connectWallet}
-                  disabled={isConnectingWallet}
+                  onClick={walletContextConnect}
+                  disabled={isConnecting}
                   size="lg"
                   className="w-full px-8 py-6 mt-2 text-base bg-blue-600 text-white hover:bg-blue-700"
                 >
-                  {isConnectingWallet ? (
+                  {isConnecting ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Connecting Wallet...
@@ -810,7 +775,7 @@ export default function FileUploader() {
                       )}
                     </Button>
                     <Button
-                      onClick={connectWallet}
+                      onClick={walletContextConnect}
                       variant="outline"
                       size="lg"
                       className="px-4 py-6 text-base border-gray-300 hover:bg-gray-50"

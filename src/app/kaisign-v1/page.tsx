@@ -11,6 +11,7 @@ import { Badge } from "~/components/ui/badge";
 import { useToast } from "~/hooks/use-toast";
 import { web3Service } from "~/lib/web3Service";
 import { createKaiSignClient } from "~/lib/graphClient";
+import { useWallet } from "~/contexts/WalletContext";
 import { 
   Gift, 
   Wallet, 
@@ -54,9 +55,7 @@ interface SpecData {
 }
 
 export default function KaiSignV1Page() {
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [currentAccount, setCurrentAccount] = useState<string>("");
-  const [isConnecting, setIsConnecting] = useState(false);
+  const { walletConnected, currentAccount, isConnecting, connectWallet } = useWallet();
   const { toast } = useToast();
 
   // Incentive creation state
@@ -123,33 +122,17 @@ export default function KaiSignV1Page() {
   };
 
   useEffect(() => {
-    checkWalletConnection();
-  }, []);
-
-  const checkWalletConnection = async () => {
-    try {
-      const account = await web3Service.getCurrentAccount();
-      if (account) {
-        setCurrentAccount(account);
-        setWalletConnected(true);
-        await loadUserData(account);
-      }
-    } catch (error) {
-      console.error("Error checking wallet connection:", error);
+    if (walletConnected && currentAccount) {
+      loadUserData(currentAccount);
     }
-  };
+  }, [walletConnected, currentAccount]);
 
-  const connectWallet = async () => {
-    setIsConnecting(true);
+  const handleConnect = async () => {
     try {
-      const account = await web3Service.connect();
-      setCurrentAccount(account);
-      setWalletConnected(true);
-      await loadUserData(account);
-      
+      await connectWallet();
       toast({
         title: "Wallet Connected",
-        description: `Connected to ${account.substring(0, 6)}...${account.substring(account.length - 4)}`,
+        description: `Connected to ${currentAccount?.substring(0, 6)}...${currentAccount?.substring(currentAccount.length - 4)}`,
         variant: "default",
       });
     } catch (error: any) {
@@ -158,8 +141,6 @@ export default function KaiSignV1Page() {
         description: error.message || "Failed to connect wallet",
         variant: "destructive",
       });
-    } finally {
-      setIsConnecting(false);
     }
   };
 
@@ -240,9 +221,26 @@ export default function KaiSignV1Page() {
       // Always run direct contract queries as fallback (either due to error or 0 results)
       if (userSpecs.length === 0) {
         try {
-          console.log("🔍 Running comprehensive contract query for KaiSign specs...");
-          const contractsToCheck = new Set<string>();
-          contractsToCheck.add("0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf");
+          console.log("🔍 Running comprehensive user spec discovery...");
+          
+          // Get all user incentives to find target contracts
+          const contractsFromIncentives = new Set<string>();
+          validIncentives.forEach(incentive => {
+            contractsFromIncentives.add(incentive.targetContract);
+          });
+          
+          // Add common KaiSign contract addresses
+          const knownKaiSignContracts = [
+            "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf", // Current known address
+            // Add more known KaiSign deployments here as needed
+          ];
+          
+          const contractsToCheck = new Set([
+            ...contractsFromIncentives,
+            ...knownKaiSignContracts
+          ]);
+          
+          console.log(`🔍 Checking ${contractsToCheck.size} contracts for user specs:`, Array.from(contractsToCheck));
           
           for (const targetContract of contractsToCheck) {
             try {
@@ -551,7 +549,7 @@ export default function KaiSignV1Page() {
             </p>
             
             <Button
-              onClick={connectWallet}
+              onClick={handleConnect}
               disabled={isConnecting}
               size="lg"
               className="bg-blue-600 hover:bg-blue-700"
@@ -1004,14 +1002,198 @@ export default function KaiSignV1Page() {
             <Card className="p-6 bg-gray-950 border-gray-800">
               <h2 className="text-xl font-medium mb-4">Your Specifications</h2>
               
-              <div className="mb-4 flex gap-2">
-                <Link href="/verification-results">
-                  <Button className="bg-blue-600 hover:bg-blue-700">
-                    <FileText className="mr-2 h-4 w-4" />
-                    Create New Specification
-                  </Button>
-                </Link>
+              <div className="mb-4 space-y-4">
+                <div className="flex gap-2">
+                  <Link href="/verification-results">
+                    <Button className="bg-blue-600 hover:bg-blue-700">
+                      <FileText className="mr-2 h-4 w-4" />
+                      Create New Specification
+                    </Button>
+                  </Link>
+                </div>
                 
+                {/* Manual Search */}
+                <div className="space-y-4">
+                  {/* Search by Spec ID */}
+                  <div className="p-4 bg-yellow-950/30 border border-yellow-700 rounded">
+                    <h3 className="text-sm font-medium text-yellow-200 mb-2">🔍 Add Spec by ID</h3>
+                    <p className="text-xs text-yellow-300 mb-3">
+                      Paste a spec ID directly if you know it:
+                    </p>
+                    <div className="flex gap-2">
+                      <Input
+                        value={selectedContract}
+                        onChange={(e) => setSelectedContract(e.target.value)}
+                        placeholder="0x7f3da9d8b0a35a8114c93ca6c1e265af7e1a13948bfbbdfab10fdc3b4ca7340e..."
+                        className="bg-gray-900 border-gray-700 text-xs font-mono"
+                      />
+                      <Button
+                        onClick={async () => {
+                          if (!selectedContract) return;
+                          
+                          setIsSearchingSpecs(true);
+                          try {
+                            console.log(`🔍 Adding spec by ID: ${selectedContract}`);
+                            const specData = await web3Service.getSpecData(selectedContract);
+                            
+                            if (specData.creator.toLowerCase() === currentAccount?.toLowerCase()) {
+                              const newSpec: SpecData = {
+                                specId: selectedContract,
+                                creator: specData.creator,
+                                targetContract: specData.targetContract,
+                                ipfs: specData.ipfs,
+                                status: specData.status,
+                                createdTimestamp: specData.createdTimestamp,
+                                proposedTimestamp: specData.proposedTimestamp,
+                                totalBonds: specData.totalBonds,
+                                bondsSettled: specData.bondsSettled
+                              };
+                              
+                              // Check if already exists
+                              const existingSpecIds = contractSpecs.map(s => s.specId);
+                              if (!existingSpecIds.includes(selectedContract)) {
+                                setContractSpecs([...contractSpecs, newSpec]);
+                                toast({
+                                  title: "Specification Added! 🎉",
+                                  description: `Status: ${specData.status === 2 ? 'PROPOSED - Ready to finalize!' : specData.status === 3 ? 'FINALIZED' : 'Status ' + specData.status}`,
+                                  variant: "default",
+                                });
+                                setSelectedContract(""); // Clear input
+                              } else {
+                                toast({
+                                  title: "Already Added",
+                                  description: `This specification is already in your list`,
+                                  variant: "default",
+                                });
+                              }
+                            } else {
+                              toast({
+                                title: "Not Your Specification",
+                                description: `This specification was created by ${specData.creator.substring(0, 8)}..., not you`,
+                                variant: "destructive",
+                              });
+                            }
+                          } catch (error: any) {
+                            toast({
+                              title: "Invalid Spec ID",
+                              description: error.message || "Specification not found",
+                              variant: "destructive",
+                            });
+                          } finally {
+                            setIsSearchingSpecs(false);
+                          }
+                        }}
+                        disabled={isSearchingSpecs || !selectedContract}
+                        size="sm"
+                        className="bg-yellow-600 hover:bg-yellow-700 text-xs"
+                      >
+                        {isSearchingSpecs ? (
+                          <Loader2 className="h-3 w-3 animate-spin" />
+                        ) : (
+                          "Add Spec"
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+
+                  {/* Search by Target Contract */}
+                  <div className="p-4 bg-blue-950/30 border border-blue-700 rounded">
+                    <h3 className="text-sm font-medium text-blue-200 mb-2">🔍 Find Specs by Target Contract</h3>
+                    <p className="text-xs text-blue-300 mb-3">
+                      Search for your specs targeting a specific contract address:
+                    </p>
+                    <div className="flex gap-2">
+                      <Input
+                        value={specSearchContract}
+                        onChange={(e) => setSpecSearchContract(e.target.value)}
+                        placeholder="0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238..."
+                        className="bg-gray-900 border-gray-700 text-xs font-mono"
+                      />
+                      <Button
+                        onClick={async () => {
+                          if (!specSearchContract) return;
+                          
+                          setIsSearchingSpecs(true);
+                          try {
+                            console.log(`🔍 Searching specs for target contract: ${specSearchContract}`);
+                            const specIds = await web3Service.getSpecsByContract(specSearchContract, 11155111);
+                            console.log(`📋 Found ${specIds.length} specs targeting ${specSearchContract}`);
+                            
+                            const userSpecsFromSearch: SpecData[] = [];
+                            
+                            for (const specId of specIds) {
+                              try {
+                                const specData = await web3Service.getSpecData(specId);
+                                if (specData.creator.toLowerCase() === currentAccount?.toLowerCase()) {
+                                  userSpecsFromSearch.push({
+                                    specId,
+                                    creator: specData.creator,
+                                    targetContract: specData.targetContract,
+                                    ipfs: specData.ipfs,
+                                    status: specData.status,
+                                    createdTimestamp: specData.createdTimestamp,
+                                    proposedTimestamp: specData.proposedTimestamp,
+                                    totalBonds: specData.totalBonds,
+                                    bondsSettled: specData.bondsSettled
+                                  });
+                                }
+                              } catch (error) {
+                                console.error(`Error loading spec ${specId}:`, error);
+                              }
+                            }
+                            
+                            // Add new specs to existing ones (avoid duplicates)
+                            const existingSpecIds = contractSpecs.map(s => s.specId);
+                            const newSpecs = userSpecsFromSearch.filter(s => !existingSpecIds.includes(s.specId));
+                            
+                            if (newSpecs.length > 0) {
+                              setContractSpecs([...contractSpecs, ...newSpecs]);
+                              toast({
+                                title: "Specs Found! 🎉",
+                                description: `Found ${newSpecs.length} specification(s) targeting ${specSearchContract.substring(0, 8)}...`,
+                                variant: "default",
+                              });
+                              
+                              // Check if any are ready to finalize
+                              const proposedSpecs = newSpecs.filter(s => s.status === 2);
+                              if (proposedSpecs.length > 0) {
+                                toast({
+                                  title: "Ready to Finalize! 🚀",
+                                  description: `${proposedSpecs.length} spec(s) are PROPOSED and ready for handleResult`,
+                                  variant: "default",
+                                });
+                              }
+                            } else {
+                              toast({
+                                title: "No New Specs Found",
+                                description: `No specifications created by you targeting ${specSearchContract.substring(0, 8)}...`,
+                                variant: "default",
+                              });
+                            }
+                          } catch (error: any) {
+                            toast({
+                              title: "Search Failed",
+                              description: error.message || "Failed to search contract",
+                              variant: "destructive",
+                            });
+                          } finally {
+                            setIsSearchingSpecs(false);
+                          }
+                        }}
+                        disabled={isSearchingSpecs || !specSearchContract}
+                        size="sm"
+                        className="bg-blue-600 hover:bg-blue-700 text-xs"
+                      >
+                        {isSearchingSpecs ? (
+                          <Loader2 className="h-3 w-3 animate-spin" />
+                        ) : (
+                          "Search Contract"
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              
                 <Button
                   onClick={async () => {
                     setIsLoadingData(true);
@@ -1019,12 +1201,53 @@ export default function KaiSignV1Page() {
                       console.log("🔍 === COMPREHENSIVE SPEC DEBUG ===");
                       console.log("Current account:", currentAccount);
                       
-                      // Check KaiSign contract directly
-                      const kaisignContract = "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf";
-                      console.log("🔍 Checking KaiSign contract:", kaisignContract);
+                      // Get all contracts to check from incentives and known contracts
+                      const contractsFromIncentives = new Set<string>();
+                      userIncentives.forEach(incentive => {
+                        contractsFromIncentives.add(incentive.targetContract);
+                      });
                       
-                      // Get ALL specs for this contract on Sepolia
-                      const allSpecIds = await web3Service.getSpecsByContract(kaisignContract, 11155111);
+                      const knownKaiSignContracts = [
+                        "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf", // Current known address
+                        // Add more known KaiSign deployments here
+                      ];
+                      
+                      const allContractsToCheck = new Set([
+                        ...contractsFromIncentives,
+                        ...knownKaiSignContracts
+                      ]);
+                      
+                      console.log(`🔍 Checking ${allContractsToCheck.size} contracts:`, Array.from(allContractsToCheck));
+                      
+                      let allSpecIds: string[] = [];
+                      
+                      // First try event-based discovery (most reliable)
+                      try {
+                        console.log("🔍 Trying event-based spec discovery...");
+                        const eventBasedSpecs = await web3Service.getAllUserSpecsByEvents(currentAccount);
+                        allSpecIds.push(...eventBasedSpecs);
+                        console.log(`📋 Found ${eventBasedSpecs.length} specs via events`);
+                      } catch (eventError) {
+                        console.error("Event-based discovery failed:", eventError);
+                      }
+                      
+                      // Then try contract-based discovery as fallback
+                      for (const contractAddress of allContractsToCheck) {
+                        try {
+                          console.log(`🔍 Getting specs from contract: ${contractAddress}`);
+                          const contractSpecs = await web3Service.getSpecsByContract(contractAddress, 11155111);
+                          console.log(`📋 Found ${contractSpecs.length} specs in ${contractAddress}`);
+                          
+                          // Add specs that aren't already found via events
+                          for (const specId of contractSpecs) {
+                            if (!allSpecIds.includes(specId)) {
+                              allSpecIds.push(specId);
+                            }
+                          }
+                        } catch (error) {
+                          console.error(`Error getting specs from ${contractAddress}:`, error);
+                        }
+                      }
                       console.log(`📋 ALL specs in contract (${allSpecIds.length}):`, allSpecIds);
                       
                       // Check each spec to see if it belongs to you

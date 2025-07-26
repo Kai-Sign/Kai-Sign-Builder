@@ -1296,6 +1296,67 @@ export class Web3Service {
   }
 
   /**
+   * Get ALL specs for a user by querying SpecRevealed events
+   */
+  async getAllUserSpecsByEvents(userAddress: string): Promise<string[]> {
+    try {
+      if (!this.contract || !this.provider) {
+        throw new Error("Not connected to MetaMask. Please connect first.");
+      }
+
+      console.log(`🔍 Finding ALL specs for user via events: ${userAddress}`);
+      
+      // Get recent blocks to search for events
+      const currentBlock = await this.provider.getBlockNumber();
+      const fromBlock = Math.max(0, currentBlock - 50000); // Last ~7 days on mainnet
+      
+      console.log(`🔍 Searching SpecRevealed events from block ${fromBlock} to ${currentBlock}`);
+      
+      // Query SpecRevealed events for this user
+      const filter = this.contract.filters.SpecRevealed(null, userAddress, null);
+      const events = await this.contract.queryFilter(filter, fromBlock, currentBlock);
+      
+      console.log(`📋 Found ${events.length} SpecRevealed events for user`);
+      
+      const userSpecs: string[] = [];
+      for (const event of events) {
+        if (event.args && event.args.specId) {
+          const specId = event.args.specId;
+          console.log(`✅ Found user spec from events: ${specId}`);
+          userSpecs.push(specId);
+        }
+      }
+      
+      // Also check LogRevealSpec events (older format)
+      try {
+        const logRevealFilter = this.contract.filters.LogRevealSpec(userAddress, null, null, null);
+        const logRevealEvents = await this.contract.queryFilter(logRevealFilter, fromBlock, currentBlock);
+        
+        console.log(`📋 Found ${logRevealEvents.length} LogRevealSpec events for user`);
+        
+        for (const event of logRevealEvents) {
+          if (event.args && event.args.specID) {
+            const specId = event.args.specID;
+            console.log(`✅ Found user spec from LogRevealSpec events: ${specId}`);
+            if (!userSpecs.includes(specId)) {
+              userSpecs.push(specId);
+            }
+          }
+        }
+      } catch (logError) {
+        console.log("LogRevealSpec events not found, this is expected for newer contracts");
+      }
+      
+      console.log(`📋 Total user specs found via events: ${userSpecs.length}`, userSpecs);
+      return userSpecs;
+      
+    } catch (error) {
+      console.error("Error getting user specs by events:", error);
+      throw error;
+    }
+  }
+
+  /**
    * Get contract spec count (V1 feature)
    */
   async getContractSpecCount(contractAddress: string): Promise<number> {
