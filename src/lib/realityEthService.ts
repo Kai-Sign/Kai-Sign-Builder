@@ -8,7 +8,7 @@ const getEnvVar = (key: string, fallback: string = ""): string => {
 
 // GraphQL endpoint for KaiSign subgraph
 const KAISIGN_GRAPH_URL = process.env.NEXT_PUBLIC_KAISIGN_GRAPH_URL || 
-  "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.2"
+  "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.3"
 
 // Structure for the Reality.eth question data
 interface RealityEthQuestion {

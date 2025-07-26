@@ -364,12 +364,12 @@ export default function FileUploader() {
       try {
         // Log subgraph URL for debugging
         console.log("Using KaiSign subgraph URL:", process.env.NEXT_PUBLIC_KAISIGN_GRAPH_URL || 
-          "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.2");
+          "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.3");
         
         // Add a simple direct request to test connectivity
         try {
           const testResponse = await fetch(process.env.NEXT_PUBLIC_KAISIGN_GRAPH_URL || 
-            "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.2", {
+            "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.3", {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
