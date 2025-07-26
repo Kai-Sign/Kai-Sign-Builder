@@ -58,7 +58,7 @@ export default function VerificationResultsPage() {
             <h3 className="mb-3 text-lg font-medium text-purple-200">V1 Features:</h3>
             <ul className="list-inside list-disc space-y-2 text-gray-300">
               <li><strong>Commit-Reveal Pattern:</strong> Prevents front-running with two-step submission process</li>
-              <li><strong>Contract Targeting:</strong> Link specifications to specific smart contract addresses</li>
+              <li><strong>Cross-Chain Contract Targeting:</strong> Link specifications to contracts on any blockchain with chain ID support</li>
               <li><strong>Incentive System:</strong> Create rewards for quality ERC7730 specifications</li>
               <li><strong>Enhanced Security:</strong> ReentrancyGuard, AccessControl, and Pausable functionality</li>
               <li><strong>Bond Settlement:</strong> Automated distribution of bonds to winning parties</li>
@@ -70,7 +70,7 @@ export default function VerificationResultsPage() {
             <h3 className="mb-3 text-lg font-medium text-purple-200">Process Overview:</h3>
             <ol className="list-inside list-decimal space-y-2 text-gray-300">
               <li>Upload your ERC7730 JSON specification</li>
-              <li>Optionally specify a target contract address</li>
+              <li>Specify target contract address and chain ID</li>
               <li>Submit with minimum bond (commit-reveal handled automatically)</li>
               <li>Community can challenge within 48-hour window</li>
               <li>Finalize result and claim rewards if accepted</li>
@@ -79,7 +79,7 @@ export default function VerificationResultsPage() {
 
           <div className="mt-6 p-4 bg-purple-900 rounded-lg">
             <p className="text-sm text-purple-200">
-              <strong>V1 Contract:</strong> 0x79D0e06350CfCE33A7a73A7549248fd6AeD774f2 on Sepolia Testnet
+              <strong>V1 Contract:</strong> 0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf on Sepolia Testnet
               <br />
               <strong>Note:</strong> The V1 system includes enhanced security features and gas optimizations. 
               All interactions are logged and can be tracked through the contract events.
