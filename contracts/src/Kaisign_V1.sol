@@ -8,9 +8,6 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/Pausable.sol";
 
-// ✅ SECURITY NOTE: RealityETH dependency has uninitialized local variable 'i' 
-// at line 889, but this is safe as Solidity zero-initializes local variables by default
-
 contract KaiSign is ReentrancyGuard, AccessControl, Pausable {
     using SafeERC20 for IERC20;
 
@@ -34,6 +31,7 @@ contract KaiSign is ReentrancyGuard, AccessControl, Pausable {
     error IncentiveExpired();
     error Unauthorized();
     error ClawbackTooEarly();
+    error IncentiveAlreadyActive();
 
     // =============================================================================
     //                                   ROLES
@@ -68,6 +66,7 @@ contract KaiSign is ReentrancyGuard, AccessControl, Pausable {
     // Incentive system
     mapping(bytes32 => IncentiveData) public incentives;
     mapping(address => bytes32[]) public userIncentives;
+    mapping(uint256 => mapping(address => mapping(address => bytes32))) public currentIncentive;
     
     // Spec management
     mapping(bytes32 => ERC7730Spec) public specs;
@@ -282,7 +281,7 @@ contract KaiSign is ReentrancyGuard, AccessControl, Pausable {
 
         // Create Reality.eth template
         templateId = RealityETH_v3_0(realityETH).createTemplate(
-            '{"title": "Is the ERC7730 specification correct?", "type": "bool", "category": "misc"}'
+            '{"title": "Is the ERC7730 specification %s for contract %s on chain %s correct?", "type": "bool", "category": "misc"}'
         );
     }
 
@@ -327,12 +326,9 @@ contract KaiSign is ReentrancyGuard, AccessControl, Pausable {
     ) external payable nonReentrant whenNotPaused returns (bytes32 incentiveId) {
         if (targetContract == address(0)) revert InvalidContract();
         if (targetChainId == 0) revert InvalidContract();
-        // No overflow check needed - using uint256 throughout
+        if (amount > type(uint128).max) revert InsufficientIncentive(); // Prevent overflow
         if (duration == 0 || duration > 30 days) revert IncentiveExpired();
         
-        // Note: Contract existence check removed to support cross-chain incentives
-        // The UI will handle contract verification through explorer APIs
-
         incentiveId = keccak256(abi.encodePacked(
             msg.sender,
             targetContract,
@@ -375,6 +371,15 @@ contract KaiSign is ReentrancyGuard, AccessControl, Pausable {
 
         userIncentives[msg.sender].push(incentiveId);
 
+        bytes32 active = currentIncentive[targetChainId][targetContract][token];
+        if (active != bytes32(0)) {
+            IncentiveData storage existing = incentives[active];
+            if (existing.isActive && !existing.isClaimed && block.timestamp <= existing.deadline) {
+                revert IncentiveAlreadyActive();
+            }
+        }
+        currentIncentive[targetChainId][targetContract][token] = incentiveId;
+
         emit LogIncentiveCreated(
             incentiveId,
             msg.sender,
@@ -394,33 +399,21 @@ contract KaiSign is ReentrancyGuard, AccessControl, Pausable {
     function commitSpec(
         bytes32 commitment,
         address targetContract,
-        uint256 targetChainId,
-        bytes32 incentiveId
+        uint256 targetChainId
     ) external payable nonReentrant whenNotPaused {
         if (targetContract == address(0)) revert InvalidContract();
         if (targetChainId == 0) revert InvalidContract();
         // No overflow check needed - using uint256 throughout
         
-        // Note: Contract existence check removed to support cross-chain incentives
-        // The UI will handle contract verification through explorer APIs
-
         if (msg.value < minBond) revert InsufficientBond();
-
-        // Validate incentive if provided
-        if (incentiveId != bytes32(0)) {
-            IncentiveData storage incentive = incentives[incentiveId]; // ✅ GAS: Use storage instead of memory
-            if (!incentive.isActive || incentive.isClaimed) revert NoIncentiveToClaim();
-            if (incentive.targetContract != targetContract) revert InvalidContract();
-            if (incentive.chainId != targetChainId) revert InvalidContract();
-            if (block.timestamp > incentive.deadline) revert IncentiveExpired();
-        }
-
-        // ✅ GAS: Cache timestamp to avoid multiple TIMESTAMP opcodes
-        uint64 currentTime = uint64(block.timestamp);
         
-        // Calculate platform fee and net bond amount first
+        // Check for uint80 overflow before storing bond amount
         uint256 platformFee = (msg.value * PLATFORM_FEE_PERCENT) / 100;
         uint256 netBondAmount = msg.value - platformFee;
+        if (netBondAmount > type(uint80).max) revert InsufficientBond(); // Prevent overflow
+
+
+        uint64 currentTime = uint64(block.timestamp);
 
         bytes32 commitmentId = keccak256(abi.encodePacked(
             commitment,
@@ -440,7 +433,7 @@ contract KaiSign is ReentrancyGuard, AccessControl, Pausable {
             reserved: 0,
             revealDeadline: currentTime + uint64(COMMIT_REVEAL_TIMEOUT),
             chainId: targetChainId,
-            incentiveId: incentiveId
+            incentiveId: bytes32(0)
         });
         
         if (platformFee > 0) {
@@ -472,6 +465,24 @@ contract KaiSign is ReentrancyGuard, AccessControl, Pausable {
 
         // Validate IPFS CID format
         if (bytes(ipfs).length == 0 || bytes(ipfs).length > 256) revert InvalidIPFS();
+        {
+            bytes memory ipfsBytes = bytes(ipfs);
+            bytes memory delimBytes = bytes(unicode"␟");
+            if (ipfsBytes.length >= delimBytes.length) {
+                for (uint256 i = 0; i <= ipfsBytes.length - delimBytes.length; i++) {
+                    bool matchDelim = true;
+                    for (uint256 j = 0; j < delimBytes.length; j++) {
+                        if (ipfsBytes[i + j] != delimBytes[j]) {
+                            matchDelim = false;
+                            break;
+                        }
+                    }
+                    if (matchDelim) {
+                        revert InvalidIPFS();
+                    }
+                }
+            }
+        }
 
         // Verify commitment: reconstruct the original commitmentId
         bytes32 expectedCommitment = keccak256(abi.encodePacked(ipfs, nonce));
@@ -480,7 +491,7 @@ contract KaiSign is ReentrancyGuard, AccessControl, Pausable {
             commitment.committer,
             commitment.targetContract,
             commitment.chainId,
-            uint256(commitment.commitTimestamp)
+            commitment.commitTimestamp
         ));
 
         if (reconstructedCommitmentId != commitmentId) revert InvalidReveal();
@@ -511,7 +522,7 @@ contract KaiSign is ReentrancyGuard, AccessControl, Pausable {
             targetContract: commitment.targetContract,
             ipfs: ipfs,
             questionId: bytes32(0),
-            incentiveId: commitment.incentiveId,
+            incentiveId: bytes32(0),
             chainId: commitment.chainId
         });
 
@@ -535,7 +546,7 @@ contract KaiSign is ReentrancyGuard, AccessControl, Pausable {
             commitment.targetContract,
             commitment.chainId,
             block.timestamp,
-            commitment.incentiveId
+            bytes32(0)
         );
 
         emit LogContractSpecAdded(
@@ -567,8 +578,8 @@ contract KaiSign is ReentrancyGuard, AccessControl, Pausable {
         uint256 totalBond = spec.totalBonds + msg.value;
         
         if (totalBond < minBond) revert InsufficientBond();
+        if (totalBond > type(uint80).max) revert InsufficientBond(); // Prevent overflow
 
-        // ✅ SECURITY FIX: Apply Checks-Effects-Interactions pattern
         // 1. CHECKS - All validation done above
         
         // 2. EFFECTS - Update state before external calls
@@ -580,20 +591,19 @@ contract KaiSign is ReentrancyGuard, AccessControl, Pausable {
         userBonds[specID][msg.sender] += msg.value;
 
         // 3. INTERACTIONS - External calls last
-        // Create Reality.eth question with 48 hour timeout
-        string memory questionText = string(abi.encodePacked(
-            "Is the ERC7730 specification ",
+         // Create Reality.eth question with 48 hour timeout
+        string memory delim = unicode"␟";
+        string memory questionParams = string(abi.encodePacked(
             spec.ipfs,
-            " for contract ",
+            delim,
             _addressToString(spec.targetContract),
-            " on chain ",
-            _uint256ToString(spec.chainId),
-            " correct?"
+            delim,
+            _uint256ToString(spec.chainId)
         ));
-        
+
         spec.questionId = RealityETH_v3_0(realityETH).askQuestionWithMinBond{value: totalBond}(
             templateId,
-            questionText,
+            questionParams,
             arbitrator,
             DEFAULT_TIMEOUT, // 48 hours - will extend by 24h on each challenge
             0,
@@ -603,8 +613,6 @@ contract KaiSign is ReentrancyGuard, AccessControl, Pausable {
 
         emit LogProposeSpec(msg.sender, specID, spec.questionId, totalBond);
 
-        // ✅ SECURITY FIX: Remove auto-assertion to prevent reentrancy
-        // Users can manually call assertSpecValid() if they want to assert validity
     }
 
     function assertSpecValid(bytes32 specID) external payable nonReentrant whenNotPaused {
@@ -660,9 +668,16 @@ contract KaiSign is ReentrancyGuard, AccessControl, Pausable {
         spec.status = Status.Finalized;
         emit LogHandleResult(specID, specAccepted);
 
-        // Handle incentive claiming
-        if (spec.incentiveId != bytes32(0) && specAccepted) {
-            _claimIncentive(spec.incentiveId, specID, spec.creator);
+        if (specAccepted) {
+            bytes32 ethIncId = currentIncentive[spec.chainId][spec.targetContract][address(0)];
+            if (ethIncId != bytes32(0)) {
+                IncentiveData storage inc = incentives[ethIncId];
+                if (inc.isActive && !inc.isClaimed && block.timestamp <= inc.deadline) {
+                    // claim and clear the current incentive mapping
+                    currentIncentive[spec.chainId][spec.targetContract][address(0)] = bytes32(0);
+                    _claimIncentive(ethIncId, specID, spec.creator);
+                }
+            }
         }
     }
 
@@ -712,8 +727,34 @@ contract KaiSign is ReentrancyGuard, AccessControl, Pausable {
             // ERC20 clawback - no platform fee on clawback
             IERC20(incentive.token).safeTransfer(msg.sender, clawbackAmount);
         }
+
+        currentIncentive[incentive.chainId][incentive.targetContract][incentive.token] = bytes32(0);
         
         emit LogIncentiveClawback(incentiveId, msg.sender, clawbackAmount);
+    }
+
+    /**
+     * @notice Claim an active ERC20 token incentive for a finalized and accepted spec.
+     * @dev ETH incentives are claimed automatically in handleResult, so only non-zero
+     *      token addresses should be passed here. Reverts if the spec is not finalized,
+     *      the caller is not the spec creator, or there is no active incentive for
+     *      this token.
+     * @param specID The spec identifier for which to claim the incentive
+     * @param token The ERC20 token address of the incentive to claim
+     */
+    function claimActiveTokenIncentive(bytes32 specID, address token) external nonReentrant whenNotPaused {
+        if (token == address(0)) revert InvalidContract(); // ETH incentives claimed via handleResult
+        ERC7730Spec storage spec = specs[specID];
+        if (spec.status != Status.Finalized) revert NotFinalized();
+        // Only the creator of the accepted spec can claim the incentive
+        if (msg.sender != spec.creator) revert Unauthorized();
+        bytes32 incId = currentIncentive[spec.chainId][spec.targetContract][token];
+        if (incId == bytes32(0)) revert NoIncentiveToClaim();
+        IncentiveData storage inc = incentives[incId];
+        if (!inc.isActive || inc.isClaimed || block.timestamp > inc.deadline) revert NoIncentiveToClaim();
+        // Clear mapping to allow future incentives for this token
+        currentIncentive[spec.chainId][spec.targetContract][token] = bytes32(0);
+        _claimIncentive(incId, specID, spec.creator);
     }
 
     // =============================================================================

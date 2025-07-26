@@ -13,6 +13,7 @@ import { useToast } from "~/hooks/use-toast";
 import { uploadToIPFS } from "~/lib/ipfsService";
 import { web3Service } from "~/lib/web3Service";
 import { useRouter } from "next/navigation";
+import { useWallet } from "~/contexts/WalletContext";
 import { getQuestionData, hasFinalizationTimePassed, getTimeRemainingUntilFinalization } from "~/lib/realityEthService";
 
 export default function FileUploader() {
@@ -22,11 +23,9 @@ export default function FileUploader() {
   const [jsonData, setJsonData] = useState<any>(null);
   const [ipfsHash, setIpfsHash] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [isConnectingWallet, setIsConnectingWallet] = useState(false);
-  const [walletConnected, setWalletConnected] = useState(false);
+  const { walletConnected, currentAccount, connectWallet: walletContextConnect, isConnecting } = useWallet();
   const [isSendingTransaction, setIsSendingTransaction] = useState(false);
   const [transactionHash, setTransactionHash] = useState<string | null>(null);
-  const [currentWalletAddress, setCurrentWalletAddress] = useState<string | null>(null);
   const [minBond, setMinBond] = useState<string | null>(null);
   const [bondInfo, setBondInfo] = useState<{
     currentBond: bigint;
@@ -48,6 +47,17 @@ export default function FileUploader() {
   const [timeout, setTimeoutValue] = useState<string | null>(null);
   const [createdTimestamp, setCreatedTimestamp] = useState<string | null>(null);
   const [timeRemaining, setTimeRemaining] = useState<string | null>(null);
+  
+  // Commit/Reveal flow state
+  const [commitState, setCommitState] = useState<{
+    status: 'idle' | 'committing' | 'committed' | 'revealing' | 'revealed' | 'expired';
+    commitmentId?: string;
+    commitTxHash?: string;
+    revealDeadline?: number;
+    nonce?: number;
+    commitment?: string;
+    revealTxHash?: string;
+  }>({ status: 'idle' });
   const [isCheckingResult, setIsCheckingResult] = useState(false);
   const router = useRouter();
 
@@ -218,7 +228,7 @@ export default function FileUploader() {
       });
       
       // Connect wallet after IPFS upload
-      await connectWallet();
+      await walletContextConnect();
       
       // Load available incentives for the target contract
       await loadAvailableIncentives();
@@ -294,37 +304,72 @@ export default function FileUploader() {
     }
   };
   
-  const submitToBlockchain = async () => {
+  const commitSpec = async () => {
     if (!ipfsHash || !walletConnected) return;
     
-    setIsSendingTransaction(true);
+    setCommitState(prev => ({ ...prev, status: 'committing' }));
     
     try {
-      // Get the current required bond amount for this specific question
       const bondData = await web3Service.getBondInfo(ipfsHash);
       setBondInfo(bondData);
       const bondAmount = bondData.requiredNextBond;
+      // Incentives are created separately and automatically applied when the spec is accepted.
+      // Do not pass an incentiveId when committing.
+      const result = await web3Service.commitSpec(ipfsHash, bondAmount, targetContract || undefined, parseInt(targetChainId));
       
-      // Submit to blockchain using V1 contract (commit-reveal pattern)
-      // Convert selectedIncentiveId to bytes32, or use zero bytes if none selected
-      const incentiveId = selectedIncentiveId || "0x0000000000000000000000000000000000000000000000000000000000000000";
-      const txHash = await web3Service.submitSpec(ipfsHash, bondAmount, targetContract || undefined, parseInt(targetChainId), incentiveId);
-      setTransactionHash(txHash);
+      setCommitState({
+        status: 'committed',
+        commitmentId: result.commitmentId,
+        commitTxHash: result.commitTxHash,
+        revealDeadline: result.revealDeadline,
+        nonce: result.nonce,
+        commitment: result.commitment
+      });
       
       toast({
-        title: "Transaction Submitted",
-        description: `Successfully submitted transaction with hash: ${txHash.substring(0, 10)}...`,
+        title: "Commitment Submitted",
+        description: `Committed successfully! You have 1 hour to reveal. TX: ${result.commitTxHash.substring(0, 10)}...`,
         variant: "default",
       });
     } catch (error: any) {
-      console.error("Error submitting to blockchain:", error);
+      console.error("Error committing spec:", error);
+      setCommitState(prev => ({ ...prev, status: 'idle' }));
       toast({
-        title: "Transaction Failed",
-        description: error.message || "Failed to submit transaction. Please try again.",
+        title: "Commit Failed",
+        description: error.message || "Failed to commit. Please try again.",
         variant: "destructive",
       });
-    } finally {
-      setIsSendingTransaction(false);
+    }
+  };
+
+  const revealSpec = async () => {
+    if (commitState.status !== 'committed' || !commitState.commitmentId || !commitState.nonce) return;
+    
+    setCommitState(prev => ({ ...prev, status: 'revealing' }));
+    
+    try {
+      const txHash = await web3Service.revealSpec(commitState.commitmentId, ipfsHash!, commitState.nonce);
+      
+      setCommitState(prev => ({ 
+        ...prev, 
+        status: 'revealed',
+        revealTxHash: txHash
+      }));
+      setTransactionHash(txHash);
+      
+      toast({
+        title: "Reveal Successful",
+        description: `Spec revealed successfully! TX: ${txHash.substring(0, 10)}...`,
+        variant: "default",
+      });
+    } catch (error: any) {
+      console.error("Error revealing spec:", error);
+      setCommitState(prev => ({ ...prev, status: 'committed' }));
+      toast({
+        title: "Reveal Failed", 
+        description: error.message || "Failed to reveal. You can try again.",
+        variant: "destructive",
+      });
     }
   };
 
@@ -607,7 +652,7 @@ export default function FileUploader() {
                 <div className="grid grid-cols-1 gap-2">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-300">KaiSign V1:</span>
-                    <code className="text-blue-400 bg-gray-900 px-2 py-1 rounded text-xs">0x1e405904a01EC1CD3A1560EeEA36DccDB5CC82FB</code>
+                    <code className="text-blue-400 bg-gray-900 px-2 py-1 rounded text-xs">0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf</code>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-300">USDC Sepolia:</span>
@@ -713,27 +758,77 @@ export default function FileUploader() {
                     "Connect Wallet"
                   )}
                 </Button>
-              ) : !transactionHash ? (
+              ) : commitState.status === 'idle' ? (
                 <Button
-                  onClick={submitToBlockchain}
-                  disabled={isSendingTransaction}
+                  onClick={commitSpec}
+                  disabled={commitState.status === 'committing'}
                   size="lg"
-                  className="w-full px-8 py-6 mt-2 text-base bg-green-600 text-white hover:bg-green-700"
+                  className="w-full px-8 py-6 mt-2 text-base bg-blue-600 text-white hover:bg-blue-700"
                 >
-                  {isSendingTransaction ? (
+                  {commitState.status === 'committing' ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Submitting Transaction...
+                      Committing...
                     </>
                   ) : (
                     <>
-                      {bondInfo?.hasAnswers 
-                        ? `Challenge Answer (${bondInfo ? (Number(bondInfo.requiredNextBond) / 10**18).toFixed(5) : "..."} ETH)`
-                        : `Submit with Bond (${bondInfo ? (Number(bondInfo.requiredNextBond) / 10**18).toFixed(5) : minBond ? (Number(minBond) / 10**18).toFixed(5) : "..."} ETH)`
-                      }
+                      <Clock className="mr-2 h-4 w-4" />
+                      Commit Spec
                     </>
                   )}
                 </Button>
+              ) : commitState.status === 'committed' ? (
+                <div className="space-y-4">
+                  <div className="p-4 border border-blue-200 rounded-lg bg-blue-50">
+                    <div className="flex items-center mb-2">
+                      <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+                      <span className="font-medium text-green-800">Commitment Successful!</span>
+                    </div>
+                    <div className="text-sm text-gray-600 space-y-1">
+                      <div>Commitment ID: <code className="text-xs bg-gray-100 px-1 rounded">{commitState.commitmentId?.substring(0, 10)}...</code></div>
+                      <div>TX: <code className="text-xs bg-gray-100 px-1 rounded">{commitState.commitTxHash?.substring(0, 10)}...</code></div>
+                      <div className="text-orange-600 font-medium">⏰ You have 1 hour to reveal!</div>
+                    </div>
+                  </div>
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={revealSpec}
+                      disabled={commitState.status === 'revealing'}
+                      size="lg"
+                      className="flex-1 px-8 py-6 text-base bg-green-600 text-white hover:bg-green-700"
+                    >
+                      {commitState.status === 'revealing' ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Revealing...
+                        </>
+                      ) : (
+                        <>
+                          <CheckCircle className="mr-2 h-4 w-4" />
+                          Reveal Spec
+                        </>
+                      )}
+                    </Button>
+                    <Button
+                      onClick={connectWallet}
+                      variant="outline"
+                      size="lg"
+                      className="px-4 py-6 text-base border-gray-300 hover:bg-gray-50"
+                    >
+                      Reconnect Wallet
+                    </Button>
+                  </div>
+                </div>
+              ) : commitState.status === 'revealed' ? (
+                <div className="p-4 border border-green-200 rounded-lg bg-green-50">
+                  <div className="flex items-center mb-2">
+                    <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+                    <span className="font-medium text-green-800">Spec Successfully Submitted!</span>
+                  </div>
+                  <div className="text-sm text-gray-600 space-y-1">
+                    <div>Reveal TX: <code className="text-xs bg-gray-100 px-1 rounded">{commitState.revealTxHash?.substring(0, 10)}...</code></div>
+                  </div>
+                </div>
               ) : (
                 <div className="w-full p-4 bg-green-900/30 border border-green-700 rounded-lg text-center">
                   <p className="text-green-500 font-medium mb-1">Transaction Submitted!</p>

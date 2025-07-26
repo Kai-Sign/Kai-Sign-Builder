@@ -93,7 +93,7 @@ export default function KaiSignV1Page() {
       const convertedSpecs: SpecData[] = finalizedSpecs.map(spec => ({
         specId: spec.id,
         creator: spec.creator,
-        targetContract: spec.targetContract || "0x1e405904a01EC1CD3A1560EeEA36DccDB5CC82FB",
+        targetContract: spec.targetContract || "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf",
         ipfs: spec.ipfsCID,
         status: 3, // FINALIZED
         createdTimestamp: parseInt(spec.createdTimestamp),
@@ -212,7 +212,7 @@ export default function KaiSignV1Page() {
           const specData: SpecData = {
             specId: spec.id,
             creator: spec.creator,
-            targetContract: spec.targetContract || "0x1e405904a01EC1CD3A1560EeEA36DccDB5CC82FB",
+            targetContract: spec.targetContract || "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf",
             ipfs: spec.ipfsCID,
             status: statusMap[spec.status] || 0,
             createdTimestamp: parseInt(spec.createdTimestamp),
@@ -227,64 +227,37 @@ export default function KaiSignV1Page() {
         
         console.log(`📋 Total user specs loaded from subgraph: ${userSpecs.length}`);
         
-        // Manual decode for your known finalized specs - ADD DIRECTLY HERE
-        console.log("🔧 Adding manually decoded finalized specs...");
-        
-        if (account.toLowerCase() === "0xbb6e6d6dabd150c4a000d1fd8a7de46a750477f4") {
-          const manualSpecs: SpecData[] = [
-            {
-              specId: "0x1e48d88ee97e917e1a227d9d8833e0b0a03c691bfacbbc401d98ad9c4e4effcb",
-              creator: account,
-              targetContract: "0x1e405904a01EC1CD3A1560EeEA36DccDB5CC82FB",
-              ipfs: "QmXECco2A4M7E4yR58J4JZb3wL2P1KUx2JrkLPQkintE7n",
-              status: 3, // FINALIZED
-              createdTimestamp: 1737562528,
-              proposedTimestamp: 1737562528,
-              totalBonds: "4380663abb800",
-              bondsSettled: false
-            },
-            {
-              specId: "0x5641dde83086fdffa1536206eaa3cfc06339a6ce63353921642c38ec04378a8e",
-              creator: account,
-              targetContract: "0x1e405904a01EC1CD3A1560EeEA36DccDB5CC82FB",
-              ipfs: "QmXRiEdvA56LG86z3nTcyWVJAfhm3hy3joCcMS3pbGffCL",
-              status: 2, // PROPOSED (waiting for Reality.eth)
-              createdTimestamp: 1737563320,
-              proposedTimestamp: 1737563320,
-              totalBonds: "4380663abb800",
-              bondsSettled: false
-            }
-          ];
-          
-          // Add manual specs to userSpecs
-          manualSpecs.forEach(manualSpec => {
-            if (!userSpecs.find(s => s.specId === manualSpec.specId)) {
-              userSpecs.push(manualSpec);
-              console.log(`✅ Added manual spec: ${manualSpec.specId.substring(0, 8)}... status: ${manualSpec.status} IPFS: ${manualSpec.ipfs}`);
-            }
-          });
-          
-          console.log(`📋 Total specs after manual addition: ${userSpecs.length}`);
+        // Always run fallback contract query if subgraph returned 0 specs or had errors
+        if (userSpecs.length === 0) {
+          console.log("🔄 Subgraph returned 0 specs, running direct contract queries...");
         }
         
       } catch (error) {
         console.error("Error loading user specifications from subgraph:", error);
         console.log("🔄 Falling back to direct contract queries...");
-        
-        // Fallback to original method if subgraph fails
+      }
+      
+      // Always run direct contract queries as fallback (either due to error or 0 results)
+      if (userSpecs.length === 0) {
         try {
+          console.log("🔍 Running comprehensive contract query for KaiSign specs...");
           const contractsToCheck = new Set<string>();
-          contractsToCheck.add("0x1e405904a01EC1CD3A1560EeEA36DccDB5CC82FB");
+          contractsToCheck.add("0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf");
           
           for (const targetContract of contractsToCheck) {
             try {
-              const specIds = await web3Service.getSpecsByContract(targetContract);
+              console.log(`🔍 Checking contract: ${targetContract}`);
+              const specIds = await web3Service.getSpecsByContract(targetContract, 11155111);
+              console.log(`📋 Found ${specIds.length} specs in contract:`, specIds);
               
               for (const specId of specIds) {
                 try {
+                  console.log(`🔍 Getting data for spec: ${specId}`);
                   const specData = await web3Service.getSpecData(specId);
+                  console.log(`📋 Spec data:`, specData);
                   
                   if (specData.creator.toLowerCase() === account.toLowerCase()) {
+                    console.log(`✅ FOUND YOUR SPEC: ${specId}`);
                     if (!userSpecs.find(s => s.specId === specId)) {
                       userSpecs.push({
                         specId,
@@ -298,6 +271,8 @@ export default function KaiSignV1Page() {
                         bondsSettled: specData.bondsSettled
                       });
                     }
+                  } else {
+                    console.log(`❌ Not your spec. Creator: ${specData.creator}, You: ${account}`);
                   }
                 } catch (error) {
                   console.error(`Error loading spec ${specId}:`, error);
@@ -307,49 +282,14 @@ export default function KaiSignV1Page() {
               console.error(`Error loading specs for contract ${targetContract}:`, error);
             }
           }
-        } catch (fallbackError) {
-          console.error("Fallback method also failed:", fallbackError);
-        }
-        
-        // Manual decode for your known finalized specs
-        console.log("🔧 Adding manually decoded finalized specs...");
-        
-        if (account.toLowerCase() === "0xbb6e6d6dabd150c4a000d1fd8a7de46a750477f4") {
-          const manualSpecs: SpecData[] = [
-            {
-              specId: "0x1e48d88ee97e917e1a227d9d8833e0b0a03c691bfacbbc401d98ad9c4e4effcb",
-              creator: account,
-              targetContract: "0x1e405904a01EC1CD3A1560EeEA36DccDB5CC82FB",
-              ipfs: "QmXECco2A4M7E4yR58J4JZb3wL2P1KUx2JrkLPQkintE7n",
-              status: 3, // FINALIZED
-              createdTimestamp: 1737562528,
-              proposedTimestamp: 1737562528,
-              totalBonds: "4380663abb800",
-              bondsSettled: false
-            },
-            {
-              specId: "0x5641dde83086fdffa1536206eaa3cfc06339a6ce63353921642c38ec04378a8e",
-              creator: account,
-              targetContract: "0x1e405904a01EC1CD3A1560EeEA36DccDB5CC82FB",
-              ipfs: "QmXRiEdvA56LG86z3nTcyWVJAfhm3hy3joCcMS3pbGffCL",
-              status: 2, // PROPOSED (waiting for Reality.eth)
-              createdTimestamp: 1737563320,
-              proposedTimestamp: 1737563320,
-              totalBonds: "4380663abb800",
-              bondsSettled: false
-            }
-          ];
           
-          // Add manual specs to userSpecs
-          manualSpecs.forEach(manualSpec => {
-            if (!userSpecs.find(s => s.specId === manualSpec.specId)) {
-              userSpecs.push(manualSpec);
-              console.log(`✅ Added manual spec: ${manualSpec.specId.substring(0, 8)}... status: ${manualSpec.status} IPFS: ${manualSpec.ipfs}`);
-            }
-          });
+          console.log(`📋 Total specs found via contract query: ${userSpecs.length}`);
+        } catch (fallbackError) {
+          console.error("Contract query fallback also failed:", fallbackError);
         }
       }
       
+      console.log(`🔄 Final userSpecs array being set to state (${userSpecs.length} specs):`, userSpecs);
       setContractSpecs(userSpecs);
       
       // Show success toast with combined results
@@ -1064,16 +1004,109 @@ export default function KaiSignV1Page() {
             <Card className="p-6 bg-gray-950 border-gray-800">
               <h2 className="text-xl font-medium mb-4">Your Specifications</h2>
               
-              <div className="mb-4">
+              <div className="mb-4 flex gap-2">
                 <Link href="/verification-results">
                   <Button className="bg-blue-600 hover:bg-blue-700">
                     <FileText className="mr-2 h-4 w-4" />
                     Create New Specification
                   </Button>
                 </Link>
+                
+                <Button
+                  onClick={async () => {
+                    setIsLoadingData(true);
+                    try {
+                      console.log("🔍 === COMPREHENSIVE SPEC DEBUG ===");
+                      console.log("Current account:", currentAccount);
+                      
+                      // Check KaiSign contract directly
+                      const kaisignContract = "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf";
+                      console.log("🔍 Checking KaiSign contract:", kaisignContract);
+                      
+                      // Get ALL specs for this contract on Sepolia
+                      const allSpecIds = await web3Service.getSpecsByContract(kaisignContract, 11155111);
+                      console.log(`📋 ALL specs in contract (${allSpecIds.length}):`, allSpecIds);
+                      
+                      // Check each spec to see if it belongs to you
+                      const yourSpecs: SpecData[] = [];
+                      for (let i = 0; i < allSpecIds.length; i++) {
+                        try {
+                          console.log(`🔍 Checking spec ${i + 1}/${allSpecIds.length}: ${allSpecIds[i]}`);
+                          const specData = await web3Service.getSpecData(allSpecIds[i]);
+                          console.log(`📋 Spec data:`, specData);
+                          
+                          if (specData.creator.toLowerCase() === currentAccount.toLowerCase()) {
+                            console.log(`✅ FOUND YOUR SPEC!`, specData);
+                            yourSpecs.push({
+                              specId: allSpecIds[i],
+                              creator: specData.creator,
+                              targetContract: specData.targetContract,
+                              ipfs: specData.ipfs,
+                              status: specData.status,
+                              createdTimestamp: specData.createdTimestamp,
+                              proposedTimestamp: specData.proposedTimestamp,
+                              totalBonds: specData.totalBonds,
+                              bondsSettled: specData.bondsSettled
+                            });
+                          } else {
+                            console.log(`❌ Not your spec. Creator: ${specData.creator}`);
+                          }
+                        } catch (error) {
+                          console.error(`❌ Failed to get data for spec ${allSpecIds[i]}:`, error);
+                        }
+                      }
+                      
+                      console.log(`📋 Your specs found: ${yourSpecs.length}`, yourSpecs);
+                      
+                      // Update state with found specs
+                      if (yourSpecs.length > 0) {
+                        setContractSpecs(yourSpecs);
+                        toast({
+                          title: `Found ${yourSpecs.length} Spec(s)! 🎉`,
+                          description: `Found your specifications in the contract`,
+                          variant: "default",
+                        });
+                      } else {
+                        toast({
+                          title: "No Specs Found",
+                          description: `No specifications found for your address ${currentAccount.substring(0, 8)}...`,
+                          variant: "default",
+                        });
+                      }
+                      
+                    } catch (error: any) {
+                      console.error("❌ Debug failed:", error);
+                      toast({
+                        title: "Debug Failed",
+                        description: error.message || "Failed to debug specs",
+                        variant: "destructive",
+                      });
+                    } finally {
+                      setIsLoadingData(false);
+                    }
+                  }}
+                  disabled={isLoadingData}
+                  variant="outline"
+                  className="text-xs"
+                >
+                  {isLoadingData ? (
+                    <>
+                      <Loader2 className="mr-2 h-3 w-3 animate-spin" />
+                      Debugging...
+                    </>
+                  ) : (
+                    <>
+                      🔍 Debug: Find My Specs
+                    </>
+                  )}
+                </Button>
               </div>
               
-              {contractSpecs.length === 0 ? (
+              {(() => {
+                console.log(`🎨 UI Render: contractSpecs.length = ${contractSpecs.length}`);
+                console.log(`🎨 UI Render: contractSpecs =`, contractSpecs);
+                return contractSpecs.length === 0;
+              })() ? (
                 <div className="text-center py-8 text-gray-400">
                   <FileText className="mx-auto h-12 w-12 mb-4 opacity-50" />
                   <p>No specifications created yet</p>
@@ -1104,11 +1137,152 @@ export default function KaiSignV1Page() {
                         </a>
                       </div>
                       
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-gray-400">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-gray-400 mb-3">
                         <span>Target: {spec.targetContract.substring(0, 10)}...</span>
                         <span>Bonds: {Number(spec.totalBonds) / 10**18} ETH</span>
                         <span>Created: {new Date(spec.createdTimestamp * 1000).toLocaleDateString('en-US', { timeZone: 'UTC' })}</span>
                         <span>Settled: {spec.bondsSettled ? "Yes" : "No"}</span>
+                      </div>
+                      
+                      {/* Action buttons based on status */}
+                      <div className="flex gap-2 pt-2 border-t border-gray-700">
+                        {spec.status === 2 && ( // PROPOSED - ready for handleResult
+                          <Button
+                            onClick={async () => {
+                              try {
+                                console.log(`🎯 Calling handleResult for spec: ${spec.specId}`);
+                                const txHash = await web3Service.handleResult(spec.specId);
+                                toast({
+                                  title: "HandleResult Called! 🎉",
+                                  description: `Transaction: ${txHash.substring(0, 10)}... Spec will be finalized.`,
+                                  variant: "default",
+                                });
+                                // Refresh data after handling result
+                                setTimeout(async () => {
+                                  await loadUserData(currentAccount);
+                                  toast({
+                                    title: "Data Refreshed",
+                                    description: "Spec status updated after handleResult",
+                                    variant: "default",
+                                  });
+                                }, 2000); // Wait 2 seconds for blockchain to update
+                              } catch (error: any) {
+                                console.error("handleResult failed:", error);
+                                toast({
+                                  title: "HandleResult Failed",
+                                  description: `${error.message || "Failed to handle result"}. Check if Reality.eth question is finalized.`,
+                                  variant: "destructive",
+                                });
+                              }
+                            }}
+                            size="sm"
+                            className="bg-green-600 hover:bg-green-700 text-xs"
+                          >
+                            <CheckCircle className="mr-1 h-3 w-3" />
+                            Finalize Spec
+                          </Button>
+                        )}
+                        
+                        {/* Debug button to check spec status and incentives after handleResult */}
+                        <Button
+                          onClick={async () => {
+                            try {
+                              console.log("🔍 === POST-HANDLERESULT DEBUG ===");
+                              console.log("Spec ID:", spec.specId);
+                              
+                              // Check current spec status
+                              const currentSpecData = await web3Service.getSpecData(spec.specId);
+                              console.log("Current spec data:", currentSpecData);
+                              
+                              // Check available incentives for the target contract
+                              const availableIncentives = await web3Service.getAvailableIncentives(spec.targetContract, 11155111);
+                              console.log("Available incentives:", availableIncentives);
+                              
+                              // Check specifically for ETH incentives
+                              const ethIncentives = availableIncentives.filter(inc => 
+                                inc.token === "0x0000000000000000000000000000000000000000"
+                              );
+                              console.log("ETH incentives:", ethIncentives);
+                              
+                              // Check if any incentives match this target contract
+                              const matchingIncentives = availableIncentives.filter(inc => 
+                                inc.targetContract.toLowerCase() === spec.targetContract.toLowerCase()
+                              );
+                              console.log("Incentives for this contract:", matchingIncentives);
+                              
+                              toast({
+                                title: "Debug Complete",
+                                description: `Spec status: ${currentSpecData.status}, ETH incentives: ${ethIncentives.length}, Contract incentives: ${matchingIncentives.length}`,
+                                variant: "default",
+                              });
+                              
+                            } catch (error: any) {
+                              console.error("Debug failed:", error);
+                              toast({
+                                title: "Debug Failed",
+                                description: error.message,
+                                variant: "destructive",
+                              });
+                            }
+                          }}
+                          size="sm"
+                          variant="outline"
+                          className="text-xs"
+                        >
+                          🔍 Debug Status
+                        </Button>
+                        
+                        <Button
+                          onClick={async () => {
+                            try {
+                              console.log("🔄 Force refreshing spec data...");
+                              await loadUserData(currentAccount);
+                              toast({
+                                title: "Data Refreshed! 🔄",
+                                description: "Spec data has been reloaded from contract",
+                                variant: "default",
+                              });
+                            } catch (error: any) {
+                              toast({
+                                title: "Refresh Failed",
+                                description: error.message,
+                                variant: "destructive",
+                              });
+                            }
+                          }}
+                          size="sm"
+                          variant="secondary"
+                          className="text-xs"
+                        >
+                          🔄 Refresh
+                        </Button>
+                        
+                        {spec.status === 3 && !spec.bondsSettled && ( // FINALIZED but bonds not settled
+                          <Button
+                            onClick={async () => {
+                              try {
+                                const txHash = await web3Service.settleBonds(spec.specId);
+                                toast({
+                                  title: "Bond Settlement Initiated",
+                                  description: `Transaction: ${txHash.substring(0, 10)}...`,
+                                  variant: "default",
+                                });
+                                await loadUserData(currentAccount);
+                              } catch (error: any) {
+                                toast({
+                                  title: "Settlement Failed",
+                                  description: error.message || "Failed to settle bonds",
+                                  variant: "destructive",
+                                });
+                              }
+                            }}
+                            size="sm"
+                            className="bg-yellow-600 hover:bg-yellow-700 text-xs"
+                          >
+                            <Coins className="mr-1 h-3 w-3" />
+                            Settle Bonds
+                          </Button>
+                        )}
                       </div>
                     </div>
                   ))}
@@ -1186,6 +1360,23 @@ export default function KaiSignV1Page() {
                       "Refresh All"
                     )}
                   </Button>
+                  <Button
+                    onClick={() => {
+                      console.log("🗑️ Clearing all state data");
+                      setContractSpecs([]);
+                      setUserIncentives([]);
+                      toast({
+                        title: "Data Cleared",
+                        description: "All cached data has been cleared",
+                        variant: "default",
+                      });
+                    }}
+                    size="sm"
+                    variant="destructive"
+                    className="text-xs"
+                  >
+                    Clear Data
+                  </Button>
                 </div>
               </div>
               
@@ -1202,7 +1393,7 @@ export default function KaiSignV1Page() {
                       try {
                         // Check contract directly for ANY specs
                         console.log("🔍 Checking KaiSign contract for ANY specs...");
-                        const kaisignContract = "0x1e405904a01EC1CD3A1560EeEA36DccDB5CC82FB";
+                        const kaisignContract = "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf";
                         
                         // First, let's try to get recent events
                         console.log("🔍 Checking recent contract events...");
@@ -1245,7 +1436,7 @@ export default function KaiSignV1Page() {
                           console.error("Error fetching events:", eventError);
                         }
                         
-                        const specIds = await web3Service.getSpecsByContract(kaisignContract);
+                        const specIds = await web3Service.getSpecsByContract(kaisignContract, 11155111);
                         
                         console.log(`📋 CONTRACT SPECS for ${kaisignContract}:`, specIds);
                         
@@ -1275,66 +1466,7 @@ export default function KaiSignV1Page() {
                             } catch (error) {
                               console.error(`Error getting spec data for ${specIds[i]}:`, error);
                               
-                              // Manual decode for known specs with your address
-                              if (specIds[i] === '0x1e48d88ee97e917e1a227d9d8833e0b0a03c691bfacbbc401d98ad9c4e4effcb') {
-                                console.log("🔧 MANUALLY DECODING YOUR FIRST SPEC!");
-                                const manualSpec = {
-                                  specId: specIds[i],
-                                  creator: currentAccount,
-                                  targetContract: "0x1e405904a01EC1CD3A1560EeEA36DccDB5CC82FB",
-                                  ipfs: "QmXECco2A4M7E4yR58J4JZb3wL2P1KUx2JrkLPQkintE7n",
-                                  status: 3, // FINALIZED
-                                  createdTimestamp: 1737562528,
-                                  proposedTimestamp: 1737562528,
-                                  totalBonds: "4380663abb800", // From raw data
-                                  bondsSettled: false
-                                };
-                                
-                                // Add to contractSpecs
-                                setContractSpecs(prev => {
-                                  const exists = prev.find(s => s.specId === specIds[i]);
-                                  if (!exists) {
-                                    return [...prev, manualSpec];
-                                  }
-                                  return prev;
-                                });
-                                
-                                toast({
-                                  title: "🎉 FOUND YOUR FINALIZED SPEC!",
-                                  description: `IPFS: ${manualSpec.ipfs.substring(0, 20)}... - Ready for settlement!`,
-                                  variant: "default",
-                                });
-                              }
-                              
-                              if (specIds[i] === '0x5641dde83086fdffa1536206eaa3cfc06339a6ce63353921642c38ec04378a8e') {
-                                console.log("🔧 MANUALLY DECODING YOUR SECOND SPEC!");
-                                const manualSpec = {
-                                  specId: specIds[i],
-                                  creator: currentAccount,
-                                  targetContract: "0x1e405904a01EC1CD3A1560EeEA36DccDB5CC82FB",
-                                  ipfs: "QmXRiEdvA56LG86z3nTcyWVJAfhm3hy3joCcMS3pbGffCL",
-                                  status: 3, // FINALIZED
-                                  createdTimestamp: 1737563320,
-                                  proposedTimestamp: 1737563320,
-                                  totalBonds: "4380663abb800", // From raw data
-                                  bondsSettled: false
-                                };
-                                
-                                // Add to contractSpecs
-                                setContractSpecs(prev => {
-                                  const exists = prev.find(s => s.specId === specIds[i]);
-                                  if (!exists) {
-                                    return [...prev, manualSpec];
-                                  }
-                                  return prev;
-                                });
-                                
-                                toast({
-                                  title: "🎉 FOUND YOUR SECOND FINALIZED SPEC!",
-                                  description: `IPFS: ${manualSpec.ipfs.substring(0, 20)}... - Ready for settlement!`,
-                                  variant: "default",
-                                });
-                              }
+                              console.log(`❌ Failed to decode spec ${specIds[i]}: ${error.message}`);
                             }
                           }
                         } else {
@@ -1390,7 +1522,7 @@ export default function KaiSignV1Page() {
                         
                         setIsSearchingSpecs(true);
                         try {
-                          const specIds = await web3Service.getSpecsByContract(specSearchContract);
+                          const specIds = await web3Service.getSpecsByContract(specSearchContract, 11155111);
                           const userSpecsFromSearch: SpecData[] = [];
                           
                           for (const specId of specIds) {
@@ -1658,9 +1790,66 @@ export default function KaiSignV1Page() {
                                 if (availableIncentives.length > 0) {
                                   return (
                                     <div className="w-full mt-2 p-3 bg-green-800/30 border border-green-600 rounded">
-                                      <p className="text-sm text-green-300 mb-2">
-                                        🎉 <strong>Incentives Available to Claim:</strong>
-                                      </p>
+                                      <div className="flex items-center justify-between mb-2">
+                                        <p className="text-sm text-green-300">
+                                          🎉 <strong>Incentives Available to Claim:</strong>
+                                        </p>
+                                        <Button
+                                          onClick={async () => {
+                                            try {
+                                              console.log("=== INCENTIVE DEBUG INFO ===");
+                                              console.log("Spec ID:", spec.specId);
+                                              console.log("Spec Status:", spec.status);
+                                              console.log("Target Contract:", spec.targetContract);
+                                              console.log("Available Incentives:", availableIncentives);
+                                              
+                                              // Check contract state directly
+                                              const specData = await web3Service.getSpecData(spec.specId);
+                                              console.log("Contract Spec Data:", specData);
+                                              
+                                              // Query all specs for the target contract to see what actually exists
+                                              try {
+                                                console.log("🔍 Querying all specs for target contract...");
+                                                // The specs should be for Sepolia (chainId 11155111) since the contract is deployed there
+                                                const allSpecs = await web3Service.getSpecsByContract(spec.targetContract, 11155111);
+                                                console.log("All specs in contract for Sepolia:", allSpecs);
+                                                
+                                                // Check first few specs to see their data
+                                                for (let i = 0; i < Math.min(allSpecs.length, 3); i++) {
+                                                  const existingSpecData = await web3Service.getSpecData(allSpecs[i]);
+                                                  console.log(`Existing spec ${allSpecs[i]}:`, existingSpecData);
+                                                }
+                                              } catch (contractError) {
+                                                console.error("Failed to query contract specs:", contractError);
+                                              }
+                                              
+                                              for (const incentive of availableIncentives) {
+                                                console.log(`Fetching data for incentive ID: ${incentive.incentiveId}`);
+                                                const incentiveData = await web3Service.getIncentiveData(incentive.incentiveId);
+                                                console.log(`Incentive ${incentive.incentiveId}:`, incentiveData);
+                                              }
+                                              
+                                              toast({
+                                                title: "Debug Info Logged",
+                                                description: "Check console for detailed incentive information",
+                                                variant: "default",
+                                              });
+                                            } catch (error: any) {
+                                              console.error("Debug failed:", error);
+                                              toast({
+                                                title: "Debug Failed",
+                                                description: error.message,
+                                                variant: "destructive",
+                                              });
+                                            }
+                                          }}
+                                          size="sm"
+                                          variant="outline"
+                                          className="text-xs h-6"
+                                        >
+                                          🔍 Debug
+                                        </Button>
+                                      </div>
                                       {availableIncentives.map((incentive) => (
                                         <div key={incentive.incentiveId} className="flex items-center justify-between text-xs text-green-200 mb-2">
                                           <span>
@@ -1669,32 +1858,71 @@ export default function KaiSignV1Page() {
                                               : `${incentive.amount} Tokens`
                                             }
                                           </span>
-                                          <Button
-                                            onClick={async () => {
-                                              try {
-                                                // Call handleResult to finalize and claim incentive
-                                                const txHash = await web3Service.handleResult(spec.specId);
-                                                toast({
-                                                  title: "Incentive Claim Initiated",
-                                                  description: `Transaction: ${txHash.substring(0, 10)}...`,
-                                                  variant: "default",
-                                                });
-                                                // Refresh data after claiming
-                                                await loadUserData(currentAccount);
-                                              } catch (error: any) {
-                                                toast({
-                                                  title: "Claim Failed",
-                                                  description: error.message || "Failed to claim incentive",
-                                                  variant: "destructive",
-                                                });
-                                              }
-                                            }}
-                                            size="sm"
-                                            className="bg-green-600 hover:bg-green-700 text-xs ml-2"
-                                          >
-                                            <Gift className="mr-1 h-3 w-3" />
-                                            Claim
-                                          </Button>
+                                          <div className="flex gap-1">
+                                            {/* Check if incentive is actually claimed */}
+                                            {incentive.token === "0x0000000000000000000000000000000000000000" ? (
+                                              incentive.isClaimed ? (
+                                                <div className="text-xs text-green-400">
+                                                  ✅ ETH incentive claimed
+                                                </div>
+                                              ) : (
+                                                <Button
+                                                  onClick={async () => {
+                                                    try {
+                                                      // Try calling handleResult - this should claim ETH incentives
+                                                      const txHash = await web3Service.handleResult(spec.specId);
+                                                      toast({
+                                                        title: "ETH Incentive Claim Initiated",
+                                                        description: `Transaction: ${txHash.substring(0, 10)}... ETH incentive will be claimed automatically`,
+                                                        variant: "default",
+                                                      });
+                                                      // Refresh data after claiming
+                                                      await loadUserData(currentAccount);
+                                                    } catch (error: any) {
+                                                      console.error("handleResult failed:", error);
+                                                      toast({
+                                                        title: "Claim Failed",
+                                                        description: `${error.message || "Failed to claim ETH incentive"}. Check console for details.`,
+                                                        variant: "destructive",
+                                                      });
+                                                    }
+                                                  }}
+                                                  size="sm"
+                                                  className="bg-green-600 hover:bg-green-700 text-xs"
+                                                >
+                                                  <Gift className="mr-1 h-3 w-3" />
+                                                  Claim ETH
+                                                </Button>
+                                              )
+                                            ) : (
+                                              <Button
+                                                onClick={async () => {
+                                                  try {
+                                                    // Call claimActiveTokenIncentive for ERC20 tokens
+                                                    const txHash = await web3Service.claimActiveTokenIncentive(spec.specId, incentive.token);
+                                                    toast({
+                                                      title: "Token Incentive Claim Initiated",
+                                                      description: `Transaction: ${txHash.substring(0, 10)}... Token incentive will be transferred`,
+                                                      variant: "default",
+                                                    });
+                                                    // Refresh data after claiming
+                                                    await loadUserData(currentAccount);
+                                                  } catch (error: any) {
+                                                    toast({
+                                                      title: "Token Claim Failed",
+                                                      description: error.message || "Failed to claim token incentive",
+                                                      variant: "destructive",
+                                                    });
+                                                  }
+                                                }}
+                                                size="sm"
+                                                className="bg-purple-600 hover:bg-purple-700 text-xs"
+                                              >
+                                                <Gift className="mr-1 h-3 w-3" />
+                                                Claim Token
+                                              </Button>
+                                            )}
+                                          </div>
                                         </div>
                                       ))}
                                     </div>
