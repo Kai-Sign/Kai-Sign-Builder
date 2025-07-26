@@ -35,12 +35,14 @@ type Spec @entity(immutable: false) {
   user: Bytes!                      # creator address
   ipfs: String!                     # IPFS CID
   questionId: Bytes                 # RealityETH question ID
-  chainID: String                   # extracted from IPFS metadata
+  chainID: String                   # from event
   status: SpecStatus!
   blockTimestamp: BigInt!
   proposedTimestamp: BigInt
   isFinalized: Boolean
   isAccepted: Boolean
+  eventTimestamp: BigInt            # timestamp from event
+  incentiveId: Bytes                # incentive ID from event
 }
 
 enum SpecStatus {
