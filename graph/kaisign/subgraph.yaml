@@ -12,7 +12,7 @@ dataSources:
     source:
       address: "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf"
       abi: KaiSign
-      startBlock: 8200000
+      startBlock: 6000000
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.9
@@ -34,7 +34,7 @@ dataSources:
           handler: handleLogAssertSpecInvalid
         - event: LogAssertSpecValid(indexed address,bytes32,bytes32,uint256)
           handler: handleLogAssertSpecValid
-        - event: LogCreateSpec(indexed address,bytes32,string)
+        - event: LogCreateSpec(indexed address,indexed bytes32,string,indexed address,uint256,uint256,bytes32)
           handler: handleLogCreateSpec
         - event: LogHandleResult(bytes32,bool)
           handler: handleLogHandleResult
