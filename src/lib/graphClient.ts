@@ -75,28 +75,40 @@ export class KaiSignGraphClient {
     selector: string, 
     chainID: string
   ): Promise<FunctionMetadata | null> {
+    // Query for specs that target this contract
     const query = `
-      query GetTransactionMetadata($contractId: String!, $selector: String!) {
-        functions(where: { 
-          contract: $contractId
-          selector: $selector
+      query GetContractSpecs($targetContract: Bytes!, $chainID: String!) {
+        specs(where: { 
+          targetContract: $targetContract
+          chainID: $chainID
         }) {
-          selector
-          name
-          intent
-          parameterTypes
-          displayFormat
+          id
+          ipfs
+          user
+          status
+          blockTimestamp
         }
       }
     `;
 
-    const contractId = `${contractAddress.toLowerCase()}-${chainID}`;
-    const data = await this.client.request<{ functions: FunctionMetadata[] }>(
+    const targetContract = contractAddress.toLowerCase();
+    const data = await this.client.request<{ specs: SpecData[] }>(
       query, 
-      { contractId, selector }
+      { targetContract, chainID }
     );
     
-    return data.functions[0] || null;
+    // If we have specs, return a placeholder indicating metadata is available
+    if (data.specs && data.specs.length > 0) {
+      return {
+        selector: selector,
+        name: `Contract Function ${selector}`,
+        intent: `Execute function ${selector} on contract`,
+        parameterTypes: [],
+        displayFormat: `function_${selector.slice(2, 10)}`
+      };
+    }
+    
+    return null;
   }
 
   /**
@@ -186,13 +198,94 @@ export class KaiSignGraphClient {
     const data = await this.client.request<{ contracts: ContractMetadata[] }>(query);
     return data.contracts;
   }
+
+  /**
+   * Get all finalized specifications created by a specific user
+   */
+  async getUserFinalizedSpecs(userAddress: string): Promise<SpecHistory[]> {
+    const query = `
+      query GetUserFinalizedSpecs($user: Bytes!) {
+        specs(
+          where: { 
+            user: $user
+            status: FINALIZED
+          }
+          orderBy: blockTimestamp
+          orderDirection: desc
+        ) {
+          id
+          user
+          ipfs
+          targetContract
+          blockTimestamp
+          status
+        }
+      }
+    `;
+
+    const data = await this.client.request<{ specs: any[] }>(query, { 
+      user: userAddress.toLowerCase()
+    });
+    
+    return data.specs.map((spec: any) => ({
+      id: spec.id,
+      creator: spec.user,
+      ipfsCID: spec.ipfs,
+      createdTimestamp: spec.blockTimestamp,
+      status: spec.status as SpecHistory['status'],
+      targetContract: spec.targetContract,
+      totalBonds: "0", // Default since not available in subgraph
+      bondsSettled: false, // Default since not available in subgraph
+      proposedTimestamp: spec.blockTimestamp // Use blockTimestamp as fallback
+    }));
+  }
+
+  /**
+   * Get all specifications (any status) created by a specific user
+   */
+  async getUserSpecs(userAddress: string): Promise<SpecHistory[]> {
+    const query = `
+      query GetUserSpecs($user: Bytes!) {
+        specs(
+          where: { 
+            user: $user
+          }
+          orderBy: blockTimestamp
+          orderDirection: desc
+        ) {
+          id
+          user
+          ipfs
+          targetContract
+          blockTimestamp
+          status
+        }
+      }
+    `;
+
+    const data = await this.client.request<{ specs: any[] }>(query, { 
+      user: userAddress.toLowerCase()
+    });
+    
+    return data.specs.map((spec: any) => ({
+      id: spec.id,
+      creator: spec.user,
+      ipfsCID: spec.ipfs,
+      createdTimestamp: spec.blockTimestamp,
+      status: spec.status as SpecHistory['status'],
+      targetContract: spec.targetContract,
+      totalBonds: "0", // Default since not available in subgraph
+      bondsSettled: false, // Default since not available in subgraph
+      proposedTimestamp: spec.blockTimestamp // Use blockTimestamp as fallback
+    }));
+  }
 }
 
 // Default client instance for common networks
 export const createKaiSignClient = (network: 'mainnet' | 'sepolia' | string) => {
   const endpoints = {
     mainnet: 'https://api.thegraph.com/subgraphs/name/kai-sign/kaisign-mainnet',
-    sepolia: 'https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.1',
+    sepolia: 'https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.3',
   };
 
   const endpoint = endpoints[network as keyof typeof endpoints] || network;

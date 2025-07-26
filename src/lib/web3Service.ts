@@ -6,6 +6,8 @@ declare global {
     ethereum?: {
       isMetaMask?: boolean;
       request: (request: { method: string; params?: Array<any> }) => Promise<any>;
+      on?: (event: string, handler: (...args: any[]) => void) => void;
+      removeListener?: (event: string, handler: (...args: any[]) => void) => void;
     };
   }
 }
@@ -13,21 +15,25 @@ declare global {
 // Type for contract methods to handle TS errors (V1 contract)
 type ContractWithMethods = ethers.Contract & {
   minBond: () => Promise<bigint>;
-  commitSpec: (commitment: string, targetContract: string, incentiveId: string, options: { value: bigint }) => Promise<any>;
+  // commitSpec no longer accepts an incentiveId. It now takes only (bytes32 commitment, address targetContract, uint256 chainId).
+  commitSpec: (commitment: string, targetContract: string, targetChainId: number, options: { value: bigint }) => Promise<any>;
   revealSpec: (commitmentId: string, ipfs: string, nonce: bigint) => Promise<any>;
   proposeSpec: (specID: string, options: { value: bigint }) => Promise<any>;
   assertSpecValid: (specID: string, options: { value: bigint }) => Promise<any>;
   assertSpecInvalid: (specID: string, options: { value: bigint }) => Promise<any>;
   handleResult: (specID: string) => Promise<any>;
+  claimActiveTokenIncentive: (specID: string, token: string) => Promise<any>;
+  settleBonds: (specID: string) => Promise<any>;
   getStatus: (ipfsHash: string) => Promise<number>;
   isAccepted: (ipfsHash: string) => Promise<boolean>;
   getCreatedTimestamp: (ipfsHash: string) => Promise<bigint>;
-  createIncentive: (targetContract: string, token: string, amount: bigint, duration: bigint, description: string, options: { value: bigint }) => Promise<any>;
-  getSpecsByContract: (targetContract: string) => Promise<string[]>;
+  createIncentive: (targetContract: string, targetChainId: number, token: string, amount: bigint, duration: bigint, description: string, options: { value: bigint }) => Promise<any>;
+  getSpecsByContract: (targetContract: string, chainId: number) => Promise<string[]>;
   getContractSpecCount: (targetContract: string) => Promise<bigint>;
   specs: (specID: string) => Promise<any>;
   incentives: (incentiveId: string) => Promise<any>;
   commitments: (commitmentId: string) => Promise<any>;
+  bondsSettled: (specID: string) => Promise<boolean>;
   realityETH: () => Promise<string>;
 };
 
@@ -35,6 +41,9 @@ type ContractWithMethods = ethers.Contract & {
 type RealityEthContract = ethers.Contract & {
   getBond: (questionId: string) => Promise<bigint>;
   getMinBond: (questionId: string) => Promise<bigint>;
+  isFinalized: (questionId: string) => Promise<boolean>;
+  resultFor: (questionId: string) => Promise<string>;
+  finalize: (questionId: string) => Promise<any>;
   questions: (questionId: string) => Promise<{
     content_hash: string;
     arbitrator: string;
@@ -63,7 +72,7 @@ const CONTRACT_ABI = [
     "inputs": [
       {"internalType": "bytes32", "name": "commitment", "type": "bytes32"},
       {"internalType": "address", "name": "targetContract", "type": "address"},
-      {"internalType": "bytes32", "name": "incentiveId", "type": "bytes32"}
+      {"internalType": "uint256", "name": "targetChainId", "type": "uint256"}
     ],
     "name": "commitSpec",
     "outputs": [],
@@ -105,6 +114,7 @@ const CONTRACT_ABI = [
   {
     "inputs": [
       {"internalType": "address", "name": "targetContract", "type": "address"},
+      {"internalType": "uint256", "name": "targetChainId", "type": "uint256"},
       {"internalType": "address", "name": "token", "type": "address"},
       {"internalType": "uint256", "name": "amount", "type": "uint256"},
       {"internalType": "uint64", "name": "duration", "type": "uint64"},
@@ -135,13 +145,17 @@ const CONTRACT_ABI = [
       {"internalType": "bool", "name": "isClaimed", "type": "bool"},
       {"internalType": "bool", "name": "isActive", "type": "bool"},
       {"internalType": "uint80", "name": "reserved", "type": "uint80"},
+      {"internalType": "uint256", "name": "chainId", "type": "uint256"},
       {"internalType": "string", "name": "description", "type": "string"}
     ],
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "inputs": [{"internalType": "address", "name": "targetContract", "type": "address"}],
+    "inputs": [
+      {"internalType": "address", "name": "targetContract", "type": "address"},
+      {"internalType": "uint256", "name": "chainId", "type": "uint256"}
+    ],
     "name": "getSpecsByContract",
     "outputs": [{"internalType": "bytes32[]", "name": "", "type": "bytes32[]"}],
     "stateMutability": "view",
@@ -155,12 +169,14 @@ const CONTRACT_ABI = [
       {"internalType": "uint64", "name": "proposedTimestamp", "type": "uint64"},
       {"internalType": "uint8", "name": "status", "type": "uint8"},
       {"internalType": "bool", "name": "bondsSettled", "type": "bool"},
-      {"internalType": "uint48", "name": "totalBonds", "type": "uint48"},
+      {"internalType": "uint80", "name": "totalBonds", "type": "uint80"},
+      {"internalType": "uint32", "name": "reserved", "type": "uint32"},
       {"internalType": "address", "name": "creator", "type": "address"},
       {"internalType": "address", "name": "targetContract", "type": "address"},
       {"internalType": "string", "name": "ipfs", "type": "string"},
       {"internalType": "bytes32", "name": "questionId", "type": "bytes32"},
-      {"internalType": "bytes32", "name": "incentiveId", "type": "bytes32"}
+      {"internalType": "bytes32", "name": "incentiveId", "type": "bytes32"},
+      {"internalType": "uint256", "name": "chainId", "type": "uint256"}
     ],
     "stateMutability": "view",
     "type": "function"
@@ -168,6 +184,23 @@ const CONTRACT_ABI = [
   {
     "inputs": [{"internalType": "bytes32", "name": "specID", "type": "bytes32"}],
     "name": "handleResult",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "bytes32", "name": "specID", "type": "bytes32"},
+      {"internalType": "address", "name": "token", "type": "address"}
+    ],
+    "name": "claimActiveTokenIncentive",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "bytes32", "name": "specID", "type": "bytes32"}],
+    "name": "settleBonds",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -196,6 +229,7 @@ const CONTRACT_ABI = [
   {
     "inputs": [
       {"internalType": "address", "name": "targetContract", "type": "address"},
+      {"internalType": "uint256", "name": "targetChainId", "type": "uint256"},
       {"internalType": "address", "name": "token", "type": "address"},
       {"internalType": "uint256", "name": "amount", "type": "uint256"},
       {"internalType": "uint64", "name": "duration", "type": "uint64"},
@@ -207,7 +241,10 @@ const CONTRACT_ABI = [
     "type": "function"
   },
   {
-    "inputs": [{"internalType": "address", "name": "targetContract", "type": "address"}],
+    "inputs": [
+      {"internalType": "address", "name": "targetContract", "type": "address"},
+      {"internalType": "uint256", "name": "chainId", "type": "uint256"}
+    ],
     "name": "getSpecsByContract",
     "outputs": [{"internalType": "bytes32[]", "name": "", "type": "bytes32[]"}],
     "stateMutability": "view",
@@ -245,10 +282,13 @@ const CONTRACT_ABI = [
     "outputs": [
       {"internalType": "address", "name": "committer", "type": "address"},
       {"internalType": "uint64", "name": "commitTimestamp", "type": "uint64"},
-      {"internalType": "uint32", "name": "revealDeadline", "type": "uint32"},
+      {"internalType": "uint32", "name": "reserved1", "type": "uint32"},
       {"internalType": "address", "name": "targetContract", "type": "address"},
       {"internalType": "bool", "name": "isRevealed", "type": "bool"},
       {"internalType": "uint80", "name": "bondAmount", "type": "uint80"},
+      {"internalType": "uint8", "name": "reserved", "type": "uint8"},
+      {"internalType": "uint64", "name": "revealDeadline", "type": "uint64"},
+      {"internalType": "uint256", "name": "chainId", "type": "uint256"},
       {"internalType": "bytes32", "name": "incentiveId", "type": "bytes32"}
     ],
     "stateMutability": "view",
@@ -267,6 +307,7 @@ const CONTRACT_ABI = [
       {"internalType": "bool", "name": "isClaimed", "type": "bool"},
       {"internalType": "bool", "name": "isActive", "type": "bool"},
       {"internalType": "uint80", "name": "reserved", "type": "uint80"},
+      {"internalType": "uint256", "name": "chainId", "type": "uint256"},
       {"internalType": "string", "name": "description", "type": "string"}
     ],
     "stateMutability": "view",
@@ -283,6 +324,41 @@ const CONTRACT_ABI = [
     "inputs": [],
     "name": "treasury",
     "outputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "internalType": "address", "name": "committer", "type": "address"},
+      {"indexed": true, "internalType": "bytes32", "name": "commitmentId", "type": "bytes32"},
+      {"indexed": true, "internalType": "address", "name": "targetContract", "type": "address"},
+      {"indexed": false, "internalType": "uint256", "name": "chainId", "type": "uint256"},
+      {"indexed": false, "internalType": "uint256", "name": "bondAmount", "type": "uint256"},
+      {"indexed": false, "internalType": "uint64", "name": "revealDeadline", "type": "uint64"}
+    ],
+    "name": "LogCommitSpec",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "internalType": "bytes32", "name": "incentiveId", "type": "bytes32"},
+      {"indexed": true, "internalType": "address", "name": "creator", "type": "address"},
+      {"indexed": true, "internalType": "address", "name": "targetContract", "type": "address"},
+      {"indexed": false, "internalType": "uint256", "name": "chainId", "type": "uint256"},
+      {"indexed": false, "internalType": "address", "name": "token", "type": "address"},
+      {"indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256"},
+      {"indexed": false, "internalType": "uint64", "name": "deadline", "type": "uint64"},
+      {"indexed": false, "internalType": "string", "name": "description", "type": "string"}
+    ],
+    "name": "LogIncentiveCreated",
+    "type": "event"
+  },
+  {
+    "inputs": [{"internalType": "bytes32", "name": "", "type": "bytes32"}],
+    "name": "bondsSettled",
+    "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
     "stateMutability": "view",
     "type": "function"
   }
@@ -326,7 +402,7 @@ const REALITY_ETH_ABI = [
 ];
 
 // Fixed contract address on Sepolia - V1 contract address
-const RAW_CONTRACT_ADDRESS = "0x79D0e06350CfCE33A7a73A7549248fd6AeD774f2";
+const RAW_CONTRACT_ADDRESS = "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf";
 // Sepolia chain ID
 const SEPOLIA_CHAIN_ID = 11155111;
 
@@ -495,7 +571,7 @@ export class Web3Service {
         const hasAnswers = currentBond > BigInt(0);
         const baseRequiredBond = hasAnswers ? currentBond * BigInt(2) : minBond;
         // Add safety margin for all bonds
-        const requiredNextBond = BigInt("20000000000000000"); // Use 0.02 ETH instead of calculated amount
+        const requiredNextBond = BigInt("15000000000000000"); // Use 0.015 ETH instead of calculated amount
 
         return {
           currentBond,
@@ -530,10 +606,18 @@ export class Web3Service {
   }
   
   /**
-   * Submit spec using V1 contract's commit-reveal pattern
-   * This properly implements the two-step process: commitSpec -> revealSpec
+   * Commit spec using V1 contract (step 1 of commit-reveal pattern)
    */
-  async submitSpec(ipfsHash: string, bondAmount: bigint, targetContract?: string, incentiveId?: string): Promise<string> {
+  // The commitSpec method no longer takes an incentiveId. Incentives are created ahead
+  // of time and automatically assigned when a spec is accepted. The function signature
+  // accepts ipfsHash, bondAmount, an optional targetContract and optional chainId.
+  async commitSpec(ipfsHash: string, bondAmount: bigint, targetContract?: string, targetChainId?: number): Promise<{
+    commitmentId: string;
+    commitTxHash: string;
+    revealDeadline: number;
+    nonce: number;
+    commitment: string;
+  }> {
     try {
       if (!this.contract || !this.signer) {
         throw new Error("Not connected to MetaMask. Please connect first.");
@@ -599,7 +683,10 @@ export class Web3Service {
         }
       }
       
-      const finalIncentiveId = incentiveId || "0x0000000000000000000000000000000000000000000000000000000000000000";
+      // Incentives are no longer passed during commit. Any incentive will be automatically
+      // associated by the contract when a spec is accepted. Keep a zero bytes32 for
+      // compatibility in logs if needed.
+      const finalIncentiveId = "0x0000000000000000000000000000000000000000000000000000000000000000";
       
       // Validate minimum bond requirement with safety margin
       const contractMinBond = await this.getMinBond();
@@ -712,7 +799,6 @@ export class Web3Service {
       // Step 1: Commit
       console.log("Committing spec with commitment:", commitment);
       console.log("Target contract:", target);
-      console.log("Incentive ID:", finalIncentiveId);
       console.log("Bond amount:", bondAmount.toString());
       
       // Check if commitment already exists
@@ -729,17 +815,18 @@ export class Web3Service {
         // Try a raw call to see if the function exists
         console.log("Trying raw contract call...");
         const calldata = ethers.concat([
-          "0x1349f73f", // commitSpec selector
+          // Selector for commitSpec(bytes32,address,uint256)
+          ethers.id("commitSpec(bytes32,address,uint256)").slice(0, 10),
           ethers.zeroPadValue(commitment, 32),
           ethers.zeroPadValue(target, 32),
-          ethers.zeroPadValue(incentiveId, 32)
+          ethers.zeroPadValue(ethers.toBeHex(targetChainId || 1), 32)
         ]);
         
         console.log("Calldata breakdown:");
-        console.log("- Selector:", "0x1349f73f");
+        console.log("- Selector:", ethers.id("commitSpec(bytes32,address,uint256)").slice(0, 10));
         console.log("- Commitment (32 bytes):", ethers.hexlify(ethers.zeroPadValue(commitment, 32)));
         console.log("- Target (32 bytes):", ethers.hexlify(ethers.zeroPadValue(target, 32)));
-        console.log("- Incentive (32 bytes):", ethers.hexlify(ethers.zeroPadValue(incentiveId, 32)));
+        console.log("- TargetChainId (32 bytes):", ethers.hexlify(ethers.zeroPadValue(ethers.toBeHex(targetChainId || 1), 32)));
         
         console.log("Raw calldata:", ethers.hexlify(calldata));
         
@@ -763,7 +850,7 @@ export class Web3Service {
         const staticResult = await this.contract.commitSpec.staticCall(
           commitment,
           target,
-          incentiveId,
+          targetChainId || 1,
           { value: bondAmount }
         );
         console.log("Static call successful:", staticResult);
@@ -785,7 +872,7 @@ export class Web3Service {
         const gasEstimate = await this.contract.commitSpec.estimateGas(
           commitment, 
           target, 
-          incentiveId,
+          targetChainId || 1,
           { value: bondAmount }
         );
         console.log("Gas estimate successful:", gasEstimate.toString());
@@ -794,7 +881,7 @@ export class Web3Service {
         throw new Error(`Gas estimation failed: ${gasError.message}`);
       }
       
-      const commitTx = await this.contract.commitSpec(commitment, target, finalIncentiveId, {
+      const commitTx = await this.contract.commitSpec(commitment, target, targetChainId || 1, {
         value: bondAmount
       });
       
@@ -802,26 +889,35 @@ export class Web3Service {
       const commitReceipt = await commitTx.wait();
       console.log("Commit transaction confirmed:", commitReceipt);
       
-      // Get the commitment timestamp from the transaction
-      const block = await this.provider!.getBlock(commitReceipt.blockNumber);
-      const commitTimestamp = block!.timestamp;
+      // Step 2: Extract the actual commitment ID from the LogCommitSpec event
+      let commitmentId: string | null = null;
       
-      // Step 2: Generate the commitment ID as the contract does
-      // commitmentId = keccak256(abi.encodePacked(commitment, msg.sender, targetContract, block.timestamp))
-      const commitmentId = ethers.keccak256(ethers.solidityPacked(
-        ["bytes32", "address", "address", "uint256"],
-        [commitment, await this.signer.getAddress(), target, commitTimestamp]
-      ));
+      for (const log of commitReceipt.logs) {
+        try {
+          const parsed = this.contract.interface.parseLog(log);
+          if (parsed && parsed.name === 'LogCommitSpec') {
+            commitmentId = parsed.args.commitmentId;
+            console.log("Found LogCommitSpec event with commitment ID:", commitmentId);
+            break;
+          }
+        } catch (e) {
+          // Ignore logs that can't be parsed by our interface
+        }
+      }
       
-      console.log("Generated commitment ID:", commitmentId);
-      console.log("Revealing spec with IPFS:", ipfsHash, "and nonce:", nonce.toString());
+      if (!commitmentId) {
+        throw new Error("Could not find LogCommitSpec event in transaction logs");
+      }
       
-      const revealTx = await this.contract.revealSpec(commitmentId, ipfsHash, nonce);
-      console.log("Reveal transaction sent:", revealTx.hash);
-      const revealReceipt = await revealTx.wait();
-      console.log("Reveal transaction confirmed:", revealReceipt);
+      console.log("Commitment successful! ID:", commitmentId);
       
-      return revealTx.hash;
+      return {
+        commitmentId,
+        commitTxHash: commitTx.hash,
+        revealDeadline: Math.floor(Date.now() / 1000) + 3600, // 1 hour from now
+        nonce: Number(nonce),
+        commitment
+      };
     } catch (error: any) {
       console.error("Error proposing spec:", error);
       
@@ -913,6 +1009,116 @@ export class Web3Service {
       
       throw new Error(`Transaction failed: ${error.message || 'Unknown error'}`);
     }
+  }
+
+  /**
+   * Reveal spec using V1 contract (step 2 of commit-reveal pattern)
+   */
+  async revealSpec(commitmentId: string, ipfsHash: string, nonce: number): Promise<string> {
+    try {
+      if (!this.contract || !this.signer) {
+        throw new Error("Not connected to MetaMask. Please connect first.");
+      }
+
+      console.log("Revealing spec with commitment ID:", commitmentId);
+      console.log("IPFS hash:", ipfsHash);
+      console.log("Nonce:", nonce);
+
+      // Debug: Check what the contract has stored for this commitment
+      try {
+        const storedCommitment = await this.contract.commitments(commitmentId);
+        console.log("Stored commitment data:", {
+          committer: storedCommitment[0],
+          commitTimestamp: storedCommitment[1].toString(),
+          reserved1: storedCommitment[2].toString(),
+          targetContract: storedCommitment[3],
+          isRevealed: storedCommitment[4],
+          bondAmount: storedCommitment[5].toString(),
+          reserved: storedCommitment[6].toString(),
+          revealDeadline: storedCommitment[7].toString(),
+          chainId: storedCommitment[8].toString(),
+          incentiveId: storedCommitment[9]
+        });
+        
+        // Check if we're the right committer
+        const ourAddress = await this.signer.getAddress();
+        console.log("Our address:", ourAddress);
+        console.log("Stored committer:", storedCommitment[0]);
+        console.log("Committer match:", ourAddress.toLowerCase() === storedCommitment[0].toLowerCase());
+        
+        // Try to reconstruct what the contract will generate
+        const expectedCommitment = ethers.keccak256(ethers.solidityPacked(
+          ["string", "uint256"],
+          [ipfsHash, nonce]
+        ));
+        console.log("Expected commitment hash:", expectedCommitment);
+        
+        // The contract has a BUG: it uses uint64 during commit but uint256 during reveal
+        // We need to use uint64 since that's what actually matches the stored commitment ID
+        const reconstructedCommitmentId = ethers.keccak256(ethers.solidityPacked(
+          ["bytes32", "address", "address", "uint256", "uint64"],
+          [expectedCommitment, storedCommitment[0], storedCommitment[3], storedCommitment[8], storedCommitment[1]]
+        ));
+        console.log("Reconstructed commitment ID:", reconstructedCommitmentId);
+        console.log("Passed commitment ID:", commitmentId);
+        console.log("Commitment ID match:", reconstructedCommitmentId === commitmentId);
+        
+        // Let's also try the exact order and types from the contract
+        console.log("\\n=== DETAILED RECONSTRUCTION DEBUG ===");
+        console.log("expectedCommitment:", expectedCommitment);
+        console.log("storedCommitment[0] (committer):", storedCommitment[0]);
+        console.log("storedCommitment[3] (targetContract):", storedCommitment[3]);
+        console.log("storedCommitment[8] (chainId):", storedCommitment[8].toString()); 
+        console.log("storedCommitment[1] (commitTimestamp):", storedCommitment[1].toString());
+        
+        // Try different type combinations to see which one matches
+        const reconstructedCommitmentId_uint64 = ethers.keccak256(ethers.solidityPacked(
+          ["bytes32", "address", "address", "uint256", "uint64"],
+          [expectedCommitment, storedCommitment[0], storedCommitment[3], storedCommitment[8], storedCommitment[1]]
+        ));
+        console.log("Reconstructed (uint64 timestamp):", reconstructedCommitmentId_uint64);
+        console.log("Match (uint64):", reconstructedCommitmentId_uint64 === commitmentId);
+        
+        const reconstructedCommitmentId_uint256 = ethers.keccak256(ethers.solidityPacked(
+          ["bytes32", "address", "address", "uint256", "uint256"],
+          [expectedCommitment, storedCommitment[0], storedCommitment[3], storedCommitment[8], storedCommitment[1]]
+        ));
+        console.log("Reconstructed (uint256 timestamp):", reconstructedCommitmentId_uint256);
+        console.log("Match (uint256):", reconstructedCommitmentId_uint256 === commitmentId);
+        
+      } catch (debugError) {
+        console.log("Debug error:", debugError);
+      }
+
+      // Try a static call first to see what exactly fails
+      try {
+        await this.contract.revealSpec.staticCall(commitmentId, ipfsHash, BigInt(nonce));
+        console.log("Static call successful - proceeding with actual transaction");
+      } catch (staticError: any) {
+        console.log("Static call failed with error:", staticError.message);
+        console.log("Static call error data:", staticError.data);
+      }
+
+      const revealTx = await this.contract.revealSpec(commitmentId, ipfsHash, BigInt(nonce));
+      console.log("Reveal transaction sent:", revealTx.hash);
+      const revealReceipt = await revealTx.wait();
+      console.log("Reveal transaction confirmed:", revealReceipt);
+
+      return revealTx.hash;
+    } catch (error: any) {
+      console.error("Error revealing spec:", error);
+      throw new Error(`Reveal failed: ${error.message || 'Unknown error'}`);
+    }
+  }
+
+  /**
+   * Complete submit flow (for backward compatibility)
+   */
+  async submitSpec(ipfsHash: string, bondAmount: bigint, targetContract?: string, targetChainId?: number): Promise<string> {
+    // The submitSpec convenience method commits then immediately reveals the spec.
+    // Incentives are no longer passed as part of commit.
+    const commitResult = await this.commitSpec(ipfsHash, bondAmount, targetContract, targetChainId);
+    return await this.revealSpec(commitResult.commitmentId, ipfsHash, commitResult.nonce);
   }
   
   /**
@@ -1074,17 +1280,78 @@ export class Web3Service {
   /**
    * Get specs by contract address (V1 feature)
    */
-  async getSpecsByContract(contractAddress: string): Promise<string[]> {
+  async getSpecsByContract(contractAddress: string, chainId: number = 11155111): Promise<string[]> {
     try {
       if (!this.contract || !this.signer) {
         throw new Error("Not connected to MetaMask. Please connect first.");
       }
 
-      const specIds = await this.contract.getSpecsByContract(contractAddress);
-      console.log("Specs for contract:", contractAddress, "are", specIds);
+      const specIds = await this.contract.getSpecsByContract(contractAddress, chainId);
+      console.log("Specs for contract:", contractAddress, "chainId:", chainId, "are", specIds);
       return specIds;
     } catch (error) {
       console.error("Error getting specs by contract:", error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get ALL specs for a user by querying SpecRevealed events
+   */
+  async getAllUserSpecsByEvents(userAddress: string): Promise<string[]> {
+    try {
+      if (!this.contract || !this.provider) {
+        throw new Error("Not connected to MetaMask. Please connect first.");
+      }
+
+      console.log(`🔍 Finding ALL specs for user via events: ${userAddress}`);
+      
+      // Get recent blocks to search for events
+      const currentBlock = await this.provider.getBlockNumber();
+      const fromBlock = Math.max(0, currentBlock - 50000); // Last ~7 days on mainnet
+      
+      console.log(`🔍 Searching SpecRevealed events from block ${fromBlock} to ${currentBlock}`);
+      
+      // Query SpecRevealed events for this user
+      const filter = this.contract.filters.SpecRevealed(null, userAddress, null);
+      const events = await this.contract.queryFilter(filter, fromBlock, currentBlock);
+      
+      console.log(`📋 Found ${events.length} SpecRevealed events for user`);
+      
+      const userSpecs: string[] = [];
+      for (const event of events) {
+        if (event.args && event.args.specId) {
+          const specId = event.args.specId;
+          console.log(`✅ Found user spec from events: ${specId}`);
+          userSpecs.push(specId);
+        }
+      }
+      
+      // Also check LogRevealSpec events (older format)
+      try {
+        const logRevealFilter = this.contract.filters.LogRevealSpec(userAddress, null, null, null);
+        const logRevealEvents = await this.contract.queryFilter(logRevealFilter, fromBlock, currentBlock);
+        
+        console.log(`📋 Found ${logRevealEvents.length} LogRevealSpec events for user`);
+        
+        for (const event of logRevealEvents) {
+          if (event.args && event.args.specID) {
+            const specId = event.args.specID;
+            console.log(`✅ Found user spec from LogRevealSpec events: ${specId}`);
+            if (!userSpecs.includes(specId)) {
+              userSpecs.push(specId);
+            }
+          }
+        }
+      } catch (logError) {
+        console.log("LogRevealSpec events not found, this is expected for newer contracts");
+      }
+      
+      console.log(`📋 Total user specs found via events: ${userSpecs.length}`, userSpecs);
+      return userSpecs;
+      
+    } catch (error) {
+      console.error("Error getting user specs by events:", error);
       throw error;
     }
   }
@@ -1123,16 +1390,23 @@ export class Web3Service {
       const nonce = BigInt(Math.floor(Math.random() * 1000000));
       const commitment = ethers.keccak256(ethers.solidityPacked(["string", "uint256"], [ipfsHash, nonce]));
       const target = targetContract || RAW_CONTRACT_ADDRESS;
-      const incentiveId = "0x0000000000000000000000000000000000000000000000000000000000000000";
+      // Determine the chainId from the provider's network; fallback to 1 (Sepolia)
+      let networkChainId = 1;
+      try {
+        const network = await this.provider.getNetwork();
+        networkChainId = Number(network.chainId);
+      } catch (_) {
+        networkChainId = 1;
+      }
 
-      // Manually encode the function call
-      const functionSelector = "0x1349f73f"; // commitSpec(bytes32,address,bytes32)
+      // Manually encode the function call for commitSpec(bytes32,address,uint256)
+      const functionSelector = ethers.id("commitSpec(bytes32,address,uint256)").slice(0, 10);
       const encodedParams = ethers.concat([
         ethers.zeroPadValue(commitment, 32),
-        ethers.zeroPadValue(target, 32), 
-        ethers.zeroPadValue(incentiveId, 32)
+        ethers.zeroPadValue(target, 32),
+        ethers.zeroPadValue(ethers.toBeHex(networkChainId), 32)
       ]);
-      
+
       const txData = ethers.concat([functionSelector, encodedParams]);
       
       console.log("Direct transaction data:");
@@ -1378,17 +1652,19 @@ export class Web3Service {
       // 8. Test contract function availability with static call
       try {
         console.log("Testing commitSpec with static call...");
-        const testCommitment = "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef";
-        const testIncentive = "0x0000000000000000000000000000000000000000000000000000000000000000";
-        
+        const testCommitment =
+          "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef";
+
+        // commitSpec in V1 accepts only (bytes32 commitment, address targetContract, uint256 chainId).
+        // Do not pass an incentiveId here, as the V1 contract does not include that parameter.
         await this.contract.commitSpec.staticCall(
           testCommitment,
           targetContract,
-          testIncentive,
+          1, // Default to mainnet for test
           { value: bondAmount, from: userAddress }
         );
         console.log("✅ Static call succeeded - function should work");
-        
+
       } catch (staticError) {
         console.error("❌ Static call failed:", staticError);
         
@@ -1420,18 +1696,19 @@ export class Web3Service {
       // 9. Gas estimation test
       try {
         console.log("Testing gas estimation...");
-        const testCommitment = "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef";
-        const testIncentive = "0x0000000000000000000000000000000000000000000000000000000000000000";
-        
+        const testCommitment =
+          "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef";
+
+        // Remove the testIncentive parameter; commitSpec only takes three arguments.
         const gasEstimate = await this.contract.commitSpec.estimateGas(
           testCommitment,
           targetContract,
-          testIncentive,
+          1, // Default to mainnet for test
           { value: bondAmount }
         );
-        
+
         console.log("Gas estimate:", gasEstimate.toString());
-        
+
         if (gasEstimate > BigInt(1000000)) {
           console.warn("⚠️ High gas estimate - transaction might be complex");
         }
@@ -1475,7 +1752,8 @@ export class Web3Service {
       // 2. Test function selectors to identify which contract is deployed
       const selectors = {
         "minBond()": "0x1bb659ae",
-        "commitSpec(bytes32,address,bytes32)": "0x1349f73f", // V1
+        // Use the new 3-parameter commitSpec selector for V1 contracts
+        "commitSpec(bytes32,address,uint256)": "0x" + ethers.id("commitSpec(bytes32,address,uint256)").slice(2, 10),
         "createSpec(string)": "0x8cd8db49", // Original
         "paused()": "0x5c975abb", // V1 (Pausable)
         "ADMIN_ROLE()": "0x75b238fc", // V1 (AccessControl)
@@ -1504,15 +1782,14 @@ export class Web3Service {
       try {
         const testCommitment = "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef";
         const testTarget = RAW_CONTRACT_ADDRESS;
-        const testIncentive = "0x0000000000000000000000000000000000000000000000000000000000000000";
         const minBond = BigInt("100000000000000"); // 0.0001 ETH
 
-        // Encode the call
+        // Encode the call to the new 3-parameter commitSpec
         const encodedCall = ethers.concat([
-          "0x1349f73f", // commitSpec selector
+          ethers.id("commitSpec(bytes32,address,uint256)").slice(0, 10), // commitSpec selector
           ethers.zeroPadValue(testCommitment, 32),
           ethers.zeroPadValue(testTarget, 32),
-          ethers.zeroPadValue(testIncentive, 32)
+          ethers.zeroPadValue(ethers.toBeHex(1), 32) // chainId = 1 for test
         ]);
 
         console.log("Test call data:", ethers.hexlify(encodedCall));
@@ -1609,9 +1886,9 @@ export class Web3Service {
           description: "Has createSpec(string) function"
         },
         {
-          name: "KaiSign V1", 
-          selector: ethers.id("commitSpec(bytes32,address,bytes32)").slice(0, 10), // commitSpec(bytes32,address,bytes32)
-          description: "Has commitSpec(bytes32,address,bytes32) function"
+          name: "KaiSign V1",
+          selector: ethers.id("commitSpec(bytes32,address,uint256)").slice(0, 10), // commitSpec(bytes32,address,uint256)
+          description: "Has commitSpec(bytes32,address,uint256) function"
         },
         {
           name: "V1 Pausable",
@@ -1780,14 +2057,15 @@ export class Web3Service {
         console.log("Could not check roles:", roleError);
       }
 
-      // Test 5: Check if commitSpec function exists
+      // Test 5: Check if commitSpec function exists (using the new 3-parameter signature)
       try {
         console.log("Checking if commitSpec function exists...");
-        
+
         // Try to call the function selector directly
-        const commitSpecSelector = "0x1349f73f";
-        const testCalldata = commitSpecSelector + "0".repeat(192); // Minimal calldata
-        
+        const commitSpecSelector = ethers.id("commitSpec(bytes32,address,uint256)").slice(0, 10);
+        // Minimal calldata for 3 parameters: 3 * 32 bytes = 96 bytes of padding (192 hex chars)
+        const testCalldata = commitSpecSelector + "0".repeat(192);
+
         const testCall = await this.provider!.call({
           to: RAW_CONTRACT_ADDRESS,
           data: testCalldata
@@ -1797,7 +2075,7 @@ export class Web3Service {
         console.error("✗ commitSpec function test failed:", selectorError);
         if (selectorError.data) {
           console.log("Function selector error data:", selectorError.data);
-          
+
           // Check if it's just a revert due to invalid parameters vs function not found
           if (selectorError.data === "0x" || selectorError.data === null) {
             console.error("⚠️  Function might not exist - no revert data returned");
@@ -1816,15 +2094,15 @@ export class Web3Service {
           [testIpfs, testNonce]
         ));
         const testTarget = RAW_CONTRACT_ADDRESS;
-        const testIncentive = "0x0000000000000000000000000000000000000000000000000000000000000000";
-        
+        // Note: commitSpec in V1 accepts only (bytes32 commitment, address targetContract, uint256 chainId).
+        // Do not define or pass a testIncentive parameter here.
         console.log("Testing commitSpec function signature...");
         console.log("Test commitment:", testCommitment);
-        
+
         const gasEstimate = await this.contract.commitSpec.estimateGas(
           testCommitment,
-          testTarget, 
-          testIncentive,
+          testTarget,
+          1, // Default to mainnet for test
           { value: await this.contract.minBond() }
         );
         console.log("✓ commitSpec gas estimate:", gasEstimate.toString());
@@ -1851,6 +2129,7 @@ export class Web3Service {
 
   async createIncentive(
     targetContract: string,
+    targetChainId: number,
     token: string, // address(0) for ETH
     amount: string,
     durationSeconds: number,
@@ -1866,6 +2145,7 @@ export class Web3Service {
       console.log("🎯 Creating incentive on contract:", this.contract.target);
       console.log("💰 Parameters:", {
         targetContract,
+        targetChainId,
         token,
         amount,
         durationSeconds,
@@ -1884,6 +2164,7 @@ export class Web3Service {
       console.log("📝 Calling createIncentive...");
       const tx = await this.contract.createIncentive(
         targetContract,
+        targetChainId,
         token,
         amount,
         durationSeconds,
@@ -1964,7 +2245,8 @@ export class Web3Service {
         isClaimed: incentive[6],            // bool isClaimed
         isActive: incentive[7],             // bool isActive
         reserved: Number(incentive[8]),     // uint80 reserved
-        description: incentive[9]           // string description
+        chainId: Number(incentive[9]),      // uint256 chainId
+        description: incentive[10]          // string description
       };
       
       return result;
@@ -1975,19 +2257,6 @@ export class Web3Service {
     }
   }
 
-  async getSpecsByContract(targetContract: string): Promise<string[]> {
-    if (!this.contract) {
-      throw new Error("Not connected to contract.");
-    }
-
-    try {
-      const specs = await this.contract.getSpecsByContract(targetContract);
-      return specs;
-    } catch (error: any) {
-      console.error("Error getting specs by contract:", error);
-      throw error;
-    }
-  }
 
   async getSpecsByContractPaginated(
     targetContract: string,
@@ -2020,22 +2289,68 @@ export class Web3Service {
     }
 
     try {
+      console.log("🔍 Getting spec data for specId:", specId);
+      
+      // Call the specs function and handle potential structure variations
       const spec = await this.contract.specs(specId);
-      return {
-        createdTimestamp: Number(spec.createdTimestamp),
-        proposedTimestamp: Number(spec.proposedTimestamp),
-        status: Number(spec.status),
-        bondsSettled: spec.bondsSettled,
-        totalBonds: spec.totalBonds.toString(),
-        creator: spec.creator,
-        targetContract: spec.targetContract,
-        ipfs: spec.ipfs,
-        questionId: spec.questionId,
-        incentiveId: spec.incentiveId
-      };
+      console.log("📋 Raw spec data:", spec);
+      
+      // The contract might have different struct layouts, so we need to handle both cases
+      // Try to parse assuming the newer format with 'reserved' field
+      let parsedSpec;
+      
+      if (Array.isArray(spec) && spec.length >= 12) {
+        // Handle tuple/array format - Updated to match exact contract struct order
+        parsedSpec = {
+          createdTimestamp: Number(spec[0]),     // uint64 createdTimestamp
+          proposedTimestamp: Number(spec[1]),    // uint64 proposedTimestamp
+          status: Number(spec[2]),               // Status enum (uint8)
+          bondsSettled: Boolean(spec[3]),        // bool bondsSettled
+          totalBonds: spec[4].toString(),        // uint80 totalBonds
+          reserved: Number(spec[5]),             // uint32 reserved
+          creator: spec[6],                      // address creator
+          targetContract: spec[7],               // address targetContract
+          ipfs: spec[8],                         // string ipfs
+          questionId: spec[9],                   // bytes32 questionId
+          incentiveId: spec[10],                 // bytes32 incentiveId
+          chainId: Number(spec[11])              // uint256 chainId
+        };
+      } else {
+        // Handle named struct format
+        parsedSpec = {
+          createdTimestamp: Number(spec.createdTimestamp || 0),
+          proposedTimestamp: Number(spec.proposedTimestamp || 0),
+          status: Number(spec.status || 0),
+          bondsSettled: Boolean(spec.bondsSettled),
+          totalBonds: (spec.totalBonds || 0).toString(),
+          reserved: Number(spec.reserved || 0),
+          creator: spec.creator || "0x0000000000000000000000000000000000000000",
+          targetContract: spec.targetContract || "0x0000000000000000000000000000000000000000",
+          ipfs: spec.ipfs || "",
+          questionId: spec.questionId || "0x0000000000000000000000000000000000000000000000000000000000000000",
+          incentiveId: spec.incentiveId || "0x0000000000000000000000000000000000000000000000000000000000000000",
+          chainId: Number(spec.chainId || 0)
+        };
+      }
+      
+      console.log("✅ Parsed spec data:", parsedSpec);
+      return parsedSpec;
+      
     } catch (error: any) {
-      console.error("Error getting spec data:", error);
-      throw error;
+      console.error("💥 Error getting spec data:", error);
+      console.error("📋 SpecId that failed:", specId);
+      
+      // Try to provide more helpful error information
+      if (error.message?.includes("could not decode result data")) {
+        console.error("🔧 This looks like an ABI mismatch. The contract struct might have changed.");
+        
+        // Try to extract some basic info from the raw error if possible
+        if (error.value) {
+          console.error("📊 Raw contract return value:", error.value);
+        }
+      }
+      
+      throw new Error(`Failed to decode specification data. This might be due to a contract version mismatch. Original error: ${error.message}`);
     }
   }
 
@@ -2099,7 +2414,50 @@ export class Web3Service {
     }
 
     try {
-      // Network check removed - let users connect on any network
+      console.log("Handling result for specId:", specId);
+      
+      // First check the current status of the spec
+      const specData = await this.contract.specs(specId);
+      console.log("Spec status before handleResult:", specData.status);
+      console.log("Spec data:", specData);
+      
+      // Status: 0=Committed, 1=Submitted, 2=Proposed, 3=Finalized, 4=Cancelled
+      if (Number(specData.status) === 3) {
+        // Spec is already finalized, but incentives might not be claimed
+        // Let's try to claim ETH incentives manually if they exist
+        console.log("Spec already finalized, checking for unclaimed ETH incentives...");
+        
+        // Check if there are available ETH incentives for this spec's target contract
+        const availableIncentives = await this.getAvailableIncentives(specData.targetContract, Number(specData.chainId));
+        console.log("Available incentives for finalized spec:", availableIncentives);
+        
+        const ethIncentives = availableIncentives.filter(inc => 
+          inc.token === "0x0000000000000000000000000000000000000000" && 
+          !inc.isClaimed && 
+          inc.isActive
+        );
+        
+        if (ethIncentives.length > 0) {
+          // There are unclaimed ETH incentives - the spec might have been finalized without processing incentives
+          // This could happen if handleResult was never called or failed partially
+          console.log("Found unclaimed ETH incentives, attempting to process...");
+          
+          // Try calling handleResult anyway - it might work if the Reality.eth question needs processing
+          try {
+            const tx = await this.contract.handleResult(specId);
+            const receipt = await tx.wait();
+            console.log("Result handled for finalized spec:", receipt);
+            return tx.hash;
+          } catch (handleError: any) {
+            console.log("handleResult failed on finalized spec, incentives might need manual processing");
+            throw new Error("Specification is finalized but incentives weren't claimed automatically. This may require contract admin intervention or the incentives may have expired.");
+          }
+        } else {
+          throw new Error("Specification is already finalized and no unclaimed ETH incentives found. Check if incentives were already claimed or use claimActiveTokenIncentive for ERC20 tokens.");
+        }
+      } else if (Number(specData.status) !== 2) {
+        throw new Error(`Cannot handle result for spec in status ${specData.status}. Spec must be Proposed (status 2).`);
+      }
 
       const tx = await this.contract.handleResult(specId);
       const receipt = await tx.wait();
@@ -2107,6 +2465,14 @@ export class Web3Service {
       return tx.hash;
     } catch (error: any) {
       console.error("Error handling result:", error);
+      
+      // Decode specific contract errors
+      if (error.data === "0xf2a87d5e") {
+        throw new Error("NotProposed: Specification is not in Proposed status. It may already be finalized.");
+      } else if (error.data === "0x1bee0d5a") {
+        throw new Error("NotFinalized: Reality.eth question is not yet finalized. Wait for the timeout period.");
+      }
+      
       throw error;
     }
   }
@@ -2117,14 +2483,139 @@ export class Web3Service {
     }
 
     try {
-      // Network check removed - let users connect on any network
+      console.log("Attempting to settle bonds for specId:", specId);
+      
+      // Check spec status first
+      const specData = await this.contract.specs(specId);
+      console.log("Spec data before settleBonds:", specData);
+      console.log("Spec status:", Number(specData.status));
+      console.log("Already settled (from spec):", specData.bondsSettled);
+      
+      // Validate requirements before attempting settlement
+      if (Number(specData.status) !== 3) {
+        throw new Error(`Cannot settle bonds: Specification must be finalized (status 3), but current status is ${Number(specData.status)}`);
+      }
+      
+      if (specData.bondsSettled) {
+        throw new Error("Cannot settle bonds: Bonds have already been settled for this specification");
+      }
+      
+      // Check Reality.eth question status
+      const questionId = specData.questionId;
+      console.log("Reality.eth question ID:", questionId);
+      
+      // IMPORTANT: Double-check by calling the contract's bondsSettled mapping directly
+      // This might be different from the spec struct value
+      try {
+        // The contract might have a bondsSettled mapping that's separate from the struct
+        // Let me try a different approach - check the ABI for available view functions
+        console.log("🔍 Checking additional contract state...");
+        
+        // Check if the contract has any other state we need to verify
+        console.log("Current spec creator:", specData.creator);
+        console.log("Your address:", await this.signer?.getAddress());
+        console.log("Total bonds in spec:", specData.totalBonds.toString());
+        
+        // CRITICAL: Check the bondsSettled mapping directly
+        const mappingSettled = await this.contract.bondsSettled(specId);
+        console.log("🚨 bondsSettled mapping says:", mappingSettled);
+        console.log("🚨 spec struct bondsSettled says:", specData.bondsSettled);
+        
+        if (mappingSettled) {
+          throw new Error("Cannot settle bonds: The bondsSettled mapping shows bonds are already settled, even though the spec struct says false. This indicates the bonds were already processed.");
+        }
+        
+      } catch (stateError) {
+        console.error("Error checking additional state:", stateError);
+      }
+      
+      if (questionId === "0x0000000000000000000000000000000000000000000000000000000000000000") {
+        throw new Error("Cannot settle bonds: No Reality.eth question associated with this specification");
+      }
+      
+      // Try to get Reality.eth contract and check if question is finalized
+      try {
+        const realityEthAddress = await this.contract.realityETH();
+        console.log("Reality.eth contract address:", realityEthAddress);
+        
+        // Create Reality.eth contract instance
+        const realityEthAbi = [
+          "function isFinalized(bytes32 question_id) external view returns (bool)",
+          "function resultFor(bytes32 question_id) external view returns (bytes32)"
+        ];
+        
+        const realityEthContract = new ethers.Contract(realityEthAddress, realityEthAbi, this.provider);
+        
+        const isFinalized = await realityEthContract.isFinalized(questionId);
+        console.log("Reality.eth question finalized:", isFinalized);
+        
+        if (isFinalized) {
+          const result = await realityEthContract.resultFor(questionId);
+          console.log("Reality.eth result:", result);
+          console.log("Result as number:", Number(result));
+        } else {
+          console.log("⚠️ Reality.eth question is not finalized yet!");
+        }
+      } catch (realityError) {
+        console.error("Error checking Reality.eth status:", realityError);
+      }
+      
+      // Check if contract has enough balance to pay out bonds (always run this)
+      try {
+        const kaisignContractAddress = "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf";
+        const contractBalance = await this.provider.getBalance(kaisignContractAddress);
+        console.log("🏦 Contract ETH balance:", ethers.formatEther(contractBalance), "ETH");
+        console.log("💰 Bonds to pay out:", ethers.formatEther(specData.totalBonds), "ETH");
+        console.log("💰 Contract has enough?", contractBalance >= specData.totalBonds);
+        
+        if (contractBalance < specData.totalBonds) {
+          throw new Error(`🚨 CONTRACT INSUFFICIENT FUNDS: Contract balance: ${ethers.formatEther(contractBalance)} ETH, Required: ${ethers.formatEther(specData.totalBonds)} ETH`);
+        }
+      } catch (balanceError) {
+        console.error("Error checking contract balance:", balanceError);
+        throw balanceError;
+      }
 
-      const tx = await this.contract.settleBonds(specId);
-      const receipt = await tx.wait();
-      console.log("Bonds settled:", receipt);
-      return tx.hash;
+      // Try with manual gas estimation to avoid estimation errors
+      console.log("Attempting settlement with manual gas estimation...");
+      
+      try {
+        const gasEstimate = await this.contract.settleBonds.estimateGas(specId);
+        console.log("Gas estimate:", gasEstimate.toString());
+        
+        const tx = await this.contract.settleBonds(specId, {
+          gasLimit: gasEstimate + BigInt(50000) // Add buffer
+        });
+        const receipt = await tx.wait();
+        console.log("Bonds settled:", receipt);
+        return tx.hash;
+      } catch (gasError) {
+        console.error("Gas estimation failed, trying with fixed gas:", gasError);
+        
+        // Try with a fixed gas limit
+        const tx = await this.contract.settleBonds(specId, {
+          gasLimit: BigInt(200000) // Fixed gas limit
+        });
+        const receipt = await tx.wait();
+        console.log("Bonds settled:", receipt);
+        return tx.hash;
+      }
     } catch (error: any) {
       console.error("Error settling bonds:", error);
+      
+      // Decode specific contract errors for settleBonds
+      if (error.data === "0x1bee0d5a") {
+        throw new Error("NotFinalized: Specification must be finalized before settling bonds.");
+      } else if (error.data === "0x2cb15938") {
+        throw new Error("AlreadySettled: Bonds for this specification have already been settled.");
+      }
+      
+      // Check if it's a generic revert
+      if (error.message.includes("execution reverted") && !error.data) {
+        // Try to get more info about why it failed
+        throw new Error(`Bond settlement failed. This could be because: 1) Specification is not finalized, 2) Bonds already settled, 3) You're not authorized to settle, or 4) Contract state issue. Spec ID: ${specId}`);
+      }
+      
       throw error;
     }
   }
@@ -2157,47 +2648,50 @@ export class Web3Service {
     }
   }
 
-  async getAvailableIncentives(targetContract: string): Promise<any[]> {
+  async getAvailableIncentives(targetContract: string, targetChainId?: number): Promise<any[]> {
     if (!this.contract) {
       throw new Error("Not connected to contract.");
     }
 
     try {
-      // In production, you would use event filtering or a subgraph to get incentives
-      // For now, we'll use a hybrid approach: mock data + any real incentives created
-      
       const incentives = [];
       
-      // Add mock incentives for KaiSign contract for testing
-      const kaisignContract = "0x79d0e06350cfce33a7a73a7549248fd6aed774f2".toLowerCase();
-      if (targetContract.toLowerCase() === kaisignContract) {
-        incentives.push({
-          id: "0x1234567890123456789012345678901234567890123456789012345678901234",
-          creator: "0xAbcDef1234567890123456789012345678901234Ab",
-          token: "0x0000000000000000000000000000000000000000", // ETH
-          amount: "0.05",
-          deadline: Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60), // 7 days from now
-          description: "🚀 Mock ETH Reward for high-quality ERC7730 specification",
-          isActive: true,
-          isClaimed: false
-        });
+      // Get real incentives from contract events
+      try {
+        const filter = this.contract.filters.LogIncentiveCreated(null, null, targetContract);
+        const events = await this.contract.queryFilter(filter, -10000); // Last 10k blocks
         
-        incentives.push({
-          id: "0x5678901234567890123456789012345678901234567890123456789012345678",
-          creator: "0x1234567890123456789012345678901234567890",
-          token: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238", // USDC Sepolia
-          amount: "100",
-          deadline: Math.floor(Date.now() / 1000) + (14 * 24 * 60 * 60), // 14 days from now
-          description: "💰 Mock USDC reward for comprehensive contract specification",
-          isActive: true,
-          isClaimed: false
-        });
+        for (const event of events) {
+          const incentiveId = event.args?.incentiveId;
+          if (incentiveId) {
+            const incentiveData = await this.contract.incentives(incentiveId);
+            // Only include incentives that exactly match the target chain ID
+            // This prevents cross-chain incentive confusion
+            if (
+              incentiveData.isActive &&
+              !incentiveData.isClaimed &&
+              (targetChainId === undefined || incentiveData.chainId.toString() === targetChainId.toString())
+            ) {
+              incentives.push({
+                id: incentiveId,
+                creator: incentiveData.creator,
+                token: incentiveData.token,
+                amount:
+                  incentiveData.token ===
+                  "0x0000000000000000000000000000000000000000"
+                    ? (Number(incentiveData.amount) / 1e18).toString()
+                    : incentiveData.amount.toString(),
+                deadline: Number(incentiveData.deadline),
+                description: incentiveData.description,
+                isActive: incentiveData.isActive,
+                isClaimed: incentiveData.isClaimed
+              });
+            }
+          }
+        }
+      } catch (eventError) {
+        console.log("Could not fetch incentive events:", eventError);
       }
-      
-      // TODO: Add real event filtering here
-      // const filter = this.contract.filters.LogIncentiveCreated(null, null, targetContract);
-      // const events = await this.contract.queryFilter(filter);
-      // Process events and add real incentives...
       
       console.log(`Found ${incentives.length} incentives for contract: ${targetContract}`);
       return incentives;
@@ -2219,6 +2713,59 @@ export class Web3Service {
       return [];
     } catch (error: any) {
       console.error("Error getting incentives by target contract:", error);
+      throw error;
+    }
+  }
+
+  async claimActiveTokenIncentive(specId: string, tokenAddress: string): Promise<string> {
+    if (!this.contract) {
+      throw new Error("Not connected to contract.");
+    }
+
+    try {
+      console.log("Claiming active token incentive for specId:", specId, "token:", tokenAddress);
+      
+      const tx = await this.contract.claimActiveTokenIncentive(specId, tokenAddress);
+      console.log("Claim transaction sent:", tx.hash);
+      
+      const receipt = await tx.wait();
+      console.log("Claim transaction confirmed:", receipt);
+      
+      return tx.hash;
+    } catch (error: any) {
+      console.error("Error claiming active token incentive:", error);
+      throw error;
+    }
+  }
+
+  // Helper function to claim ETH incentives manually
+  async claimETHIncentive(specId: string): Promise<string> {
+    if (!this.contract) {
+      throw new Error("Not connected to contract.");
+    }
+
+    try {
+      console.log("Attempting to claim ETH incentive for specId:", specId);
+      
+      // ETH token address is 0x0000000000000000000000000000000000000000
+      const ethAddress = "0x0000000000000000000000000000000000000000";
+      
+      const tx = await this.contract.claimActiveTokenIncentive(specId, ethAddress);
+      console.log("ETH claim transaction sent:", tx.hash);
+      
+      const receipt = await tx.wait();
+      console.log("ETH claim transaction confirmed:", receipt);
+      
+      return tx.hash;
+    } catch (error: any) {
+      console.error("Error claiming ETH incentive:", error);
+      
+      // If claimActiveTokenIncentive fails for ETH, try handleResult as fallback
+      if (error.data === "0x2b4fa360") { // InvalidContract() - claimActiveTokenIncentive rejects ETH
+        console.log("claimActiveTokenIncentive rejected ETH, trying handleResult...");
+        return await this.handleResult(specId);
+      }
+      
       throw error;
     }
   }

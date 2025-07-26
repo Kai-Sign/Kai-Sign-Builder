@@ -7,6 +7,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { Erc7730StoreProvider } from "~/store/erc7730Provider";
 import { Toaster } from "~/components/ui/toaster";
 import { ThemeProvider } from "~/components/ui/theme-provider";
+import { WalletProvider } from "~/contexts/WalletContext";
 import GoogleTagManager from "~/components/scripts/googleTagManager";
 import Script from "next/script";
 
@@ -44,17 +45,19 @@ export default function RootLayout({
     >
       <body>
         <TRPCReactProvider>
-          <Erc7730StoreProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              {children}
-              <Toaster />
-            </ThemeProvider>
-          </Erc7730StoreProvider>
+          <WalletProvider>
+            <Erc7730StoreProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                {children}
+                <Toaster />
+              </ThemeProvider>
+            </Erc7730StoreProvider>
+          </WalletProvider>
         </TRPCReactProvider>
         {ONETRUST_ID && (
           <Script
