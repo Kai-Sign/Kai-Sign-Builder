@@ -98,12 +98,14 @@ export default async function generateERC7730({
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Accept": "application/json",
             // Add cache control to prevent browser caching issues
             "Cache-Control": "no-cache",
           },
           body: JSON.stringify(body),
           // Add cache control to prevent browser caching issues
           cache: "no-store",
+          mode: "cors",
         });
 
         console.log(`API response status: ${response.status}`);
@@ -179,7 +181,9 @@ export default async function generateERC7730({
           retryDelay *= 2;
           
           // If we're on Vercel and this is the second attempt, try direct Railway API
-          if (attempt === 1 && typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+          if (attempt === 1 && typeof window !== 'undefined' && 
+              (window.location.hostname.includes('vercel.app') || 
+               window.location.hostname.includes('railway.app'))) {
             console.log("Switching to direct Railway API endpoint");
             // Force direct Railway API
             const railwayApi = "https://kai-sign-production.up.railway.app/api/py/generateERC7730";
@@ -187,10 +191,12 @@ export default async function generateERC7730({
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
+                "Accept": "application/json",
                 "Cache-Control": "no-cache",
               },
               body: JSON.stringify(body),
               cache: "no-store",
+              mode: "cors",
             });
             
             if (response.ok) {
@@ -212,7 +218,9 @@ export default async function generateERC7730({
     }
 
     // Special case for Vercel - fake a successful response to prevent blocking the flow
-    if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+    if (typeof window !== 'undefined' && 
+        (window.location.hostname.includes('vercel.app') || 
+         window.location.hostname.includes('railway.app'))) {
       console.log("Providing fallback response for Vercel deployment");
       // Return a minimal valid response to allow the flow to continue
       return {
