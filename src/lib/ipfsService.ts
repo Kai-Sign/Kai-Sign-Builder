@@ -49,12 +49,18 @@ export async function uploadToIPFS(file: File | string | object): Promise<string
     // Since we're in a browser context, we can only access NEXT_PUBLIC_ prefixed variables
     const apiKey = process.env.NEXT_PUBLIC_IPFS_API_KEY || '';
     const apiSecret = process.env.NEXT_PUBLIC_IPFS_API_SECRET || '';
+    const jwtToken = process.env.NEXT_PUBLIC_PINATA_JWT || '';
     
     console.log("Using Pinata API Key:", apiKey ? "Found" : "Not found");
     console.log("Using Pinata API Secret:", apiSecret ? "Found" : "Not found");
+    console.log("Using Pinata JWT:", jwtToken ? "Found" : "Not found");
     
-    if (!apiKey || !apiSecret) {
-      throw new Error('Pinata API credentials not found. Please add NEXT_PUBLIC_IPFS_API_KEY and NEXT_PUBLIC_IPFS_API_SECRET to your environment variables.');
+    // Check if we have either JWT or API key/secret pair
+    const hasJWT = !!jwtToken;
+    const hasApiCredentials = !!(apiKey && apiSecret);
+    
+    if (!hasJWT && !hasApiCredentials) {
+      throw new Error('Pinata credentials not found. Please add either NEXT_PUBLIC_PINATA_JWT or both NEXT_PUBLIC_IPFS_API_KEY and NEXT_PUBLIC_IPFS_API_SECRET to your environment variables.');
     }
     
     // Add metadata
@@ -73,13 +79,19 @@ export async function uploadToIPFS(file: File | string | object): Promise<string
     
     console.log("Sending file to Pinata...");
     
+    // Prepare headers based on available authentication method
+    const headers: Record<string, string> = {};
+    if (hasJWT) {
+      headers['Authorization'] = `Bearer ${jwtToken}`;
+    } else {
+      headers['pinata_api_key'] = apiKey;
+      headers['pinata_secret_api_key'] = apiSecret;
+    }
+    
     // Using Pinata API
     const response = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
       method: 'POST',
-      headers: {
-        'pinata_api_key': apiKey,
-        'pinata_secret_api_key': apiSecret,
-      },
+      headers,
       body: formData,
     });
     
