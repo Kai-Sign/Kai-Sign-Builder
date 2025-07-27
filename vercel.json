@@ -1,16 +1,13 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "functions": {
+    "src/app/api/**.ts": {
+      "maxDuration": 30
     }
-  ],
-  "env": {
-    "PYTHONPATH": ".",
-    "PYTHONUNBUFFERED": "1"
   },
-  "regions": ["sfo1"],
   "headers": [
     {
       "source": "/(.*)",

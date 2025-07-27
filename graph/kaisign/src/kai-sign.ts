@@ -56,7 +56,7 @@ export function handleLogCreateSpec(event: LogCreateSpecEvent): void {
   let logEntity = new LogCreateSpec(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
-  logEntity.user = event.params.user
+  logEntity.user = event.params.creator
   logEntity.specID = event.params.specID
   logEntity.ipfs = event.params.ipfs
 
@@ -67,40 +67,29 @@ export function handleLogCreateSpec(event: LogCreateSpecEvent): void {
 
   // Create or update the Spec entity
   let spec = new Spec(event.params.specID)
-  spec.user = event.params.user
+  spec.user = event.params.creator
   spec.ipfs = event.params.ipfs
+  spec.targetContract = event.params.targetContract
+  spec.chainID = event.params.chainId.toString()
   spec.status = "SUBMITTED"
   spec.blockTimestamp = event.block.timestamp
+  spec.eventTimestamp = event.params.timestamp
+  spec.incentiveId = event.params.incentiveId
   spec.isFinalized = false
   spec.isAccepted = false
   
-  // Extract chainID and contract address from IPFS metadata
+  // Try to get additional metadata from IPFS
   let metadata = ipfs.cat(event.params.ipfs)
   if (metadata) {
     let jsonData = json.fromBytes(metadata as Bytes)
     if (jsonData) {
       let jsonObject = jsonData.toObject()
       if (jsonObject) {
+        // Extract additional metadata if available
         let context = jsonObject.get("context")
         if (context) {
           let contextObj = context.toObject()
-          if (contextObj) {
-            let chainId = contextObj.get("chainId")
-            if (chainId) {
-              spec.chainID = chainId.toString()
-            }
-            // Get contract address from context
-            let contract = contextObj.get("contract")
-            if (contract) {
-              let contractObj = contract.toObject()
-              if (contractObj) {
-                let deployedTo = contractObj.get("deployedTo")
-                if (deployedTo) {
-                  spec.targetContract = Bytes.fromHexString(deployedTo.toString())
-                }
-              }
-            }
-          }
+          // Additional processing can be done here if needed
         }
       }
     }

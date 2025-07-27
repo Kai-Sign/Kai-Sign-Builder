@@ -33,44 +33,47 @@ export async function GET(request: NextRequest) {
     // Call our existing KaiSign service to get metadata
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://kai-sign-production.up.railway.app';
     
-    // Try to get metadata from our KaiSign graph
-    const metadataResponse = await fetch(`${request.nextUrl.origin}/api/metadata?chainId=${chainId}&contract=${contractAddress}&selector=0x00000000`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
+    // Try to get complete metadata from our KaiSign graph with IPFS data
+    const client = new (await import('~/lib/graphClient')).KaiSignGraphClient(
+      process.env.NEXT_PUBLIC_KAISIGN_GRAPH_URL || 'https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.7'
+    );
+    
     let contractMetadata = null;
-    if (metadataResponse.ok) {
-      const metadataData = await metadataResponse.json();
-      if (metadataData.success) {
-        contractMetadata = metadataData.data;
-      }
-    }
-
-    // Try to get IPFS-based metadata from Railway API
     let ipfsMetadata = null;
+    
     try {
-      const ipfsResponse = await fetch(`${apiUrl}/api/py/getIPFSMetadata`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contract_address: contractAddress,
-          chain_id: parseInt(chainId)
-        })
-      });
-
-      if (ipfsResponse.ok) {
-        ipfsMetadata = await ipfsResponse.json();
+      const completeData = await client.getCompleteContractMetadata(contractAddress, chainId);
+      if (completeData.specs && completeData.specs.length > 0) {
+        contractMetadata = completeData.specs;
+        ipfsMetadata = completeData.ipfsMetadata;
       }
-    } catch (ipfsError) {
-      console.log('IPFS metadata not available:', ipfsError);
+    } catch (graphError) {
+      console.log('Graph metadata not available:', graphError);
     }
 
-    // Return combined metadata
+    // Try to get IPFS-based metadata from Railway API as fallback
+    if (!ipfsMetadata) {
+      try {
+        const ipfsResponse = await fetch(`${apiUrl}/api/py/getIPFSMetadata`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            contract_address: contractAddress,
+            chain_id: parseInt(chainId)
+          })
+        });
+
+        if (ipfsResponse.ok) {
+          ipfsMetadata = await ipfsResponse.json();
+        }
+      } catch (ipfsError) {
+        console.log('IPFS metadata not available:', ipfsError);
+      }
+    }
+
+    // Return combined metadata with full ERC-7730 specification
     const response = {
       success: true,
       contractAddress,
@@ -79,15 +82,28 @@ export async function GET(request: NextRequest) {
         // Basic contract info
         address: contractAddress,
         chainId: parseInt(chainId),
-        // Graph-based metadata
+        // Graph-based spec data
         ...(contractMetadata && {
-          functions: contractMetadata,
-          recognized: true
+          specs: contractMetadata,
+          recognized: true,
+          graph: true
         }),
-        // IPFS-based metadata
+        // Complete ERC-7730 metadata
         ...(ipfsMetadata && {
-          ipfs: ipfsMetadata,
-          erc7730: ipfsMetadata.metadata || null
+          erc7730: ipfsMetadata,
+          // Extract function information for easier access
+          functions: ipfsMetadata.metadata?.functions ? Object.entries(ipfsMetadata.metadata.functions).map(([selector, func]: [string, any]) => ({
+            selector,
+            name: selector,
+            intent: func.intent,
+            fields: func.fields
+          })) : [],
+          // Extract constants and enums
+          constants: ipfsMetadata.metadata?.constants || {},
+          enums: ipfsMetadata.metadata?.enums || {},
+          // Contract info
+          owner: ipfsMetadata.metadata?.owner,
+          info: ipfsMetadata.metadata?.info
         }),
       },
       // Indicate which sources provided data
