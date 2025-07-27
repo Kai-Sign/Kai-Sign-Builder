@@ -1,5 +1,6 @@
 import { HydrateClient } from "~/trpc/server";
 import { Button } from "~/components/ui/button";
+import { ExtensionSafeButton } from "~/components/ExtensionSafeButton";
 import Link from "next/link";
 import FileUploader from "./fileUploader";
 
@@ -21,9 +22,9 @@ export default function VerificationResultsPage() {
               </p>
             </div>
             <Link href="/kaisign-v1">
-              <Button className="bg-green-600 hover:bg-green-700 text-white">
+              <ExtensionSafeButton className="bg-green-600 hover:bg-green-700 text-white">
                 Open V1 Manager
-              </Button>
+              </ExtensionSafeButton>
             </Link>
           </div>
         </div>
@@ -87,22 +88,14 @@ export default function VerificationResultsPage() {
           </div>
         </div>
         
-        <div className="flex justify-between">
-          <Button 
+        <div className="flex justify-center">
+          <ExtensionSafeButton 
             variant="outline" 
             asChild
             className="px-8 py-6 text-base border border-gray-700 hover:bg-gray-800 hover:border-gray-600"
           >
             <Link href="/">Back to Home</Link>
-          </Button>
-          
-          <Button 
-            variant="outline" 
-            asChild
-            className="px-8 py-6 text-base border border-gray-700 hover:bg-gray-800 hover:border-gray-600"
-          >
-            <Link href="/contract-events">Past Results</Link>
-          </Button>
+          </ExtensionSafeButton>
         </div>
       </div>
     </HydrateClient>
