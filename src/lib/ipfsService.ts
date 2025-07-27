@@ -58,13 +58,9 @@ export async function uploadToIPFS(file: File | string | object): Promise<string
     console.log("- NEXT_PUBLIC_PINATA_JWT:", process.env.NEXT_PUBLIC_PINATA_JWT ? "SET" : "NOT_SET");
     
     console.log("Processed values:");
-    console.log("API Key length:", apiKey.length);
-    console.log("API Secret length:", apiSecret.length);  
-    console.log("JWT Token length:", jwtToken.length);
-    
-    if (apiKey) console.log("API Key (first 8 chars):", apiKey.substring(0, 8));
-    if (apiSecret) console.log("API Secret (first 8 chars):", apiSecret.substring(0, 8));
-    if (jwtToken) console.log("JWT Token (first 20 chars):", jwtToken.substring(0, 20));
+    console.log("API Key is set:", !!apiKey);
+    console.log("API Secret is set:", !!apiSecret);
+    console.log("JWT Token is set:", !!jwtToken);
     
     // Check if we have either JWT or API key/secret pair
     const hasJWT = !!jwtToken;
