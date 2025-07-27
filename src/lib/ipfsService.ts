@@ -99,6 +99,7 @@ export async function uploadToIPFS(file: File | string | object): Promise<string
     return result.IpfsHash;
   } catch (error) {
     console.error('Error uploading to IPFS:', error);
-    throw error; // Re-throw the error instead of using fallback
+    // Wrap the error in a structured response for user feedback
+    throw new Error(`Failed to upload to IPFS. Please check your network connection or Pinata credentials. Details: ${error.message}`);
   }
 } 
