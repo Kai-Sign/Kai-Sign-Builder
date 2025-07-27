@@ -30,29 +30,32 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 // Check if the API is ready
 const checkApiHealth = async (): Promise<boolean> => {
   try {
-    // First try the local API endpoint
-    const localApiResponse = await fetch("/api/py", {
+    // First try the local Next.js API health endpoint
+    const localApiResponse = await fetch("/api/health", {
       method: "GET",
       headers: {
         "Cache-Control": "no-cache",
+        "Accept": "application/json",
       },
       cache: "no-store",
     });
 
     if (localApiResponse.ok) {
-      console.log("Local API is available");
+      console.log("Local Next.js API is available");
       return true;
     }
 
     // If local API fails, try the direct Railway API health check
     console.log("Local API not available, trying Railway API directly");
     const railwayApiUrl = process.env.NEXT_PUBLIC_API_URL || "https://kai-sign-production.up.railway.app";
-    const railwayResponse = await fetch(`${railwayApiUrl}/api/py`, {
+    const railwayResponse = await fetch(`${railwayApiUrl}/api/health`, {
       method: "GET",
       headers: {
         "Cache-Control": "no-cache",
+        "Accept": "application/json",
       },
       cache: "no-store",
+      mode: "cors",
     });
 
       if (railwayResponse.ok) {
