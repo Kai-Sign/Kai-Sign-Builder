@@ -94,7 +94,7 @@ export async function uploadToIPFS(file: File | string | object): Promise<string
     const headers: Record<string, string> = {};
     if (hasJWT) {
       headers['Authorization'] = `Bearer ${jwtToken}`;
-      console.log("Using JWT token ending in:", jwtToken.slice(-8));
+      console.log("Using JWT token for authentication.");
     } else {
       headers['pinata_api_key'] = apiKey;
       headers['pinata_secret_api_key'] = apiSecret;
