@@ -18,7 +18,7 @@ import { ModeToggle } from "~/components/ui/theme-switcher";
 import { useRouter, usePathname } from "next/navigation";
 import useOperationStore from "~/store/useOperationStore";
 import ResetButton from "./resetButton";
-import { Fingerprint } from "lucide-react";
+import { Fingerprint, Code } from "lucide-react";
 
 export function AppSidebar() {
   const { getContractAddress } = useErc7730Store((s) => s);
@@ -33,6 +33,7 @@ export function AppSidebar() {
 
   const isOperation = pathname === "/operations";
   const isDigitalSignatures = pathname === "/digital-signatures";
+  const isContractMetadataDemo = pathname === "/contract-metadata-demo";
 
   return (
     <Sidebar>

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "WebFetch(domain:sepolia.etherscan.io)"
+    ],
+    "deny": []
+  }
+}

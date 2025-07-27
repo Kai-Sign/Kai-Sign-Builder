@@ -1,0 +1,43 @@
+{
+  "name": "kaisign-metadata-ui",
+  "version": "1.0.0",
+  "description": "Simple React component and API for fetching JSON metadata from smart contracts",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "keywords": [
+    "ethereum",
+    "smart-contracts",
+    "metadata",
+    "erc7730",
+    "react",
+    "ui",
+    "blockchain"
+  ],
+  "author": "KaiSign",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "dependencies": {
+    "lucide-react": "^0.400.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "dist/**/*",
+    "src/**/*",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kaisign/metadata-ui"
+  }
+}

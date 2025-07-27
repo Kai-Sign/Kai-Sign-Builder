@@ -125,7 +125,9 @@ export default async function generateERC7730({
           let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
           
           try {
-            const errorData = await response.json();
+            // Clone the response to avoid "body stream already read" error
+            const responseClone = response.clone();
+            const errorData = await responseClone.json();
             console.error("API Error Details:", errorData);
             
             // Handle different error response formats
@@ -135,6 +137,9 @@ export default async function generateERC7730({
             } else if (errorData.message) {
               // Custom message format
               errorMessage = `API Error: ${errorData.message}`;
+            } else if (errorData.error) {
+              // Next.js API error format
+              errorMessage = `API Error: ${errorData.error}`;
             } else if (Object.keys(errorData).length === 0) {
               // Empty object - provide more context
               errorMessage = `API Error: Server returned empty error response (${response.status} ${response.statusText}). This may indicate a server configuration issue.`;
@@ -145,21 +150,9 @@ export default async function generateERC7730({
             
             throw new Error(errorMessage);
           } catch (jsonError) {
-            // If we can't parse the error as JSON, get the raw response text
+            // If we can't parse the error as JSON, provide a simple error message
             console.error("Error parsing API error response:", jsonError);
-            
-            try {
-              const errorText = await response.text();
-              if (errorText.trim()) {
-                errorMessage = `API Error: ${errorText.substring(0, 500)}`;
-              } else {
-                errorMessage = `API Error: Server returned empty response (${response.status} ${response.statusText})`;
-              }
-            } catch (textError) {
-              console.error("Error reading response text:", textError);
-              errorMessage = `API Error: Unable to read error response (${response.status} ${response.statusText})`;
-            }
-            
+            errorMessage = `API Error: ${response.status} ${response.statusText}`;
             throw new Error(errorMessage);
           }
         }
