@@ -329,7 +329,7 @@ export class KaiSignGraphClient {
       user: userAddress.toLowerCase()
     });
     
-    if (!data.specs) {
+    if (!data || !data.specs) {
       return [];
     }
     
@@ -373,7 +373,7 @@ export class KaiSignGraphClient {
       user: userAddress.toLowerCase()
     });
     
-    if (!data.specs) {
+    if (!data || !data.specs) {
       return [];
     }
     

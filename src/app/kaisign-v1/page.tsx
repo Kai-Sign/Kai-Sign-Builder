@@ -461,12 +461,7 @@ export default function KaiSignV1Page() {
         variant: "default",
       });
 
-      // Reset form
-      setTargetContract("");
-      setTokenAddress("");
-      setIncentiveAmount("");
-      setDescription("");
-      
+
       // Reload data
       await loadUserData(currentAccount);
     } catch (error: any) {
@@ -549,7 +544,7 @@ export default function KaiSignV1Page() {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">KaiSign V1 Management</h1>
-          <p className="text-gray-400 mb-4">
+          <p className="text-gray-400">
             Connected: {currentAccount.substring(0, 6)}...{currentAccount.substring(currentAccount.length - 4)}
           </p>
           
@@ -901,7 +896,7 @@ export default function KaiSignV1Page() {
                               Target: {incentive.targetContract.substring(0, 8)}...
                             </span>
                             <span>
-                              Expires: {new Date(incentive.deadline * 1000).toLocaleDateString('en-US', { timeZone: 'UTC' })}
+                              Expires: {new Date(incentive.deadline * 1000).toISOString().split('T')[0]}
                             </span>
                           </div>
                           
@@ -1176,7 +1171,7 @@ export default function KaiSignV1Page() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-gray-400 mb-3">
                         <span>Target: {spec.targetContract.substring(0, 10)}...</span>
                         <span>Bonds: {Number(spec.totalBonds) / 10**18} ETH</span>
-                        <span>Created: {new Date(spec.createdTimestamp * 1000).toLocaleDateString('en-US', { timeZone: 'UTC' })}</span>
+                        <span>Created: {new Date(spec.createdTimestamp * 1000).toISOString().split('T')[0]}</span>
                         <span>Settled: {spec.bondsSettled ? "Yes" : "No"}</span>
                       </div>
                       
@@ -1193,6 +1188,8 @@ export default function KaiSignV1Page() {
                                   description: `Transaction: ${txHash.substring(0, 10)}... Spec will be finalized.`,
                                   variant: "default",
                                 });
+                                
+                                
                                 // Refresh data after handling result
                                 setTimeout(async () => {
                                   await loadUserData(currentAccount);
@@ -1244,6 +1241,7 @@ export default function KaiSignV1Page() {
                           🔄 Refresh
                         </Button>
                         
+                        
                       </div>
                     </div>
                   ))}
@@ -1264,6 +1262,18 @@ export default function KaiSignV1Page() {
                 <p>• <strong>Bonds are settled</strong> at reality.eth during the finalization process</p>
                 <p>• <strong>ETH incentives</strong> are claimed automatically at proposed stage</p>
                 <p>• <strong>ERC20 claims</strong> will be supported soon for token incentives</p>
+              </div>
+              
+              {/* Reality.eth Navigation Instructions */}
+              <div className="mt-4 p-3 bg-purple-950/40 border border-purple-700 rounded">
+                <h4 className="text-sm font-medium text-purple-200 mb-2">🌐 How to Access Reality.eth</h4>
+                <div className="text-xs text-purple-300 space-y-1">
+                  <p><strong>Step 1:</strong> Open a new browser tab</p>
+                  <p><strong>Step 2:</strong> Go to: <code className="bg-purple-900/50 px-1 rounded">reality.eth.limo/app/</code></p>
+                  <p><strong>Step 3:</strong> Connect your wallet on Reality.eth</p>
+                  <p><strong>Step 4:</strong> Look for your questions related to ERC7730 specifications</p>
+                  <p className="text-purple-400 mt-2"><strong>💡 Alternative URL:</strong> You can also try <code className="bg-purple-900/50 px-1 rounded">reality.eth.link</code> if the first doesn't work</p>
+                </div>
               </div>
             </Card>
             
@@ -1517,7 +1527,7 @@ export default function KaiSignV1Page() {
                               </div>
                               <div>
                                 <p className="text-xs text-gray-400 mb-1">Finalized Date</p>
-                                <p className="text-sm">{new Date(spec.proposedTimestamp * 1000).toLocaleDateString('en-US', { timeZone: 'UTC' })}</p>
+                                <p className="text-sm">{new Date(spec.proposedTimestamp * 1000).toISOString().split('T')[0]}</p>
                               </div>
                               <div>
                                 <p className="text-xs text-gray-400 mb-1">Bonds Status</p>
@@ -1541,6 +1551,16 @@ export default function KaiSignV1Page() {
                                 <ExternalLink className="mr-1 h-3 w-3" />
                                 View Spec
                               </a>
+                              
+                              <Button
+                                onClick={() => window.open(`https://reality.eth.limo/app/`, '_blank')}
+                                size="sm"
+                                variant="outline"
+                                className="text-xs bg-purple-600 hover:bg-purple-700 border-purple-600 text-white"
+                              >
+                                <ExternalLink className="mr-1 h-3 w-3" />
+                                Reality.eth
+                              </Button>
                             </div>
                           </div>
                         ))}

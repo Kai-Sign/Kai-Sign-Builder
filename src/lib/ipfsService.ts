@@ -40,9 +40,7 @@ export async function uploadToIPFS(file: File | string | object): Promise<string
       // Simulate a network request delay
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Use a valid test CID (this is a valid IPFS hash for testing)
-      // This points to a test file on IPFS that actually exists
-      return "QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB";
+      throw new Error('IPFS upload not configured for production use');
     }
     
     // Get Pinata API credentials directly from process.env
@@ -54,7 +52,7 @@ export async function uploadToIPFS(file: File | string | object): Promise<string
     console.log("Using Pinata API Secret:", apiSecret ? "Found" : "Not found");
     
     if (!apiKey || !apiSecret) {
-      throw new Error('Pinata API credentials not found. Please add NEXT_PUBLIC_IPFS_API_KEY and NEXT_PUBLIC_IPFS_API_SECRET to your environment variables.');
+      throw new Error('IPFS Upload Requirements:\n• Add NEXT_PUBLIC_IPFS_API_KEY to environment variables\n• Add NEXT_PUBLIC_IPFS_API_SECRET to environment variables\n• Get credentials from https://pinata.cloud/');
     }
     
     // Add metadata
@@ -107,10 +105,6 @@ export async function uploadToIPFS(file: File | string | object): Promise<string
     return result.IpfsHash;
   } catch (error) {
     console.error('Error uploading to IPFS:', error);
-    
-    // For the demo, we'll use a working test hash instead of a random one
-    // This is a known working IPFS hash for testing
-    console.log("Using a test IPFS hash due to upload error");
-    return "QmPK1s3pNYLi9ERiq3BDxKa4XosgWwFRQUydHUtz4YgpqB";
+    throw error;
   }
 } 

@@ -9,7 +9,7 @@ import { Textarea } from "~/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import SampleAddressAbiCard from "./sampleAddressAbiCard";
 import { Button } from "~/components/ui/button";
-import { FileJson, Loader2, Eye } from "lucide-react";
+import { FileJson, Loader2 } from "lucide-react";
 import Image from "next/image";
 
 import { ZodError } from "zod";
@@ -294,15 +294,6 @@ const CardErc7730 = () => {
               </button>
               
               <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => router.push("/hardware-viewer")}
-                  className="flex items-center gap-2 rounded-lg border border-[#664bda]/50 bg-transparent px-4 py-3 text-[#664bda] transition-all hover:bg-[#664bda]/10"
-                >
-                  <Eye className="h-5 w-5" />
-                  <span>Hardware<br />Viewer</span>
-                </button>
-                
                 <button
                   type="button"
                   onClick={handleSkipToVerification}

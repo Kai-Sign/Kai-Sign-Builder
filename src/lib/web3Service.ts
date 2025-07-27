@@ -416,6 +416,10 @@ export class Web3Service {
    * Connect to MetaMask and initialize the contract
    */
   async connect(): Promise<string> {
+    if (typeof window === 'undefined') {
+      throw new Error("This function can only be called on the client side.");
+    }
+    
     if (!window.ethereum) {
       throw new Error("MetaMask is not installed. Please install MetaMask to continue.");
     }

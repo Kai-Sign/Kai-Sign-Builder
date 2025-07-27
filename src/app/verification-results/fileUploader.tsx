@@ -41,7 +41,6 @@ export default function FileUploader() {
   const { setErc7730, shouldAutoSubmit, setShouldAutoSubmit } = useErc7730Store((state) => state);
   const erc7730Data = useErc7730Store((state) => state.finalErc7730);
   const { toast } = useToast();
-  const [isCheckingStatus, setIsCheckingStatus] = useState(false);
   const [questionId, setQuestionId] = useState<string | null>(null);
   const [finalizationTimestamp, setFinalizationTimestamp] = useState<string | null>(null);
   const [timeout, setTimeoutValue] = useState<string | null>(null);
@@ -338,163 +337,6 @@ export default function FileUploader() {
     }
   };
 
-  const checkVerificationStatus = async () => {
-    if (!ipfsHash || !walletConnected) {
-      toast({
-        title: "Action Required",
-        description: "Please upload a file and connect your wallet first.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    setIsCheckingStatus(true);
-    
-    try {
-      // Connect to wallet if not already connected
-      if (!walletConnected) {
-        await walletContextConnect();
-      }
-      
-      // Get the questionId from the contract
-      console.log("Getting questionId from contract for IPFS hash:", ipfsHash);
-      const questionId = await web3Service.getQuestionId(ipfsHash);
-      console.log("Received questionId from contract:", questionId);
-      setQuestionId(questionId);
-      
-      if (questionId === "0x0000000000000000000000000000000000000000000000000000000000000000") {
-        toast({
-          title: "No Question Found",
-          description: "This specification hasn't been proposed with a bond yet.",
-          variant: "destructive",
-        });
-        setIsCheckingStatus(false);
-        return;
-      }
-      
-      try {
-        // Log subgraph URL for debugging
-        console.log("Using KaiSign subgraph URL:", process.env.NEXT_PUBLIC_KAISIGN_GRAPH_URL || 
-          "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.3");
-        
-        // Add a simple direct request to test connectivity
-        try {
-          const testResponse = await fetch(process.env.NEXT_PUBLIC_KAISIGN_GRAPH_URL || 
-            "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.3", {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-              query: `{ _meta { block { number } } }` 
-            }),
-          });
-          
-          const testData = await testResponse.json();
-          console.log("Basic connectivity test response:", testData);
-        } catch (testError) {
-          console.error("Basic connectivity test failed:", testError);
-        }
-        
-        // Get question data from Reality.eth
-        console.log("Trying to get question data for ID:", questionId);
-        const questionData = await getQuestionData(questionId);
-        
-        if (!questionData) {
-          console.warn("Question data is null");
-          
-          // Show a more informative error message
-          toast({
-            title: "Question Data Unavailable",
-            description: "The question exists in the contract but could not be retrieved from Reality.eth API. Check the console for more details.",
-            variant: "default",
-          });
-          
-          // Continue anyway but with minimal data
-          const defaultData = {
-            id: questionId,
-            createdTimestamp: Math.floor(Date.now() / 1000 - 172800).toString(), // 2 days ago
-          };
-          
-          setFinalizationTimestamp(null);
-          setTimeoutValue(null);
-          setCreatedTimestamp(defaultData.createdTimestamp);
-          
-          const timeRemaining = getTimeRemainingUntilFinalization(
-            undefined,
-            "172800", // 2 day timeout
-            defaultData.createdTimestamp
-          );
-          setTimeRemaining(timeRemaining);
-          
-          // Navigate to the verification status page
-          router.push(`/verification-status?ipfsHash=${ipfsHash}&questionId=${questionId}`);
-          return;
-        }
-        
-        console.log("Received question data:", questionData);
-        
-        // Set state with available data, handling optional fields
-        setFinalizationTimestamp(questionData.currentScheduledFinalizationTimestamp || null);
-        setTimeoutValue(questionData.timeout || null);
-        setCreatedTimestamp(questionData.createdTimestamp || null);
-        
-        // Calculate time remaining based on available data
-        const timeRemaining = getTimeRemainingUntilFinalization(
-          questionData.currentScheduledFinalizationTimestamp,
-          questionData.timeout,
-          questionData.createdTimestamp
-        );
-        setTimeRemaining(timeRemaining);
-        
-        // Check if finalization time has passed
-        const canFinalize = await hasFinalizationTimePassed(questionId);
-        
-        if (canFinalize) {
-          toast({
-            title: "Finalization Available",
-            description: "The waiting period has ended. You can now fetch the verification result.",
-            variant: "default",
-          });
-        } else {
-          toast({
-            title: "Waiting Period",
-            description: `Verification is still in the waiting period. ${timeRemaining}`,
-            variant: "default",
-          });
-        }
-        
-        // Navigate to the verification status page
-        router.push(`/verification-status?ipfsHash=${ipfsHash}&questionId=${questionId}`);
-      } catch (error: any) {
-        console.error("Error fetching question data:", error);
-        
-        // Handle question not found errors specifically
-        if (error.message?.includes("Question not found") || error.message?.includes("No question data found")) {
-          toast({
-            title: "Question Not Registered Yet",
-            description: "This question hasn't been registered in Reality.eth yet. Please wait a few minutes for the transaction to be processed and try again.",
-            variant: "default",
-          });
-        } else {
-          toast({
-            title: "Error Checking Status",
-            description: `${error.message || "Failed to check verification status. Please try again."}`,
-            variant: "destructive",
-          });
-        }
-      }
-    } catch (error: any) {
-      console.error("Error checking verification status:", error);
-      toast({
-        title: "Error Checking Status",
-        description: `${error.message || "Failed to check verification status. Please try again."}`,
-        variant: "destructive",
-      });
-    } finally {
-      setIsCheckingStatus(false);
-    }
-  };
   
   useEffect(() => {
     // Update time remaining every minute if we have a finalization timestamp
@@ -634,7 +476,7 @@ export default function FileUploader() {
         </div>
 
         {/* Step 2: File Upload */}
-        <div className="bg-gradient-to-r from-purple-950/50 to-green-950/50 p-5 rounded-lg border border-purple-800/50">
+        <div className="bg-gradient-to-r from-blue-950/50 to-purple-950/50 p-5 rounded-lg border border-blue-800/50">
           <div className="flex items-center gap-3 mb-4">
             <div className="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">2</div>
             <div>
@@ -744,15 +586,15 @@ export default function FileUploader() {
                 </Button>
               ) : commitState.status === 'committed' ? (
                 <div className="space-y-4">
-                  <div className="p-4 border border-blue-200 rounded-lg bg-blue-50">
+                  <div className="p-4 border border-green-700 rounded-lg bg-green-900/30">
                     <div className="flex items-center mb-2">
-                      <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
-                      <span className="font-medium text-green-800">Commitment Successful!</span>
+                      <CheckCircle className="h-5 w-5 text-green-400 mr-2" />
+                      <span className="font-medium text-green-100">Commitment Successful!</span>
                     </div>
-                    <div className="text-sm text-gray-600 space-y-1">
-                      <div>Commitment ID: <code className="text-xs bg-gray-100 px-1 rounded">{commitState.commitmentId?.substring(0, 10)}...</code></div>
-                      <div>TX: <code className="text-xs bg-gray-100 px-1 rounded">{commitState.commitTxHash?.substring(0, 10)}...</code></div>
-                      <div className="text-orange-600 font-medium">⏰ You have 1 hour to reveal!</div>
+                    <div className="text-sm text-gray-300 space-y-1">
+                      <div>Commitment ID: <code className="text-xs bg-gray-800 px-1 rounded">{commitState.commitmentId?.substring(0, 10)}...</code></div>
+                      <div>TX: <code className="text-xs bg-gray-800 px-1 rounded">{commitState.commitTxHash?.substring(0, 10)}...</code></div>
+                      <div className="text-orange-400 font-medium">⏰ You have 1 hour to reveal!</div>
                     </div>
                   </div>
                   <div className="flex gap-2">
@@ -778,20 +620,20 @@ export default function FileUploader() {
                       onClick={walletContextConnect}
                       variant="outline"
                       size="lg"
-                      className="px-4 py-6 text-base border-gray-300 hover:bg-gray-50"
+                      className="px-4 py-6 text-base border-gray-600 hover:bg-gray-800 text-white"
                     >
                       Reconnect Wallet
                     </Button>
                   </div>
                 </div>
               ) : commitState.status === 'revealed' ? (
-                <div className="p-4 border border-green-200 rounded-lg bg-green-50">
+                <div className="p-4 border border-green-700 rounded-lg bg-green-900/30">
                   <div className="flex items-center mb-2">
-                    <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
-                    <span className="font-medium text-green-800">Spec Successfully Submitted!</span>
+                    <CheckCircle className="h-5 w-5 text-green-400 mr-2" />
+                    <span className="font-medium text-green-100">Spec Successfully Submitted!</span>
                   </div>
-                  <div className="text-sm text-gray-600 space-y-1">
-                    <div>Reveal TX: <code className="text-xs bg-gray-100 px-1 rounded">{commitState.revealTxHash?.substring(0, 10)}...</code></div>
+                  <div className="text-sm text-gray-300 space-y-1">
+                    <div>Reveal TX: <code className="text-xs bg-gray-800 px-1 rounded">{commitState.revealTxHash?.substring(0, 10)}...</code></div>
                   </div>
                 </div>
               ) : (
@@ -878,7 +720,7 @@ export default function FileUploader() {
                       <p className="text-xs text-gray-400 mt-1">{incentive.description}</p>
                       <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
                         <span>Creator: {incentive.creator?.substring(0, 8)}...</span>
-                        <span>Expires: {new Date(incentive.deadline * 1000).toLocaleDateString('en-US', { timeZone: 'UTC' })}</span>
+                        <span>Expires: {new Date(incentive.deadline * 1000).toISOString().split('T')[0]}</span>
                       </div>
                     </div>
                   ))}
@@ -915,28 +757,28 @@ export default function FileUploader() {
         
         {ipfsHash && (
           <div className="flex flex-col gap-2 text-green-500 mt-4">
-            <div className="flex items-center gap-2 justify-between">
-              <div className="flex items-center">
-                <CheckCircle className="h-5 w-5" />
-                <span className="ml-2">
-                  IPFS Hash: <span className="font-mono text-xs bg-gray-800 px-2 py-1 rounded">{ipfsHash}</span>
-                </span>
+            <div className="flex items-center gap-2">
+              <CheckCircle className="h-5 w-5" />
+              <span className="ml-2">
+                IPFS Hash: <span className="font-mono text-xs bg-gray-800 px-2 py-1 rounded">{ipfsHash}</span>
+              </span>
+            </div>
+            
+            <div className="mt-3 p-4 bg-blue-900/30 border border-blue-700 rounded-lg">
+              <div className="flex items-center gap-2 mb-2">
+                <ExternalLink className="h-4 w-4 text-blue-400" />
+                <span className="text-blue-100 font-medium">Check Verification Status</span>
               </div>
-              <Button
-                onClick={checkVerificationStatus}
-                size="lg"
-                className="ml-auto bg-blue-600 hover:bg-blue-700 px-8 py-6"
-                disabled={isCheckingStatus}
+              <p className="text-sm text-gray-300 mb-3">
+                To check the verification status and manage your submissions, visit the V1 Manager.
+              </p>
+              <Link 
+                href="/kaisign-v1"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
               >
-                {isCheckingStatus ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Checking...
-                  </>
-                ) : (
-                  "Check Verification Status"
-                )}
-              </Button>
+                <ExternalLink className="h-4 w-4" />
+                Go to V1 Manager
+              </Link>
             </div>
             
             {bondInfo && (

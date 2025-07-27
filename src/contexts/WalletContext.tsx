@@ -32,6 +32,9 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
   const [isConnecting, setIsConnecting] = useState(false);
 
   const checkConnection = async () => {
+    // Only check connection on client side
+    if (typeof window === 'undefined') return;
+    
     try {
       const account = await web3Service.getCurrentAccount();
       if (account) {
@@ -71,11 +74,14 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
 
   // Listen for account changes and disconnections
   useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+
     const handleAccountsChanged = (accounts: string[]) => {
       if (accounts.length === 0) {
         // User disconnected
         disconnectWallet();
-      } else if (accounts[0] !== currentAccount) {
+      } else if (accounts[0] && accounts[0] !== currentAccount) {
         // User switched accounts
         setCurrentAccount(accounts[0]);
         setWalletConnected(true);
@@ -87,7 +93,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
       window.location.reload();
     };
 
-    if (window.ethereum) {
+    if (typeof window !== 'undefined' && window.ethereum) {
       window.ethereum.on?.('accountsChanged', handleAccountsChanged);
       window.ethereum.on?.('chainChanged', handleChainChanged);
     }
@@ -96,7 +102,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
     checkConnection();
 
     return () => {
-      if (window.ethereum) {
+      if (typeof window !== 'undefined' && window.ethereum) {
         window.ethereum.removeListener?.('accountsChanged', handleAccountsChanged);
         window.ethereum.removeListener?.('chainChanged', handleChainChanged);
       }
