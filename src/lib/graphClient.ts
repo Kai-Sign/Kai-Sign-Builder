@@ -205,7 +205,7 @@ export class KaiSignGraphClient {
           }
           
           if (!ipfsMetadata) {
-            console.log('All IPFS gateways failed - no fallback available');
+            throw new Error(`Failed to fetch IPFS metadata for hash: ${latestSpec.ipfs}. All IPFS gateways failed.`);
           }
         } catch (error) {
           console.log('Failed to fetch IPFS metadata:', error);
