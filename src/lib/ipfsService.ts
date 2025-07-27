@@ -112,7 +112,7 @@ export async function uploadToIPFS(file: File | string | object): Promise<string
     console.log("=== PINATA API REQUEST ===");
     console.log("URL: https://api.pinata.cloud/pinning/pinFileToIPFS");
     console.log("Method: POST");
-    console.log("Headers:", headers);
+    console.log("Headers (keys only):", Object.keys(headers));
     
     // Using Pinata API
     const response = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
