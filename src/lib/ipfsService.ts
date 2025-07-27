@@ -100,6 +100,7 @@ export async function uploadToIPFS(file: File | string | object): Promise<string
   } catch (error) {
     console.error('Error uploading to IPFS:', error);
     // Wrap the error in a structured response for user feedback
-    throw new Error(`Failed to upload to IPFS. Please check your network connection or Pinata credentials. Details: ${error.message}`);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    throw new Error(`Failed to upload to IPFS. Please check your network connection or Pinata credentials. Details: ${errorMessage}`);
   }
 } 
