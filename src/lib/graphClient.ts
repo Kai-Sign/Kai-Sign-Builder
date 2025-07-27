@@ -177,32 +177,35 @@ export class KaiSignGraphClient {
       const latestSpec = data.specs[0];
       if (latestSpec) {
         try {
-          // If this is the known KaiSign contract, use the cached metadata
-          if (contractAddress.toLowerCase() === '0xb55d4406916e20df5b965e15dd3ff85fa8b11dcf' && latestSpec.ipfs === 'QmQeU4y197HgXt54UNWE61xfSodW8XUTpYn33DNdZprNJD') {
-            const { kaisignMetadata } = await import('~/lib/mockKaiSignMetadata');
-            ipfsMetadata = kaisignMetadata as IPFSMetadata;
-          } else {
-            // Try to fetch from IPFS gateways
+          // Always fetch from IPFS gateways for real data
+          const gateways = [
+            `https://gateway.pinata.cloud/ipfs/${latestSpec.ipfs}`,
+            `https://ipfs.io/ipfs/${latestSpec.ipfs}`,
+            `https://dweb.link/ipfs/${latestSpec.ipfs}`,
+            `https://cloudflare-ipfs.com/ipfs/${latestSpec.ipfs}`
+          ];
+          
+          console.log(`Fetching real IPFS data for hash: ${latestSpec.ipfs}`);
+          
+          for (const gateway of gateways) {
             try {
-              const ipfsResponse = await fetch(`https://gateway.pinata.cloud/ipfs/${latestSpec.ipfs}`, {
-                signal: AbortSignal.timeout(10000) // 10 second timeout
+              console.log(`Trying IPFS gateway: ${gateway}`);
+              const ipfsResponse = await fetch(gateway, {
+                signal: AbortSignal.timeout(15000) // 15 second timeout per gateway
               });
               if (ipfsResponse.ok) {
                 ipfsMetadata = await ipfsResponse.json();
+                console.log(`Successfully fetched real metadata from: ${gateway}`);
+                break; // Success, exit the loop
               }
             } catch (error) {
-              // Try alternative gateway
-              try {
-                const altResponse = await fetch(`https://ipfs.io/ipfs/${latestSpec.ipfs}`, {
-                  signal: AbortSignal.timeout(10000) // 10 second timeout
-                });
-                if (altResponse.ok) {
-                  ipfsMetadata = await altResponse.json();
-                }
-              } catch (altError) {
-                console.log('All IPFS gateways failed:', altError);
-              }
+              console.log(`Gateway ${gateway} failed:`, error);
+              continue; // Try next gateway
             }
+          }
+          
+          if (!ipfsMetadata) {
+            console.log('All IPFS gateways failed - no fallback available');
           }
         } catch (error) {
           console.log('Failed to fetch IPFS metadata:', error);
