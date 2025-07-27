@@ -329,6 +329,10 @@ export class KaiSignGraphClient {
       user: userAddress.toLowerCase()
     });
     
+    if (!data.specs) {
+      return [];
+    }
+    
     return data.specs.map((spec: any) => ({
       id: spec.id,
       creator: spec.user,
@@ -368,6 +372,10 @@ export class KaiSignGraphClient {
     const data = await this.client.request<{ specs: any[] }>(query, { 
       user: userAddress.toLowerCase()
     });
+    
+    if (!data.specs) {
+      return [];
+    }
     
     return data.specs.map((spec: any) => ({
       id: spec.id,
