@@ -28,7 +28,7 @@ export async function uploadToIPFS(file: File | string | object): Promise<string
     // Get Pinata API credentials
     const apiKey = process.env.NEXT_PUBLIC_IPFS_API_KEY || '';
     const apiSecret = process.env.NEXT_PUBLIC_IPFS_API_SECRET || '';
-    const jwtToken = process.env.NEXT_PUBLIC_PINATA_JWT || '';
+    const jwtToken = process.env.PINATA_JWT || '';
     
     // Check if we have either JWT or API key/secret pair
     const hasJWT = !!jwtToken;
