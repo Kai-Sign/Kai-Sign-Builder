@@ -58,9 +58,12 @@ const checkApiHealth = async (): Promise<boolean> => {
       mode: "cors",
     });
 
-    if (railwayResponse.ok) {
-      console.log("Railway API is available");
-      return true;
+      if (railwayResponse.ok) {
+        console.log("Railway API is available");
+        return true;
+      }
+    } catch (railwayError) {
+      console.log("Railway API not available:", railwayError instanceof Error ? railwayError.message : String(railwayError));
     }
 
     console.log("Both local and Railway APIs are unavailable");
@@ -111,24 +114,21 @@ const CardErc7730 = () => {
 
       let isReady = await checkApiHealth();
       
-      // If not ready, retry a few times with increasing delay
+      // If not ready, only retry once to reduce console spam
       if (!isReady) {
-        let retryDelay = 1000;
-        for (let i = 0; i < 3; i++) {
-          await sleep(retryDelay);
-          isReady = await checkApiHealth();
-          if (isReady) break;
-          retryDelay *= 2;
-        }
+        console.log("First API check failed, retrying once...");
+        await sleep(2000); // Wait 2 seconds before retry
+        isReady = await checkApiHealth();
       }
       
-      // For deployments, assume API is ready even if check fails
-      if (!isReady && (process.env.NODE_ENV === "production" || isProduction)) {
-        console.log("Production environment, forcing API ready");
-        isReady = true;
+      // For development when APIs are down, gracefully handle the failure
+      if (!isReady) {
+        console.log("APIs are currently unavailable, but continuing in offline mode");
+        setApiReady(false); // Set to false instead of forcing true
+      } else {
+        setApiReady(isReady);
       }
       
-      setApiReady(isReady);
       setCheckingApi(false);
     };
     
