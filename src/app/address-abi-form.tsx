@@ -9,7 +9,7 @@ import { Textarea } from "~/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import SampleAddressAbiCard from "./sampleAddressAbiCard";
 import { Button } from "~/components/ui/button";
-import { FileJson, Loader2, Eye } from "lucide-react";
+import { FileJson, Loader2 } from "lucide-react";
 import Image from "next/image";
 
 import { ZodError } from "zod";
@@ -24,41 +24,36 @@ import { DEFAULT_NETWORK } from "~/lib/networks";
 // Sample data
 const POAP_ABI = '[{"inputs":[{"internalType":"address","name":"_poapContractAddress","type":"address"},{"internalType":"address","name":"_validSigner","type":"address"},{"internalType":"address payable","name":"_feeReceiver","type":"address"},{"internalType":"uint256","name":"_migrationFee","type":"uint256"}],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousFeeReceiver","type":"address"},{"indexed":true,"internalType":"address","name":"newFeeReceiver","type":"address"}],"name":"FeeReceiverChange","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"uint256","name":"previousFeeReceiver","type":"uint256"},{"indexed":true,"internalType":"uint256","name":"newFeeReceiver","type":"uint256"}],"name":"MigrationFeeChange","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousOwner","type":"address"},{"indexed":true,"internalType":"address","name":"newOwner","type":"address"}],"name":"OwnershipTransferred","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"account","type":"address"}],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"previousValidSigner","type":"address"},{"indexed":true,"internalType":"address","name":"newValidSigner","type":"address"}],"name":"ValidSignerChange","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"bytes","name":"_signature","type":"bytes"}],"name":"VerifiedSignature","type":"event"},{"inputs":[],"name":"NAME","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"feeReceiver","outputs":[{"internalType":"address payable","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"migrationFee","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"uint256","name":"mockEventId","type":"uint256"},{"internalType":"uint256","name":"tokenId","type":"uint256"},{"internalType":"address","name":"receiver","type":"address"},{"internalType":"uint256","name":"expirationTime","type":"uint256"},{"internalType":"bytes","name":"signature","type":"bytes"}],"name":"mintToken","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"owner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"pause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"paused","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes","name":"","type":"bytes"}],"name":"processed","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"renounceOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"renouncePoapAdmin","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address payable","name":"_feeReceiver","type":"address"}],"name":"setFeeReceiver","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_migrationFee","type":"uint256"}],"name":"setMigrationFee","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"_validSigner","type":"address"}],"name":"setValidSigner","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"unpause","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"validSigner","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"}]';
 
-// Sleep utility function for delay between retries
+// Sleep utility for serverless deployments
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 // Check if the API is ready
 const checkApiHealth = async (): Promise<boolean> => {
   try {
-    // First try the local API
-    try {
-      const localApiResponse = await fetch("/api/py", {
-        method: "GET",
-        headers: {
-          "Cache-Control": "no-cache",
-        },
-        cache: "no-store",
-      });
+    // First try the local API endpoint
+    const localApiResponse = await fetch("/api/py", {
+      method: "GET",
+      headers: {
+        "Cache-Control": "no-cache",
+      },
+      cache: "no-store",
+    });
 
-      if (localApiResponse.ok) {
-        console.log("Local API is available");
-        return true;
-      }
-    } catch (localError) {
-      console.log("Local API not available:", localError instanceof Error ? localError.message : String(localError));
+    if (localApiResponse.ok) {
+      console.log("Local API is available");
+      return true;
     }
 
-    // If local API fails, try the direct Railway API
+    // If local API fails, try the direct Railway API health check
     console.log("Local API not available, trying Railway API directly");
-    try {
-      const railwayApiUrl = process.env.NEXT_PUBLIC_API_URL || "https://kai-sign-production.up.railway.app";
-      const railwayResponse = await fetch(`${railwayApiUrl}/api/py`, {
-        method: "GET",
-        headers: {
-          "Cache-Control": "no-cache",
-        },
-        cache: "no-store",
-      });
+    const railwayApiUrl = process.env.NEXT_PUBLIC_API_URL || "https://kai-sign-production.up.railway.app";
+    const railwayResponse = await fetch(`${railwayApiUrl}/api/py`, {
+      method: "GET",
+      headers: {
+        "Cache-Control": "no-cache",
+      },
+      cache: "no-store",
+    });
 
       if (railwayResponse.ok) {
         console.log("Railway API is available");
@@ -72,6 +67,14 @@ const checkApiHealth = async (): Promise<boolean> => {
     return false;
   } catch (error) {
     console.error("Error checking API health:", error);
+    // For serverless deployments, don't block the UI for API health checks
+    if (typeof window !== 'undefined' && 
+        (window.location.hostname.includes('railway.app') || 
+         window.location.hostname.includes('vercel.app') || 
+         process.env.NODE_ENV === 'production')) {
+      console.log("Serverless environment detected, assuming API will be available");
+      return true;
+    }
     return false;
   }
 };
@@ -95,7 +98,9 @@ const CardErc7730 = () => {
       setCheckingApi(true);
       // Force API ready to true for production
       // This is a workaround for Vercel deployments
-      const isProduction = window.location.hostname.includes('vercel.app');
+      const isProduction = typeof window !== 'undefined' && 
+        (window.location.hostname.includes('vercel.app') || 
+         window.location.hostname.includes('railway.app'));
       
       if (isProduction) {
         console.log("Production environment detected, assuming API is ready");
@@ -151,7 +156,9 @@ const CardErc7730 = () => {
     });
     
     // Skip API health check on production
-    if (apiReady === false && !window.location.hostname.includes('vercel.app')) {
+    if (apiReady === false && !(typeof window !== 'undefined' && 
+        (window.location.hostname.includes('vercel.app') || 
+         window.location.hostname.includes('railway.app')))) {
       // Re-check API health
       setCheckingApi(true);
       const isReady = await checkApiHealth();
@@ -201,7 +208,9 @@ const CardErc7730 = () => {
       });
       
       // Continue anyway on production
-      if (window.location.hostname.includes('vercel.app')) {
+      if (typeof window !== 'undefined' && 
+          (window.location.hostname.includes('vercel.app') || 
+           window.location.hostname.includes('railway.app'))) {
         console.log("Production environment - continuing to metadata page despite error");
         router.push("/metadata");
       }
@@ -291,7 +300,9 @@ const CardErc7730 = () => {
             <div className="mt-6 flex items-center justify-between gap-4">
               <button
                 type="submit"
-                disabled={loading || (checkingApi && !window.location.hostname.includes('vercel.app'))}
+                disabled={loading || (checkingApi && !(typeof window !== 'undefined' && 
+                  (window.location.hostname.includes('vercel.app') || 
+                   window.location.hostname.includes('railway.app'))))}
                 className="rounded-full bg-gradient-to-r from-[#FF4D4D] to-[#F9CB28] px-8 py-3 font-medium text-white transition-transform hover:-translate-y-1 hover:shadow-lg disabled:opacity-70 flex items-center gap-2"
               >
                 {(loading || checkingApi) && <Loader2 className="h-4 w-4 animate-spin" />}
@@ -299,15 +310,6 @@ const CardErc7730 = () => {
               </button>
               
               <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => router.push("/hardware-viewer")}
-                  className="flex items-center gap-2 rounded-lg border border-[#664bda]/50 bg-transparent px-4 py-3 text-[#664bda] transition-all hover:bg-[#664bda]/10"
-                >
-                  <Eye className="h-5 w-5" />
-                  <span>Hardware<br />Viewer</span>
-                </button>
-                
                 <button
                   type="button"
                   onClick={handleSkipToVerification}
@@ -322,13 +324,17 @@ const CardErc7730 = () => {
         </form>
       </div>
 
-      {apiReady === false && !window.location.hostname.includes('vercel.app') && (
+      {apiReady === false && !(typeof window !== 'undefined' && 
+        (window.location.hostname.includes('vercel.app') || 
+         window.location.hostname.includes('railway.app'))) && (
         <div className="mt-4 rounded-lg border border-amber-500/30 bg-amber-900/20 p-4 text-amber-400">
           The API server is currently starting up. Please wait a moment before submitting.
         </div>
       )}
 
-      {error && !window.location.hostname.includes('vercel.app') && (
+      {error && !(typeof window !== 'undefined' && 
+        (window.location.hostname.includes('vercel.app') || 
+         window.location.hostname.includes('railway.app'))) && (
         <div className="mt-4 rounded-lg border border-red-500/30 bg-red-900/20 p-4 text-red-400">
           {error instanceof ZodError
             ? JSON.parse(error.message)[0].message

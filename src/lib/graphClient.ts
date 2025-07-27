@@ -303,6 +303,95 @@ export class KaiSignGraphClient {
     const data = await this.client.request<{ contracts: ContractMetadata[] }>(query);
     return data.contracts;
   }
+
+  /**
+   * Get all finalized specifications created by a specific user
+   */
+  async getUserFinalizedSpecs(userAddress: string): Promise<SpecHistory[]> {
+    const query = `
+      query GetUserFinalizedSpecs($user: Bytes!) {
+        specs(
+          where: { 
+            user: $user
+            status: FINALIZED
+          }
+          orderBy: blockTimestamp
+          orderDirection: desc
+        ) {
+          id
+          user
+          ipfs
+          targetContract
+          blockTimestamp
+          status
+        }
+      }
+    `;
+
+    const data = await this.client.request<{ specs: any[] }>(query, { 
+      user: userAddress.toLowerCase()
+    });
+    
+    if (!data || !data.specs) {
+      return [];
+    }
+    
+    return data.specs.map((spec: any) => ({
+      id: spec.id,
+      creator: spec.user,
+      ipfsCID: spec.ipfs,
+      createdTimestamp: spec.blockTimestamp,
+      status: spec.status as SpecHistory['status'],
+      targetContract: spec.targetContract,
+      totalBonds: "0", // Default since not available in subgraph
+      bondsSettled: false, // Default since not available in subgraph
+      proposedTimestamp: spec.blockTimestamp // Use blockTimestamp as fallback
+    }));
+  }
+
+  /**
+   * Get all specifications (any status) created by a specific user
+   */
+  async getUserSpecs(userAddress: string): Promise<SpecHistory[]> {
+    const query = `
+      query GetUserSpecs($user: Bytes!) {
+        specs(
+          where: { 
+            user: $user
+          }
+          orderBy: blockTimestamp
+          orderDirection: desc
+        ) {
+          id
+          user
+          ipfs
+          targetContract
+          blockTimestamp
+          status
+        }
+      }
+    `;
+
+    const data = await this.client.request<{ specs: any[] }>(query, { 
+      user: userAddress.toLowerCase()
+    });
+    
+    if (!data || !data.specs) {
+      return [];
+    }
+    
+    return data.specs.map((spec: any) => ({
+      id: spec.id,
+      creator: spec.user,
+      ipfsCID: spec.ipfs,
+      createdTimestamp: spec.blockTimestamp,
+      status: spec.status as SpecHistory['status'],
+      targetContract: spec.targetContract,
+      totalBonds: "0", // Default since not available in subgraph
+      bondsSettled: false, // Default since not available in subgraph
+      proposedTimestamp: spec.blockTimestamp // Use blockTimestamp as fallback
+    }));
+  }
 }
 
 // Default client instance for common networks

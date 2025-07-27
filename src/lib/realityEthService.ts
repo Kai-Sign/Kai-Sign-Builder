@@ -6,9 +6,9 @@ const getEnvVar = (key: string, fallback: string = ""): string => {
   return value;
 };
 
-// GraphQL endpoint for KaiSign subgraph
-const KAISIGN_GRAPH_URL = process.env.NEXT_PUBLIC_KAISIGN_GRAPH_URL || 
-  "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.3"
+// GraphQL endpoint for RealityETH subgraph on Sepolia
+const REALITY_ETH_GRAPH_URL = process.env.NEXT_PUBLIC_REALITY_ETH_GRAPH_URL || 
+  "https://api.studio.thegraph.com/query/117022/reality-eth-sepolia/v0.0.1";
 
 // Structure for the Reality.eth question data
 interface RealityEthQuestion {
@@ -65,7 +65,7 @@ export const getQuestionData = async (questionId: string): Promise<RealityEthQue
       
       console.log("Sending introspection query to check API schema...");
       
-      const introspectionResponse = await fetch(KAISIGN_GRAPH_URL, {
+      const introspectionResponse = await fetch(REALITY_ETH_GRAPH_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -146,7 +146,7 @@ export const getQuestionData = async (questionId: string): Promise<RealityEthQue
       try {
         console.log(`Trying ${queryName} query:`, query);
         
-        const response = await fetch(KAISIGN_GRAPH_URL, {
+        const response = await fetch(REALITY_ETH_GRAPH_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -216,7 +216,7 @@ export const getQuestionData = async (questionId: string): Promise<RealityEthQue
         
         console.log("Trying prefix search query:", prefixQuery);
         
-        const prefixResponse = await fetch(KAISIGN_GRAPH_URL, {
+        const prefixResponse = await fetch(REALITY_ETH_GRAPH_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -279,7 +279,7 @@ export const getQuestionsByUser = async (userAddress: string): Promise<RealityEt
     `;
 
     // Make the GraphQL request
-    const response = await fetch(KAISIGN_GRAPH_URL, {
+    const response = await fetch(REALITY_ETH_GRAPH_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

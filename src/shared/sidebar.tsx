@@ -53,13 +53,6 @@ export function AppSidebar() {
               <Fingerprint className="h-4 w-4 mr-2" />
               Digital Signatures
             </SidebarMenuButton>
-            <SidebarMenuButton 
-              onClick={() => router.push("/contract-metadata-demo")}
-              isActive={isContractMetadataDemo}
-            >
-              <Code className="h-4 w-4 mr-2" />
-              Contract Metadata API
-            </SidebarMenuButton>
           </SidebarMenu>
         </SidebarGroup>
         

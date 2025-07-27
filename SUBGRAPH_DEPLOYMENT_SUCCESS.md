@@ -6,7 +6,7 @@ Your KaiSign subgraph has been successfully deployed to The Graph Studio.
 
 **Endpoint**: `https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.1`
 **Network**: Sepolia Testnet
-**Contract Address**: `0x79D0e06350CfCE33A7a73A7549248fd6AeD774f2`
+**Contract Address**: `0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf`
 **Deployment Status**: ✅ Active
 
 ## 🔧 **Files Updated**

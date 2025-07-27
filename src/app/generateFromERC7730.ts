@@ -98,12 +98,14 @@ export default async function generateERC7730({
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Accept": "application/json",
             // Add cache control to prevent browser caching issues
             "Cache-Control": "no-cache",
           },
           body: JSON.stringify(body),
           // Add cache control to prevent browser caching issues
           cache: "no-store",
+          mode: "cors",
         });
 
         console.log(`API response status: ${response.status}`);
@@ -123,7 +125,9 @@ export default async function generateERC7730({
           let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
           
           try {
-            const errorData = await response.json();
+            // Clone the response to avoid "body stream already read" error
+            const responseClone = response.clone();
+            const errorData = await responseClone.json();
             console.error("API Error Details:", errorData);
             
             // Handle different error response formats
@@ -133,6 +137,9 @@ export default async function generateERC7730({
             } else if (errorData.message) {
               // Custom message format
               errorMessage = `API Error: ${errorData.message}`;
+            } else if (errorData.error) {
+              // Next.js API error format
+              errorMessage = `API Error: ${errorData.error}`;
             } else if (Object.keys(errorData).length === 0) {
               // Empty object - provide more context
               errorMessage = `API Error: Server returned empty error response (${response.status} ${response.statusText}). This may indicate a server configuration issue.`;
@@ -143,21 +150,9 @@ export default async function generateERC7730({
             
             throw new Error(errorMessage);
           } catch (jsonError) {
-            // If we can't parse the error as JSON, get the raw response text
+            // If we can't parse the error as JSON, provide a simple error message
             console.error("Error parsing API error response:", jsonError);
-            
-            try {
-              const errorText = await response.text();
-              if (errorText.trim()) {
-                errorMessage = `API Error: ${errorText.substring(0, 500)}`;
-              } else {
-                errorMessage = `API Error: Server returned empty response (${response.status} ${response.statusText})`;
-              }
-            } catch (textError) {
-              console.error("Error reading response text:", textError);
-              errorMessage = `API Error: Unable to read error response (${response.status} ${response.statusText})`;
-            }
-            
+            errorMessage = `API Error: ${response.status} ${response.statusText}`;
             throw new Error(errorMessage);
           }
         }
@@ -179,7 +174,9 @@ export default async function generateERC7730({
           retryDelay *= 2;
           
           // If we're on Vercel and this is the second attempt, try direct Railway API
-          if (attempt === 1 && typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+          if (attempt === 1 && typeof window !== 'undefined' && 
+              (window.location.hostname.includes('vercel.app') || 
+               window.location.hostname.includes('railway.app'))) {
             console.log("Switching to direct Railway API endpoint");
             // Force direct Railway API
             const railwayApi = "https://kai-sign-production.up.railway.app/api/py/generateERC7730";
@@ -187,10 +184,12 @@ export default async function generateERC7730({
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
+                "Accept": "application/json",
                 "Cache-Control": "no-cache",
               },
               body: JSON.stringify(body),
               cache: "no-store",
+              mode: "cors",
             });
             
             if (response.ok) {
@@ -212,7 +211,9 @@ export default async function generateERC7730({
     }
 
     // Special case for Vercel - fake a successful response to prevent blocking the flow
-    if (typeof window !== 'undefined' && window.location.hostname.includes('vercel.app')) {
+    if (typeof window !== 'undefined' && 
+        (window.location.hostname.includes('vercel.app') || 
+         window.location.hostname.includes('railway.app'))) {
       console.log("Providing fallback response for Vercel deployment");
       // Return a minimal valid response to allow the flow to continue
       return {
