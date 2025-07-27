@@ -51,13 +51,27 @@ export async function uploadToIPFS(file: File | string | object): Promise<string
     const apiSecret = process.env.NEXT_PUBLIC_IPFS_API_SECRET || '';
     const jwtToken = process.env.NEXT_PUBLIC_PINATA_JWT || '';
     
-    console.log("Using Pinata API Key:", apiKey ? "Found" : "Not found");
-    console.log("Using Pinata API Secret:", apiSecret ? "Found" : "Not found");
-    console.log("Using Pinata JWT:", jwtToken ? "Found" : "Not found");
+    console.log("=== PINATA CREDENTIALS DEBUG ===");
+    console.log("Raw environment variables:");
+    console.log("- NEXT_PUBLIC_IPFS_API_KEY:", process.env.NEXT_PUBLIC_IPFS_API_KEY ? "SET" : "NOT_SET");
+    console.log("- NEXT_PUBLIC_IPFS_API_SECRET:", process.env.NEXT_PUBLIC_IPFS_API_SECRET ? "SET" : "NOT_SET");
+    console.log("- NEXT_PUBLIC_PINATA_JWT:", process.env.NEXT_PUBLIC_PINATA_JWT ? "SET" : "NOT_SET");
+    
+    console.log("Processed values:");
+    console.log("API Key length:", apiKey.length);
+    console.log("API Secret length:", apiSecret.length);  
+    console.log("JWT Token length:", jwtToken.length);
+    
+    if (apiKey) console.log("API Key (first 8 chars):", apiKey.substring(0, 8));
+    if (apiSecret) console.log("API Secret (first 8 chars):", apiSecret.substring(0, 8));
+    if (jwtToken) console.log("JWT Token (first 20 chars):", jwtToken.substring(0, 20));
     
     // Check if we have either JWT or API key/secret pair
     const hasJWT = !!jwtToken;
     const hasApiCredentials = !!(apiKey && apiSecret);
+    
+    console.log("Has JWT:", hasJWT);
+    console.log("Has API Credentials:", hasApiCredentials);
     
     if (!hasJWT && !hasApiCredentials) {
       throw new Error('Pinata credentials not found. Please add either NEXT_PUBLIC_PINATA_JWT or both NEXT_PUBLIC_IPFS_API_KEY and NEXT_PUBLIC_IPFS_API_SECRET to your environment variables.');
@@ -78,15 +92,27 @@ export async function uploadToIPFS(file: File | string | object): Promise<string
     }));
     
     console.log("Sending file to Pinata...");
+    console.log("Authentication method:", hasJWT ? "JWT" : "API Key/Secret");
     
     // Prepare headers based on available authentication method
     const headers: Record<string, string> = {};
     if (hasJWT) {
       headers['Authorization'] = `Bearer ${jwtToken}`;
+      console.log("Using JWT token ending in:", jwtToken.slice(-8));
     } else {
       headers['pinata_api_key'] = apiKey;
       headers['pinata_secret_api_key'] = apiSecret;
+      console.log("Using API key ending in:", apiKey.slice(-8));
+      console.log("Using secret ending in:", apiSecret.slice(-8));
     }
+    
+    console.log("Final request headers:", Object.keys(headers));
+    
+    // Log the request details
+    console.log("=== PINATA API REQUEST ===");
+    console.log("URL: https://api.pinata.cloud/pinning/pinFileToIPFS");
+    console.log("Method: POST");
+    console.log("Headers:", headers);
     
     // Using Pinata API
     const response = await fetch('https://api.pinata.cloud/pinning/pinFileToIPFS', {
@@ -97,14 +123,34 @@ export async function uploadToIPFS(file: File | string | object): Promise<string
     
     // Handle errors
     if (!response.ok) {
-      let errorMessage;
+      console.error('Pinata API Request Failed!');
+      console.error('Status:', response.status);
+      console.error('Status Text:', response.statusText);
+      console.error('Response URL:', response.url);
+      
+      let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+      let errorData = null;
+      
+      // Try to get response text first
       try {
-        const errorData = await response.json();
-        errorMessage = errorData.error || `HTTP error: ${response.status} ${response.statusText}`;
+        const responseText = await response.text();
+        console.error('Raw Response Text:', responseText);
+        
+        if (responseText) {
+          try {
+            errorData = JSON.parse(responseText);
+            console.error('Parsed Error Data:', errorData);
+            errorMessage = errorData.error || errorData.message || responseText;
+          } catch (parseError) {
+            console.error('Failed to parse as JSON, using raw text');
+            errorMessage = responseText;
+          }
+        }
       } catch (e) {
-        errorMessage = `HTTP error: ${response.status} ${response.statusText}`;
+        console.error('Failed to read response text:', e);
       }
-      console.error('Pinata API Error:', errorMessage);
+      
+      console.error('Final Error Message:', errorMessage);
       throw new Error(`Failed to upload to IPFS: ${errorMessage}`);
     }
     
