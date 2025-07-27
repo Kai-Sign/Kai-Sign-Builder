@@ -20,6 +20,12 @@ const SAMPLE_CONTRACTS = [
     description: 'USD Coin on Ethereum'
   },
   {
+    name: 'KaiSign Contract',
+    address: '0x79D0e06350CfCE33A7a73A7549248fd6AeD774f2',
+    chainId: 11155111,
+    description: 'KaiSign on Sepolia'
+  },
+  {
     name: 'Uniswap V3 Factory',
     address: '0x1F98431c8aD98523631AE4a59f267346ea31F984',
     chainId: 1,
