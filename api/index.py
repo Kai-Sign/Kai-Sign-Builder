@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Path
+from fastapi import FastAPI, HTTPException, Path, Request
 from fastapi.middleware.cors import CORSMiddleware
 from subprocess import Popen, PIPE
 from dotenv import load_dotenv
@@ -7,6 +7,8 @@ import json
 import requests
 from typing import Optional, List
 import asyncio
+import logging
+from datetime import datetime
 
 # Import patched version first to apply the monkeypatches
 import api.patched_erc7730
@@ -25,6 +27,13 @@ from pydantic import BaseModel
 from api.healthcheck import router as healthcheck_router
 from fastapi.exceptions import RequestValidationError
 from starlette.exceptions import HTTPException as StarletteHTTPException
+
+# Configure logging
+logging.basicConfig(
+    level=os.getenv("LOG_LEVEL", "INFO"),
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 
@@ -60,13 +69,15 @@ app = FastAPI(
 # Include the healthcheck router
 app.include_router(healthcheck_router)
 
-# Add CORS middleware for deployment
+# Configure CORS with specific origins
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
 class Message(BaseModel):
@@ -94,10 +105,15 @@ class BatchIPFSMetadataResponse(BaseModel):
     results: List[IPFSMetadataResponse]
 
 @app.exception_handler(StarletteHTTPException)
-async def http_exception_handler(request, exc):
+async def http_exception_handler(request: Request, exc: StarletteHTTPException):
+    logger.error(f"HTTP exception: {exc.status_code} - {exc.detail} - Path: {request.url.path}")
     return JSONResponse(
         status_code=exc.status_code,
-        content={"message": str(exc.detail)}
+        content={
+            "error": "HTTP Error",
+            "message": str(exc.detail),
+            "timestamp": datetime.utcnow().isoformat()
+        }
     )
 
 @app.exception_handler(RequestValidationError)
