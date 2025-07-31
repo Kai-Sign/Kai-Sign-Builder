@@ -22,8 +22,8 @@ export const env = createEnv({
    * WARNING: Only add variables here that are safe to expose publicly!
    */
   client: {
-    NEXT_PUBLIC_GTM: z.string(),
-    NEXT_PUBLIC_ONETRUST: z.string(),
+    NEXT_PUBLIC_GTM: z.string().optional(),
+    NEXT_PUBLIC_ONETRUST: z.string().optional(),
     NEXT_PUBLIC_API_URL: z.string().optional(),
     NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS: z.string().optional(),
     NEXT_PUBLIC_IPFS_GATEWAY_URL: z.string().optional(),

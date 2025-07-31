@@ -13,18 +13,38 @@ const pendingRequests: Record<string, Promise<GenerateResponse | null>> = {};
 
 // Function to get the correct API endpoint based on environment
 const getApiEndpoint = (): string => {
+  // Always prefer Railway API for production and most development scenarios
+  const railwayEndpoint = "https://kai-sign-production.up.railway.app/api/py/generateERC7730";
+  
   // Check if we're in the browser
   if (typeof window !== 'undefined') {
-    // Check if we're on Vercel
+    // Check if we're on Vercel or Railway deployment - always use Railway API
     const isVercel = window.location.hostname.includes('vercel.app');
-    if (isVercel) {
-      // Use Railway API directly for Vercel deployments
-      return "https://kai-sign-production.up.railway.app/api/py/generateERC7730";
+    const isRailway = window.location.hostname.includes('railway.app');
+    
+    if (isVercel || isRailway) {
+      return railwayEndpoint;
+    }
+    
+    // For local development, check if local API server is explicitly configured and running
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+      
+      // Only use local API if it's explicitly set to localhost and we want to test locally
+      // Otherwise, default to Railway API for more reliable results
+      if (apiUrl && apiUrl.includes('localhost')) {
+        console.log('Using local API endpoint for development testing');
+        return `${apiUrl}/api/py/generateERC7730`;
+      }
+      
+      // Default to Railway API even for local development for better reliability
+      console.log('Using Railway API endpoint for local development');
+      return railwayEndpoint;
     }
   }
   
-  // Use relative path for local development
-  return "/api/py/generateERC7730";
+  // Server-side: use Railway API for consistency
+  return railwayEndpoint;
 };
 
 export default async function generateERC7730({
