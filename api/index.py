@@ -42,7 +42,7 @@ USE_MOCK = os.getenv("USE_MOCK", "false").lower() == "true"
 
 # Environment variables for contract interaction
 ALCHEMY_RPC_URL = os.getenv("ALCHEMY_RPC_URL")
-KAISIGN_CONTRACT_ADDRESS = os.getenv("KAISIGN_CONTRACT_ADDRESS", "0x2d2f90786a365a2044324f6861697e9EF341F858")
+KAISIGN_CONTRACT_ADDRESS = os.getenv("KAISIGN_CONTRACT_ADDRESS", "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf")
 
 def load_env():
     etherscan_api_key = os.getenv("ETHERSCAN_API_KEY")

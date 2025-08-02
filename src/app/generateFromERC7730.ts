@@ -110,14 +110,40 @@ export default async function generateERC7730({
 
         console.log(`API response status: ${response.status}`);
 
-        // If we get a 502 Bad Gateway or 503 Service Unavailable, we retry
-        if (response.status === 502 || response.status === 503) {
+        // If we get a 502 Bad Gateway, 503 Service Unavailable, or 504 Gateway Timeout, we retry
+        if (response.status === 502 || response.status === 503 || response.status === 504) {
           if (attempt < MAX_RETRIES) {
             console.log(`Backend not ready (${response.status}), retrying in ${retryDelay}ms...`);
             await sleep(retryDelay);
             // Exponential backoff - double the delay for next retry
             retryDelay *= 2;
             continue;
+          } else {
+            // After all retries for 502/503/504, provide helpful error message
+            throw new Error(`Backend service is currently unavailable (${response.status}). This typically means the server is starting up or experiencing issues. Please wait a moment and try again.`);
+          }
+        }
+
+        // Handle 422 validation errors specifically
+        if (response.status === 422) {
+          try {
+            const errorData = await response.json();
+            console.error("Validation Error Details:", errorData);
+            
+            // Extract validation details from FastAPI format
+            let validationMessage = "Request validation failed.";
+            if (errorData.detail && Array.isArray(errorData.detail)) {
+              const errors = errorData.detail.map((err: any) => 
+                `${err.loc?.join('.') || 'field'}: ${err.msg || err.type}`
+              ).join('; ');
+              validationMessage = `Validation failed: ${errors}`;
+            } else if (errorData.detail) {
+              validationMessage = `Validation failed: ${errorData.detail}`;
+            }
+            
+            throw new Error(validationMessage);
+          } catch (parseError) {
+            throw new Error("Request validation failed. Please check your input format.");
           }
         }
 
