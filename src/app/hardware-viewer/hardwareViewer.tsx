@@ -23,6 +23,27 @@ import { Device } from "~/components/devices/device";
 import { getScreensForOperation } from "~/shared/getScreensForOperation";
 import operationScreens from "../review/operationScreens";
 import { type Erc7730, type Operation } from "~/store/types";
+// Remove server-side imports - we'll use the API instead
+// import { analyzeBytecode, type BytecodeAnalysis } from "~/lib/bytecodeDecompiler";
+// import { analyzeWithERC7730 } from "~/lib/erc7730Matcher";
+
+// Define interfaces locally since we can't import them
+interface DecompiledBytecode {
+  selector: string;
+  signature?: string;
+  functionName?: string;
+  inputs?: any[];
+  decodedParams?: any[];
+  error?: string;
+}
+
+interface BytecodeAnalysis {
+  bytecode: string;
+  decompiled: DecompiledBytecode;
+  erc7730Match?: any;
+}
+import { Input } from "~/components/ui/input";
+import { Code2, Package } from "lucide-react";
 
 interface DecodedTransaction {
   txHash?: string;
@@ -68,6 +89,11 @@ interface MetadataEntry {
 
 const HardwareViewer = () => {
   const [activeTab, setActiveTab] = useState("simple");
+  const [bytecodeInput, setBytecodeInput] = useState("");
+  const [contractAddress, setContractAddress] = useState("");
+  const [chainId, setChainId] = useState("1");
+  const [bytecodeAnalysis, setBytecodeAnalysis] = useState<BytecodeAnalysis | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [jsonInput, setJsonInput] = useState("");
   const [selectedOperation, setSelectedOperation] = useState("");
   const [parsedData, setParsedData] = useState<Erc7730 | null>(null);
@@ -968,9 +994,10 @@ const HardwareViewer = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="simple">Simple Mode</TabsTrigger>
               <TabsTrigger value="advanced">Advanced Mode</TabsTrigger>
+              <TabsTrigger value="bytecode">Bytecode Decompiler</TabsTrigger>
             </TabsList>
 
             <TabsContent value="simple" className="space-y-4">
@@ -1132,6 +1159,240 @@ const HardwareViewer = () => {
                       </SelectContent>
                     </Select>
                   </div>
+                )}
+              </div>
+            </TabsContent>
+
+            <TabsContent value="bytecode" className="space-y-4">
+              <div className="space-y-4">
+                <div className="text-sm text-gray-600 mb-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Code2 className="h-4 w-4" />
+                    <span className="font-medium">Bytecode Decompiler</span>
+                  </div>
+                  Decompile transaction bytecode and match it with ERC-7730 metadata to see how it will appear on hardware wallets.
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="chain-select">Blockchain Network</Label>
+                  <Select value={chainId} onValueChange={setChainId}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Choose network" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1">Ethereum Mainnet</SelectItem>
+                      <SelectItem value="11155111">Sepolia Testnet</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="contract-address">Contract Address</Label>
+                  <Input
+                    id="contract-address"
+                    placeholder="0x..."
+                    value={contractAddress}
+                    onChange={(e) => setContractAddress(e.target.value)}
+                    className="font-mono"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="bytecode-input">Transaction Bytecode / Calldata</Label>
+                  <Textarea
+                    id="bytecode-input"
+                    placeholder="0x..."
+                    value={bytecodeInput}
+                    onChange={(e) => setBytecodeInput(e.target.value)}
+                    className="min-h-[200px] font-mono text-sm"
+                  />
+                </div>
+
+                <Button 
+                  onClick={async () => {
+                    if (!bytecodeInput || !contractAddress) {
+                      setError("Please provide both contract address and bytecode");
+                      return;
+                    }
+                    
+                    setIsAnalyzing(true);
+                    setError("");
+                    
+                    try {
+                      // Call our API endpoint instead of directly using server-side functions
+                      const response = await fetch('/api/decompile', {
+                        method: 'POST',
+                        headers: {
+                          'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                          bytecode: bytecodeInput,
+                          contractAddress,
+                          chainId: parseInt(chainId)
+                        })
+                      });
+                      
+                      const result = await response.json();
+                      
+                      if (result.success) {
+                        setBytecodeAnalysis(result.analysis);
+                        
+                        // Update the UI based on ERC-7730 analysis
+                        if (result.erc7730?.metadata) {
+                          setJsonInput(JSON.stringify(result.erc7730.metadata, null, 2));
+                          handleJsonChange(JSON.stringify(result.erc7730.metadata, null, 2));
+                        }
+                      } else {
+                        setError(result.error || 'Failed to analyze bytecode');
+                      }
+                    } catch (err) {
+                      setError("Failed to analyze bytecode: " + (err as Error).message);
+                    } finally {
+                      setIsAnalyzing(false);
+                    }
+                  }}
+                  disabled={isAnalyzing}
+                  className="w-full"
+                >
+                  {isAnalyzing ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                      Analyzing...
+                    </>
+                  ) : (
+                    <>
+                      <Package className="h-4 w-4 mr-2" />
+                      Decompile Bytecode
+                    </>
+                  )}
+                </Button>
+
+                {/* Sample transactions buttons */}
+                <div className="space-y-2">
+                  <Label>Sample Transactions</Label>
+                  <div className="grid grid-cols-1 gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setChainId("11155111");
+                        setContractAddress("0x5dd9fdf2310b5dac8dced8a100fb4952546ae7bd");
+                        setBytecodeInput("0x34fcd5be00000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000001200000000000000000000000005dd9fdf2310b5dac8dced8a100fb4952546ae7bd000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000044a9059cbb000000000000000000000000bb6e6d6dabd150c4a000d1fd8a7de46a750477f40000000000000000000000000000000000000000000000000de0b6b3a7640000000000000000000000000000000000000000000000000000000000000000000000000000000000005dd9fdf2310b5dac8dced8a100fb4952546ae7bd000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000044a9059cbb000000000000000000000000bb6e6d6dabd150c4a000d1fd8a7de46a750477f40000000000000000000000000000000000000000000000001bc16d674ec8000000000000000000000000000000000000000000000000000000000000");
+                      }}
+                    >
+                      Sepolia Batch Executor TX
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setChainId("11155111");
+                        setContractAddress("0x5315eb7f03465aa2aef2fe052b8eed2cab0741a0");
+                        setBytecodeInput("0x1cff79cd00000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000040");
+                      }}
+                    >
+                      Sepolia DeleGator TX
+                    </Button>
+                  </div>
+                </div>
+
+                {/* Analysis Results */}
+                {bytecodeAnalysis && (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-lg">Decompilation Results</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-2 text-sm">
+                        {bytecodeAnalysis.decompiled.error ? (
+                          <Alert variant="destructive">
+                            <AlertCircle className="h-4 w-4" />
+                            <AlertDescription>{bytecodeAnalysis.decompiled.error}</AlertDescription>
+                          </Alert>
+                        ) : (
+                          <>
+                            <div>
+                              <span className="font-medium">Function:</span> {bytecodeAnalysis.decompiled.functionName || bytecodeAnalysis.decompiled.signature || 'Unknown'}
+                            </div>
+                            <div>
+                              <span className="font-medium">Selector:</span> <code className="bg-gray-100 dark:bg-gray-800 px-1 rounded">0x{bytecodeAnalysis.decompiled.selector}</code>
+                            </div>
+                            {(bytecodeAnalysis.decompiled.params || bytecodeAnalysis.decompiled.decodedParams) && (
+                              <div>
+                                <span className="font-medium">Parameters:</span>
+                                {bytecodeAnalysis.decompiled.params ? (
+                                  <div className="mt-2 space-y-2">
+                                    {bytecodeAnalysis.decompiled.params.map((param: any, index: number) => (
+                                      <div key={index} className="bg-gray-50 dark:bg-gray-900 p-3 rounded">
+                                        <div className="flex items-center gap-2 mb-1">
+                                          <span className="font-medium text-sm">{param.name}:</span>
+                                          <span className="text-xs text-gray-500 dark:text-gray-400">({param.type})</span>
+                                        </div>
+                                        <div className="text-sm font-mono break-all">
+                                          {typeof param.value === 'string' && param.value.length > 50 
+                                            ? `${param.value.slice(0, 50)}...` 
+                                            : param.value.toString()}
+                                        </div>
+                                        {param.valueDecoded && (
+                                          <div className="mt-2 pl-4 border-l-2 border-blue-200 dark:border-blue-800">
+                                            {param.valueDecoded.type === 'batchOperations' ? (
+                                              <div>
+                                                <div className="text-xs font-medium text-blue-600 dark:text-blue-400 mb-2">
+                                                  Batch Operations ({param.valueDecoded.operations.length} operations)
+                                                </div>
+                                                {param.valueDecoded.operations.map((op: any, opIndex: number) => (
+                                                  <div key={opIndex} className="mb-3 p-2 bg-gray-100 dark:bg-gray-800 rounded">
+                                                    <div className="text-xs font-medium text-gray-600 dark:text-gray-300 mb-1">
+                                                      Operation {op.index + 1}
+                                                    </div>
+                                                    <div className="text-xs space-y-1">
+                                                      <div><span className="font-medium">To:</span> {op.to}</div>
+                                                      <div><span className="font-medium">Value:</span> {op.value}</div>
+                                                      {op.decodedCall && (
+                                                        <div className="mt-1 pl-2 border-l border-green-300 dark:border-green-700">
+                                                          <div className="text-xs font-medium text-green-600 dark:text-green-400">
+                                                            Call: {op.decodedCall.name}
+                                                          </div>
+                                                          {op.decodedCall.params && op.decodedCall.params.map((callParam: any, callIndex: number) => (
+                                                            <div key={callIndex} className="text-xs">
+                                                              <span className="font-medium">{callParam.name}:</span> {callParam.value}
+                                                            </div>
+                                                          ))}
+                                                        </div>
+                                                      )}
+                                                    </div>
+                                                  </div>
+                                                ))}
+                                              </div>
+                                            ) : param.valueDecoded.name ? (
+                                              <div>
+                                                <div className="text-xs font-medium text-blue-600 dark:text-blue-400 mb-1">
+                                                  Decoded: {param.valueDecoded.name}
+                                                </div>
+                                                {param.valueDecoded.params && param.valueDecoded.params.map((nestedParam: any, nestedIndex: number) => (
+                                                  <div key={nestedIndex} className="text-xs">
+                                                    <span className="font-medium">{nestedParam.name}:</span> {nestedParam.value}
+                                                  </div>
+                                                ))}
+                                              </div>
+                                            ) : null}
+                                          </div>
+                                        )}
+                                      </div>
+                                    ))}
+                                  </div>
+                                ) : (
+                                  <pre className="mt-1 bg-gray-50 dark:bg-gray-900 p-2 rounded text-xs overflow-auto">
+                                    {JSON.stringify(bytecodeAnalysis.decompiled.decodedParams, null, 2)}
+                                  </pre>
+                                )}
+                              </div>
+                            )}
+                          </>
+                        )}
+                      </div>
+                    </CardContent>
+                  </Card>
                 )}
               </div>
             </TabsContent>

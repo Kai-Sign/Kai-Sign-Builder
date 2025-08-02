@@ -47,16 +47,17 @@ const checkApiHealth = async (): Promise<boolean> => {
 
     // If local API fails, try the direct Railway API health check
     console.log("Local API not available, trying Railway API directly");
-    const railwayApiUrl = process.env.NEXT_PUBLIC_API_URL || "https://kai-sign-production.up.railway.app";
-    const railwayResponse = await fetch(`${railwayApiUrl}/api/health`, {
-      method: "GET",
-      headers: {
-        "Cache-Control": "no-cache",
-        "Accept": "application/json",
-      },
-      cache: "no-store",
-      mode: "cors",
-    });
+    try {
+      const railwayApiUrl = process.env.NEXT_PUBLIC_API_URL || "https://kai-sign-production.up.railway.app";
+      const railwayResponse = await fetch(`${railwayApiUrl}/api/health`, {
+        method: "GET",
+        headers: {
+          "Cache-Control": "no-cache",
+          "Accept": "application/json",
+        },
+        cache: "no-store",
+        mode: "cors",
+      });
 
       if (railwayResponse.ok) {
         console.log("Railway API is available");
