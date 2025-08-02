@@ -1,23 +1,34 @@
 import json
 import re
+import os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from google import genai
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = FastAPI(title="ERC7730 Spec Evaluator")
 
-# Add CORS middleware
+# Configure CORS with specific origins
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
-# Initialize the Gemini client with your API key
-client = genai.Client(api_key="AIzaSyAxI-7_Pcu1xN_NCCyieQokljbH7NEmy5M")
+# Initialize the Gemini client with API key from environment
+api_key = os.getenv("GOOGLE_GENAI_API_KEY")
+if not api_key:
+    raise ValueError("GOOGLE_GENAI_API_KEY environment variable is not set")
+
+client = genai.Client(api_key=api_key)
 
 # Define the request model
 class SpecRequest(BaseModel):
@@ -26,6 +37,10 @@ class SpecRequest(BaseModel):
 @app.post("/evaluate")
 async def evaluate_spec(request: SpecRequest):
     try:
+        # Validate input
+        if not request.spec:
+            raise HTTPException(status_code=400, detail="Spec cannot be empty")
+        
         # Convert the spec dict to a JSON string
         user_spec = json.dumps(request.spec, indent=2)
         
@@ -121,8 +136,15 @@ async def evaluate_spec(request: SpecRequest):
         
         return result_dict
         
+    except json.JSONDecodeError as e:
+        raise HTTPException(status_code=400, detail=f"Invalid JSON in spec: {str(e)}")
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        # Log the full error for debugging
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail="An internal error occurred while processing your request")
 
 # Add a health check endpoint
 @app.get("/health")
