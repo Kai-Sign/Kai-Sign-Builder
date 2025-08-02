@@ -27,10 +27,13 @@ const POAP_ABI = '[{"inputs":[{"internalType":"address","name":"_poapContractAdd
 // Sleep utility for serverless deployments
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-// Check if the API is ready
+// Check if the API is ready with extended timeout for slow startup
 const checkApiHealth = async (): Promise<boolean> => {
   try {
-    // First try the local Next.js API health endpoint
+    // First try the local Next.js API health endpoint with longer timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+    
     const localApiResponse = await fetch("/api/health", {
       method: "GET",
       headers: {
@@ -38,7 +41,10 @@ const checkApiHealth = async (): Promise<boolean> => {
         "Accept": "application/json",
       },
       cache: "no-store",
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (localApiResponse.ok) {
       console.log("Local Next.js API is available");
@@ -47,16 +53,17 @@ const checkApiHealth = async (): Promise<boolean> => {
 
     // If local API fails, try the direct Railway API health check
     console.log("Local API not available, trying Railway API directly");
-    const railwayApiUrl = process.env.NEXT_PUBLIC_API_URL || "https://kai-sign-production.up.railway.app";
-    const railwayResponse = await fetch(`${railwayApiUrl}/api/health`, {
-      method: "GET",
-      headers: {
-        "Cache-Control": "no-cache",
-        "Accept": "application/json",
-      },
-      cache: "no-store",
-      mode: "cors",
-    });
+    try {
+      const railwayApiUrl = process.env.NEXT_PUBLIC_API_URL || "https://kai-sign-production.up.railway.app";
+      const railwayResponse = await fetch(`${railwayApiUrl}/api/health`, {
+        method: "GET",
+        headers: {
+          "Cache-Control": "no-cache",
+          "Accept": "application/json",
+        },
+        cache: "no-store",
+        mode: "cors",
+      });
 
       if (railwayResponse.ok) {
         console.log("Railway API is available");
@@ -71,10 +78,8 @@ const checkApiHealth = async (): Promise<boolean> => {
   } catch (error) {
     console.error("Error checking API health:", error);
     // For serverless deployments, don't block the UI for API health checks
-    if (typeof window !== 'undefined' && 
-        (window.location.hostname.includes('railway.app') || 
-         window.location.hostname.includes('vercel.app') || 
-         process.env.NODE_ENV === 'production')) {
+    // Use environment variable check instead of window to avoid hydration mismatch
+    if (process.env.NODE_ENV === 'production' || process.env.VERCEL_URL || process.env.RAILWAY_PUBLIC_DOMAIN) {
       console.log("Serverless environment detected, assuming API will be available");
       return true;
     }
