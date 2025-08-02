@@ -58,9 +58,12 @@ const checkApiHealth = async (): Promise<boolean> => {
       mode: "cors",
     });
 
-    if (railwayResponse.ok) {
-      console.log("Railway API is available");
-      return true;
+      if (railwayResponse.ok) {
+        console.log("Railway API is available");
+        return true;
+      }
+    } catch (railwayError) {
+      console.log("Railway API not available:", railwayError instanceof Error ? railwayError.message : String(railwayError));
     }
 
     console.log("Both local and Railway APIs are unavailable");
