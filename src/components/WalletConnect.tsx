@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Button } from "~/components/ui/button";
+import { ExtensionSafeButton } from "~/components/ExtensionSafeButton";
 import { Wallet, Loader2 } from "lucide-react";
 import { useWallet } from "~/contexts/WalletContext";
 import { useToast } from "~/hooks/use-toast";
@@ -55,21 +55,21 @@ export const WalletConnect: React.FC<WalletConnectProps> = ({
           {currentAccount.substring(0, 6)}...{currentAccount.substring(currentAccount.length - 4)}
         </span>
         {showDisconnect && (
-          <Button
+          <ExtensionSafeButton
             onClick={handleDisconnect}
             size={size}
             variant="outline"
             className={className}
           >
             Disconnect
-          </Button>
+          </ExtensionSafeButton>
         )}
       </div>
     );
   }
 
   return (
-    <Button
+    <ExtensionSafeButton
       onClick={handleConnect}
       disabled={isConnecting}
       size={size}
@@ -87,6 +87,6 @@ export const WalletConnect: React.FC<WalletConnectProps> = ({
           Connect Wallet
         </>
       )}
-    </Button>
+    </ExtensionSafeButton>
   );
 };

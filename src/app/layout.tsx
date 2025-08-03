@@ -10,6 +10,7 @@ import { ThemeProvider } from "~/components/ui/theme-provider";
 import { WalletProvider } from "~/contexts/WalletContext";
 import GoogleTagManager from "~/components/scripts/googleTagManager";
 import Script from "next/script";
+import { ClientKeepAlive } from "~/components/ClientKeepAlive";
 
 export const metadata: Metadata = {
   title: "Create Erc7730 Json",
@@ -55,6 +56,7 @@ export default function RootLayout({
               >
                 {children}
                 <Toaster />
+                <ClientKeepAlive />
               </ThemeProvider>
             </Erc7730StoreProvider>
           </WalletProvider>

@@ -1,7 +1,7 @@
 "use client";
 
 import { RotateCcw } from "lucide-react";
-import { Button } from "~/components/ui/button";
+import { ExtensionSafeButton } from "~/components/ExtensionSafeButton";
 import { Erc7730StoreContext } from "~/store/erc7730Provider";
 import { useContext } from "react";
 import useFunctionStore from "~/store/useOperationStore";
@@ -19,9 +19,9 @@ const ResetButton = () => {
   };
 
   return (
-    <Button variant={"outline"} className="rounded-full" onClick={reset}>
+    <ExtensionSafeButton variant={"outline"} className="rounded-full" onClick={reset}>
       <RotateCcw /> Reset
-    </Button>
+    </ExtensionSafeButton>
   );
 };
 export default ResetButton;
