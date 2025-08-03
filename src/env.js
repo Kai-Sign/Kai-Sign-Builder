@@ -22,8 +22,8 @@ export const env = createEnv({
    * WARNING: Only add variables here that are safe to expose publicly!
    */
   client: {
-    NEXT_PUBLIC_GTM: z.string(),
-    NEXT_PUBLIC_ONETRUST: z.string(),
+    NEXT_PUBLIC_GTM: z.string().optional(),
+    NEXT_PUBLIC_ONETRUST: z.string().optional(),
     NEXT_PUBLIC_API_URL: z.string().optional(),
     NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS: z.string().optional(),
     NEXT_PUBLIC_IPFS_GATEWAY_URL: z.string().optional(),
@@ -49,7 +49,7 @@ export const env = createEnv({
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
    * useful for Docker builds.
    */
-  skipValidation: true,
+  skipValidation: !!process.env.SKIP_ENV_VALIDATION,
   /**
    * Makes it so that empty strings are treated as undefined. `SOME_VAR: z.string()` and
    * `SOME_VAR=''` will throw an error.

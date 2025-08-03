@@ -2205,8 +2205,22 @@ export class Web3Service {
   }
 
   async getUserIncentives(userAddress: string): Promise<string[]> {
+    // Auto-connect if not connected
     if (!this.contract) {
-      throw new Error("Not connected to contract.");
+      try {
+        console.log("Contract not connected, attempting to connect...");
+        await this.connect();
+      } catch (connectError) {
+        console.warn("Failed to auto-connect for getUserIncentives:", connectError);
+        // Return empty array instead of throwing to prevent blocking the UI
+        return [];
+      }
+    }
+
+    // Double check after connection attempt
+    if (!this.contract) {
+      console.warn("Contract still not available after connection attempt, returning empty array");
+      return [];
     }
 
     try {
@@ -2220,7 +2234,16 @@ export class Web3Service {
       console.error("💥 Error getting user incentives:", error);
       console.error("🔧 Contract address:", this.contract?.target);
       console.error("📝 Function signature: getUserIncentives(address)");
-      throw error;
+      
+      // If function doesn't exist or returns empty data, return empty array instead of throwing
+      if (error.code === "BAD_DATA" || error.info?.method === "getUserIncentives") {
+        console.warn("⚠️ getUserIncentives function may not exist on this contract, returning empty array");
+        return [];
+      }
+      
+      // For other errors, also return empty array to prevent UI blocking
+      console.warn("⚠️ getUserIncentives failed, returning empty array to prevent UI blocking");
+      return [];
     }
   }
 

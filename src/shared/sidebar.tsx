@@ -13,7 +13,7 @@ import {
 import { Ledger } from "~/icons/ledger";
 import { useErc7730Store } from "~/store/erc7730Provider";
 import SelectOperation from "./selectOperation";
-import { Button } from "~/components/ui/button";
+import { ExtensionSafeButton } from "~/components/ExtensionSafeButton";
 import { ModeToggle } from "~/components/ui/theme-switcher";
 import { useRouter, usePathname } from "next/navigation";
 import useOperationStore from "~/store/useOperationStore";
@@ -96,13 +96,13 @@ export function AppSidebar() {
             <ModeToggle />
           </div>
           <ResetButton />
-          <Button
+          <ExtensionSafeButton
             className="rounded-full"
             disabled={!isReviewAccessible}
             onClick={() => router.push("/review")}
           >
             Review
-          </Button>
+          </ExtensionSafeButton>
         </div>
       </SidebarFooter>
     </Sidebar>

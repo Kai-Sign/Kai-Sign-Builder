@@ -101,7 +101,7 @@ export function useKaiSign({
     }
   }, [client, chainID]);
 
-  // Get transaction metadata
+  // Get transaction metadata with retry logic for slow server startup
   const getTransactionMetadata = useCallback(async (
     contractAddress: string, 
     selector: string
@@ -109,14 +109,27 @@ export function useKaiSign({
     setMetadataLoading(true);
     setError(null);
     
-    try {
-      return await client.getTransactionMetadata(contractAddress, selector, chainID);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to get transaction metadata');
-      return null;
-    } finally {
-      setMetadataLoading(false);
+    const maxRetries = 3;
+    let lastError: Error | null = null;
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        const result = await client.getTransactionMetadata(contractAddress, selector, chainID);
+        setMetadataLoading(false);
+        return result;
+      } catch (err) {
+        lastError = err instanceof Error ? err : new Error('Unknown error');
+        
+        // If not the last attempt, wait before retrying
+        if (attempt < maxRetries) {
+          await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+        }
+      }
     }
+    
+    setError(lastError ? lastError.message : 'Failed to get transaction metadata after multiple attempts');
+    setMetadataLoading(false);
+    return null;
   }, [client, chainID]);
 
   // Get spec history
@@ -224,7 +237,25 @@ export function useTransactionPreview(
       }
 
       const selector = data.slice(0, 10);
-      const metadata = await client.getTransactionMetadata(contractAddress, selector, chainID);
+      
+      // Retry logic for slow server startup
+      const maxRetries = 3;
+      let metadata: FunctionMetadata | null = null;
+      let lastError: Error | null = null;
+      
+      for (let attempt = 1; attempt <= maxRetries; attempt++) {
+        try {
+          metadata = await client.getTransactionMetadata(contractAddress, selector, chainID);
+          break; // Success, exit retry loop
+        } catch (err) {
+          lastError = err instanceof Error ? err : new Error('Unknown error');
+          
+          // If not the last attempt, wait before retrying
+          if (attempt < maxRetries) {
+            await new Promise(resolve => setTimeout(resolve, 1000 * attempt));
+          }
+        }
+      }
 
       return {
         metadata,
