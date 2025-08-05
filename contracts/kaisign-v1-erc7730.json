@@ -1,0 +1,269 @@
+{
+  "$schema": "https://schemas.erc7730.org/v1.0/clear-signing-metadata.json",
+  "context": {
+    "name": "KaiSign V1",
+    "description": "Decentralized ERC-7730 clear signing metadata platform with commit-reveal mechanism",
+    "deployments": [
+      {
+        "chainId": 1,
+        "address": "0x0000000000000000000000000000000000000000"
+      }
+    ]
+  },
+  "metadata": {
+    "owner": "KaiSign",
+    "displayName": "KaiSign V1 Contract",
+    "legalName": "KaiSign Decentralized Metadata Platform",
+    "description": "A platform for creating, proposing, and validating ERC-7730 clear signing metadata specifications using Reality.eth and commit-reveal mechanisms.",
+    "url": "https://kaisign.org"
+  },
+  "display": {
+    "formats": {
+      "commitSpec": {
+        "intent": "Submit a commitment for a new ERC-7730 specification",
+        "required": ["commitment", "targetContract", "targetChainId"],
+        "fields": {
+          "commitment": {
+            "label": "Commitment Hash",
+            "format": "bytes32"
+          },
+          "targetContract": {
+            "label": "Target Contract Address",
+            "format": "address"
+          },
+          "targetChainId": {
+            "label": "Target Chain ID",
+            "format": "uint256"
+          },
+          "incentiveId": {
+            "label": "Incentive ID (Optional)",
+            "format": "bytes32"
+          },
+          "value": {
+            "label": "Bond Amount",
+            "format": "wei",
+            "params": {
+              "unit": "ether"
+            }
+          }
+        }
+      },
+      "revealSpec": {
+        "intent": "Reveal a committed ERC-7730 specification",
+        "required": ["commitmentId", "ipfs", "nonce"],
+        "fields": {
+          "commitmentId": {
+            "label": "Commitment ID",
+            "format": "bytes32"
+          },
+          "ipfs": {
+            "label": "IPFS Hash of Specification",
+            "format": "string"
+          },
+          "nonce": {
+            "label": "Nonce",
+            "format": "uint256"
+          }
+        }
+      },
+      "proposeSpec": {
+        "intent": "Propose an ERC-7730 specification for validation",
+        "required": ["specID"],
+        "fields": {
+          "specID": {
+            "label": "Specification ID",
+            "format": "bytes32"
+          },
+          "value": {
+            "label": "Additional Bond Amount",
+            "format": "wei",
+            "params": {
+              "unit": "ether"
+            }
+          }
+        }
+      },
+      "assertSpecValid": {
+        "intent": "Assert that an ERC-7730 specification is valid",
+        "required": ["specID"],
+        "fields": {
+          "specID": {
+            "label": "Specification ID",
+            "format": "bytes32"
+          },
+          "value": {
+            "label": "Bond Amount",
+            "format": "wei",
+            "params": {
+              "unit": "ether"
+            }
+          }
+        }
+      },
+      "assertSpecInvalid": {
+        "intent": "Assert that an ERC-7730 specification is invalid",
+        "required": ["specID"],
+        "fields": {
+          "specID": {
+            "label": "Specification ID",
+            "format": "bytes32"
+          },
+          "value": {
+            "label": "Bond Amount",
+            "format": "wei",
+            "params": {
+              "unit": "ether"
+            }
+          }
+        }
+      },
+      "createIncentive": {
+        "intent": "Create an incentive for ERC-7730 specification creation",
+        "required": ["targetContract", "targetChainId", "token", "amount", "duration", "description"],
+        "fields": {
+          "targetContract": {
+            "label": "Target Contract Address",
+            "format": "address"
+          },
+          "targetChainId": {
+            "label": "Target Chain ID",
+            "format": "uint256"
+          },
+          "token": {
+            "label": "Token Address (0x0 for ETH)",
+            "format": "address"
+          },
+          "amount": {
+            "label": "Incentive Amount",
+            "format": "uint256"
+          },
+          "duration": {
+            "label": "Duration in Seconds",
+            "format": "uint64"
+          },
+          "description": {
+            "label": "Incentive Description",
+            "format": "string"
+          },
+          "value": {
+            "label": "ETH Amount (if token is ETH)",
+            "format": "wei",
+            "params": {
+              "unit": "ether"
+            }
+          }
+        }
+      },
+      "handleResult": {
+        "intent": "Process the final result of an ERC-7730 specification validation",
+        "required": ["specID"],
+        "fields": {
+          "specID": {
+            "label": "Specification ID",
+            "format": "bytes32"
+          }
+        }
+      },
+      "settleBonds": {
+        "intent": "Settle bonds after specification validation is complete",
+        "required": ["specID"],
+        "fields": {
+          "specID": {
+            "label": "Specification ID",
+            "format": "bytes32"
+          }
+        }
+      },
+      "clawbackIncentive": {
+        "intent": "Reclaim unclaimed incentive funds after 90 days",
+        "required": ["incentiveId"],
+        "fields": {
+          "incentiveId": {
+            "label": "Incentive ID",
+            "format": "bytes32"
+          }
+        }
+      },
+      "setMinBond": {
+        "intent": "Set minimum bond amount (Admin only)",
+        "required": ["_minBond"],
+        "fields": {
+          "_minBond": {
+            "label": "Minimum Bond Amount",
+            "format": "uint256"
+          }
+        }
+      },
+      "addAdmin": {
+        "intent": "Add a new admin (Admin only)",
+        "required": ["newAdmin"],
+        "fields": {
+          "newAdmin": {
+            "label": "New Admin Address",
+            "format": "address"
+          }
+        }
+      },
+      "removeAdmin": {
+        "intent": "Remove an admin (Admin only)",
+        "required": ["admin"],
+        "fields": {
+          "admin": {
+            "label": "Admin Address to Remove",
+            "format": "address"
+          }
+        }
+      },
+      "emergencyPause": {
+        "intent": "Emergency pause all contract operations (Admin only)",
+        "required": [],
+        "fields": {}
+      },
+      "emergencyUnpause": {
+        "intent": "Emergency unpause all contract operations (Admin only)",
+        "required": [],
+        "fields": {}
+      }
+    }
+  },
+  "constants": {
+    "PLATFORM_FEE_PERCENT": {
+      "type": "uint256",
+      "value": "5",
+      "description": "Platform fee percentage (5%)"
+    },
+    "COMMIT_REVEAL_TIMEOUT": {
+      "type": "uint256",
+      "value": "3600",
+      "description": "Commit-reveal timeout in seconds (1 hour)"
+    },
+    "INCENTIVE_DURATION": {
+      "type": "uint256",
+      "value": "604800",
+      "description": "Maximum incentive duration in seconds (7 days)"
+    },
+    "INCENTIVE_CLAWBACK_PERIOD": {
+      "type": "uint256",
+      "value": "7776000",
+      "description": "Incentive clawback period in seconds (90 days)"
+    },
+    "DEFAULT_TIMEOUT": {
+      "type": "uint32",
+      "value": "172800",
+      "description": "Default Reality.eth question timeout in seconds (48 hours)"
+    }
+  },
+  "enums": {
+    "Status": {
+      "type": "uint8",
+      "values": {
+        "0": "Committed",
+        "1": "Submitted", 
+        "2": "Proposed",
+        "3": "Finalized",
+        "4": "Cancelled"
+      },
+      "description": "Status of an ERC-7730 specification"
+    }
+  }
+}
