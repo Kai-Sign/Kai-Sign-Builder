@@ -1,8 +1,8 @@
 {
   "sepolia": {
     "KaiSign": {
-      "address": "0x2d2f90786a365a2044324f6861697e9ef341f858",
-      "startBlock": 8053722
+      "address": "0xA2119F82f3F595DB34fa059785BeA2f4F78D418B",
+      "startBlock": 8840000
     }
   }
 }

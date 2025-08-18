@@ -10,7 +10,7 @@ dataSources:
     name: KaiSign
     network: sepolia
     source:
-      address: "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf"
+      address: "0xA2119F82f3F595DB34fa059785BeA2f4F78D418B"
       abi: KaiSign
       startBlock: 8840000
     mapping:
@@ -21,23 +21,41 @@ dataSources:
         - Contract
         - Function
         - Spec
-        - LogAssertSpecInvalid
-        - LogAssertSpecValid
+        - LogCommitSpec
+        - LogRevealSpec
         - LogCreateSpec
-        - LogHandleResult
         - LogProposeSpec
+        - LogHandleResult
+        - LogIncentiveCreated
+        - LogIncentiveClaimed
+        - LogIncentiveClawback
+        - LogContractSpecAdded
+        - LogEmergencyPause
+        - LogEmergencyUnpause
       abis:
         - name: KaiSign
           file: ./abis/KaiSign.json
       eventHandlers:
-        - event: LogAssertSpecInvalid(indexed address,bytes32,bytes32,uint256)
-          handler: handleLogAssertSpecInvalid
-        - event: LogAssertSpecValid(indexed address,bytes32,bytes32,uint256)
-          handler: handleLogAssertSpecValid
+        - event: LogCommitSpec(indexed address,indexed bytes32,indexed address,uint256,uint256,uint64)
+          handler: handleLogCommitSpec
+        - event: LogRevealSpec(indexed address,indexed bytes32,indexed bytes32,string,address,uint256)
+          handler: handleLogRevealSpec
         - event: LogCreateSpec(indexed address,indexed bytes32,string,indexed address,uint256,uint256,bytes32)
           handler: handleLogCreateSpec
-        - event: LogHandleResult(bytes32,bool)
-          handler: handleLogHandleResult
-        - event: LogProposeSpec(indexed address,bytes32,bytes32,uint256)
+        - event: LogProposeSpec(indexed address,indexed bytes32,bytes32,uint256)
           handler: handleLogProposeSpec
+        - event: LogHandleResult(indexed bytes32,bool)
+          handler: handleLogHandleResult
+        - event: LogIncentiveCreated(indexed bytes32,indexed address,indexed address,uint256,address,uint256,uint64,string)
+          handler: handleLogIncentiveCreated
+        - event: LogIncentiveClaimed(indexed bytes32,indexed address,indexed bytes32,uint256)
+          handler: handleLogIncentiveClaimed
+        - event: LogIncentiveClawback(indexed bytes32,indexed address,uint256)
+          handler: handleLogIncentiveClawback
+        - event: LogContractSpecAdded(indexed address,indexed bytes32,indexed address,uint256)
+          handler: handleLogContractSpecAdded
+        - event: LogEmergencyPause(indexed address)
+          handler: handleLogEmergencyPause
+        - event: LogEmergencyUnpause(indexed address)
+          handler: handleLogEmergencyUnpause
       file: ./src/kai-sign.ts

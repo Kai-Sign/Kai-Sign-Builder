@@ -53,33 +53,17 @@ enum SpecStatus {
   CANCELLED
 }
 
-type LogAssertSpecInvalid @entity(immutable: true) {
-  id: Bytes!
-  user: Bytes! # address
-  specID: Bytes! # bytes32
-  questionId: Bytes! # bytes32
-  bond: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
-
-type LogAssertSpecValid @entity(immutable: true) {
-  id: Bytes!
-  user: Bytes! # address
-  specID: Bytes! # bytes32
-  questionId: Bytes! # bytes32
-  bond: BigInt! # uint256
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-}
+# Removed LogAssertSpecInvalid and LogAssertSpecValid as they are obsolete in the new contract
 
 type LogCreateSpec @entity(immutable: true) {
   id: Bytes!
-  user: Bytes! # address
+  creator: Bytes! # address (was 'user')
   specID: Bytes! # bytes32
   ipfs: String! # string
+  targetContract: Bytes! # address (new field)
+  chainId: BigInt! # uint256 (new field)
+  timestamp: BigInt! # uint256 (new field)
+  incentiveId: Bytes! # bytes32 (new field)
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
@@ -100,6 +84,95 @@ type LogProposeSpec @entity(immutable: true) {
   specID: Bytes! # bytes32
   questionId: Bytes! # bytes32
   bond: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LogCommitSpec @entity(immutable: true) {
+  id: Bytes!
+  committer: Bytes! # address
+  commitmentId: Bytes! # bytes32
+  targetContract: Bytes! # address
+  chainId: BigInt! # uint256
+  bondAmount: BigInt! # uint256
+  revealDeadline: BigInt! # uint64
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LogRevealSpec @entity(immutable: true) {
+  id: Bytes!
+  creator: Bytes! # address
+  specID: Bytes! # bytes32
+  commitmentId: Bytes! # bytes32
+  ipfs: String! # string
+  targetContract: Bytes! # address
+  chainId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LogIncentiveCreated @entity(immutable: true) {
+  id: Bytes!
+  incentiveId: Bytes! # bytes32
+  creator: Bytes! # address
+  targetContract: Bytes! # address
+  chainId: BigInt! # uint256
+  token: Bytes! # address
+  amount: BigInt! # uint256
+  deadline: BigInt! # uint64
+  description: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LogIncentiveClaimed @entity(immutable: true) {
+  id: Bytes!
+  incentiveId: Bytes! # bytes32
+  claimer: Bytes! # address
+  specID: Bytes! # bytes32
+  amount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LogIncentiveClawback @entity(immutable: true) {
+  id: Bytes!
+  incentiveId: Bytes! # bytes32
+  creator: Bytes! # address
+  amount: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LogContractSpecAdded @entity(immutable: true) {
+  id: Bytes!
+  targetContract: Bytes! # address
+  specID: Bytes! # bytes32
+  creator: Bytes! # address
+  chainId: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LogEmergencyPause @entity(immutable: true) {
+  id: Bytes!
+  admin: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LogEmergencyUnpause @entity(immutable: true) {
+  id: Bytes!
+  admin: Bytes! # address
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
