@@ -1,32 +1,44 @@
 import { BigInt, Bytes, ipfs, json, JSONValue, TypedMap } from "@graphprotocol/graph-ts"
 import {
-  LogAssertSpecInvalid as LogAssertSpecInvalidEvent,
-  LogAssertSpecValid as LogAssertSpecValidEvent,
+  LogCommitSpec as LogCommitSpecEvent,
+  LogRevealSpec as LogRevealSpecEvent,
   LogCreateSpec as LogCreateSpecEvent,
   LogHandleResult as LogHandleResultEvent,
-  LogProposeSpec as LogProposeSpecEvent
+  LogProposeSpec as LogProposeSpecEvent,
+  LogIncentiveCreated as LogIncentiveCreatedEvent,
+  LogIncentiveClaimed as LogIncentiveClaimedEvent,
+  LogIncentiveClawback as LogIncentiveClawbackEvent,
+  LogContractSpecAdded as LogContractSpecAddedEvent,
+  LogEmergencyPause as LogEmergencyPauseEvent,
+  LogEmergencyUnpause as LogEmergencyUnpauseEvent
 } from "../generated/KaiSign/KaiSign"
 import {
   Contract,
   Function,
-  LogAssertSpecInvalid,
-  LogAssertSpecValid,
+  LogCommitSpec,
+  LogRevealSpec,
   LogCreateSpec,
   LogHandleResult,
   LogProposeSpec,
+  LogIncentiveCreated,
+  LogIncentiveClaimed,
+  LogIncentiveClawback,
+  LogContractSpecAdded,
+  LogEmergencyPause,
+  LogEmergencyUnpause,
   Spec
 } from "../generated/schema"
 
-export function handleLogAssertSpecInvalid(
-  event: LogAssertSpecInvalidEvent
-): void {
-  let entity = new LogAssertSpecInvalid(
+export function handleLogCommitSpec(event: LogCommitSpecEvent): void {
+  let entity = new LogCommitSpec(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
-  entity.user = event.params.user
-  entity.specID = event.params.specID
-  entity.questionId = event.params.questionId
-  entity.bond = event.params.bond
+  entity.committer = event.params.committer
+  entity.commitmentId = event.params.commitmentId
+  entity.targetContract = event.params.targetContract
+  entity.chainId = event.params.chainId
+  entity.bondAmount = event.params.bondAmount
+  entity.revealDeadline = event.params.revealDeadline
 
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
@@ -35,14 +47,16 @@ export function handleLogAssertSpecInvalid(
   entity.save()
 }
 
-export function handleLogAssertSpecValid(event: LogAssertSpecValidEvent): void {
-  let entity = new LogAssertSpecValid(
+export function handleLogRevealSpec(event: LogRevealSpecEvent): void {
+  let entity = new LogRevealSpec(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
-  entity.user = event.params.user
+  entity.creator = event.params.creator
   entity.specID = event.params.specID
-  entity.questionId = event.params.questionId
-  entity.bond = event.params.bond
+  entity.commitmentId = event.params.commitmentId
+  entity.ipfs = event.params.ipfs
+  entity.targetContract = event.params.targetContract
+  entity.chainId = event.params.chainId
 
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
@@ -56,9 +70,13 @@ export function handleLogCreateSpec(event: LogCreateSpecEvent): void {
   let logEntity = new LogCreateSpec(
     event.transaction.hash.concatI32(event.logIndex.toI32())
   )
-  logEntity.user = event.params.creator
+  logEntity.creator = event.params.creator
   logEntity.specID = event.params.specID
   logEntity.ipfs = event.params.ipfs
+  logEntity.targetContract = event.params.targetContract
+  logEntity.chainId = event.params.chainId
+  logEntity.timestamp = event.params.timestamp
+  logEntity.incentiveId = event.params.incentiveId
 
   logEntity.blockNumber = event.block.number
   logEntity.blockTimestamp = event.block.timestamp
@@ -88,8 +106,8 @@ export function handleLogCreateSpec(event: LogCreateSpecEvent): void {
         // Extract additional metadata if available
         let context = jsonObject.get("context")
         if (context) {
-          let contextObj = context.toObject()
           // Additional processing can be done here if needed
+          context.toObject()
         }
       }
     }
@@ -153,6 +171,99 @@ export function handleLogProposeSpec(event: LogProposeSpecEvent): void {
   }
 }
 
+export function handleLogIncentiveCreated(event: LogIncentiveCreatedEvent): void {
+  let entity = new LogIncentiveCreated(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  )
+  entity.incentiveId = event.params.incentiveId
+  entity.creator = event.params.creator
+  entity.targetContract = event.params.targetContract
+  entity.chainId = event.params.chainId
+  entity.token = event.params.token
+  entity.amount = event.params.amount
+  entity.deadline = event.params.deadline
+  entity.description = event.params.description
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
+export function handleLogIncentiveClaimed(event: LogIncentiveClaimedEvent): void {
+  let entity = new LogIncentiveClaimed(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  )
+  entity.incentiveId = event.params.incentiveId
+  entity.claimer = event.params.claimer
+  entity.specID = event.params.specID
+  entity.amount = event.params.amount
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
+export function handleLogIncentiveClawback(event: LogIncentiveClawbackEvent): void {
+  let entity = new LogIncentiveClawback(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  )
+  entity.incentiveId = event.params.incentiveId
+  entity.creator = event.params.creator
+  entity.amount = event.params.amount
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
+export function handleLogContractSpecAdded(event: LogContractSpecAddedEvent): void {
+  let entity = new LogContractSpecAdded(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  )
+  entity.targetContract = event.params.targetContract
+  entity.specID = event.params.specID
+  entity.creator = event.params.creator
+  entity.chainId = event.params.chainId
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
+export function handleLogEmergencyPause(event: LogEmergencyPauseEvent): void {
+  let entity = new LogEmergencyPause(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  )
+  entity.admin = event.params.admin
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
+export function handleLogEmergencyUnpause(event: LogEmergencyUnpauseEvent): void {
+  let entity = new LogEmergencyUnpause(
+    event.transaction.hash.concatI32(event.logIndex.toI32())
+  )
+  entity.admin = event.params.admin
+
+  entity.blockNumber = event.block.number
+  entity.blockTimestamp = event.block.timestamp
+  entity.transactionHash = event.transaction.hash
+
+  entity.save()
+}
+
 // Process approved spec only if it's the latest for this contract+chain
 function processApprovedSpecIfLatest(spec: Spec): void {
   if (!spec.chainID || !spec.targetContract) return
@@ -195,7 +306,7 @@ function processApprovedSpecIfLatest(spec: Spec): void {
   processSpecMetadata(contract, spec)
 }
 
-function clearContractFunctions(contractId: string): void {
+function clearContractFunctions(_contractId: string): void {
   // Note: In AssemblyScript/The Graph, we can't easily delete entities
   // The Function entities will be overwritten with new data from the latest spec
   // since they use the same ID format: contract-chainID-selector
