@@ -1,1 +1,8 @@
-{}
+{
+  "/api/contract-metadata/route": "app/api/contract-metadata/route.js",
+  "/api/health/route": "app/api/health/route.js",
+  "/verification-results/page": "app/verification-results/page.js",
+  "/kaisign-v1/page": "app/kaisign-v1/page.js",
+  "/metadata-registry/page": "app/metadata-registry/page.js",
+  "/page": "app/page.js"
+}

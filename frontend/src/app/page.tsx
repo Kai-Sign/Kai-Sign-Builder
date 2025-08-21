@@ -62,6 +62,14 @@ export default function Home() {
           <Settings className="h-4 w-4" />
           KaiSign V1 Manager
         </ExtensionSafeButton>
+        <ExtensionSafeButton
+          variant="outline"
+          onClick={() => router.push("/metadata-registry")}
+          className="flex items-center gap-2"
+        >
+          <Eye className="h-4 w-4" />
+          Metadata Registry
+        </ExtensionSafeButton>
       </div>
 
       <div className="container relative m-auto flex min-h-screen items-center justify-center p-4 overflow-hidden">
