@@ -406,6 +406,10 @@ const REALITY_ETH_ABI = [
   }
 ];
 
+// Reality.eth contract address (Sepolia by default)
+const REALITY_ETH_ADDRESS = process.env.NEXT_PUBLIC_REALITY_ETH_ADDRESS ||
+  "0xaf33DcB6E8c5c4D9dDF579f53031b514d19449CA";
+
 // Contract address (configurable via NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS; falls back to known Sepolia addr)
 const RAW_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS || "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf";
 // Chain ID (configurable via NEXT_PUBLIC_CHAIN_ID, defaults to Sepolia)
@@ -452,7 +456,12 @@ export class Web3Service {
 
       // Assign to instance variables after successful initialization
       this.contract = kaisignContract;
-      // Reality.eth contract will be initialized when needed
+      // Initialize Reality.eth contract now for read calls (bond info)
+      this.realityEthContract = new ethers.Contract(
+        REALITY_ETH_ADDRESS,
+        REALITY_ETH_ABI,
+        this.provider
+      ) as RealityEthContract;
 
 
 
@@ -506,7 +515,14 @@ export class Web3Service {
   async getRequiredBondForQuestion(questionId: string): Promise<bigint> {
     try {
       if (!this.realityEthContract) {
-        throw new Error("Reality.eth contract not initialized. Please connect first.");
+        if (!this.provider) {
+          throw new Error("Wallet not connected. Please connect first.");
+        }
+        this.realityEthContract = new ethers.Contract(
+          REALITY_ETH_ADDRESS,
+          REALITY_ETH_ABI,
+          this.provider
+        ) as RealityEthContract;
       }
 
       // Get the current bond for this question
@@ -541,8 +557,18 @@ export class Web3Service {
     hasAnswers: boolean;
   }> {
     try {
-      if (!this.contract || !this.realityEthContract) {
-        throw new Error("Contracts not initialized. Please connect first.");
+      if (!this.contract) {
+        throw new Error("Contract not initialized. Please connect first.");
+      }
+      if (!this.realityEthContract) {
+        if (!this.provider) {
+          throw new Error("Wallet not connected. Please connect first.");
+        }
+        this.realityEthContract = new ethers.Contract(
+          REALITY_ETH_ADDRESS,
+          REALITY_ETH_ABI,
+          this.provider
+        ) as RealityEthContract;
       }
 
       // Generate specID from IPFS hash (simplified approach)

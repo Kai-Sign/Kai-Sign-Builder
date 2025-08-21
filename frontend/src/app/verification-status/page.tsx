@@ -25,6 +25,7 @@ function VerificationStatusContent() {
   const [canFinalize, setCanFinalize] = useState(false);
   const [isProcessingResult, setIsProcessingResult] = useState(false);
   const [transactionHash, setTransactionHash] = useState<string | null>(null);
+  const isValidTxHash = (h: string | null) => !!h && /^0x[a-fA-F0-9]{64}$/.test(h);
   const [specStatus, setSpecStatus] = useState<number>(-1);
   const [lastPolledTimestamp, setLastPolledTimestamp] = useState<string | null>(null);
   const [ipfsMetadata, setIpfsMetadata] = useState<ERC7730Metadata | null>(null);
@@ -712,15 +713,19 @@ function VerificationStatusContent() {
               <p className="text-green-500 font-medium mb-1">Transaction Submitted!</p>
               <div className="flex justify-between items-center">
                 <code className="font-mono text-xs text-gray-400 truncate max-w-xs">{transactionHash}</code>
-                <a 
-                  href={`https://sepolia.etherscan.io/tx/${transactionHash}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-blue-400 hover:underline ml-2 flex items-center"
-                >
-                  View on Etherscan
-                  <ExternalLink className="h-3 w-3 ml-1" />
-                </a>
+                {isValidTxHash(transactionHash) ? (
+                  <a 
+                    href={`https://sepolia.etherscan.io/tx/${transactionHash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-blue-400 hover:underline ml-2 flex items-center"
+                  >
+                    View on Etherscan
+                    <ExternalLink className="h-3 w-3 ml-1" />
+                  </a>
+                ) : (
+                  <span className="text-sm text-gray-400 ml-2">Awaiting valid transaction hash…</span>
+                )}
               </div>
             </div>
           )}

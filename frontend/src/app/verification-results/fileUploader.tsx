@@ -46,6 +46,7 @@ export default function FileUploader() {
   const [timeout, setTimeoutValue] = useState<string | null>(null);
   const [createdTimestamp, setCreatedTimestamp] = useState<string | null>(null);
   const [timeRemaining, setTimeRemaining] = useState<string | null>(null);
+  const isValidTxHash = (h: string | null | undefined) => !!h && /^0x[a-fA-F0-9]{64}$/.test(h);
   
   // Commit/Reveal flow state
   const [commitState, setCommitState] = useState<{
@@ -633,20 +634,37 @@ export default function FileUploader() {
                     <span className="font-medium text-green-100">Spec Successfully Submitted!</span>
                   </div>
                   <div className="text-sm text-gray-300 space-y-1">
-                    <div>Reveal TX: <code className="text-xs bg-gray-800 px-1 rounded">{commitState.revealTxHash?.substring(0, 10)}...</code></div>
+                    <div className="flex items-center gap-2">
+                      <span>Reveal TX:</span>
+                      <code className="text-xs bg-gray-800 px-1 rounded">{commitState.revealTxHash?.substring(0, 10)}...</code>
+                      {isValidTxHash(commitState.revealTxHash) && (
+                        <a
+                          href={`https://sepolia.etherscan.io/tx/${commitState.revealTxHash}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-blue-400 hover:underline"
+                        >
+                          View on Etherscan
+                        </a>
+                      )}
+                    </div>
                   </div>
                 </div>
               ) : (
                 <div className="w-full p-4 bg-green-900/30 border border-green-700 rounded-lg text-center">
                   <p className="text-green-500 font-medium mb-1">Transaction Submitted!</p>
-                  <a 
-                    href={`https://sepolia.etherscan.io/tx/${transactionHash}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-sm text-blue-400 hover:underline"
-                  >
-                    View on Etherscan
-                  </a>
+                  {transactionHash && /^0x[a-fA-F0-9]{64}$/.test(transactionHash) ? (
+                    <a 
+                      href={`https://sepolia.etherscan.io/tx/${transactionHash}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-blue-400 hover:underline"
+                    >
+                      View on Etherscan
+                    </a>
+                  ) : (
+                    <span className="text-sm text-gray-400">Awaiting valid transaction hash…</span>
+                  )}
                 </div>
               )}
             </div>
