@@ -175,6 +175,20 @@ export function KaiSignModal({
           </div>
         )}
 
+        {/* Empty State (no error, no loading, no data) */}
+        {!loading && !error && !metadata && (
+          <div className="flex flex-col items-center justify-center py-8 text-center">
+            <AlertCircle className="mb-3 text-gray-400" size={24} />
+            <span className="text-gray-400 mb-4">No metadata loaded yet. Click retry to fetch.</span>
+            <button
+              onClick={fetchMetadata}
+              className={`px-4 py-2 rounded border ${buttonClasses}`}
+            >
+              Retry
+            </button>
+          </div>
+        )}
+
         {/* Content */}
         {metadata && !loading && !error && (
           <div className="space-y-4">
