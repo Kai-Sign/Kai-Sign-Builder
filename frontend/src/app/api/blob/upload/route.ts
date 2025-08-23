@@ -17,7 +17,8 @@ function toBlob(data: string): Uint8Array {
     const fieldIndex = Math.floor(blobIndex / 31);
     const byteIndex = blobIndex % 31;
     if (fieldIndex >= 4096) break;
-    blob[fieldIndex * 32 + byteIndex + 1] = bytes[i];
+    const byteVal = bytes[i] ?? 0;
+    blob[fieldIndex * 32 + byteIndex + 1] = byteVal;
     blobIndex++;
   }
   return blob;
@@ -30,10 +31,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Expected { json }" }, { status: 400 });
     }
 
-    const PRIVATE_KEY = process.env.PRIVATE_KEY;
     const RPC_URL = process.env.SEPOLIA_RPC_URL;
-    if (!PRIVATE_KEY || !RPC_URL) {
-      return NextResponse.json({ error: "Missing PRIVATE_KEY or SEPOLIA_RPC_URL" }, { status: 500 });
+    if (!RPC_URL) {
+      return NextResponse.json({ error: "Missing SEPOLIA_RPC_URL" }, { status: 500 });
     }
     if (!cKzg) {
       return NextResponse.json({ error: "c-kzg not available on server" }, { status: 500 });
@@ -46,7 +46,18 @@ export async function POST(request: NextRequest) {
     } catch {}
 
     const provider = new ethers.JsonRpcProvider(RPC_URL);
-    const wallet = new ethers.Wallet(PRIVATE_KEY, provider);
+    let wallet: ethers.Signer;
+    if (process.env.KEYSTORE_JSON && process.env.KEYSTORE_PASSWORD) {
+      const hd = await ethers.Wallet.fromEncryptedJson(
+        process.env.KEYSTORE_JSON,
+        process.env.KEYSTORE_PASSWORD
+      );
+      wallet = hd.connect(provider);
+    } else if (process.env.PRIVATE_KEY) {
+      wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
+    } else {
+      return NextResponse.json({ error: "No signer configured. Provide KEYSTORE_JSON+KEYSTORE_PASSWORD or PRIVATE_KEY." }, { status: 500 });
+    }
 
     const dataStr = typeof body.json === "string" ? body.json : JSON.stringify(body.json);
     const blob = toBlob(dataStr);
@@ -63,7 +74,9 @@ export async function POST(request: NextRequest) {
 
     const nonce = await wallet.getNonce();
     const latest = await provider.getBlock("latest");
-    const baseFee = latest?.baseFeePerGas ?? ethers.parseUnits("1", "gwei");
+    const baseFee = (latest && latest.baseFeePerGas !== undefined)
+      ? latest.baseFeePerGas
+      : ethers.parseUnits("1", "gwei");
 
     const tx = {
       type: 3,
@@ -74,7 +87,7 @@ export async function POST(request: NextRequest) {
       nonce,
       gasLimit: 21000n,
       maxPriorityFeePerGas: ethers.parseUnits("1", "gwei"),
-      maxFeePerGas: baseFee + ethers.parseUnits("5", "gwei"),
+      maxFeePerGas: (baseFee ?? ethers.parseUnits("1", "gwei")) + ethers.parseUnits("5", "gwei"),
       maxFeePerBlobGas: ethers.parseUnits("30", "gwei"),
       blobVersionedHashes: [versionedHash],
       kzg: cKzg,
