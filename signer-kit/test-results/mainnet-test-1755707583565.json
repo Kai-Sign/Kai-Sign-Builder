@@ -1,0 +1,223 @@
+{
+  "timestamp": "2025-08-20T16:33:03.565Z",
+  "summary": {
+    "total": 19,
+    "passed": 10,
+    "failed": 9,
+    "successRate": "52.63%"
+  },
+  "categories": {
+    "Uniswap V2": {
+      "total": 3,
+      "passed": 1,
+      "failed": 2
+    },
+    "OpenSea": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "Stablecoins": {
+      "total": 2,
+      "passed": 0,
+      "failed": 2
+    },
+    "WETH": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0
+    },
+    "Compound": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0
+    },
+    "1inch": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "Multicall": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "ERC-4337": {
+      "total": 1,
+      "passed": 0,
+      "failed": 1
+    },
+    "EIP-7702": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "Aave": {
+      "total": 1,
+      "passed": 0,
+      "failed": 1
+    },
+    "NFT": {
+      "total": 2,
+      "passed": 0,
+      "failed": 2
+    },
+    "ENS": {
+      "total": 1,
+      "passed": 0,
+      "failed": 1
+    },
+    "Gnosis Safe": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    }
+  },
+  "details": [
+    {
+      "category": "Uniswap V2",
+      "name": "swapExactETHForTokens",
+      "success": true,
+      "timestamp": "2025-08-20T16:33:01.322Z",
+      "message": "ETH to Token swap",
+      "selector": "0x",
+      "resolution": "Generated"
+    },
+    {
+      "category": "Uniswap V2",
+      "name": "swapExactTokensForETH",
+      "success": false,
+      "timestamp": "2025-08-20T16:33:02.282Z",
+      "error": "Failed to fetch transaction"
+    },
+    {
+      "category": "Uniswap V2",
+      "name": "addLiquidity",
+      "success": false,
+      "timestamp": "2025-08-20T16:33:02.907Z",
+      "error": "Failed to fetch transaction"
+    },
+    {
+      "category": "OpenSea",
+      "name": "Seaport Order",
+      "success": true,
+      "timestamp": "2025-08-20T16:33:03.539Z",
+      "message": "No recent Seaport transactions found in block, using mock"
+    },
+    {
+      "category": "Stablecoins",
+      "name": "USDC",
+      "success": false,
+      "timestamp": "2025-08-20T16:33:03.548Z",
+      "error": "bad address checksum (argument=\"address\", value=\"0x742d35Cc6b0b8d3F2c3b5f8e6b8f4b1A6d2e3f4f\", code=INVALID_ARGUMENT, version=6.15.0) (argument=\"to\", value=\"0x742d35Cc6b0b8d3F2c3b5f8e6b8f4b1A6d2e3f4f\", code=INVALID_ARGUMENT, version=6.15.0)"
+    },
+    {
+      "category": "Stablecoins",
+      "name": "USDT",
+      "success": false,
+      "timestamp": "2025-08-20T16:33:03.550Z",
+      "error": "bad address checksum (argument=\"address\", value=\"0x742d35Cc6b0b8d3F2c3b5f8e6b8f4b1A6d2e3f4f\", code=INVALID_ARGUMENT, version=6.15.0) (argument=\"to\", value=\"0x742d35Cc6b0b8d3F2c3b5f8e6b8f4b1A6d2e3f4f\", code=INVALID_ARGUMENT, version=6.15.0)"
+    },
+    {
+      "category": "WETH",
+      "name": "Deposit ETH",
+      "success": true,
+      "timestamp": "2025-08-20T16:33:03.551Z",
+      "message": "Wrap 1 ETH to WETH",
+      "resolution": "Generated"
+    },
+    {
+      "category": "WETH",
+      "name": "Withdraw ETH",
+      "success": true,
+      "timestamp": "2025-08-20T16:33:03.552Z",
+      "message": "Unwrap 1 WETH to ETH",
+      "resolution": "Generated"
+    },
+    {
+      "category": "Compound",
+      "name": "Supply USDC",
+      "success": true,
+      "timestamp": "2025-08-20T16:33:03.553Z",
+      "message": "Supply 1000 USDC to Compound",
+      "resolution": "Generated"
+    },
+    {
+      "category": "Compound",
+      "name": "Borrow USDC",
+      "success": true,
+      "timestamp": "2025-08-20T16:33:03.553Z",
+      "message": "Borrow 500 USDC from Compound",
+      "resolution": "Generated"
+    },
+    {
+      "category": "1inch",
+      "name": "Aggregated Swap",
+      "success": true,
+      "timestamp": "2025-08-20T16:33:03.554Z",
+      "message": "Swap USDC to WETH via 1inch",
+      "resolution": "Generated"
+    },
+    {
+      "category": "Multicall",
+      "name": "Batch Operations",
+      "success": true,
+      "timestamp": "2025-08-20T16:33:03.557Z",
+      "message": "Batch balance queries via Multicall3",
+      "callCount": 2,
+      "resolution": "Generated"
+    },
+    {
+      "category": "ERC-4337",
+      "name": "UserOperation",
+      "success": false,
+      "timestamp": "2025-08-20T16:33:03.559Z",
+      "error": "bad address checksum (argument=\"address\", value=\"0x742d35Cc6b0b8d3F2c3b5f8e6b8f4b1A6d2e3f4f\", code=INVALID_ARGUMENT, version=6.15.0) (argument=\"sender\", value=\"0x742d35Cc6b0b8d3F2c3b5f8e6b8f4b1A6d2e3f4f\", code=INVALID_ARGUMENT, version=6.15.0)"
+    },
+    {
+      "category": "EIP-7702",
+      "name": "EOA Delegation",
+      "success": true,
+      "timestamp": "2025-08-20T16:33:03.559Z",
+      "message": "Delegate EOA authority",
+      "delegateCount": 1,
+      "resolution": "Generated"
+    },
+    {
+      "category": "Aave",
+      "name": "Aave Operations",
+      "success": false,
+      "timestamp": "2025-08-20T16:33:03.560Z",
+      "error": "bad address checksum (argument=\"address\", value=\"0x742d35Cc6b0b8d3F2c3b5f8e6b8f4b1A6d2e3f4f\", code=INVALID_ARGUMENT, version=6.15.0) (argument=\"onBehalfOf\", value=\"0x742d35Cc6b0b8d3F2c3b5f8e6b8f4b1A6d2e3f4f\", code=INVALID_ARGUMENT, version=6.15.0)"
+    },
+    {
+      "category": "NFT",
+      "name": "Bored Ape Yacht Club",
+      "success": false,
+      "timestamp": "2025-08-20T16:33:03.561Z",
+      "error": "bad address checksum (argument=\"address\", value=\"0x742d35Cc6b0b8d3F2c3b5f8e6b8f4b1A6d2e3f4f\", code=INVALID_ARGUMENT, version=6.15.0) (argument=\"from\", value=\"0x742d35Cc6b0b8d3F2c3b5f8e6b8f4b1A6d2e3f4f\", code=INVALID_ARGUMENT, version=6.15.0)"
+    },
+    {
+      "category": "NFT",
+      "name": "Azuki",
+      "success": false,
+      "timestamp": "2025-08-20T16:33:03.563Z",
+      "error": "bad address checksum (argument=\"address\", value=\"0x742d35Cc6b0b8d3F2c3b5f8e6b8f4b1A6d2e3f4f\", code=INVALID_ARGUMENT, version=6.15.0) (argument=\"from\", value=\"0x742d35Cc6b0b8d3F2c3b5f8e6b8f4b1A6d2e3f4f\", code=INVALID_ARGUMENT, version=6.15.0)"
+    },
+    {
+      "category": "ENS",
+      "name": "ENS Registration",
+      "success": false,
+      "timestamp": "2025-08-20T16:33:03.564Z",
+      "error": "bad address checksum (argument=\"address\", value=\"0x742d35Cc6b0b8d3F2c3b5f8e6b8f4b1A6d2e3f4f\", code=INVALID_ARGUMENT, version=6.15.0) (argument=\"owner\", value=\"0x742d35Cc6b0b8d3F2c3b5f8e6b8f4b1A6d2e3f4f\", code=INVALID_ARGUMENT, version=6.15.0)"
+    },
+    {
+      "category": "Gnosis Safe",
+      "name": "Execute Transaction",
+      "success": true,
+      "timestamp": "2025-08-20T16:33:03.565Z",
+      "message": "Multisig USDC transfer",
+      "resolution": "Generated"
+    }
+  ]
+}

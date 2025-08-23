@@ -1,0 +1,30 @@
+{
+  "generated": "2025-08-20T16:42:54.835Z",
+  "tests": [
+    {
+      "name": "USDC Transfer",
+      "file": "usdc-transfer.json",
+      "hasMultipleMetadata": false
+    },
+    {
+      "name": "Uniswap V3 Swap",
+      "file": "uniswap-v3-swap.json",
+      "hasMultipleMetadata": false
+    },
+    {
+      "name": "Gnosis Safe with USDC Transfer",
+      "file": "gnosis-safe-with-usdc-transfer.json",
+      "hasMultipleMetadata": true
+    },
+    {
+      "name": "Aave V3 Supply",
+      "file": "aave-v3-supply.json",
+      "hasMultipleMetadata": false
+    },
+    {
+      "name": "ERC-4337 UserOperation",
+      "file": "erc-4337-useroperation.json",
+      "hasMultipleMetadata": false
+    }
+  ]
+}

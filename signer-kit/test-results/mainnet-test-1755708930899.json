@@ -1,0 +1,257 @@
+{
+  "timestamp": "2025-08-20T16:55:30.899Z",
+  "summary": {
+    "total": 22,
+    "passed": 22,
+    "failed": 0,
+    "successRate": "100.00%"
+  },
+  "categories": {
+    "Uniswap V2": {
+      "total": 3,
+      "passed": 3,
+      "failed": 0
+    },
+    "OpenSea": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "Stablecoins": {
+      "total": 4,
+      "passed": 4,
+      "failed": 0
+    },
+    "WETH": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0
+    },
+    "Compound": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0
+    },
+    "1inch": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "Multicall": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "ERC-4337": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "EIP-7702": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "Aave": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0
+    },
+    "NFT": {
+      "total": 2,
+      "passed": 2,
+      "failed": 0
+    },
+    "ENS": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "Gnosis Safe": {
+      "total": 1,
+      "passed": 1,
+      "failed": 0
+    }
+  },
+  "details": [
+    {
+      "category": "Uniswap V2",
+      "name": "swapExactETHForTokens",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.874Z",
+      "message": "ETH to USDC swap",
+      "resolution": "Generated"
+    },
+    {
+      "category": "Uniswap V2",
+      "name": "swapExactTokensForETH",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.877Z",
+      "message": "USDC to ETH swap",
+      "resolution": "Generated"
+    },
+    {
+      "category": "Uniswap V2",
+      "name": "addLiquidity",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.880Z",
+      "message": "Add USDC/USDT liquidity",
+      "resolution": "Generated"
+    },
+    {
+      "category": "OpenSea",
+      "name": "Seaport Order",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.881Z",
+      "message": "NFT marketplace transaction",
+      "resolution": "Generated"
+    },
+    {
+      "category": "Stablecoins",
+      "name": "USDC Transfer",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.884Z",
+      "message": "Transfer 100 USDC",
+      "resolution": "Generated"
+    },
+    {
+      "category": "Stablecoins",
+      "name": "USDC Approve",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.885Z",
+      "message": "Approve Uniswap Router",
+      "resolution": "Generated"
+    },
+    {
+      "category": "Stablecoins",
+      "name": "USDT Transfer",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.886Z",
+      "message": "Transfer 100 USDT",
+      "resolution": "Generated"
+    },
+    {
+      "category": "Stablecoins",
+      "name": "USDT Approve",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.887Z",
+      "message": "Approve Uniswap Router",
+      "resolution": "Generated"
+    },
+    {
+      "category": "WETH",
+      "name": "Deposit ETH",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.887Z",
+      "message": "Wrap 1 ETH to WETH",
+      "resolution": "Generated"
+    },
+    {
+      "category": "WETH",
+      "name": "Withdraw ETH",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.887Z",
+      "message": "Unwrap 1 WETH to ETH",
+      "resolution": "Generated"
+    },
+    {
+      "category": "Compound",
+      "name": "Supply USDC",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.888Z",
+      "message": "Supply 1000 USDC to Compound",
+      "resolution": "Generated"
+    },
+    {
+      "category": "Compound",
+      "name": "Borrow USDC",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.888Z",
+      "message": "Borrow 500 USDC from Compound",
+      "resolution": "Generated"
+    },
+    {
+      "category": "1inch",
+      "name": "Aggregated Swap",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.889Z",
+      "message": "Swap USDC to WETH via 1inch",
+      "resolution": "Generated"
+    },
+    {
+      "category": "Multicall",
+      "name": "Batch Operations",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.892Z",
+      "message": "Batch balance queries via Multicall3",
+      "callCount": 2,
+      "resolution": "Generated"
+    },
+    {
+      "category": "ERC-4337",
+      "name": "UserOperation",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.894Z",
+      "message": "Account Abstraction transaction",
+      "entryPoint": "0x5FF137D4...",
+      "resolution": "Generated"
+    },
+    {
+      "category": "EIP-7702",
+      "name": "EOA Delegation",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.894Z",
+      "message": "Delegate EOA authority",
+      "delegateCount": 1,
+      "resolution": "Generated"
+    },
+    {
+      "category": "Aave",
+      "name": "Supply Collateral",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.895Z",
+      "message": "Supply 1000 USDC to Aave V3",
+      "resolution": "Generated"
+    },
+    {
+      "category": "Aave",
+      "name": "Borrow Asset",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.895Z",
+      "message": "Borrow 0.5 WETH from Aave V3",
+      "resolution": "Generated"
+    },
+    {
+      "category": "NFT",
+      "name": "Bored Ape Yacht Club Transfer",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.896Z",
+      "message": "Transfer token #1234",
+      "resolution": "Generated"
+    },
+    {
+      "category": "NFT",
+      "name": "Azuki Transfer",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.897Z",
+      "message": "Transfer token #1234",
+      "resolution": "Generated"
+    },
+    {
+      "category": "ENS",
+      "name": "Register Domain",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.898Z",
+      "message": "Register testname.eth",
+      "resolution": "Generated"
+    },
+    {
+      "category": "Gnosis Safe",
+      "name": "Execute Transaction",
+      "success": true,
+      "timestamp": "2025-08-20T16:55:30.899Z",
+      "message": "Multisig USDC transfer",
+      "resolution": "Generated"
+    }
+  ]
+}

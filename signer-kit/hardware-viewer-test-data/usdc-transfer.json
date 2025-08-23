@@ -1,0 +1,104 @@
+{
+  "testName": "USDC Transfer",
+  "timestamp": "2025-08-20T16:42:54.831Z",
+  "metadata": {
+    "$schema": "https://schemas.ledger.com/erc7730/1.0.0",
+    "context": {
+      "contract": {
+        "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        "chainId": 1
+      }
+    },
+    "metadata": {
+      "owner": "Circle",
+      "info": {
+        "url": "https://circle.com",
+        "legalName": "Circle"
+      }
+    },
+    "display": {
+      "formats": {
+        "transfer": {
+          "intent": "Transfer USDC",
+          "fields": [
+            {
+              "path": "to",
+              "label": "Recipient",
+              "format": "addressName",
+              "params": {}
+            },
+            {
+              "path": "value",
+              "label": "Amount",
+              "format": "tokenAmount",
+              "params": {
+                "tokenPath": "$.contract"
+              }
+            }
+          ]
+        },
+        "approve": {
+          "intent": "Approve USDC spending",
+          "fields": [
+            {
+              "path": "spender",
+              "label": "Spender",
+              "format": "addressName",
+              "params": {}
+            },
+            {
+              "path": "value",
+              "label": "Amount",
+              "format": "tokenAmount",
+              "params": {
+                "tokenPath": "$.contract"
+              }
+            }
+          ]
+        }
+      }
+    }
+  },
+  "transactionData": {
+    "txHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "methodCall": {
+      "name": "transfer",
+      "params": [
+        {
+          "name": "to",
+          "type": "address",
+          "value": "0x1234567890123456789012345678901234567890"
+        },
+        {
+          "name": "value",
+          "type": "uint256",
+          "value": "100000000"
+        }
+      ]
+    },
+    "transfers": [
+      {
+        "type": "ERC20",
+        "name": "USD Coin",
+        "symbol": "USDC",
+        "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        "amount": "100",
+        "to": "0x1234567890123456789012345678901234567890",
+        "from": "0x1234567890123456789012345678901234567890"
+      }
+    ],
+    "addressesMeta": {
+      "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
+        "contractAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        "contractName": "USD Coin",
+        "tokenSymbol": "USDC",
+        "decimals": 6,
+        "type": "ERC20"
+      }
+    }
+  },
+  "instructions": {
+    "simpleMode": "Copy the metadata object into the Hardware Viewer's Simple Mode JSON input",
+    "advancedMode": "For multi-metadata tests, add each metadata entry separately and paste the transactionData"
+  }
+}

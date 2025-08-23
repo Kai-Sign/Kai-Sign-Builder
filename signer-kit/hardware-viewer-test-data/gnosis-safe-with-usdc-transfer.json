@@ -1,0 +1,206 @@
+{
+  "testName": "Gnosis Safe with USDC Transfer",
+  "timestamp": "2025-08-20T16:42:54.833Z",
+  "metadata": [
+    {
+      "id": "safe",
+      "name": "Safe Contract",
+      "metadata": {
+        "$schema": "https://schemas.ledger.com/erc7730/1.0.0",
+        "context": {
+          "contract": {
+            "address": "0x76E2cFc1F5Fa4F9C9AA3bB0B8e1E4Db67c93797e",
+            "chainId": 1
+          }
+        },
+        "metadata": {
+          "owner": "Safe",
+          "info": {
+            "url": "https://safe.global",
+            "legalName": "Safe"
+          }
+        },
+        "display": {
+          "formats": {
+            "execTransaction(address,uint256,bytes,uint8,uint256,uint256,uint256,address,address,bytes)": {
+              "intent": "Execute Safe transaction",
+              "fields": [
+                {
+                  "path": "#.to",
+                  "label": "Target",
+                  "format": "addressName",
+                  "params": {}
+                },
+                {
+                  "path": "#.value",
+                  "label": "Value",
+                  "format": "amount",
+                  "params": {}
+                },
+                {
+                  "path": "#.data",
+                  "label": "Data",
+                  "format": "raw",
+                  "params": {}
+                },
+                {
+                  "path": "#.operation",
+                  "label": "Operation Type",
+                  "format": "raw",
+                  "params": {}
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "usdc",
+      "name": "USDC Token",
+      "metadata": {
+        "$schema": "https://schemas.ledger.com/erc7730/1.0.0",
+        "context": {
+          "contract": {
+            "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "chainId": 1
+          }
+        },
+        "metadata": {
+          "owner": "Circle",
+          "info": {
+            "url": "https://circle.com",
+            "legalName": "Circle"
+          }
+        },
+        "display": {
+          "formats": {
+            "transfer": {
+              "intent": "Transfer USDC",
+              "fields": [
+                {
+                  "path": "to",
+                  "label": "Recipient",
+                  "format": "addressName",
+                  "params": {}
+                },
+                {
+                  "path": "value",
+                  "label": "Amount",
+                  "format": "tokenAmount",
+                  "params": {
+                    "tokenPath": "$.contract"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "transactionData": {
+    "txHash": "0x22a244794f155ce4a5765588353cf82dfc842c33ee3ed98e95ef488f6964f4fb",
+    "methodCall": {
+      "name": "execTransaction",
+      "params": [
+        {
+          "name": "to",
+          "type": "address",
+          "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        },
+        {
+          "name": "value",
+          "type": "uint256",
+          "value": "0"
+        },
+        {
+          "name": "data",
+          "type": "bytes",
+          "value": "0xa9059cbb000000000000000000000000a1371748d65baef4509a3c067b3fe3a1b79183ae000000000000000000000000000000000000000000000000000000001f143c37",
+          "valueDecoded": {
+            "name": "transfer",
+            "params": [
+              {
+                "name": "to",
+                "type": "address",
+                "value": "0xA1371748D65baEF4509A3c067b3fe3a1b79183aE"
+              },
+              {
+                "name": "value",
+                "type": "uint256",
+                "value": "521419831"
+              }
+            ]
+          }
+        },
+        {
+          "name": "operation",
+          "type": "uint8",
+          "value": "0"
+        },
+        {
+          "name": "safeTxGas",
+          "type": "uint256",
+          "value": "0"
+        },
+        {
+          "name": "baseGas",
+          "type": "uint256",
+          "value": "0"
+        },
+        {
+          "name": "gasPrice",
+          "type": "uint256",
+          "value": "0"
+        },
+        {
+          "name": "gasToken",
+          "type": "address",
+          "value": "0x0000000000000000000000000000000000000000"
+        },
+        {
+          "name": "refundReceiver",
+          "type": "address",
+          "value": "0x0000000000000000000000000000000000000000"
+        },
+        {
+          "name": "signatures",
+          "type": "bytes",
+          "value": "0x0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ]
+    },
+    "transfers": [
+      {
+        "type": "ERC20",
+        "name": "USD Coin",
+        "symbol": "USDC",
+        "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        "amount": "521.419831",
+        "to": "0xA1371748D65baEF4509A3c067b3fe3a1b79183aE",
+        "from": "0x76E2cFc1F5Fa4F9C9AA3bB0B8e1E4Db67c93797e"
+      }
+    ],
+    "addressesMeta": {
+      "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
+        "contractAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        "contractName": "USD Coin",
+        "tokenSymbol": "USDC",
+        "decimals": 6,
+        "type": "ERC20"
+      },
+      "0x76E2cFc1F5Fa4F9C9AA3bB0B8e1E4Db67c93797e": {
+        "contractAddress": "0x76E2cFc1F5Fa4F9C9AA3bB0B8e1E4Db67c93797e",
+        "contractName": "Gnosis Safe",
+        "tokenSymbol": "",
+        "decimals": null,
+        "type": "Safe"
+      }
+    }
+  },
+  "instructions": {
+    "simpleMode": "Copy the metadata object into the Hardware Viewer's Simple Mode JSON input",
+    "advancedMode": "For multi-metadata tests, add each metadata entry separately and paste the transactionData"
+  }
+}

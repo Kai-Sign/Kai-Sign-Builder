@@ -1,0 +1,111 @@
+{
+  "testName": "Aave V3 Supply",
+  "timestamp": "2025-08-20T16:42:54.834Z",
+  "metadata": {
+    "$schema": "https://schemas.ledger.com/erc7730/1.0.0",
+    "context": {
+      "contract": {
+        "address": "0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2",
+        "chainId": 1
+      }
+    },
+    "metadata": {
+      "owner": "Aave",
+      "info": {
+        "url": "https://aave.com",
+        "legalName": "Aave"
+      }
+    },
+    "display": {
+      "formats": {
+        "supply": {
+          "intent": "Supply collateral to Aave",
+          "fields": [
+            {
+              "path": "asset",
+              "label": "Asset",
+              "format": "addressName",
+              "params": {}
+            },
+            {
+              "path": "amount",
+              "label": "Amount",
+              "format": "tokenAmount",
+              "params": {}
+            },
+            {
+              "path": "onBehalfOf",
+              "label": "On Behalf Of",
+              "format": "addressName",
+              "params": {}
+            }
+          ]
+        },
+        "borrow": {
+          "intent": "Borrow from Aave",
+          "fields": [
+            {
+              "path": "asset",
+              "label": "Asset",
+              "format": "addressName",
+              "params": {}
+            },
+            {
+              "path": "amount",
+              "label": "Amount",
+              "format": "tokenAmount",
+              "params": {}
+            },
+            {
+              "path": "interestRateMode",
+              "label": "Rate Mode",
+              "format": "raw",
+              "params": {}
+            }
+          ]
+        }
+      }
+    }
+  },
+  "transactionData": {
+    "txHash": "0x2222222222222222222222222222222222222222222222222222222222222222",
+    "methodCall": {
+      "name": "supply",
+      "params": [
+        {
+          "name": "asset",
+          "type": "address",
+          "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        },
+        {
+          "name": "amount",
+          "type": "uint256",
+          "value": "5000000000"
+        },
+        {
+          "name": "onBehalfOf",
+          "type": "address",
+          "value": "0x1234567890123456789012345678901234567890"
+        },
+        {
+          "name": "referralCode",
+          "type": "uint16",
+          "value": "0"
+        }
+      ]
+    },
+    "addressesMeta": {
+      "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
+        "contractAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        "contractName": "USD Coin",
+        "tokenSymbol": "USDC",
+        "decimals": 6,
+        "type": "ERC20"
+      }
+    }
+  },
+  "instructions": {
+    "simpleMode": "Copy the metadata object into the Hardware Viewer's Simple Mode JSON input",
+    "advancedMode": "For multi-metadata tests, add each metadata entry separately and paste the transactionData"
+  }
+}

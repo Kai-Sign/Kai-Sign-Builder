@@ -23,9 +23,11 @@ import {
   Coins,
   FileText,
   TrendingUp,
-  DollarSign
+  DollarSign,
+  Shield
 } from "lucide-react";
 import Link from "next/link";
+import { MetadataRegistryManager } from "~/components/MetadataRegistryManager";
 
 interface IncentiveData {
   incentiveId: string;
@@ -52,6 +54,32 @@ interface SpecData {
   bondsSettled: boolean;
 }
 
+// Helper function to format token amounts based on decimals
+const formatTokenAmount = (amount: string, tokenAddress: string): string => {
+  // Handle undefined or null tokenAddress
+  if (!tokenAddress) {
+    return `${(Number(amount) / 10**18).toFixed(4)} Tokens`;
+  }
+  
+  // Known token decimals (can be expanded)
+  const knownDecimals: { [key: string]: number } = {
+    "0xcac524bca292aaade2df8a05cc58f0a65b1b3bb9": 6, // PYUSD on Sepolia
+    // Add more known tokens here
+  };
+  
+  const decimals = knownDecimals[tokenAddress.toLowerCase()] || 18;
+  const formatted = (Number(amount) / 10**decimals).toFixed(4);
+  
+  // Try to get token symbol from known tokens
+  const knownSymbols: { [key: string]: string } = {
+    "0xcac524bca292aaade2df8a05cc58f0a65b1b3bb9": "PYUSD",
+    // Add more known tokens here
+  };
+  
+  const symbol = knownSymbols[tokenAddress.toLowerCase()] || "Tokens";
+  return `${formatted} ${symbol}`;
+};
+
 export default function KaiSignV1Page() {
   const { walletConnected, currentAccount, isConnecting, connectWallet } = useWallet();
   const { toast } = useToast();
@@ -59,7 +87,6 @@ export default function KaiSignV1Page() {
   // Incentive creation state
   const [targetContract, setTargetContract] = useState("");
   const [selectedChain, setSelectedChain] = useState("1"); // Default to mainnet
-  const [tokenAddress, setTokenAddress] = useState("");
   const [incentiveAmount, setIncentiveAmount] = useState("");
   const [description, setDescription] = useState("");
   const [isCreatingIncentive, setIsCreatingIncentive] = useState(false);
@@ -89,7 +116,7 @@ export default function KaiSignV1Page() {
       const convertedSpecs: SpecData[] = finalizedSpecs.map(spec => ({
         specId: spec.id,
         creator: spec.creator,
-        targetContract: spec.targetContract || "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf",
+        targetContract: spec.targetContract || "0x8d82439Fa83153f024e7D3f21fdaf5d4662939B5",
         ipfs: spec.ipfsCID,
         status: 3, // FINALIZED
         createdTimestamp: parseInt(spec.createdTimestamp),
@@ -190,7 +217,7 @@ export default function KaiSignV1Page() {
           const specData: SpecData = {
             specId: spec.id,
             creator: spec.creator,
-            targetContract: spec.targetContract || "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf",
+            targetContract: spec.targetContract || "0x8d82439Fa83153f024e7D3f21fdaf5d4662939B5",
             ipfs: spec.ipfsCID,
             status: statusMap[spec.status] || 0,
             createdTimestamp: parseInt(spec.createdTimestamp),
@@ -226,7 +253,7 @@ export default function KaiSignV1Page() {
           
           // Add common KaiSign contract addresses
           const knownKaiSignContracts = [
-            "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf", // Current known address
+            "0x8d82439Fa83153f024e7D3f21fdaf5d4662939B5", // Current known address
             // Add more known KaiSign deployments here as needed
           ];
           
@@ -440,8 +467,11 @@ export default function KaiSignV1Page() {
 
     setIsCreatingIncentive(true);
     try {
-      const durationSeconds = 90 * 24 * 60 * 60; // 90 days in seconds
-      const amountWei = (parseFloat(incentiveAmount) * 10**18).toString();
+      const durationSeconds = 30 * 24 * 60 * 60; // 30 days in seconds (maximum allowed)
+      
+      // Always use ETH (18 decimals)
+      // Use BigInt to avoid precision issues with decimal conversion
+      const amountWei = BigInt(Math.floor(parseFloat(incentiveAmount) * 10**18));
       
       // Create the incentive on-chain with enhanced description
       const enhancedDescription = `${description} [Chain: ${contractInfo?.chainName || 'Unknown'}, Contract: ${targetContract}]`;
@@ -449,9 +479,8 @@ export default function KaiSignV1Page() {
       const txHash = await web3Service.createIncentive(
         targetContract,
         parseInt(selectedChain),
-        tokenAddress || "0x0000000000000000000000000000000000000000", // ETH
         amountWei,
-        durationSeconds,
+        BigInt(durationSeconds),
         enhancedDescription
       );
       
@@ -593,7 +622,7 @@ export default function KaiSignV1Page() {
         </div>
 
         <Tabs defaultValue="incentives" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-gray-900 border-gray-800">
+          <TabsList className="grid w-full grid-cols-4 bg-gray-900 border-gray-800">
             <TabsTrigger value="incentives" className="data-[state=active]:bg-gray-800">
               <Gift className="mr-2 h-4 w-4" />
               Incentives
@@ -605,6 +634,10 @@ export default function KaiSignV1Page() {
             <TabsTrigger value="finalized" className="data-[state=active]:bg-gray-800">
               <CheckCircle className="mr-2 h-4 w-4" />
               Finalized
+            </TabsTrigger>
+            <TabsTrigger value="registry" className="data-[state=active]:bg-gray-800">
+              <Shield className="mr-2 h-4 w-4" />
+              Registry
             </TabsTrigger>
           </TabsList>
 
@@ -766,19 +799,6 @@ export default function KaiSignV1Page() {
                     <p>• Verify your contract above before creating the incentive</p>
                   </div>
                 
-                  <div>
-                    <Label htmlFor="tokenAddress">Token Address (Optional)</Label>
-                    <Input
-                      id="tokenAddress"
-                      value={tokenAddress}
-                      onChange={(e) => setTokenAddress(e.target.value)}
-                      placeholder="0x... (leave empty for ETH)"
-                      className="bg-gray-900 border-gray-700"
-                    />
-                    <p className="text-xs text-gray-500 mt-1">
-                      Leave empty for ETH incentive
-                    </p>
-                  </div>
                   
                   <div>
                     <Label htmlFor="amount">Incentive Amount</Label>
@@ -792,7 +812,7 @@ export default function KaiSignV1Page() {
                       className="bg-gray-900 border-gray-700"
                     />
                     <p className="text-xs text-gray-500 mt-1">
-                      Amount in {tokenAddress ? "tokens" : "ETH"}
+                      Amount in {"ETH"}
                     </p>
                   </div>
                   
@@ -872,7 +892,7 @@ export default function KaiSignV1Page() {
                             <span className="font-medium">
                               {incentive.token === "0x0000000000000000000000000000000000000000" 
                                 ? `${(Number(incentive.amount) / 10**18).toFixed(4)} ETH`
-                                : `${incentive.amount} Tokens`
+                                : formatTokenAmount(incentive.amount, incentive.token)
                               }
                             </span>
                             {incentive.isActive && (
@@ -896,7 +916,7 @@ export default function KaiSignV1Page() {
                               Target: {incentive.targetContract.substring(0, 8)}...
                             </span>
                             <span>
-                              Expires: {new Date(incentive.deadline * 1000).toISOString().split('T')[0]}
+                              Expires: {new Date(Number(incentive.deadline) * 1000).toISOString().split('T')[0]}
                             </span>
                           </div>
                           
@@ -1177,6 +1197,39 @@ export default function KaiSignV1Page() {
                       
                       {/* Action buttons based on status */}
                       <div className="flex gap-2 pt-2 border-t border-gray-700">
+                        {spec.status === 1 && ( // SUBMITTED - needs to be proposed
+                          <Button
+                            onClick={async () => {
+                              try {
+                                console.log(`📝 Calling proposeSpec for spec: ${spec.specId}`);
+                                const minBond = await web3Service.getMinBond();
+                                const txHash = await web3Service.proposeSpec(spec.specId, minBond);
+                                toast({
+                                  title: "Spec Proposed! 🎯",
+                                  description: `Transaction: ${txHash.substring(0, 10)}... Reality.eth question created.`,
+                                  variant: "default",
+                                });
+                                
+                                // Refresh data after proposing
+                                setTimeout(async () => {
+                                  await loadUserData(currentAccount);
+                                }, 2000);
+                              } catch (error: any) {
+                                console.error("proposeSpec failed:", error);
+                                toast({
+                                  title: "Propose Failed",
+                                  description: error.message || "Failed to propose spec",
+                                  variant: "destructive",
+                                });
+                              }
+                            }}
+                            size="sm"
+                            className="bg-blue-600 hover:bg-blue-700 text-xs"
+                          >
+                            <FileText className="mr-1 h-3 w-3" />
+                            Propose Spec
+                          </Button>
+                        )}
                         {spec.status === 2 && ( // PROPOSED - ready for handleResult
                           <Button
                             onClick={async () => {
@@ -1188,7 +1241,6 @@ export default function KaiSignV1Page() {
                                   description: `Transaction: ${txHash.substring(0, 10)}... Spec will be finalized.`,
                                   variant: "default",
                                 });
-                                
                                 
                                 // Refresh data after handling result
                                 setTimeout(async () => {
@@ -1260,8 +1312,200 @@ export default function KaiSignV1Page() {
               <div className="text-sm text-green-200 space-y-1">
                 <p>• <strong>View finalized contracts</strong> where specifications have been validated</p>
                 <p>• <strong>Bonds are settled</strong> at reality.eth during the finalization process</p>
-                <p>• <strong>ETH incentives</strong> are claimed automatically at proposed stage</p>
-                <p>• <strong>ERC20 claims</strong> will be supported soon for token incentives</p>
+                <p>• <strong>ETH incentives</strong> are claimed automatically when finalized</p>
+              </div>
+              
+              {/* Search for specific finalized contract */}
+              <div className="mt-4 pt-4 border-t border-green-800">
+                <Label htmlFor="search-finalized" className="text-green-200">Search Target Contract Address</Label>
+                <p className="text-xs text-gray-400 mb-2">Enter the contract address that the ERC7730 spec was written FOR</p>
+                <div className="flex gap-2 mt-1">
+                  <Input
+                    id="search-finalized"
+                    type="text"
+                    placeholder="Target contract address (e.g., 0x1234...)"
+                    value={specSearchContract}
+                    onChange={(e) => setSpecSearchContract(e.target.value)}
+                    className="bg-gray-900 border-gray-700 text-xs font-mono"
+                  />
+                  <Button
+                    onClick={async () => {
+                      if (!specSearchContract) return;
+                      
+                      setIsSearchingSpecs(true);
+                      try {
+                        console.log(`🔍 Searching for finalized specs for: ${specSearchContract}`);
+                        const specIds = await web3Service.getSpecsByContract(specSearchContract, 11155111);
+                        console.log(`📋 Found ${specIds.length} specs for ${specSearchContract}`, specIds);
+                        
+                        if (specIds.length === 0) {
+                          // Try without chainId or with mainnet
+                          console.log("No specs found on Sepolia, trying without chainId...");
+                          const specIdsAlt = await web3Service.getSpecsByContract(specSearchContract, 1);
+                          console.log(`📋 Found ${specIdsAlt.length} specs on mainnet`, specIdsAlt);
+                        }
+                        
+                        let foundCount = 0;
+                        let allSpecsData = [];
+                        for (const specId of specIds) {
+                          try {
+                            const specData = await web3Service.getSpecData(specId);
+                            console.log(`Spec ${specId} data:`, specData);
+                            allSpecsData.push({specId, ...specData});
+                            
+                            // Add ANY spec for this contract, not just user's
+                            if (specData.status === 3) {
+                              const existingSpec = contractSpecs.find(s => s.specId === specId);
+                              
+                              if (!existingSpec) {
+                                const newSpec: SpecData = {
+                                  specId,
+                                  creator: specData.creator,
+                                  targetContract: specData.targetContract,
+                                  ipfs: specData.ipfs,
+                                  status: specData.status,
+                                  createdTimestamp: specData.createdTimestamp,
+                                  proposedTimestamp: specData.proposedTimestamp,
+                                  totalBonds: specData.totalBonds,
+                                  bondsSettled: specData.bondsSettled
+                                };
+                                
+                                setContractSpecs(prev => [...prev, newSpec]);
+                                foundCount++;
+                              }
+                            }
+                          } catch (error) {
+                            console.error(`Error loading spec ${specId}:`, error);
+                          }
+                        }
+                        
+                        // Show what we found
+                        if (allSpecsData.length > 0) {
+                          console.log("All specs found:", allSpecsData);
+                          const statusBreakdown = allSpecsData.reduce((acc, spec) => {
+                            const statusNames = ["Committed", "Submitted", "Proposed", "Finalized"];
+                            const statusName = statusNames[spec.status] || `Status ${spec.status}`;
+                            acc[statusName] = (acc[statusName] || 0) + 1;
+                            return acc;
+                          }, {});
+                          
+                          console.log("Status breakdown:", statusBreakdown);
+                          
+                          if (foundCount > 0) {
+                            toast({
+                              title: "Finalized Specs Added! 🎉",
+                              description: `Added ${foundCount} finalized spec(s) for ${specSearchContract.substring(0, 10)}...`,
+                              variant: "default",
+                            });
+                          } else {
+                            // Show what statuses were found
+                            const statusMsg = Object.entries(statusBreakdown)
+                              .map(([status, count]) => `${count} ${status}`)
+                              .join(", ");
+                            
+                            toast({
+                              title: "Specs Found But Not Finalized",
+                              description: `Found ${allSpecsData.length} spec(s): ${statusMsg}. Only finalized specs are shown here.`,
+                              variant: "default",
+                            });
+                          }
+                        } else {
+                          toast({
+                            title: "No Specs Found",
+                            description: `No specifications found for contract ${specSearchContract.substring(0, 10)}...`,
+                            variant: "destructive",
+                          });
+                        }
+                        
+                        setSpecSearchContract(""); // Clear search
+                      } catch (error: any) {
+                        toast({
+                          title: "Search Failed",
+                          description: error.message || "Failed to search contract",
+                          variant: "destructive",
+                        });
+                      } finally {
+                        setIsSearchingSpecs(false);
+                      }
+                    }}
+                    disabled={isSearchingSpecs || !specSearchContract}
+                    size="sm"
+                    className="bg-green-600 hover:bg-green-700 text-xs"
+                  >
+                    {isSearchingSpecs ? (
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                    ) : (
+                      "Add Contract"
+                    )}
+                  </Button>
+                  
+                  <Button
+                    onClick={async () => {
+                      setIsSearchingSpecs(true);
+                      try {
+                        console.log(`🔍 Loading ALL finalized specs...`);
+                        
+                        const allSpecs = await web3Service.getAllFinalizedSpecs();
+                        console.log(`Got ${allSpecs.length} finalized specs:`, allSpecs);
+                        
+                        if (allSpecs.length === 0) {
+                          toast({
+                            title: "No Finalized Specs Found",
+                            description: "No finalized specifications found in the contract",
+                            variant: "default",
+                          });
+                          return;
+                        }
+                        
+                        // Add all finalized specs to display
+                        let addedCount = 0;
+                        for (const spec of allSpecs) {
+                          const existingSpec = contractSpecs.find(s => s.specId === spec.specId);
+                          if (!existingSpec) {
+                            const newSpec: SpecData = {
+                              specId: spec.specId,
+                              creator: spec.creator,
+                              targetContract: spec.targetContract,
+                              ipfs: spec.ipfs,
+                              status: spec.status,
+                              createdTimestamp: spec.createdTimestamp,
+                              proposedTimestamp: spec.proposedTimestamp,
+                              totalBonds: spec.totalBonds,
+                              bondsSettled: spec.bondsSettled
+                            };
+                            setContractSpecs(prev => [...prev, newSpec]);
+                            addedCount++;
+                          }
+                        }
+                        
+                        toast({
+                          title: "Finalized Specs Loaded!",
+                          description: `Added ${addedCount} finalized spec(s) to the list`,
+                          variant: "default",
+                        });
+                        
+                      } catch (error: any) {
+                        console.error("Error loading finalized specs:", error);
+                        toast({
+                          title: "Error",
+                          description: error.message || "Failed to load finalized specs",
+                          variant: "destructive",
+                        });
+                      } finally {
+                        setIsSearchingSpecs(false);
+                      }
+                    }}
+                    disabled={isSearchingSpecs}
+                    size="sm"
+                    className="bg-purple-600 hover:bg-purple-700 text-xs"
+                  >
+                    {isSearchingSpecs ? (
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                    ) : (
+                      "Load All Finalized"
+                    )}
+                  </Button>
+                </div>
               </div>
               
               {/* Reality.eth Navigation Instructions */}
@@ -1561,6 +1805,7 @@ export default function KaiSignV1Page() {
                                 <ExternalLink className="mr-1 h-3 w-3" />
                                 Reality.eth
                               </Button>
+                              
                             </div>
                           </div>
                         ))}
@@ -1572,6 +1817,10 @@ export default function KaiSignV1Page() {
             </Card>
           </TabsContent>
 
+          {/* Registry Tab */}
+          <TabsContent value="registry" className="space-y-6">
+            <MetadataRegistryManager currentAccount={currentAccount || ""} />
+          </TabsContent>
 
         </Tabs>
       </div>

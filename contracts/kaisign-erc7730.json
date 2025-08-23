@@ -1,0 +1,221 @@
+{
+  "$schema": "https://specs.erc7730.org/v1.0.0/erc7730-schema.json",
+  "context": {
+    "eip712": {
+      "deployments": [
+        {
+          "chainId": 11155111,
+          "address": "0x0000000000000000000000000000000000000000"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "KaiSign",
+    "info": {
+      "url": "https://kaisign.xyz",
+      "name": "KaiSign V1",
+      "legalName": "KaiSign"
+    },
+    "token": {
+      "ticker": "ETH",
+      "chainId": 11155111,
+      "address": "0x0000000000000000000000000000000000000000",
+      "deployments": []
+    }
+  },
+  "display": {
+    "formats": {
+      "commitSpec": {
+        "intent": "Commit ERC-7730 specification",
+        "fields": [
+          {
+            "path": "commitment",
+            "label": "Commitment Hash",
+            "format": "hex"
+          },
+          {
+            "path": "targetContract",
+            "label": "Target Contract",
+            "format": "addressName"
+          },
+          {
+            "path": "targetChainId",
+            "label": "Target Chain ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "revealSpec": {
+        "intent": "Reveal and submit ERC-7730 specification",
+        "fields": [
+          {
+            "path": "commitmentId",
+            "label": "Commitment ID",
+            "format": "hex"
+          },
+          {
+            "path": "ipfs",
+            "label": "IPFS Hash",
+            "format": "raw"
+          },
+          {
+            "path": "nonce",
+            "label": "Reveal Nonce",
+            "format": "raw"
+          },
+          {
+            "path": "$tx.value",
+            "label": "Bond Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "ETH"
+            }
+          }
+        ]
+      },
+      "proposeSpec": {
+        "intent": "Propose specification to Reality.eth",
+        "fields": [
+          {
+            "path": "specID",
+            "label": "Specification ID",
+            "format": "hex"
+          },
+          {
+            "path": "$tx.value",
+            "label": "Additional Bond",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "ETH"
+            }
+          }
+        ]
+      },
+      "createIncentive": {
+        "intent": "Create incentive for ERC-7730 specification",
+        "fields": [
+          {
+            "path": "targetContract",
+            "label": "Target Contract",
+            "format": "addressName"
+          },
+          {
+            "path": "targetChainId",
+            "label": "Target Chain ID",
+            "format": "raw"
+          },
+          {
+            "path": "token",
+            "label": "Incentive Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Incentive Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "token"
+            }
+          },
+          {
+            "path": "duration",
+            "label": "Duration",
+            "format": "duration"
+          },
+          {
+            "path": "description",
+            "label": "Description",
+            "format": "raw"
+          }
+        ]
+      },
+      "handleResult": {
+        "intent": "Finalize specification result from Reality.eth",
+        "fields": [
+          {
+            "path": "specID",
+            "label": "Specification ID",
+            "format": "hex"
+          }
+        ]
+      },
+      "claimActiveTokenIncentive": {
+        "intent": "Claim ERC20 token incentive",
+        "fields": [
+          {
+            "path": "specID",
+            "label": "Specification ID",
+            "format": "hex"
+          },
+          {
+            "path": "token",
+            "label": "Token Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "clawbackIncentive": {
+        "intent": "Reclaim unclaimed incentive after timeout",
+        "fields": [
+          {
+            "path": "incentiveId",
+            "label": "Incentive ID",
+            "format": "hex"
+          }
+        ]
+      },
+      "setMinBond": {
+        "intent": "Update minimum bond requirement",
+        "fields": [
+          {
+            "path": "_minBond",
+            "label": "New Minimum Bond",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "ETH"
+            }
+          }
+        ]
+      },
+      "setMetadataRegistry": {
+        "intent": "Update metadata registry address",
+        "fields": [
+          {
+            "path": "_metadataRegistry",
+            "label": "New Registry Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "addAdmin": {
+        "intent": "Grant admin role to address",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "removeAdmin": {
+        "intent": "Revoke admin role from address",
+        "fields": [
+          {
+            "path": "admin",
+            "label": "Admin Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "emergencyPause": {
+        "intent": "Pause all contract operations",
+        "fields": []
+      },
+      "emergencyUnpause": {
+        "intent": "Resume all contract operations",
+        "fields": []
+      }
+    }
+  }
+}

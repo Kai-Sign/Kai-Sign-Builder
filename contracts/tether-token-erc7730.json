@@ -1,0 +1,172 @@
+{
+  "$schema": "https://specs.erc7730.org/v1.0.0/erc7730-schema.json",
+  "context": {
+    "eip712": {
+      "deployments": [
+        {
+          "chainId": 11155111,
+          "address": "0x7169d38820dfd117c3fa1f22a697dba58d90ba06"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Tether",
+    "info": {
+      "url": "https://tether.to",
+      "name": "Tether Token (USDT) - Sepolia Testnet",
+      "legalName": "Tether Operations Limited"
+    },
+    "token": {
+      "ticker": "USDT",
+      "chainId": 11155111,
+      "address": "0x7169d38820dfd117c3fa1f22a697dba58d90ba06",
+      "deployments": []
+    }
+  },
+  "display": {
+    "formats": {
+      "transfer": {
+        "intent": "Transfer USDT tokens",
+        "fields": [
+          {
+            "path": "_to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "_value",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "0x7169d38820dfd117c3fa1f22a697dba58d90ba06"
+            }
+          }
+        ]
+      },
+      "transferFrom": {
+        "intent": "Transfer USDT tokens on behalf of another address",
+        "fields": [
+          {
+            "path": "_from",
+            "label": "From Address",
+            "format": "addressName"
+          },
+          {
+            "path": "_to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "_value",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "0x7169d38820dfd117c3fa1f22a697dba58d90ba06"
+            }
+          }
+        ]
+      },
+      "approve": {
+        "intent": "Approve USDT spending allowance",
+        "fields": [
+          {
+            "path": "_spender",
+            "label": "Spender Address",
+            "format": "addressName"
+          },
+          {
+            "path": "_value",
+            "label": "Allowance Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "0x7169d38820dfd117c3fa1f22a697dba58d90ba06"
+            }
+          }
+        ]
+      },
+      "_mint": {
+        "intent": "Mint new USDT tokens",
+        "fields": [
+          {
+            "path": "_to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Mint Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "0x7169d38820dfd117c3fa1f22a697dba58d90ba06"
+            }
+          }
+        ]
+      },
+      "issue": {
+        "intent": "Issue additional USDT supply",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Issue Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "0x7169d38820dfd117c3fa1f22a697dba58d90ba06"
+            }
+          }
+        ]
+      },
+      "redeem": {
+        "intent": "Redeem and burn USDT tokens",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Redeem Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "0x7169d38820dfd117c3fa1f22a697dba58d90ba06"
+            }
+          }
+        ]
+      },
+      "deprecate": {
+        "intent": "Deprecate contract for upgraded version",
+        "fields": [
+          {
+            "path": "_upgradedAddress",
+            "label": "Upgraded Contract Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "addBlackList": {
+        "intent": "Add address to blacklist",
+        "fields": [
+          {
+            "path": "_evilUser",
+            "label": "Address to Blacklist",
+            "format": "addressName"
+          }
+        ]
+      },
+      "removeBlackList": {
+        "intent": "Remove address from blacklist",
+        "fields": [
+          {
+            "path": "_clearedUser",
+            "label": "Address to Unblacklist",
+            "format": "addressName"
+          }
+        ]
+      },
+      "pause": {
+        "intent": "Pause all USDT transfers",
+        "fields": []
+      },
+      "unpause": {
+        "intent": "Resume all USDT transfers",
+        "fields": []
+      }
+    }
+  }
+}

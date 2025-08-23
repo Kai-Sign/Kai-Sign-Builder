@@ -26,7 +26,7 @@ export default function ApiDocsPage() {
       description: "Get specifications for a specific contract",
       code: `curl -s -X POST \\
   -H "Content-Type: application/json" \\
-  -d '{"query":"{ specs(where: {targetContract: \\"0xb55d4406916e20df5b965e15dd3ff85fa8b11dcf\\"}) { ipfs targetContract status } }"}' \\
+  -d '{"query":"{ specs(where: {targetContract: \\"0x8d82439Fa83153f024e7D3f21fdaf5d4662939B5\\"}) { ipfs targetContract status } }"}' \\
   "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/version/latest"`
     },
     {
@@ -47,7 +47,7 @@ export default function ApiDocsPage() {
       description: "Save as query.sh and run to get specs and fetch their IPFS metadata",
       code: `#!/bin/bash
 URL="https://api.studio.thegraph.com/query/117022/kaisign-subgraph/version/latest"
-CONTRACT_ADDRESS="0xb55d4406916e20df5b965e15dd3ff85fa8b11dcf"
+CONTRACT_ADDRESS="0x8d82439Fa83153f024e7D3f21fdaf5d4662939B5"
 
 echo "Getting specs for contract $CONTRACT_ADDRESS..."
 SPECS=$(curl -s -X POST \\
@@ -79,7 +79,7 @@ chmod +x query.sh
 ./query.sh
 
 # 4. To use a different contract address, edit the script:
-# Change CONTRACT_ADDRESS="0xb55d4406916e20df5b965e15dd3ff85fa8b11dcf"
+# Change CONTRACT_ADDRESS="0x8d82439Fa83153f024e7D3f21fdaf5d4662939B5"
 # to your desired contract address
 
 # 5. Requirements:
@@ -203,7 +203,7 @@ chmod +x query.sh
                 <ExternalLink size={16} />
               </a>
               <a
-                href="https://sepolia.etherscan.io/address/0xb55d4406916e20df5b965e15dd3ff85fa8b11dcf#events"
+                href="https://sepolia.etherscan.io/address/0x8d82439Fa83153f024e7D3f21fdaf5d4662939B5#events"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-blue-400 hover:text-blue-300"

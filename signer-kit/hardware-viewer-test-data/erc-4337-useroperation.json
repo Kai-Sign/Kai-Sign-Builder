@@ -1,0 +1,98 @@
+{
+  "testName": "ERC-4337 UserOperation",
+  "timestamp": "2025-08-20T16:42:54.834Z",
+  "metadata": {
+    "$schema": "https://schemas.ledger.com/erc7730/1.0.0",
+    "context": {
+      "contract": {
+        "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+        "chainId": 1
+      }
+    },
+    "metadata": {
+      "owner": "Ethereum Foundation",
+      "info": {
+        "url": "https://eips.ethereum.org/EIPS/eip-4337",
+        "legalName": "Ethereum Foundation"
+      }
+    },
+    "display": {
+      "formats": {
+        "handleOps": {
+          "intent": "Execute Account Abstraction operations",
+          "fields": [
+            {
+              "path": "sender",
+              "label": "Account",
+              "format": "addressName",
+              "params": {}
+            },
+            {
+              "path": "callData",
+              "label": "Operation",
+              "format": "raw",
+              "params": {}
+            },
+            {
+              "path": "callGasLimit",
+              "label": "Gas Limit",
+              "format": "raw",
+              "params": {}
+            },
+            {
+              "path": "maxFeePerGas",
+              "label": "Max Fee",
+              "format": "amount",
+              "params": {}
+            }
+          ]
+        }
+      }
+    }
+  },
+  "transactionData": {
+    "txHash": "0x3333333333333333333333333333333333333333333333333333333333333333",
+    "methodCall": {
+      "name": "handleOps",
+      "params": [
+        {
+          "name": "ops",
+          "type": "array",
+          "value": [
+            {
+              "sender": "0x1234567890123456789012345678901234567890",
+              "nonce": "1",
+              "initCode": "0x",
+              "callData": "0xb61d27f6000000000000000000000000a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+              "callGasLimit": "200000",
+              "verificationGasLimit": "100000",
+              "preVerificationGas": "50000",
+              "maxFeePerGas": "20000000000",
+              "maxPriorityFeePerGas": "1000000000",
+              "paymasterAndData": "0x",
+              "signature": "0x"
+            }
+          ]
+        },
+        {
+          "name": "beneficiary",
+          "type": "address",
+          "value": "0x1234567890123456789012345678901234567890"
+        }
+      ]
+    },
+    "addressesMeta": {
+      "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789": {
+        "contractAddress": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+        "contractName": "ERC-4337 EntryPoint",
+        "tokenSymbol": "",
+        "decimals": null,
+        "type": "EntryPoint"
+      }
+    }
+  },
+  "instructions": {
+    "simpleMode": "Copy the metadata object into the Hardware Viewer's Simple Mode JSON input",
+    "advancedMode": "For multi-metadata tests, add each metadata entry separately and paste the transactionData"
+  }
+}

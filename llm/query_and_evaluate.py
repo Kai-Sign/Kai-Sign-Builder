@@ -138,7 +138,7 @@ def main():
     global result
     # Load configuration
     # config = load_deployment_config()
-    contract_address = "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf"
+    contract_address = "0x8d82439Fa83153f024e7D3f21fdaf5d4662939B5"
     
     if not contract_address:
         print("Bad")

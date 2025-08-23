@@ -1,0 +1,75 @@
+{
+  "$schema": "https://specs.erc7730.org/v1.0.0/erc7730-schema.json",
+  "context": {
+    "eip712": {
+      "deployments": [
+        {
+          "chainId": 11155111,
+          "address": "0x1b44F3514812d835EB1BDB0acB33d3fA3351Ee43"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Chainlink",
+    "info": {
+      "url": "https://chain.link",
+      "name": "Chainlink EACAggregatorProxy",
+      "legalName": "Chainlink Labs"
+    },
+    "token": {
+      "ticker": "ETH",
+      "chainId": 11155111,
+      "address": "0x0000000000000000000000000000000000000000",
+      "deployments": []
+    }
+  },
+  "display": {
+    "formats": {
+      "acceptOwnership": {
+        "intent": "Accept ownership of Chainlink Aggregator Proxy",
+        "fields": []
+      },
+      "transferOwnership": {
+        "intent": "Transfer ownership of Chainlink Aggregator Proxy",
+        "fields": [
+          {
+            "path": "_to",
+            "label": "New Owner Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "proposeAggregator": {
+        "intent": "Propose new price feed aggregator",
+        "fields": [
+          {
+            "path": "_aggregator",
+            "label": "Proposed Aggregator Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "confirmAggregator": {
+        "intent": "Confirm and activate proposed aggregator",
+        "fields": [
+          {
+            "path": "_aggregator",
+            "label": "Aggregator to Confirm",
+            "format": "addressName"
+          }
+        ]
+      },
+      "setController": {
+        "intent": "Update access control contract",
+        "fields": [
+          {
+            "path": "_accessController",
+            "label": "Access Controller Address",
+            "format": "addressName"
+          }
+        ]
+      }
+    }
+  }
+}

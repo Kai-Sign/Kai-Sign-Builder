@@ -1,0 +1,116 @@
+{
+  "$schema": "https://specs.erc7730.org/v1.0.0/erc7730-schema.json",
+  "context": {
+    "eip712": {
+      "deployments": [
+        {
+          "chainId": 11155111,
+          "address": "0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "WETH",
+    "info": {
+      "url": "https://weth.io",
+      "name": "Wrapped Ether (WETH) - Sepolia",
+      "legalName": "Wrapped Ether"
+    },
+    "token": {
+      "ticker": "WETH",
+      "chainId": 11155111,
+      "address": "0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9",
+      "deployments": []
+    }
+  },
+  "display": {
+    "formats": {
+      "deposit": {
+        "intent": "Wrap ETH into WETH",
+        "fields": [
+          {
+            "path": "$tx.value",
+            "label": "ETH Amount to Wrap",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "ETH"
+            }
+          }
+        ]
+      },
+      "withdraw": {
+        "intent": "Unwrap WETH back to ETH",
+        "fields": [
+          {
+            "path": "wad",
+            "label": "WETH Amount to Unwrap",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9"
+            }
+          }
+        ]
+      },
+      "approve": {
+        "intent": "Approve WETH spending allowance",
+        "fields": [
+          {
+            "path": "guy",
+            "label": "Spender Address",
+            "format": "addressName"
+          },
+          {
+            "path": "wad",
+            "label": "Allowance Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9"
+            }
+          }
+        ]
+      },
+      "transfer": {
+        "intent": "Transfer WETH to another address",
+        "fields": [
+          {
+            "path": "dst",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "wad",
+            "label": "Transfer Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9"
+            }
+          }
+        ]
+      },
+      "transferFrom": {
+        "intent": "Transfer WETH on behalf of another address",
+        "fields": [
+          {
+            "path": "src",
+            "label": "From Address",
+            "format": "addressName"
+          },
+          {
+            "path": "dst",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "wad",
+            "label": "Transfer Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

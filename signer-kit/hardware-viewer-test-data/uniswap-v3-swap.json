@@ -1,0 +1,116 @@
+{
+  "testName": "Uniswap V3 Swap",
+  "timestamp": "2025-08-20T16:42:54.833Z",
+  "metadata": {
+    "$schema": "https://schemas.ledger.com/erc7730/1.0.0",
+    "context": {
+      "contract": {
+        "address": "0xE592427A0AEce92De3Edee1F18E0157C05861564",
+        "chainId": 1
+      }
+    },
+    "metadata": {
+      "owner": "Uniswap",
+      "info": {
+        "url": "https://uniswap.org",
+        "legalName": "Uniswap"
+      }
+    },
+    "display": {
+      "formats": {
+        "exactInputSingle": {
+          "intent": "Swap tokens on Uniswap V3",
+          "fields": [
+            {
+              "path": "tokenIn",
+              "label": "From Token",
+              "format": "addressName",
+              "params": {}
+            },
+            {
+              "path": "tokenOut",
+              "label": "To Token",
+              "format": "addressName",
+              "params": {}
+            },
+            {
+              "path": "amountIn",
+              "label": "Amount In",
+              "format": "tokenAmount",
+              "params": {}
+            },
+            {
+              "path": "amountOutMinimum",
+              "label": "Min Amount Out",
+              "format": "tokenAmount",
+              "params": {}
+            }
+          ]
+        }
+      }
+    }
+  },
+  "transactionData": {
+    "txHash": "0x1111111111111111111111111111111111111111111111111111111111111111",
+    "methodCall": {
+      "name": "exactInputSingle",
+      "params": [
+        {
+          "name": "tokenIn",
+          "type": "address",
+          "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        },
+        {
+          "name": "tokenOut",
+          "type": "address",
+          "value": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+        },
+        {
+          "name": "fee",
+          "type": "uint24",
+          "value": "3000"
+        },
+        {
+          "name": "recipient",
+          "type": "address",
+          "value": "0x1234567890123456789012345678901234567890"
+        },
+        {
+          "name": "deadline",
+          "type": "uint256",
+          "value": 1755711774
+        },
+        {
+          "name": "amountIn",
+          "type": "uint256",
+          "value": "1000000000"
+        },
+        {
+          "name": "amountOutMinimum",
+          "type": "uint256",
+          "value": "400000000000000000"
+        }
+      ]
+    },
+    "addressesMeta": {
+      "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
+        "contractAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        "contractName": "USD Coin",
+        "tokenSymbol": "USDC",
+        "decimals": 6,
+        "type": "ERC20"
+      },
+      "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
+        "contractAddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+        "contractName": "Wrapped Ether",
+        "tokenSymbol": "WETH",
+        "decimals": 18,
+        "type": "ERC20"
+      }
+    }
+  },
+  "instructions": {
+    "simpleMode": "Copy the metadata object into the Hardware Viewer's Simple Mode JSON input",
+    "advancedMode": "For multi-metadata tests, add each metadata entry separately and paste the transactionData"
+  }
+}
