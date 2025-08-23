@@ -8,7 +8,7 @@ import { Loader2, CheckCircle, XCircle, AlertTriangle, ArrowLeft, ExternalLink, 
 import { useToast } from "~/hooks/use-toast";
 import { web3Service } from "~/lib/web3Service";
 import { getQuestionData, hasFinalizationTimePassed, getTimeRemainingUntilFinalization, formatFinalizationTime, getQuestionsByUser } from "~/lib/realityEthService";
-import { fetchIPFSMetadata, formatContractAddress, getChainName, type ERC7730Metadata } from "~/lib/ipfsMetadataService";
+import { formatContractAddress, getChainName, type ERC7730Metadata } from "~/lib/ipfsMetadataService";
 import Link from "next/link";
 
 function VerificationStatusContent() {
@@ -151,27 +151,8 @@ function VerificationStatusContent() {
   }, [ipfsHash, questionId]);
   
   const fetchIPFSMetadataData = async () => {
-    if (!ipfsHash) return;
-    
-    setIsLoadingMetadata(true);
-    
-    try {
-      console.log("Fetching IPFS metadata for hash:", ipfsHash);
-      const metadata = await fetchIPFSMetadata(ipfsHash);
-      setIpfsMetadata(metadata);
-      
-      console.log("Successfully fetched IPFS metadata:", metadata);
-    } catch (error: any) {
-      console.error("Error fetching IPFS metadata:", error);
-      // Don't set error state for metadata fetch failures, just log them
-      toast({
-        title: "IPFS Metadata Warning",
-        description: "Could not fetch IPFS metadata. The file might still be propagating across the network.",
-        variant: "default",
-      });
-    } finally {
-      setIsLoadingMetadata(false);
-    }
+    // Blob-only flow: skip fetching IPFS metadata
+    setIsLoadingMetadata(false);
   };
   
   const fetchData = async () => {
