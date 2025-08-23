@@ -8,7 +8,7 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
 import { useToast } from "~/hooks/use-toast";
-import { uploadToIPFS } from "~/lib/ipfsService";
+import { postToBlob } from "~/lib/blobService";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { KaiSignModal } from "~/components/kaisign-metadata-ui";
 
@@ -20,6 +20,7 @@ export default function MetadataRegistryPage() {
   const [rawJson, setRawJson] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [ipfsHash, setIpfsHash] = useState<string>("");
+  const [blobInfo, setBlobInfo] = useState<{ versionedHash: string; url: string; txHash: string } | null>(null);
   const [showViewer, setShowViewer] = useState(false);
   const [viewerAddress, setViewerAddress] = useState("");
   const [viewerChainId, setViewerChainId] = useState<number | undefined>(undefined);
@@ -60,11 +61,12 @@ export default function MetadataRegistryPage() {
   const handleUpload = async () => {
     setIsUploading(true);
     try {
-      const cid = await uploadToIPFS(erc7730Json);
-      setIpfsHash(cid);
-      toast({ title: "Uploaded to IPFS", description: cid });
+      const blobRes = await postToBlob(erc7730Json);
+      setIpfsHash(blobRes.blobVersionedHash);
+      setBlobInfo({ versionedHash: blobRes.blobVersionedHash, url: blobRes.etherscanBlobUrl, txHash: blobRes.txHash });
+      toast({ title: "Blob posted", description: blobRes.etherscanBlobUrl });
     } catch (e: any) {
-      toast({ title: "Upload failed", description: e.message, variant: "destructive" });
+      toast({ title: "Blob post failed", description: e.message, variant: "destructive" });
     } finally {
       setIsUploading(false);
     }
@@ -72,6 +74,7 @@ export default function MetadataRegistryPage() {
 
   const isValidTxHash = (h: string) => /^0x[a-fA-F0-9]{64}$/.test(h);
   const sepoliaTxUrl = (h: string) => `https://sepolia.etherscan.io/tx/${h}`;
+  const sepoliaBlobUrl = (vh: string) => `https://sepolia.etherscan.io/blob/${vh}`;
 
   const buildFragment = () => `function ${fnName}(${paramTypes})`;
 
@@ -220,18 +223,18 @@ export default function MetadataRegistryPage() {
               <Label>URL</Label>
               <Input value={url} onChange={(e) => setUrl(e.target.value)} />
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 items-center flex-wrap">
               <Button onClick={handleUpload} disabled={isUploading}>
-                {isUploading ? "Uploading..." : "Upload to IPFS"}
+                {isUploading ? "Posting..." : "Post Blob"}
               </Button>
-              {ipfsHash && (
+              {blobInfo && (
                 <a
                   className="underline text-blue-400"
-                  href={`https://gateway.ipfs.io/ipfs/${ipfsHash}`}
+                  href={blobInfo.url}
                   target="_blank"
                   rel="noreferrer"
                 >
-                  View on IPFS
+                  View Blob Receipt
                 </a>
               )}
             </div>
@@ -244,7 +247,7 @@ export default function MetadataRegistryPage() {
             <Textarea rows={16} value={erc7730Json} onChange={(e) => setRawJson(e.target.value)} />
             <div>
               <Button onClick={handleUpload} disabled={isUploading}>
-                {isUploading ? "Uploading..." : "Upload to IPFS"}
+                {isUploading ? "Posting..." : "Post Blob"}
               </Button>
             </div>
           </Card>

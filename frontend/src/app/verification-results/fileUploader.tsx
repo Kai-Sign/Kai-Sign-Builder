@@ -10,7 +10,7 @@ import { Badge } from "~/components/ui/badge";
 import Link from "next/link";
 import { useErc7730Store } from "~/store/erc7730Provider";
 import { useToast } from "~/hooks/use-toast";
-import { uploadToIPFS } from "~/lib/ipfsService";
+import { postToBlob } from "~/lib/blobService";
 import { web3Service } from "~/lib/web3Service";
 import { useRouter } from "next/navigation";
 import { useWallet } from "~/contexts/WalletContext";
@@ -22,6 +22,7 @@ export default function FileUploader() {
   const [verificationStatus, setVerificationStatus] = useState<"idle" | "success" | "error">("idle");
   const [jsonData, setJsonData] = useState<any>(null);
   const [ipfsHash, setIpfsHash] = useState<string | null>(null);
+  const [blobReceiptUrl, setBlobReceiptUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const { walletConnected, currentAccount, connectWallet: walletContextConnect, isConnecting } = useWallet();
   const [isSendingTransaction, setIsSendingTransaction] = useState(false);
@@ -112,12 +113,12 @@ export default function FileUploader() {
         setErc7730(data);
         toast({
           title: "Auto-Verification Started",
-          description: "Processing your ERC7730 JSON file automatically. Uploading to IPFS...",
+          description: "Processing your ERC7730 JSON file automatically. Posting as blob...",
           variant: "default",
         });
         
-        // Upload to IPFS
-        await uploadToIpfs(data);
+        // Post as Blob
+        await postAsBlob(data);
       } else {
         setVerificationStatus("error");
         toast({
@@ -181,12 +182,12 @@ export default function FileUploader() {
         setErc7730(parsedData);
         toast({
           title: "File Verification Process Started",
-          description: "The ERC7730 JSON file is valid. Uploading to IPFS...",
+          description: "The ERC7730 JSON file is valid. Posting as blob...",
           variant: "default",
         });
         
-        // Upload to IPFS
-        await uploadToIpfs(parsedData);
+        // Post as Blob
+        await postAsBlob(parsedData);
       } else {
         setVerificationStatus("error");
         toast({
@@ -207,25 +208,15 @@ export default function FileUploader() {
     }
   };
 
-  const uploadToIpfs = async (data: any) => {
+  const postAsBlob = async (data: any) => {
     setIsUploading(true);
     
     try {
-      // Upload to IPFS
-      toast({
-        title: "Uploading to IPFS",
-        description: "Sending your file to IPFS storage. This may take a moment...",
-        variant: "default",
-      });
-      
-      const hash = await uploadToIPFS(data);
-      setIpfsHash(hash);
-      
-      toast({
-        title: "Uploaded to IPFS Successfully",
-        description: `Your file is now stored on IPFS with hash: ${hash.substring(0, 8)}...${hash.substring(hash.length - 4)}`,
-        variant: "default",
-      });
+      toast({ title: "Posting blob", description: "Submitting a type-3 blob transaction..." });
+      const res = await postToBlob(data);
+      setIpfsHash(res.blobVersionedHash);
+      setBlobReceiptUrl(res.etherscanBlobUrl);
+      toast({ title: "Blob posted", description: res.etherscanBlobUrl });
       
       // Connect wallet after IPFS upload
       await walletContextConnect();
@@ -233,12 +224,8 @@ export default function FileUploader() {
       // Load available incentives for the target contract
       await loadAvailableIncentives();
     } catch (error) {
-      console.error("Error uploading to IPFS:", error);
-      toast({
-        title: "IPFS Upload Failed",
-        description: "Failed to upload file to IPFS. Please try again.",
-        variant: "destructive",
-      });
+      console.error("Error posting blob:", error);
+      toast({ title: "Blob Post Failed", description: "Could not post blob.", variant: "destructive" });
     } finally {
       setIsUploading(false);
     }
@@ -569,11 +556,11 @@ export default function FileUploader() {
               ) : commitState.status === 'idle' ? (
                 <Button
                   onClick={commitSpec}
-                  disabled={commitState.status === 'committing'}
+                  disabled={false}
                   size="lg"
                   className="w-full px-8 py-6 mt-2 text-base bg-blue-600 text-white hover:bg-blue-700"
                 >
-                  {commitState.status === 'committing' ? (
+                  {isSendingTransaction ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                       Committing...
@@ -601,11 +588,11 @@ export default function FileUploader() {
                   <div className="flex gap-2">
                     <Button
                       onClick={revealSpec}
-                      disabled={commitState.status === 'revealing'}
+                      disabled={false}
                       size="lg"
                       className="flex-1 px-8 py-6 text-base bg-green-600 text-white hover:bg-green-700"
                     >
-                      {commitState.status === 'revealing' ? (
+                      {isSendingTransaction ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                           Revealing...
@@ -778,7 +765,7 @@ export default function FileUploader() {
             <div className="flex items-center gap-2">
               <CheckCircle className="h-5 w-5" />
               <span className="ml-2">
-                IPFS Hash: <span className="font-mono text-xs bg-gray-800 px-2 py-1 rounded">{ipfsHash}</span>
+                Blob Versioned Hash: <span className="font-mono text-xs bg-gray-800 px-2 py-1 rounded">{ipfsHash}</span>
               </span>
             </div>
             
@@ -830,44 +817,26 @@ export default function FileUploader() {
               </div>
             )}
             
-            <div className="text-sm text-gray-400">
-              View on: 
-              <a 
-                href={`https://gateway.ipfs.io/ipfs/${ipfsHash}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ml-2 text-blue-400 hover:underline"
-              >
-                IPFS Gateway
-              </a>
-              <span className="mx-1">|</span>
-              <a 
-                href={`https://ipfs.io/ipfs/${ipfsHash}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-400 hover:underline"
-              >
-                IPFS.io
-              </a>
-              <span className="mx-1">|</span>
-              <a 
-                href={`https://w3s.link/ipfs/${ipfsHash}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-400 hover:underline"
-              >
-                web3.storage
-              </a>
-            </div>
+            {blobReceiptUrl && (
+              <div className="text-sm text-gray-400">
+                View on: 
+                <a 
+                  href={blobReceiptUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-2 text-blue-400 hover:underline"
+                >
+                  Etherscan Blob
+                </a>
+              </div>
+            )}
             {timeRemaining && (
               <div className="mt-1 p-2 bg-gray-800 rounded-md text-sm">
                 <p className="text-amber-500">Verification Status: <span className="font-medium">In Progress</span></p>
                 <p className="text-gray-300 mt-1">{timeRemaining}</p>
               </div>
             )}
-            <p className="text-xs text-gray-500 mt-1">
-              Note: IPFS content may take a few minutes to propagate across the network. If one gateway doesn't work, try another.
-            </p>
+            <p className="text-xs text-gray-500 mt-1">Note: Blob content is visible via Etherscan’s blob view.</p>
           </div>
         )}
         

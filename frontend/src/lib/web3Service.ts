@@ -571,7 +571,7 @@ export class Web3Service {
         ) as RealityEthContract;
       }
 
-      // Generate specID from IPFS hash (simplified approach)
+      // Generate specID from identifier (now blob versioned hash)
       const specId = ethers.keccak256(ethers.toUtf8Bytes(ipfsHash));
       
       try {
@@ -1158,8 +1158,7 @@ export class Web3Service {
         throw new Error("Not connected to MetaMask. Please connect first.");
       }
       
-      // Generate specID - this should match how the contract generates it
-      // For now, using the IPFS hash as specID (may need adjustment based on actual contract logic)
+      // Generate specID from the blob versioned hash
       const specId = ethers.keccak256(ethers.toUtf8Bytes(ipfsHash));
       
       // Get the spec data
