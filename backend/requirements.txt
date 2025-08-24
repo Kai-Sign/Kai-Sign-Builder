@@ -7,3 +7,7 @@ requests>=2.26.0
 google-genai>=1.0.0
 mangum>=0.17.0
 # python==3.12.0
+boto3>=1.35.0
+cryptography>=42.0.0
+eth-keys>=0.4.0
+eth-utils>=4.1.0

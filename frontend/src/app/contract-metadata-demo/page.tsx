@@ -9,7 +9,7 @@ import { ExternalLink, Code, Package } from 'lucide-react';
 const SAMPLE_CONTRACTS = [
   {
     name: 'KaiSign V1 Contract (Your Data)',
-    address: '0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf',
+    address: '0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719',
     chainId: 11155111,
     description: 'KaiSign V1 Platform with complete ERC-7730 metadata'
   },

@@ -447,7 +447,7 @@ export default function FileUploader() {
                 <div className="grid grid-cols-1 gap-2">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-300">KaiSign V1:</span>
-                    <code className="text-blue-400 bg-gray-900 px-2 py-1 rounded text-xs">0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf</code>
+                    <code className="text-blue-400 bg-gray-900 px-2 py-1 rounded text-xs">0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719</code>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-300">USDC Sepolia:</span>

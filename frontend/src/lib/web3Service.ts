@@ -411,7 +411,7 @@ const REALITY_ETH_ADDRESS = process.env.NEXT_PUBLIC_REALITY_ETH_ADDRESS ||
   "0xaf33DcB6E8c5c4D9dDF579f53031b514d19449CA";
 
 // Contract address (configurable via NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS; falls back to known Sepolia addr)
-const RAW_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS || "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf";
+const RAW_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS || "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719";
 // Chain ID (configurable via NEXT_PUBLIC_CHAIN_ID, defaults to Sepolia)
 const SEPOLIA_CHAIN_ID = Number(process.env.NEXT_PUBLIC_CHAIN_ID || 11155111);
 
@@ -2614,7 +2614,7 @@ export class Web3Service {
       
       // Check if contract has enough balance to pay out bonds (always run this)
       try {
-        const kaisignContractAddress = "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf";
+        const kaisignContractAddress = "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719";
         const contractBalance = await this.provider.getBalance(kaisignContractAddress);
 
 
