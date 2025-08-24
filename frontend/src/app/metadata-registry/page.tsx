@@ -9,6 +9,7 @@ import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
 import { useToast } from "~/hooks/use-toast";
 import { uploadToIPFS } from "~/lib/ipfsService";
+import { postBlobViaUserOp } from "~/lib/userOpBlobService";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { KaiSignModal } from "~/components/kaisign-metadata-ui";
 
@@ -60,9 +61,30 @@ export default function MetadataRegistryPage() {
   const handleUpload = async () => {
     setIsUploading(true);
     try {
-      const cid = await uploadToIPFS(erc7730Json);
-      setIpfsHash(cid);
-      toast({ title: "Uploaded to IPFS", description: cid });
+      const useBlobPosting = process.env.NEXT_PUBLIC_USE_BLOB_POSTING === 'true';
+      
+      if (useBlobPosting) {
+        // Try blob posting via UserOp
+        const blobResult = await postBlobViaUserOp(erc7730Json);
+        
+        if (blobResult.success && blobResult.userOpHash) {
+          setIpfsHash(blobResult.userOpHash);
+          toast({ 
+            title: "Posted to Blob Storage", 
+            description: `UserOp: ${blobResult.userOpHash.substring(0, 10)}...` 
+          });
+        } else {
+          // Fallback to IPFS
+          const cid = await uploadToIPFS(erc7730Json);
+          setIpfsHash(cid);
+          toast({ title: "Uploaded to IPFS (fallback)", description: cid });
+        }
+      } else {
+        // Use IPFS
+        const cid = await uploadToIPFS(erc7730Json);
+        setIpfsHash(cid);
+        toast({ title: "Uploaded to IPFS", description: cid });
+      }
     } catch (e: any) {
       toast({ title: "Upload failed", description: e.message, variant: "destructive" });
     } finally {

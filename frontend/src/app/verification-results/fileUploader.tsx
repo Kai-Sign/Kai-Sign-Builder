@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useErc7730Store } from "~/store/erc7730Provider";
 import { useToast } from "~/hooks/use-toast";
 import { uploadToIPFS } from "~/lib/ipfsService";
+import { postBlobViaUserOp } from "~/lib/userOpBlobService";
 import { web3Service } from "~/lib/web3Service";
 import { useRouter } from "next/navigation";
 import { useWallet } from "~/contexts/WalletContext";
@@ -211,32 +212,74 @@ export default function FileUploader() {
     setIsUploading(true);
     
     try {
-      // Upload to IPFS
-      toast({
-        title: "Uploading to IPFS",
-        description: "Sending your file to IPFS storage. This may take a moment...",
-        variant: "default",
-      });
+      // Try blob posting first via UserOp
+      const useBlobPosting = process.env.NEXT_PUBLIC_USE_BLOB_POSTING === 'true';
       
-      const hash = await uploadToIPFS(data);
-      setIpfsHash(hash);
+      if (useBlobPosting) {
+        toast({
+          title: "Posting to Blob Storage",
+          description: "Creating UserOp for blob transaction. Please sign with MetaMask...",
+          variant: "default",
+        });
+        
+        const blobResult = await postBlobViaUserOp(data, targetContract);
+        
+        if (blobResult.success && blobResult.userOpHash) {
+          // Use UserOp hash as the identifier (similar to IPFS hash)
+          const blobHash = blobResult.userOpHash;
+          setIpfsHash(blobHash);
+          
+          toast({
+            title: "Posted to Blob Storage Successfully",
+            description: `Your data is being posted as a blob. UserOp: ${blobHash.substring(0, 8)}...${blobHash.substring(blobHash.length - 4)}`,
+            variant: "default",
+          });
+        } else {
+          // Fallback to IPFS if blob posting fails
+          console.warn("Blob posting failed, falling back to IPFS:", blobResult.error);
+          toast({
+            title: "Falling back to IPFS",
+            description: "Blob posting unavailable, using IPFS instead...",
+            variant: "default",
+          });
+          
+          const hash = await uploadToIPFS(data);
+          setIpfsHash(hash);
+          
+          toast({
+            title: "Uploaded to IPFS Successfully",
+            description: `Your file is now stored on IPFS with hash: ${hash.substring(0, 8)}...${hash.substring(hash.length - 4)}`,
+            variant: "default",
+          });
+        }
+      } else {
+        // Use IPFS as before
+        toast({
+          title: "Uploading to IPFS",
+          description: "Sending your file to IPFS storage. This may take a moment...",
+          variant: "default",
+        });
+        
+        const hash = await uploadToIPFS(data);
+        setIpfsHash(hash);
+        
+        toast({
+          title: "Uploaded to IPFS Successfully",
+          description: `Your file is now stored on IPFS with hash: ${hash.substring(0, 8)}...${hash.substring(hash.length - 4)}`,
+          variant: "default",
+        });
+      }
       
-      toast({
-        title: "Uploaded to IPFS Successfully",
-        description: `Your file is now stored on IPFS with hash: ${hash.substring(0, 8)}...${hash.substring(hash.length - 4)}`,
-        variant: "default",
-      });
-      
-      // Connect wallet after IPFS upload
+      // Connect wallet after upload
       await walletContextConnect();
       
       // Load available incentives for the target contract
       await loadAvailableIncentives();
     } catch (error) {
-      console.error("Error uploading to IPFS:", error);
+      console.error("Error uploading:", error);
       toast({
-        title: "IPFS Upload Failed",
-        description: "Failed to upload file to IPFS. Please try again.",
+        title: "Upload Failed",
+        description: "Failed to upload file. Please try again.",
         variant: "destructive",
       });
     } finally {

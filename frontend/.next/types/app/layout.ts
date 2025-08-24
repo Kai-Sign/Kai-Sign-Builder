@@ -1,4 +1,4 @@
-// File: /Users/richardha/Documents/軟體工程/Projects/Kai-Sign-Builder/frontend/src/app/layout.tsx
+// File: /Users/muhammadaushijri/Desktop/git/Kai-Sign-Builder/frontend/src/app/layout.tsx
 import * as entry from '../../../src/app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
