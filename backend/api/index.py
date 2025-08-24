@@ -26,6 +26,8 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from api.healthcheck import router as healthcheck_router
 from fastapi.exceptions import RequestValidationError
+from api.kms_routes import router as kms_router
+from api.relay import router as relay_router
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 # Configure logging
@@ -42,7 +44,7 @@ USE_MOCK = os.getenv("USE_MOCK", "false").lower() == "true"
 
 # Environment variables for contract interaction
 ALCHEMY_RPC_URL = os.getenv("ALCHEMY_RPC_URL")
-KAISIGN_CONTRACT_ADDRESS = os.getenv("KAISIGN_CONTRACT_ADDRESS", "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf")
+KAISIGN_CONTRACT_ADDRESS = os.getenv("KAISIGN_CONTRACT_ADDRESS", "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719")
 
 def load_env():
     etherscan_api_key = os.getenv("ETHERSCAN_API_KEY")
@@ -68,6 +70,8 @@ app = FastAPI(
 
 # Include the healthcheck router
 app.include_router(healthcheck_router)
+app.include_router(kms_router)
+app.include_router(relay_router)
 
 # Configure CORS with specific origins
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
@@ -77,7 +81,7 @@ app.add_middleware(
     allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE"],
-    allow_headers=["Content-Type", "Authorization"],
+    allow_headers=["Content-Type", "Authorization", "X-API-Key"],
 )
 
 class Message(BaseModel):

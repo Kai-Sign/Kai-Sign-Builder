@@ -89,7 +89,7 @@ export default function KaiSignV1Page() {
       const convertedSpecs: SpecData[] = finalizedSpecs.map(spec => ({
         specId: spec.id,
         creator: spec.creator,
-        targetContract: spec.targetContract || "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf",
+        targetContract: spec.targetContract || "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719",
         ipfs: spec.ipfsCID,
         status: 3, // FINALIZED
         createdTimestamp: parseInt(spec.createdTimestamp),
@@ -190,7 +190,7 @@ export default function KaiSignV1Page() {
           const specData: SpecData = {
             specId: spec.id,
             creator: spec.creator,
-            targetContract: spec.targetContract || "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf",
+            targetContract: spec.targetContract || "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719",
             ipfs: spec.ipfsCID,
             status: statusMap[spec.status] || 0,
             createdTimestamp: parseInt(spec.createdTimestamp),
@@ -226,7 +226,7 @@ export default function KaiSignV1Page() {
           
           // Add common KaiSign contract addresses
           const knownKaiSignContracts = [
-            "0xB55D4406916e20dF5B965E15dd3ff85fa8B11dCf", // Current known address
+            "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719", // Current known address
             // Add more known KaiSign deployments here as needed
           ];
           
