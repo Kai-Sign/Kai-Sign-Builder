@@ -327,6 +327,7 @@ export class KaiSignGraphClient {
           id
           user
           ipfs
+          blobHash
           targetContract
           blockTimestamp
           status
@@ -346,6 +347,7 @@ export class KaiSignGraphClient {
       id: spec.id,
       creator: spec.user,
       ipfsCID: spec.ipfs,
+      blobHash: spec.blobHash,
       createdTimestamp: spec.blockTimestamp,
       status: spec.status as SpecHistory['status'],
       targetContract: spec.targetContract,
