@@ -44,12 +44,14 @@ interface SpecData {
   specId: string;
   creator: string;
   targetContract: string;
-  ipfs: string;
+  blobHash: string; // Changed from ipfs to blobHash
   status: number; // Status enum
   createdTimestamp: number;
   proposedTimestamp: number;
   totalBonds: string;
-  bondsSettled: boolean;
+  chainId: number;
+  questionId: string;
+  incentiveId: string;
 }
 
 export default function KaiSignV1Page() {
@@ -90,12 +92,14 @@ export default function KaiSignV1Page() {
         specId: spec.id,
         creator: spec.creator,
         targetContract: spec.targetContract || "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719",
-        ipfs: spec.ipfsCID,
+        blobHash: spec.blobHash || spec.ipfsCID || "", // Use blobHash if available, fallback to ipfsCID
         status: 3, // FINALIZED
         createdTimestamp: parseInt(spec.createdTimestamp),
         proposedTimestamp: parseInt(spec.proposedTimestamp || spec.createdTimestamp),
         totalBonds: "0", // Not available in subgraph
-        bondsSettled: false // Not available in subgraph
+        chainId: spec.chainId || 11155111, // Default to Sepolia
+        questionId: spec.questionId || "",
+        incentiveId: spec.incentiveId || ""
       }));
       
       // Add finalized specs to existing list (avoid duplicates)
@@ -129,7 +133,7 @@ export default function KaiSignV1Page() {
       await connectWallet();
       toast({
         title: "Wallet Connected",
-        description: `Connected to ${currentAccount?.substring(0, 6)}...${currentAccount?.substring(currentAccount.length - 4)}`,
+        description: `Connected to ${currentAccount?.substring(0, 6)}...${currentAccount?.substring(currentAccount?.length - 4)}`,
         variant: "default",
       });
     } catch (error: any) {
@@ -191,12 +195,14 @@ export default function KaiSignV1Page() {
             specId: spec.id,
             creator: spec.creator,
             targetContract: spec.targetContract || "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719",
-            ipfs: spec.ipfsCID,
+            blobHash: "", // No blob hash from subgraph
             status: statusMap[spec.status] || 0,
             createdTimestamp: parseInt(spec.createdTimestamp),
             proposedTimestamp: parseInt(spec.proposedTimestamp || spec.createdTimestamp),
             totalBonds: "0", // Not available in subgraph
-            bondsSettled: false // Not available in subgraph
+            chainId: 11155111, // Default to Sepolia
+            questionId: "",
+            incentiveId: ""
           };
           
           userSpecs.push(specData);
@@ -250,12 +256,14 @@ export default function KaiSignV1Page() {
                         specId,
                         creator: specData.creator,
                         targetContract: specData.targetContract,
-                        ipfs: specData.ipfs,
+                        blobHash: specData.blobHash || "",
                         status: specData.status,
                         createdTimestamp: specData.createdTimestamp,
                         proposedTimestamp: specData.proposedTimestamp,
                         totalBonds: specData.totalBonds,
-                        bondsSettled: specData.bondsSettled
+                        chainId: specData.chainId || 11155111,
+                        questionId: specData.questionId || "",
+                        incentiveId: specData.incentiveId || ""
                       });
                     }
                   } else {
@@ -449,9 +457,8 @@ export default function KaiSignV1Page() {
       const txHash = await web3Service.createIncentive(
         targetContract,
         parseInt(selectedChain),
-        tokenAddress || "0x0000000000000000000000000000000000000000", // ETH
-        amountWei,
-        durationSeconds,
+        BigInt(amountWei),
+        BigInt(durationSeconds),
         enhancedDescription
       );
       
@@ -463,7 +470,7 @@ export default function KaiSignV1Page() {
 
 
       // Reload data
-      await loadUserData(currentAccount);
+      if (currentAccount) await loadUserData(currentAccount);
     } catch (error: any) {
       toast({
         title: "Failed to Create Incentive",
@@ -545,7 +552,7 @@ export default function KaiSignV1Page() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">KaiSign V1 Management</h1>
           <p className="text-gray-400">
-            Connected: {currentAccount.substring(0, 6)}...{currentAccount.substring(currentAccount.length - 4)}
+            Connected: {currentAccount?.substring(0, 6)}...{currentAccount?.substring(currentAccount?.length - 4)}
           </p>
           
           {/* Quick Stats */}
@@ -833,7 +840,7 @@ export default function KaiSignV1Page() {
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-medium">Your Incentives</h2>
                   <Button
-                    onClick={() => loadUserData(currentAccount)}
+                    onClick={() => currentAccount && loadUserData(currentAccount)}
                     disabled={isLoadingData}
                     size="sm"
                     variant="outline"
@@ -983,12 +990,14 @@ export default function KaiSignV1Page() {
                                 specId: selectedContract,
                                 creator: specData.creator,
                                 targetContract: specData.targetContract,
-                                ipfs: specData.ipfs,
+                                blobHash: specData.blobHash || "",
                                 status: specData.status,
                                 createdTimestamp: specData.createdTimestamp,
                                 proposedTimestamp: specData.proposedTimestamp,
                                 totalBonds: specData.totalBonds,
-                                bondsSettled: specData.bondsSettled
+                                chainId: specData.chainId || 11155111,
+                        questionId: specData.questionId || "",
+                        incentiveId: specData.incentiveId || ""
                               };
                               
                               // Check if already exists
@@ -1071,12 +1080,14 @@ export default function KaiSignV1Page() {
                                     specId,
                                     creator: specData.creator,
                                     targetContract: specData.targetContract,
-                                    ipfs: specData.ipfs,
+                                    blobHash: specData.blobHash || "",
                                     status: specData.status,
                                     createdTimestamp: specData.createdTimestamp,
                                     proposedTimestamp: specData.proposedTimestamp,
                                     totalBonds: specData.totalBonds,
-                                    bondsSettled: specData.bondsSettled
+                                    chainId: specData.chainId || 11155111,
+                        questionId: specData.questionId || "",
+                        incentiveId: specData.incentiveId || ""
                                   });
                                 }
                               } catch (error) {
@@ -1154,12 +1165,12 @@ export default function KaiSignV1Page() {
                         <div className="flex items-center space-x-2">
                           <FileText className="h-4 w-4 text-blue-500" />
                           <span className="font-medium font-mono text-sm">
-                            {spec.ipfs.substring(0, 12)}...
+                            {spec.blobHash.substring(0, 12)}...
                           </span>
                           {getStatusBadge(spec.status)}
                         </div>
                         <a
-                          href={`https://gateway.ipfs.io/ipfs/${spec.ipfs}`}
+                          href={`https://sepolia.etherscan.io/tx/${spec.blobHash}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-400 hover:text-blue-300"
@@ -1172,7 +1183,7 @@ export default function KaiSignV1Page() {
                         <span>Target: {spec.targetContract.substring(0, 10)}...</span>
                         <span>Bonds: {Number(spec.totalBonds) / 10**18} ETH</span>
                         <span>Created: {new Date(spec.createdTimestamp * 1000).toISOString().split('T')[0]}</span>
-                        <span>Settled: {spec.bondsSettled ? "Yes" : "No"}</span>
+                        <span>Settled: {spec.totalBonds && Number(spec.totalBonds) > 0 ? "Yes" : "No"}</span>
                       </div>
                       
                       {/* Action buttons based on status */}
@@ -1192,7 +1203,7 @@ export default function KaiSignV1Page() {
                                 
                                 // Refresh data after handling result
                                 setTimeout(async () => {
-                                  await loadUserData(currentAccount);
+                                  if (currentAccount) await loadUserData(currentAccount);
                                   toast({
                                     title: "Data Refreshed",
                                     description: "Spec status updated after handleResult",
@@ -1220,7 +1231,7 @@ export default function KaiSignV1Page() {
                           onClick={async () => {
                             try {
                               console.log("🔄 Force refreshing spec data...");
-                              await loadUserData(currentAccount);
+                              if (currentAccount) await loadUserData(currentAccount);
                               toast({
                                 title: "Data Refreshed! 🔄",
                                 description: "Spec data has been reloaded from contract",
@@ -1328,17 +1339,19 @@ export default function KaiSignV1Page() {
                           for (const specId of specIds) {
                             try {
                               const specData = await web3Service.getSpecData(specId);
-                              if (specData.creator.toLowerCase() === currentAccount.toLowerCase()) {
+                              if (currentAccount && specData.creator.toLowerCase() === currentAccount.toLowerCase()) {
                                 userSpecsFromSearch.push({
                                   specId,
                                   creator: specData.creator,
                                   targetContract: specData.targetContract,
-                                  ipfs: specData.ipfs,
+                                  blobHash: specData.blobHash || "",
                                   status: specData.status,
                                   createdTimestamp: specData.createdTimestamp,
                                   proposedTimestamp: specData.proposedTimestamp,
                                   totalBonds: specData.totalBonds,
-                                  bondsSettled: specData.bondsSettled
+                                  chainId: specData.chainId || 11155111,
+                        questionId: specData.questionId || "",
+                        incentiveId: specData.incentiveId || ""
                                 });
                               }
                             } catch (error) {
@@ -1414,17 +1427,19 @@ export default function KaiSignV1Page() {
                           
                           const specData = await web3Service.getSpecData(specId);
                           
-                          if (specData.creator.toLowerCase() === currentAccount.toLowerCase()) {
+                          if (currentAccount && specData.creator.toLowerCase() === currentAccount.toLowerCase()) {
                             const newSpec: SpecData = {
                               specId,
                               creator: specData.creator,
                               targetContract: specData.targetContract,
-                              ipfs: specData.ipfs,
+                              blobHash: specData.blobHash || "",
                               status: specData.status,
                               createdTimestamp: specData.createdTimestamp,
                               proposedTimestamp: specData.proposedTimestamp,
                               totalBonds: specData.totalBonds,
-                              bondsSettled: specData.bondsSettled
+                              chainId: specData.chainId || 11155111,
+                        questionId: specData.questionId || "",
+                        incentiveId: specData.incentiveId || ""
                             };
                             
                             // Check if already exists
@@ -1519,7 +1534,7 @@ export default function KaiSignV1Page() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                               <div>
                                 <p className="text-xs text-gray-400 mb-1">IPFS Hash</p>
-                                <p className="text-sm font-mono text-gray-300">{spec.ipfs.substring(0, 20)}...</p>
+                                <p className="text-sm font-mono text-gray-300">{spec.blobHash.substring(0, 20)}...</p>
                               </div>
                               <div>
                                 <p className="text-xs text-gray-400 mb-1">Total Bonds</p>
@@ -1532,7 +1547,7 @@ export default function KaiSignV1Page() {
                               <div>
                                 <p className="text-xs text-gray-400 mb-1">Bonds Status</p>
                                 <p className="text-sm">
-                                  {spec.bondsSettled ? (
+                                  {spec.totalBonds && Number(spec.totalBonds) > 0 ? (
                                     <span className="text-green-400">✅ Settled</span>
                                   ) : (
                                     <span className="text-yellow-400">⏳ Available to Settle</span>
@@ -1543,7 +1558,7 @@ export default function KaiSignV1Page() {
                             
                             <div className="flex flex-wrap gap-2 pt-4 border-t border-gray-700">
                               <a
-                                href={`https://gateway.ipfs.io/ipfs/${spec.ipfs}`}
+                                href={`https://sepolia.etherscan.io/tx/${spec.blobHash}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded"

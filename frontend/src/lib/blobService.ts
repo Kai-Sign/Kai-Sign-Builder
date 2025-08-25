@@ -7,7 +7,7 @@ export type BlobPostResult = {
 
 export async function postToBlob(json: object | string): Promise<BlobPostResult> {
   const body = typeof json === 'string' ? { json } : { json };
-  const res = await fetch('/api/blob/upload', {
+  const res = await fetch('/api/blob/submit', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),

@@ -56,18 +56,6 @@ export default function VerificationResultsPage() {
           </p>
           
           <div className="mt-6">
-            <h3 className="mb-3 text-lg font-medium text-purple-200">V1 Features:</h3>
-            <ul className="list-inside list-disc space-y-2 text-gray-300">
-              <li><strong>Commit-Reveal Pattern:</strong> Prevents front-running with two-step submission process</li>
-              <li><strong>Cross-Chain Contract Targeting:</strong> Link specifications to contracts on any blockchain with chain ID support</li>
-              <li><strong>Incentive System:</strong> Create rewards for quality ERC7730 specifications</li>
-              <li><strong>Enhanced Security:</strong> ReentrancyGuard, AccessControl, and Pausable functionality</li>
-              <li><strong>Bond Settlement:</strong> Automated distribution of bonds to winning parties</li>
-              <li><strong>Platform Fees:</strong> 5% platform fee on bonds and incentives</li>
-            </ul>
-          </div>
-
-          <div className="mt-6">
             <h3 className="mb-3 text-lg font-medium text-purple-200">Process Overview:</h3>
             <ol className="list-inside list-decimal space-y-2 text-gray-300">
               <li>Upload your ERC7730 JSON specification</li>
