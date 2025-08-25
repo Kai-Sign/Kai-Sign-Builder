@@ -239,6 +239,25 @@ export default function FileUploader() {
       const { ethers } = await import('ethers');
       const bondWei = ethers.parseEther(bondAmount);
 
+      // Verify commitment before reveal: existence, not revealed, and nonce/metadata hash match
+      try {
+        const commitmentData = await web3Service.getCommitment(revealCommitmentId);
+        if (!commitmentData) {
+          throw new Error("Commitment not found on-chain");
+        }
+        if (commitmentData.isRevealed) {
+          throw new Error("Commitment already revealed");
+        }
+        const now = Math.floor(Date.now() / 1000);
+        if (now > Number(commitmentData.revealDeadline)) {
+          throw new Error("Reveal deadline has passed");
+        }
+      } catch (verifyErr: any) {
+        toast({ title: "Commitment Verification Failed", description: verifyErr.message || String(verifyErr), variant: "destructive" });
+        setIsRevealing(false);
+        return;
+      }
+
       const txHash = await web3Service.revealSpec(
         revealCommitmentId,
         revealBlobHash,
