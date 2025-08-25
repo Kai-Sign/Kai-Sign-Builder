@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "Bash(cat:*)",
-      "WebFetch(domain:sepolia.etherscan.io)"
+      "WebFetch(domain:sepolia.etherscan.io)",
+      "WebSearch",
+      "Bash(node:*)",
+      "Bash(zip:*)",
+      "Bash(cast sig:*)",
+      "Bash(cast 4byte:*)",
+      "Bash(npm run typecheck:*)"
     ],
     "deny": []
   }
