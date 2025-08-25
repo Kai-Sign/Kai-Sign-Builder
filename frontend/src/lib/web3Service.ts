@@ -21,8 +21,8 @@ declare global {
 type ContractWithMethods = ethers.Contract & {
   minBond: () => Promise<bigint>;
   // commitSpec no longer accepts an incentiveId. It now takes only (bytes32 commitment, address targetContract, uint256 chainId).
-  commitSpec: (commitment: string, targetContract: string, targetChainId: number, options: { value: bigint }) => Promise<any>;
-  revealSpec: (commitmentId: string, ipfs: string, nonce: bigint) => Promise<any>;
+  commitSpec: (commitment: string, targetContract: string, targetChainId: number) => Promise<any>;
+  revealSpec: (commitmentId: string, blobHash: string, metadataHash: string, nonce: bigint, options: { value: bigint }) => Promise<any>;
   proposeSpec: (specID: string, options: { value: bigint }) => Promise<any>;
   assertSpecValid: (specID: string, options: { value: bigint }) => Promise<any>;
   assertSpecInvalid: (specID: string, options: { value: bigint }) => Promise<any>;
@@ -32,7 +32,7 @@ type ContractWithMethods = ethers.Contract & {
   getStatus: (ipfsHash: string) => Promise<number>;
   isAccepted: (ipfsHash: string) => Promise<boolean>;
   getCreatedTimestamp: (ipfsHash: string) => Promise<bigint>;
-  createIncentive: (targetContract: string, targetChainId: number, token: string, amount: bigint, duration: bigint, description: string, options: { value: bigint }) => Promise<any>;
+  createIncentive: (targetContract: string, targetChainId: number, amount: bigint, duration: bigint, description: string, options: { value: bigint }) => Promise<any>;
   getSpecsByContract: (targetContract: string, chainId: number) => Promise<string[]>;
   getContractSpecCount: (targetContract: string) => Promise<bigint>;
   specs: (specID: string) => Promise<any>;
@@ -81,18 +81,19 @@ const CONTRACT_ABI = [
     ],
     "name": "commitSpec",
     "outputs": [],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [
       {"internalType": "bytes32", "name": "commitmentId", "type": "bytes32"},
-      {"internalType": "string", "name": "ipfs", "type": "string"},
+      {"internalType": "bytes32", "name": "blobHash", "type": "bytes32"},
+      {"internalType": "bytes32", "name": "metadataHash", "type": "bytes32"},
       {"internalType": "uint256", "name": "nonce", "type": "uint256"}
     ],
     "name": "revealSpec",
     "outputs": [{"internalType": "bytes32", "name": "specID", "type": "bytes32"}],
-    "stateMutability": "nonpayable",
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -120,7 +121,6 @@ const CONTRACT_ABI = [
     "inputs": [
       {"internalType": "address", "name": "targetContract", "type": "address"},
       {"internalType": "uint256", "name": "targetChainId", "type": "uint256"},
-      {"internalType": "address", "name": "token", "type": "address"},
       {"internalType": "uint256", "name": "amount", "type": "uint256"},
       {"internalType": "uint64", "name": "duration", "type": "uint64"},
       {"internalType": "string", "name": "description", "type": "string"}
@@ -142,14 +142,13 @@ const CONTRACT_ABI = [
     "name": "incentives",
     "outputs": [
       {"internalType": "address", "name": "creator", "type": "address"},
-      {"internalType": "address", "name": "token", "type": "address"},
-      {"internalType": "uint128", "name": "amount", "type": "uint128"},
+      {"internalType": "uint80", "name": "amount", "type": "uint80"},
+      {"internalType": "uint16", "name": "reserved1", "type": "uint16"},
       {"internalType": "uint64", "name": "deadline", "type": "uint64"},
       {"internalType": "uint64", "name": "createdAt", "type": "uint64"},
       {"internalType": "address", "name": "targetContract", "type": "address"},
       {"internalType": "bool", "name": "isClaimed", "type": "bool"},
       {"internalType": "bool", "name": "isActive", "type": "bool"},
-      {"internalType": "uint80", "name": "reserved", "type": "uint80"},
       {"internalType": "uint256", "name": "chainId", "type": "uint256"},
       {"internalType": "string", "name": "description", "type": "string"}
     ],
@@ -235,7 +234,6 @@ const CONTRACT_ABI = [
     "inputs": [
       {"internalType": "address", "name": "targetContract", "type": "address"},
       {"internalType": "uint256", "name": "targetChainId", "type": "uint256"},
-      {"internalType": "address", "name": "token", "type": "address"},
       {"internalType": "uint256", "name": "amount", "type": "uint256"},
       {"internalType": "uint64", "name": "duration", "type": "uint64"},
       {"internalType": "string", "name": "description", "type": "string"}
@@ -637,13 +635,14 @@ export class Web3Service {
    */
   // The commitSpec method no longer takes an incentiveId. Incentives are created ahead
   // of time and automatically assigned when a spec is accepted. The function signature
-  // accepts ipfsHash, bondAmount, an optional targetContract and optional chainId.
-  async commitSpec(ipfsHash: string, bondAmount: bigint, targetContract?: string, targetChainId?: number): Promise<{
+  // accepts blobHash, bondAmount, an optional targetContract and optional chainId.
+  async commitSpec(blobHash: string, bondAmount: bigint, targetContract?: string, targetChainId?: number): Promise<{
     commitmentId: string;
     commitTxHash: string;
     revealDeadline: number;
     nonce: number;
     commitment: string;
+    metadataHash: string;
   }> {
     try {
       if (!this.contract || !this.signer) {
@@ -660,12 +659,14 @@ export class Web3Service {
       // Generate a proper nonce for the commitment
       const nonce = BigInt(Math.floor(Math.random() * 1000000));
       
-      // Create the commitment hash to match Solidity: keccak256(abi.encodePacked(ipfs, nonce))
-      // Use ethers.solidityPacked which should match Solidity's abi.encodePacked exactly
-      const commitment = ethers.keccak256(ethers.solidityPacked(
-        ["string", "uint256"],
-        [ipfsHash, nonce]
-      ));
+      // The blobHash parameter is actually the metadataHash (hash of JSON)
+      // This is a naming issue - it should be called metadataHash
+      const metadataHash = blobHash;
+      
+      // Create the commitment using metadataHash and nonce (as per contract)
+      const commitment = ethers.keccak256(
+        ethers.solidityPacked(["bytes32", "uint256"], [metadataHash, nonce])
+      );
       
 
 
@@ -732,7 +733,8 @@ export class Web3Service {
 
       
       // CRITICAL: Run comprehensive diagnostics BEFORE attempting transaction
-      await this.runPreTransactionDiagnostics(target, bondAmount);
+      // For commitSpec, we don't send any value, so pass 0n for bond amount
+      await this.runPreTransactionDiagnostics(target, 0n);
       
       // Additional validation: Check if contract is properly deployed and accessible
       try {
@@ -837,50 +839,15 @@ export class Web3Service {
         ));
         
         const existingCommitment = await this.contract.commitments(commitmentId);
-
-        
-        // Try a raw call to see if the function exists
-
-        const calldata = ethers.concat([
-          // Selector for commitSpec(bytes32,address,uint256)
-          ethers.id("commitSpec(bytes32,address,uint256)").slice(0, 10),
-          ethers.zeroPadValue(commitment, 32),
-          ethers.zeroPadValue(target, 32),
-          ethers.zeroPadValue(ethers.toBeHex(targetChainId || 1), 32)
-        ]);
-        
-
-
-
-
-
-        
-
-        
-        try {
-          const rawResult = await this.provider!.call({
-            to: RAW_CONTRACT_ADDRESS,
-            data: calldata,
-            value: bondAmount,
-            from: await this.signer.getAddress()
-          });
-
-        } catch (rawError) {
-          console.error("Raw call failed:", rawError);
-          if (rawError.data) {
-
-          }
-        }
+        console.log("Checking if commitment already exists:", existingCommitment.committer !== ethers.ZeroAddress);
         
         // Try a static call first to see if it would succeed
-
         const staticResult = await this.contract.commitSpec.staticCall(
           commitment,
           target,
-          targetChainId || 1,
-          { value: bondAmount }
+          targetChainId || 1
         );
-
+        console.log("Static call successful, proceeding with transaction");
         
       } catch (checkError) {
         console.error("Pre-transaction checks failed:", checkError);
@@ -899,8 +866,7 @@ export class Web3Service {
         const gasEstimate = await this.contract.commitSpec.estimateGas(
           commitment, 
           target, 
-          targetChainId || 1,
-          { value: bondAmount }
+          targetChainId || 1
         );
 
       } catch (gasError) {
@@ -908,9 +874,7 @@ export class Web3Service {
         throw new Error(`Gas estimation failed: ${gasError.message}`);
       }
       
-      const commitTx = await this.contract.commitSpec(commitment, target, targetChainId || 1, {
-        value: bondAmount
-      });
+      const commitTx = await this.contract.commitSpec(commitment, target, targetChainId || 1);
       
 
       const commitReceipt = await commitTx.wait();
@@ -943,7 +907,8 @@ export class Web3Service {
         commitTxHash: commitTx.hash,
         revealDeadline: Math.floor(Date.now() / 1000) + 3600, // 1 hour from now
         nonce: Number(nonce),
-        commitment
+        commitment,
+        metadataHash
       };
     } catch (error: any) {
       console.error("Error proposing spec:", error);
@@ -1041,15 +1006,19 @@ export class Web3Service {
   /**
    * Reveal spec using V1 contract (step 2 of commit-reveal pattern)
    */
-  async revealSpec(commitmentId: string, ipfsHash: string, nonce: number): Promise<string> {
+  async revealSpec(commitmentId: string, blobHash: string, metadataHash: string, nonce: number, bondAmount: bigint): Promise<string> {
     try {
       if (!this.contract || !this.signer) {
         throw new Error("Not connected to MetaMask. Please connect first.");
       }
 
-
-
-
+      console.log("revealSpec called with:", {
+        commitmentId,
+        blobHash,
+        metadataHash,
+        nonce,
+        bondAmount: bondAmount.toString()
+      });
 
       // Debug: Check what the contract has stored for this commitment
       try {
@@ -1069,64 +1038,55 @@ export class Web3Service {
         
         // Check if we're the right committer
         const ourAddress = await this.signer.getAddress();
-
-
-
+        console.log("Our address:", ourAddress);
+        console.log("Committer address:", storedCommitment[0]);
         
-        // Try to reconstruct what the contract will generate
-        const expectedCommitment = ethers.keccak256(ethers.solidityPacked(
-          ["string", "uint256"],
-          [ipfsHash, nonce]
-        ));
-
+        // Check if commitment expired
+        const currentTime = Math.floor(Date.now() / 1000);
+        const revealDeadline = Number(storedCommitment[7]);
+        console.log("Current time:", currentTime);
+        console.log("Reveal deadline:", revealDeadline);
+        if (currentTime > revealDeadline) {
+          throw new Error("Commitment has expired. Please create a new commitment.");
+        }
         
-        // The contract has a BUG: it uses uint64 during commit but uint256 during reveal
-        // We need to use uint64 since that's what actually matches the stored commitment ID
-        const reconstructedCommitmentId = ethers.keccak256(ethers.solidityPacked(
-          ["bytes32", "address", "address", "uint256", "uint64"],
-          [expectedCommitment, storedCommitment[0], storedCommitment[3], storedCommitment[8], storedCommitment[1]]
-        ));
-
-
-
+        // Let's verify what commitment the contract expects
+        const expectedCommitment = ethers.keccak256(
+          ethers.solidityPacked(["bytes32", "uint256"], [metadataHash, BigInt(nonce)])
+        );
+        console.log("Expected commitment hash:", expectedCommitment);
         
-        // Let's also try the exact order and types from the contract
-
-
-
-
-
-
+        // Reconstruct the commitment ID as the contract would
+        const reconstructedCommitmentId = ethers.keccak256(
+          ethers.solidityPacked(
+            ["bytes32", "address", "address", "uint256", "uint64"],
+            [expectedCommitment, storedCommitment[0], storedCommitment[3], storedCommitment[8], storedCommitment[1]]
+          )
+        );
+        console.log("Reconstructed commitment ID:", reconstructedCommitmentId);
+        console.log("Provided commitment ID:", commitmentId);
+        console.log("Do they match?", reconstructedCommitmentId === commitmentId);
         
-        // Try different type combinations to see which one matches
-        const reconstructedCommitmentId_uint64 = ethers.keccak256(ethers.solidityPacked(
-          ["bytes32", "address", "address", "uint256", "uint64"],
-          [expectedCommitment, storedCommitment[0], storedCommitment[3], storedCommitment[8], storedCommitment[1]]
-        ));
-
-
-        
-        const reconstructedCommitmentId_uint256 = ethers.keccak256(ethers.solidityPacked(
-          ["bytes32", "address", "address", "uint256", "uint256"],
-          [expectedCommitment, storedCommitment[0], storedCommitment[3], storedCommitment[8], storedCommitment[1]]
-        ));
-
-
+        if (reconstructedCommitmentId !== commitmentId) {
+          console.error("Commitment ID mismatch! The nonce or metadata hash doesn't match what was used during commit.");
+          console.log("This commitment was created with a different nonce or metadata hash.");
+          console.log("Please ensure you're using the exact same nonce that was returned during commit.");
+        }
         
       } catch (debugError) {
-
+        console.log("Debug error (non-critical):", debugError);
       }
 
       // Try a static call first to see what exactly fails
       try {
-        await this.contract.revealSpec.staticCall(commitmentId, ipfsHash, BigInt(nonce));
+        await this.contract.revealSpec.staticCall(commitmentId, blobHash, metadataHash, BigInt(nonce), { value: bondAmount });
 
       } catch (staticError: any) {
 
 
       }
 
-      const revealTx = await this.contract.revealSpec(commitmentId, ipfsHash, BigInt(nonce));
+      const revealTx = await this.contract.revealSpec(commitmentId, blobHash, metadataHash, BigInt(nonce), { value: bondAmount });
 
       const revealReceipt = await revealTx.wait();
 
@@ -1141,11 +1101,11 @@ export class Web3Service {
   /**
    * Complete submit flow (for backward compatibility)
    */
-  async submitSpec(ipfsHash: string, bondAmount: bigint, targetContract?: string, targetChainId?: number): Promise<string> {
+  async submitSpec(blobHash: string, bondAmount: bigint, targetContract?: string, targetChainId?: number): Promise<string> {
     // The submitSpec convenience method commits then immediately reveals the spec.
     // Incentives are no longer passed as part of commit.
-    const commitResult = await this.commitSpec(ipfsHash, bondAmount, targetContract, targetChainId);
-    return await this.revealSpec(commitResult.commitmentId, ipfsHash, commitResult.nonce);
+    const commitResult = await this.commitSpec(blobHash, bondAmount, targetContract, targetChainId);
+    return await this.revealSpec(commitResult.commitmentId, blobHash, commitResult.metadataHash, commitResult.nonce, bondAmount);
   }
   
   /**
@@ -1270,7 +1230,7 @@ export class Web3Service {
    */
   async createIncentive(
     targetContract: string,
-    token: string, // address(0) for ETH
+    targetChainId: number,
     amount: bigint,
     duration: bigint,
     description: string
@@ -1285,11 +1245,11 @@ export class Web3Service {
 
       const tx = await this.contract.createIncentive(
         targetContract,
-        token,
+        targetChainId,
         amount,
         duration,
         description,
-        { value: token === "0x0000000000000000000000000000000000000000" ? amount : BigInt(0) }
+        { value: amount }
       );
 
 
@@ -1641,22 +1601,24 @@ export class Web3Service {
 
 
       
-      if (bondAmount < contractMinBond) {
+      // Skip bond amount check for commitSpec (bondAmount is 0 for commit)
+      // Bonds are only required during reveal
+      if (bondAmount > 0n && bondAmount < contractMinBond) {
         throw new Error(`Bond amount ${ethers.formatEther(bondAmount)} ETH is below minimum required ${ethers.formatEther(contractMinBond)} ETH`);
       }
       
       // 6. Calculate platform fee and verify sufficient funds
-      // Contract deducts 5% platform fee in commitSpec(), so we need to ensure 
-      // the net amount after fee meets minimum bond requirement
-      const platformFee = (bondAmount * BigInt(5)) / BigInt(100); // 5% platform fee
-      const netBondAmount = bondAmount - platformFee; // Amount actually used as bond
-
-
-      
-      if (netBondAmount < contractMinBond) {
-        // Calculate required total to meet minimum after fee deduction
-        const requiredTotal = (contractMinBond * BigInt(100)) / BigInt(95); // Reverse calculation
-        throw new Error(`After platform fee, net bond would be ${ethers.formatEther(netBondAmount)} ETH, but minimum required is ${ethers.formatEther(contractMinBond)} ETH. Send at least ${ethers.formatEther(requiredTotal)} ETH`);
+      // NOTE: commitSpec doesn't take any payment, so skip this check when bondAmount is 0
+      // The bond is only paid during reveal
+      if (bondAmount > 0n) {
+        const platformFee = (bondAmount * BigInt(5)) / BigInt(100); // 5% platform fee
+        const netBondAmount = bondAmount - platformFee; // Amount actually used as bond
+        
+        if (netBondAmount < contractMinBond) {
+          // Calculate required total to meet minimum after fee deduction
+          const requiredTotal = (contractMinBond * BigInt(100)) / BigInt(95); // Reverse calculation
+          throw new Error(`After platform fee, net bond would be ${ethers.formatEther(netBondAmount)} ETH, but minimum required is ${ethers.formatEther(contractMinBond)} ETH. Send at least ${ethers.formatEther(requiredTotal)} ETH`);
+        }
       }
       
       // 7. Test Reality.eth contract connectivity
@@ -1684,11 +1646,12 @@ export class Web3Service {
 
         // commitSpec in V1 accepts only (bytes32 commitment, address targetContract, uint256 chainId).
         // Do not pass an incentiveId here, as the V1 contract does not include that parameter.
+        // IMPORTANT: commitSpec is NOT payable - no value should be sent
         await this.contract.commitSpec.staticCall(
           testCommitment,
           targetContract,
           1, // Default to mainnet for test
-          { value: bondAmount, from: userAddress }
+          { from: userAddress }
         );
 
 
@@ -2158,7 +2121,6 @@ export class Web3Service {
   async createIncentive(
     targetContract: string,
     targetChainId: number,
-    token: string, // address(0) for ETH
     amount: string,
     durationSeconds: number,
     description: string
@@ -2180,7 +2142,7 @@ export class Web3Service {
         description
       });
 
-      const value = token === "0x0000000000000000000000000000000000000000" ? amount : "0";
+      // ETH only - value is the amount
 
       
       // Check if contract has the createIncentive function
@@ -2193,11 +2155,10 @@ export class Web3Service {
       const tx = await this.contract.createIncentive(
         targetContract,
         targetChainId,
-        token,
         amount,
         durationSeconds,
         description,
-        { value }
+        { value: amount }
       );
       
 

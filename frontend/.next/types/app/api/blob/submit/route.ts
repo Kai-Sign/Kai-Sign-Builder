@@ -1,8 +1,8 @@
-// File: /Users/muhammadaushijri/Desktop/git/Kai-Sign-Builder/frontend/src/app/api/health/route.ts
-import * as entry from '../../../../../src/app/api/health/route.js'
+// File: /Users/muhammadaushijri/Desktop/git/Kai-Sign-Builder/frontend/src/app/api/blob/submit/route.ts
+import * as entry from '../../../../../../src/app/api/blob/submit/route.js'
 import type { NextRequest } from 'next/server.js'
 
-type TEntry = typeof import('../../../../../src/app/api/health/route.js')
+type TEntry = typeof import('../../../../../../src/app/api/blob/submit/route.js')
 
 type SegmentParams<T extends Object = any> = T extends Record<string, any>
   ? { [K in keyof T]: T[K] extends string ? string | string[] | undefined : never }

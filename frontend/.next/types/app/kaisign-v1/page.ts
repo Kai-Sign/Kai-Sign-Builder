@@ -1,8 +1,8 @@
-// File: /Users/richardha/Documents/軟體工程/Projects/Kai-Sign-Builder/frontend/src/app/metadata-registry/page.tsx
-import * as entry from '../../../../src/app/metadata-registry/page.js'
+// File: /Users/muhammadaushijri/Desktop/git/Kai-Sign-Builder/frontend/src/app/kaisign-v1/page.tsx
+import * as entry from '../../../../src/app/kaisign-v1/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
-type TEntry = typeof import('../../../../src/app/metadata-registry/page.js')
+type TEntry = typeof import('../../../../src/app/kaisign-v1/page.js')
 
 type SegmentParams<T extends Object = any> = T extends Record<string, any>
   ? { [K in keyof T]: T[K] extends string ? string | string[] | undefined : never }

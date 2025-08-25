@@ -1,1 +1,14 @@
-{}
+{
+  "app/kaisign-v1/page.tsx -> ethers": {
+    "id": "app/kaisign-v1/page.tsx -> ethers",
+    "files": [
+      "static/chunks/_app-pages-browser_node_modules_ethers_lib_esm_index_js.js"
+    ]
+  },
+  "app/verification-results/fileUploader.tsx -> ethers": {
+    "id": "app/verification-results/fileUploader.tsx -> ethers",
+    "files": [
+      "static/chunks/_app-pages-browser_node_modules_ethers_lib_esm_index_js.js"
+    ]
+  }
+}

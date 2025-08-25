@@ -2,851 +2,766 @@
 
 import { useState, useEffect } from "react";
 import { Button } from "~/components/ui/button";
-import { FileJson, Upload, CheckCircle, AlertCircle, Loader2, ExternalLink, Gift, DollarSign, Clock, Gavel } from "lucide-react";
+import { Upload, CheckCircle, Loader2, Clock, ArrowRight, ArrowLeft, Copy } from "lucide-react";
 import { Card } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import { Badge } from "~/components/ui/badge";
-import Link from "next/link";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { useErc7730Store } from "~/store/erc7730Provider";
 import { useToast } from "~/hooks/use-toast";
-import { postToBlob } from "~/lib/blobService";
 import { web3Service } from "~/lib/web3Service";
-import { useRouter } from "next/navigation";
 import { useWallet } from "~/contexts/WalletContext";
-import { getQuestionData, hasFinalizationTimePassed, getTimeRemainingUntilFinalization } from "~/lib/realityEthService";
 
 export default function FileUploader() {
   const [file, setFile] = useState<File | null>(null);
-  const [isVerifying, setIsVerifying] = useState(false);
-  const [verificationStatus, setVerificationStatus] = useState<"idle" | "success" | "error">("idle");
   const [jsonData, setJsonData] = useState<any>(null);
-  const [ipfsHash, setIpfsHash] = useState<string | null>(null);
-  const [blobReceiptUrl, setBlobReceiptUrl] = useState<string | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const { walletConnected, currentAccount, connectWallet: walletContextConnect, isConnecting } = useWallet();
-  const [isSendingTransaction, setIsSendingTransaction] = useState(false);
-  const [transactionHash, setTransactionHash] = useState<string | null>(null);
-  const [minBond, setMinBond] = useState<string | null>(null);
-  const [bondInfo, setBondInfo] = useState<{
-    currentBond: bigint;
-    minBond: bigint;
-    requiredNextBond: bigint;
-    hasAnswers: boolean;
-  } | null>(null);
-  const [targetContract, setTargetContract] = useState<string>("");
-  const [targetChainId, setTargetChainId] = useState<string>("1"); // Default to Ethereum mainnet
-  const [selectedIncentiveId, setSelectedIncentiveId] = useState<string>("");
-  const [availableIncentives, setAvailableIncentives] = useState<any[]>([]);
-  const [isLoadingIncentives, setIsLoadingIncentives] = useState(false);
-  const { setErc7730, shouldAutoSubmit, setShouldAutoSubmit } = useErc7730Store((state) => state);
-  const erc7730Data = useErc7730Store((state) => state.finalErc7730);
+  const [activeTab, setActiveTab] = useState("commit");
+  const { walletConnected, currentAccount, connectWallet: walletContextConnect } = useWallet();
+  const { setErc7730 } = useErc7730Store((state) => state);
   const { toast } = useToast();
-  const [questionId, setQuestionId] = useState<string | null>(null);
-  const [finalizationTimestamp, setFinalizationTimestamp] = useState<string | null>(null);
-  const [timeout, setTimeoutValue] = useState<string | null>(null);
-  const [createdTimestamp, setCreatedTimestamp] = useState<string | null>(null);
-  const [timeRemaining, setTimeRemaining] = useState<string | null>(null);
-  const isValidTxHash = (h: string | null | undefined) => !!h && /^0x[a-fA-F0-9]{64}$/.test(h);
-  
-  // Commit/Reveal flow state
-  const [commitState, setCommitState] = useState<{
-    status: 'idle' | 'committing' | 'committed' | 'revealing' | 'revealed' | 'expired';
-    commitmentId?: string;
-    commitTxHash?: string;
-    revealDeadline?: number;
-    nonce?: number;
-    commitment?: string;
-    revealTxHash?: string;
-  }>({ status: 'idle' });
-  const [isCheckingResult, setIsCheckingResult] = useState(false);
-  const router = useRouter();
 
-  // Auto-submit effect when coming from review page
+  // Commit Step State
+  const [targetContract, setTargetContract] = useState<string>("");
+  const [targetChainId, setTargetChainId] = useState<string>("1");
+  const [commitmentId, setCommitmentId] = useState<string>("");
+  const [commitNonce, setCommitNonce] = useState<string>("");
+  const [commitTxHash, setCommitTxHash] = useState<string>("");
+  const [isCommitting, setIsCommitting] = useState(false);
+  const [metadataHash, setMetadataHash] = useState<string>("");
+
+  // Blob Step State
+  const [blobVersionedHash, setBlobVersionedHash] = useState<string>("");
+  const [blobTxHash, setBlobTxHash] = useState<string>("");
+  const [isPostingBlob, setIsPostingBlob] = useState(false);
+  const [manualBlobHash, setManualBlobHash] = useState<string>("");
+
+  // Reveal Step State
+  const [revealCommitmentId, setRevealCommitmentId] = useState<string>("");
+  const [revealBlobHash, setRevealBlobHash] = useState<string>("");
+  const [revealMetadataHash, setRevealMetadataHash] = useState<string>("");
+  const [revealNonce, setRevealNonce] = useState<string>("");
+  const [bondAmount, setBondAmount] = useState<string>("0.01");
+  const [isRevealing, setIsRevealing] = useState(false);
+  const [revealTxHash, setRevealTxHash] = useState<string>("");
+  const [specId, setSpecId] = useState<string>("");
+
+  // Auto-populate fields when values are set
   useEffect(() => {
-    if (shouldAutoSubmit && erc7730Data) {
-      // Reset the auto-submit flag
-      setShouldAutoSubmit(false);
-      
-      // Create a virtual file from the ERC7730 data
-      const jsonString = JSON.stringify(erc7730Data, null, 2);
-      const blob = new Blob([jsonString], { type: "application/json" });
-      const virtualFile = new File([blob], "erc7730-specification.json", { type: "application/json" });
-      
-      // Set the file and trigger verification
-      setFile(virtualFile);
-      setVerificationStatus("idle");
-      setIpfsHash(null);
-      setTransactionHash(null);
-      
-      // Automatically start the verification process
-      setTimeout(() => {
-        void handleAutoVerification(erc7730Data);
-      }, 100); // Small delay to ensure state is updated
+    if (commitmentId) {
+      setRevealCommitmentId(commitmentId);
     }
-  }, [shouldAutoSubmit, erc7730Data, setShouldAutoSubmit]);
+  }, [commitmentId]);
 
-  const handleAutoVerification = async (data: any) => {
-    setIsVerifying(true);
-    
-    try {
-      // Basic validation - check if it has the expected ERC7730 structure
-      const isValidFormat = 
-        data && 
-        typeof data === "object" &&
-        "context" in data &&
-        "metadata" in data;
-      
-      if (isValidFormat) {
-        // Add $schema field if missing (required by ERC7730 spec)
-        if (!("$schema" in data)) {
-          data.$schema = "https://eips.ethereum.org/assets/eip-7730/erc7730-v1.schema.json";
-          toast({
-            title: "Schema Field Added",
-            description: "Added missing $schema field as required by ERC7730 specification.",
-            variant: "default",
-          });
-        }
-        
-        setVerificationStatus("success");
-        setJsonData(data);
-        setErc7730(data);
-        toast({
-          title: "Auto-Verification Started",
-          description: "Processing your ERC7730 JSON file automatically. Posting as blob...",
-          variant: "default",
-        });
-        
-        // Post as Blob
-        await postAsBlob(data);
-      } else {
-        setVerificationStatus("error");
-        toast({
-          title: "Invalid File Format",
-          description: "The ERC7730 data does not appear to be valid.",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      setVerificationStatus("error");
-      toast({
-        title: "Error Processing Data",
-        description: "Failed to process the ERC7730 data.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsVerifying(false);
+  useEffect(() => {
+    if (blobVersionedHash) {
+      setRevealBlobHash(blobVersionedHash);
     }
-  };
+  }, [blobVersionedHash]);
+
+  useEffect(() => {
+    if (commitNonce) {
+      setRevealNonce(commitNonce);
+    }
+  }, [commitNonce]);
+
+  useEffect(() => {
+    if (metadataHash) {
+      setRevealMetadataHash(metadataHash);
+    }
+  }, [metadataHash]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      // Use a non-null assertion since we already checked length > 0
       const selectedFile = e.target.files[0]!;
       setFile(selectedFile);
-      setVerificationStatus("idle");
-      setIpfsHash(null);
-      setTransactionHash(null);
-    }
-  };
-
-  const handleUpload = async () => {
-    if (!file) return;
-    
-    setIsVerifying(true);
-    
-    try {
-      const fileContent = await file.text();
-      const parsedData = JSON.parse(fileContent);
       
-      // Basic validation - check if it has the expected ERC7730 structure
-      const isValidFormat = 
-        parsedData && 
-        typeof parsedData === "object" &&
-        "context" in parsedData &&
-        "metadata" in parsedData;
-      
-      if (isValidFormat) {
-        // Add $schema field if missing (required by ERC7730 spec)
-        if (!("$schema" in parsedData)) {
-          parsedData.$schema = "https://eips.ethereum.org/assets/eip-7730/erc7730-v1.schema.json";
+      // Parse the file and calculate metadata hash
+      selectedFile.text().then(content => {
+        try {
+          const parsed = JSON.parse(content);
+          setJsonData(parsed);
+          setErc7730(parsed);
+          
+          // Calculate metadata hash
+          import('ethers').then(({ ethers }) => {
+            const hash = ethers.keccak256(ethers.toUtf8Bytes(content));
+            setMetadataHash(hash);
+            setRevealMetadataHash(hash);
+            toast({
+              title: "File Loaded",
+              description: `Metadata hash: ${hash.substring(0, 10)}...`,
+              variant: "default",
+            });
+          });
+        } catch (error) {
           toast({
-            title: "Schema Field Added",
-            description: "Added missing $schema field as required by ERC7730 specification.",
-            variant: "default",
+            title: "Invalid JSON",
+            description: "The file is not valid JSON",
+            variant: "destructive",
           });
         }
-        
-        setVerificationStatus("success");
-        setJsonData(parsedData);
-        setErc7730(parsedData);
-        toast({
-          title: "File Verification Process Started",
-          description: "The ERC7730 JSON file is valid. Posting as blob...",
-          variant: "default",
-        });
-        
-        // Post as Blob
-        await postAsBlob(parsedData);
-      } else {
-        setVerificationStatus("error");
-        toast({
-          title: "Invalid File Format",
-          description: "The uploaded file does not appear to be a valid ERC7730 JSON specification.",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      setVerificationStatus("error");
+      });
+    }
+  };
+
+  const handleCommit = async () => {
+    if (!targetContract || !targetChainId || !jsonData) {
       toast({
-        title: "Error Parsing JSON",
-        description: "The file could not be parsed as valid JSON.",
+        title: "Missing Information",
+        description: "Please provide target contract, chain ID, and upload a JSON file",
         variant: "destructive",
       });
-    } finally {
-      setIsVerifying(false);
+      return;
     }
-  };
 
-  const postAsBlob = async (data: any) => {
-    setIsUploading(true);
-    
+    setIsCommitting(true);
     try {
-      toast({ title: "Posting blob", description: "Submitting a type-3 blob transaction..." });
-      const res = await postToBlob(data);
-      setIpfsHash(res.blobVersionedHash);
-      setBlobReceiptUrl(res.etherscanBlobUrl);
-      toast({ title: "Blob posted", description: res.etherscanBlobUrl });
-      
-      // Connect wallet after IPFS upload
-      await walletContextConnect();
-      
-      // Load available incentives for the target contract
-      await loadAvailableIncentives();
-    } catch (error) {
-      console.error("Error posting blob:", error);
-      toast({ title: "Blob Post Failed", description: "Could not post blob.", variant: "destructive" });
-    } finally {
-      setIsUploading(false);
-    }
-  };
-  
-
-  const loadAvailableIncentives = async () => {
-    if (!targetContract) return;
-    
-    setIsLoadingIncentives(true);
-    try {
-      // Get available incentives for this target contract
-      const incentives = await web3Service.getAvailableIncentives(targetContract);
-      setAvailableIncentives(incentives);
-      
-      if (incentives.length > 0) {
-        toast({
-          title: "Incentives Available",
-          description: `Found ${incentives.length} available incentive(s) for this contract!`,
-          variant: "default",
-        });
+      if (!walletConnected) {
+        await walletContextConnect();
       }
-    } catch (error: any) {
-      console.error("Error loading incentives:", error);
-      // Don't show error toast as this is not critical
-    } finally {
-      setIsLoadingIncentives(false);
-    }
-  };
-  
-  const commitSpec = async () => {
-    if (!ipfsHash || !walletConnected) return;
-    
-    setCommitState(prev => ({ ...prev, status: 'committing' }));
-    
-    try {
-      const bondData = await web3Service.getBondInfo(ipfsHash);
-      setBondInfo(bondData);
+
+      // Calculate metadata hash if not already done
+      const { ethers } = await import('ethers');
+      const metaHash = metadataHash || ethers.keccak256(ethers.toUtf8Bytes(JSON.stringify(jsonData)));
+      setMetadataHash(metaHash);
+      setRevealMetadataHash(metaHash);
+
+      // Call contract - commitSpec expects: metadataHash (used as blobHash internally), targetContract, targetChainId
+      // Note: web3Service.commitSpec internally generates the nonce and creates the commitment
+      const bondData = await web3Service.getBondInfo(metaHash);
       const bondAmount = bondData.requiredNextBond;
-      // Incentives are created separately and automatically applied when the spec is accepted.
-      // Do not pass an incentiveId when committing.
-      const result = await web3Service.commitSpec(ipfsHash, bondAmount, targetContract || undefined, parseInt(targetChainId));
+      const result = await web3Service.commitSpec(metaHash, bondAmount, targetContract, parseInt(targetChainId));
       
-      setCommitState({
-        status: 'committed',
-        commitmentId: result.commitmentId,
-        commitTxHash: result.commitTxHash,
-        revealDeadline: result.revealDeadline,
-        nonce: result.nonce,
-        commitment: result.commitment
-      });
+      // Use the nonce returned by commitSpec (it generates it internally)
+      setCommitNonce(result.nonce.toString());
+      setRevealNonce(result.nonce.toString());
       
+      setCommitmentId(result.commitmentId);
+      setRevealCommitmentId(result.commitmentId);
+      setCommitTxHash(result.commitTxHash);
+
       toast({
-        title: "Commitment Submitted",
-        description: `Committed successfully! You have 1 hour to reveal. TX: ${result.commitTxHash.substring(0, 10)}...`,
+        title: "Commitment Successful",
+        description: `TX: ${result.commitTxHash.substring(0, 10)}... | Reveal by: ${new Date(result.revealDeadline * 1000).toLocaleTimeString()}`,
         variant: "default",
       });
+
+      // Auto-advance to blob tab
+      setActiveTab("blob");
     } catch (error: any) {
-      console.error("Error committing spec:", error);
-      setCommitState(prev => ({ ...prev, status: 'idle' }));
+      console.error("Commit error:", error);
       toast({
         title: "Commit Failed",
-        description: error.message || "Failed to commit. Please try again.",
+        description: error.message || "Failed to commit",
         variant: "destructive",
       });
+    } finally {
+      setIsCommitting(false);
     }
   };
 
-  const revealSpec = async () => {
-    if (commitState.status !== 'committed' || !commitState.commitmentId || !commitState.nonce) return;
-    
-    setCommitState(prev => ({ ...prev, status: 'revealing' }));
-    
+  const handlePostBlob = async () => {
+    if (!jsonData) {
+      toast({
+        title: "No JSON Data",
+        description: "Please upload a JSON file first",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsPostingBlob(true);
     try {
-      const txHash = await web3Service.revealSpec(commitState.commitmentId, ipfsHash!, commitState.nonce);
-      
-      setCommitState(prev => ({ 
-        ...prev, 
-        status: 'revealed',
-        revealTxHash: txHash
-      }));
-      setTransactionHash(txHash);
-      
+      toast({ 
+        title: "Posting blob", 
+        description: "Submitting blob transaction (may take up to 3 minutes)..." 
+      });
+
+      const res = await fetch('/api/blob/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ json: jsonData }),
+      });
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => '');
+        throw new Error(text || `HTTP ${res.status}`);
+      }
+
+      const result = await res.json();
+      const blobHash = result?.blobVersionedHash || result?.blobHash;
+      const txHash = result?.txHash || result?.blobTransactionHash;
+
+      if (blobHash) {
+        setBlobVersionedHash(blobHash);
+        setRevealBlobHash(blobHash);
+        setBlobTxHash(txHash);
+
+        toast({ 
+          title: "Blob posted successfully", 
+          description: `Blob hash: ${blobHash.substring(0, 10)}...`, 
+          variant: "default" 
+        });
+
+        // Auto-advance to reveal tab
+        setActiveTab("reveal");
+      } else {
+        throw new Error('No blob hash returned');
+      }
+    } catch (error: any) {
+      console.error("Blob post error:", error);
+      toast({ 
+        title: "Blob post failed", 
+        description: error.message || "Could not post blob", 
+        variant: "destructive" 
+      });
+    } finally {
+      setIsPostingBlob(false);
+    }
+  };
+
+  const handleReveal = async () => {
+    if (!revealCommitmentId || !revealBlobHash || !revealMetadataHash || !revealNonce || !bondAmount) {
+      toast({
+        title: "Missing Information",
+        description: "Please provide all required fields for reveal",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsRevealing(true);
+    try {
+      if (!walletConnected) {
+        await walletContextConnect();
+      }
+
+      const { ethers } = await import('ethers');
+      const bondWei = ethers.parseEther(bondAmount);
+
+      const txHash = await web3Service.revealSpec(
+        revealCommitmentId,
+        revealBlobHash,
+        revealMetadataHash,
+        parseInt(revealNonce),
+        bondWei
+      );
+
+      setRevealTxHash(txHash);
+
+      // Calculate spec ID (optional, for reference)
+      const calculatedSpecId = ethers.keccak256(ethers.solidityPacked(
+        ["bytes32", "address", "uint256", "address", "uint64"],
+        [revealBlobHash, targetContract, targetChainId, currentAccount, Date.now()]
+      ));
+      setSpecId(calculatedSpecId);
+
       toast({
         title: "Reveal Successful",
-        description: `Spec revealed successfully! TX: ${txHash.substring(0, 10)}...`,
+        description: `TX: ${txHash.substring(0, 10)}...`,
         variant: "default",
       });
     } catch (error: any) {
-      console.error("Error revealing spec:", error);
-      setCommitState(prev => ({ ...prev, status: 'committed' }));
+      console.error("Reveal error:", error);
       toast({
-        title: "Reveal Failed", 
-        description: error.message || "Failed to reveal. You can try again.",
+        title: "Reveal Failed",
+        description: error.message || "Failed to reveal",
         variant: "destructive",
       });
+    } finally {
+      setIsRevealing(false);
     }
   };
 
-  
-  useEffect(() => {
-    // Update time remaining every minute if we have a finalization timestamp
-    if (finalizationTimestamp) {
-      const interval = setInterval(() => {
-        const remaining = getTimeRemainingUntilFinalization(
-          finalizationTimestamp || '', 
-          timeout || undefined, 
-          createdTimestamp || undefined
-        );
-        setTimeRemaining(remaining);
-      }, 60000); // Update every minute
-      
-      return () => clearInterval(interval);
-    }
-  }, [finalizationTimestamp, timeout, createdTimestamp]);
-
-  // Load incentives when target contract changes
-  useEffect(() => {
-    if (walletConnected && targetContract) {
-      loadAvailableIncentives();
-    }
-  }, [walletConnected, targetContract]);
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast({
+      title: "Copied",
+      description: "Value copied to clipboard",
+      variant: "default",
+    });
+  };
 
   return (
     <Card className="p-6 mb-8 bg-gray-950 border-gray-800">
       <div className="flex flex-col gap-6">
-        {/* Enhanced Header with Process Information */}
+        {/* Header */}
         <div className="border-b border-gray-700 pb-4">
           <h2 className="text-2xl font-medium text-white mb-2">Submit ERC7730 Specification</h2>
           <p className="text-gray-400">
-            Upload your ERC7730 JSON file to the decentralized verification system using a 
-            <strong className="text-blue-400"> commit-reveal scheme</strong> with a 
-            <strong className="text-green-400"> 2-day challenge period</strong>.
+            Complete the commit-reveal process step by step. You can navigate between tabs to input values manually.
           </p>
-          <div className="flex items-center gap-4 mt-3 text-sm">
-            <div className="flex items-center gap-2 text-blue-400">
-              <Clock className="h-4 w-4" />
-              <span>2-day verification period</span>
-            </div>
-            <div className="flex items-center gap-2 text-purple-400">
-              <Gavel className="h-4 w-4" />
-              <span>Commit-reveal protection</span>
-            </div>
-          </div>
         </div>
 
-        {/* Step 1: Target Contract Input - Make this prominent and first */}
+        {/* File Upload Section - Always Visible */}
         <div className="bg-gradient-to-r from-blue-950/50 to-purple-950/50 p-5 rounded-lg border border-blue-800/50">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">1</div>
-            <div>
-              <Label htmlFor="targetContract" className="text-lg font-medium text-white">
-                Target Contract Details
-              </Label>
-              <p className="text-sm text-gray-400 mt-1">
-                Specify the contract and chain this ERC7730 metadata describes
-              </p>
-            </div>
-          </div>
-          
-          {/* Chain Selection */}
-          <div className="mb-4">
-            <Label htmlFor="chainSelect" className="text-sm font-medium text-gray-300 mb-2 block">
-              Target Blockchain
-            </Label>
-            <select
-              id="chainSelect"
-              value={targetChainId}
-              onChange={(e) => {
-                setTargetChainId(e.target.value);
-                // Clear incentives when chain changes
-                setAvailableIncentives([]);
-                setSelectedIncentiveId("");
-              }}
-              className="w-full p-3 bg-gray-900 border border-gray-600 rounded text-white text-base focus:border-blue-500"
-            >
-              <option value="1">Ethereum Mainnet</option>
-              <option value="11155111">Sepolia Testnet</option>
-              <option value="137">Polygon</option>
-              <option value="8453">Base</option>
-              <option value="42161">Arbitrum</option>
-              <option value="10">Optimism</option>
-              <option value="56">BNB Smart Chain</option>
-              <option value="43114">Avalanche</option>
-            </select>
-          </div>
-          
-          {/* Contract Address */}
-          <div>
-            <Label htmlFor="targetContract" className="text-sm font-medium text-gray-300 mb-2 block">
-              Contract Address
-            </Label>
-            <Input
-              id="targetContract"
-              type="text"
-              placeholder="0x... (Required: Enter the contract address for this specification)"
-              value={targetContract}
-              onChange={(e) => setTargetContract(e.target.value)}
-              className="bg-gray-900 border-gray-600 text-white placeholder-gray-400 focus:border-blue-500 h-12 text-base"
+          <Label className="text-lg font-medium text-white mb-3 block">
+            ERC7730 JSON File (Required for all steps)
+          </Label>
+          <div className="flex items-center gap-4">
+            <input
+              type="file"
+              id="jsonFileUpload"
+              accept=".json"
+              onChange={handleFileChange}
+              className="hidden"
             />
-          </div>
-          <div className="mt-4 space-y-3">
-            <div className="p-3 bg-amber-900/20 border border-amber-700/50 rounded-lg">
-              <div className="flex items-center gap-2 text-amber-400 mb-2">
-                <AlertCircle className="h-4 w-4" />
-                <strong>Chain ID Support</strong>
-              </div>
-              <p className="text-amber-300 text-sm">
-                KaiSign V1 now supports cross-chain specifications! Your metadata will include the target chain ID ({targetChainId}) 
-                and contract address. The verification system runs on <strong>Sepolia testnet</strong> but can validate specs for any chain.
-              </p>
-            </div>
-            <details className="group">
-              <summary className="text-blue-400 cursor-pointer hover:text-blue-300 text-sm flex items-center gap-2">
-                <span>📋 Show example Sepolia contracts</span>
-                <span className="text-xs text-gray-500 group-open:hidden">(click to expand)</span>
-              </summary>
-              <div className="mt-3 p-3 bg-gray-800 border border-gray-700 rounded-lg text-sm space-y-2">
-                <div className="grid grid-cols-1 gap-2">
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-300">KaiSign V1:</span>
-                    <code className="text-blue-400 bg-gray-900 px-2 py-1 rounded text-xs">0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719</code>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-300">USDC Sepolia:</span>
-                    <code className="text-blue-400 bg-gray-900 px-2 py-1 rounded text-xs">0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238</code>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-gray-300">Wrapped ETH:</span>
-                    <code className="text-blue-400 bg-gray-900 px-2 py-1 rounded text-xs">0xfff9976782d46cc05630d1f6ebab18b2324d6b14</code>
-                  </div>
-                </div>
-              </div>
-            </details>
-          </div>
-        </div>
-
-        {/* Step 2: File Upload */}
-        <div className="bg-gradient-to-r from-blue-950/50 to-purple-950/50 p-5 rounded-lg border border-blue-800/50">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="bg-purple-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold">2</div>
-            <div>
-              <Label className="text-lg font-medium text-white">
-                Upload ERC7730 JSON File
-              </Label>
-              <p className="text-sm text-gray-400 mt-1">
-                Upload your ERC7730 specification file for verification
-              </p>
-            </div>
-          </div>
-        
-        <div className="flex flex-col items-center justify-center gap-6 border-2 border-dashed border-gray-600 rounded-lg p-8">
-          <FileJson size={52} className="text-gray-400" />
-          <p className="text-sm text-gray-400 text-center">
-            {file ? `Selected: ${file.name}` : "Drag and drop your JSON file here or click to browse"}
-          </p>
-          
-          <input
-            type="file"
-            id="jsonFileUpload"
-            accept=".json"
-            onChange={handleFileChange}
-            className="hidden"
-          />
-          
-          {!file ? (
             <Button
               asChild
               variant="outline"
-              size="lg"
-              className="px-8 py-6 min-w-[220px] text-white bg-transparent border border-gray-700 hover:bg-gray-800 hover:border-gray-600 transition-colors"
+              className="text-white bg-transparent border-gray-600 hover:bg-gray-800"
             >
-              <label htmlFor="jsonFileUpload" className="cursor-pointer flex items-center justify-center text-base">
-                <Upload className="mr-2 h-5 w-5" />
-                Browse Files
+              <label htmlFor="jsonFileUpload" className="cursor-pointer flex items-center">
+                <Upload className="mr-2 h-4 w-4" />
+                {file ? file.name : "Choose File"}
               </label>
             </Button>
-          ) : (
-            <div className="flex flex-col items-center gap-4 w-full max-w-md">
+            {metadataHash && (
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-gray-400">Metadata Hash:</span>
+                <code className="text-green-400 bg-gray-900 px-2 py-1 rounded text-xs">
+                  {metadataHash.substring(0, 10)}...
+                </code>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => copyToClipboard(metadataHash)}
+                  className="h-6 w-6 p-0"
+                >
+                  <Copy className="h-3 w-3" />
+                </Button>
+              </div>
+            )}
+          </div>
+          
+          {/* Blob Search Helper */}
+          <div className="mt-4 p-3 bg-blue-900/30 border border-blue-700 rounded text-xs">
+            <div className="text-blue-200 mb-2">
+              <strong>🔍 Find Your Blobs:</strong> KaiSign Blob Sender Address
+            </div>
+            <div className="flex items-center gap-2">
+              <code className="text-blue-400 bg-gray-900 px-2 py-1 rounded">0x49d81a2f1DC42d230927e224c42E8b8E6A7f6f7D</code>
               <Button
-                asChild
-                variant="outline"
-                size="lg"
-                className="w-full px-8 py-6 text-white bg-transparent border border-gray-700 hover:bg-gray-800 hover:border-gray-600 transition-colors"
+                size="sm"
+                variant="ghost"
+                onClick={() => copyToClipboard("0x49d81a2f1DC42d230927e224c42E8b8E6A7f6f7D")}
+                className="h-6 w-6 p-0"
               >
-                <label htmlFor="jsonFileUpload" className="cursor-pointer flex items-center justify-center text-base">
-                  <Upload className="mr-2 h-5 w-5" />
-                  Change File
-                </label>
+                <Copy className="h-3 w-3" />
               </Button>
-              
-              {!ipfsHash ? (
-                <Button
-                  onClick={handleUpload}
-                  disabled={isVerifying || isUploading || !targetContract.trim() || !targetChainId}
-                  size="lg"
-                  className="w-full px-8 py-6 mt-2 text-base bg-white text-black hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              <a
+                href="https://sepolia.etherscan.io/address/0x49d81a2f1DC42d230927e224c42E8b8E6A7f6f7D#internaltx"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:underline ml-2"
+              >
+                View on Etherscan →
+              </a>
+            </div>
+            <p className="text-blue-300 mt-2">
+              Look for <strong>Type-3 (Blob)</strong> transactions to find your blob hashes
+            </p>
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-3 bg-gray-800">
+            <TabsTrigger value="commit" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">
+              1. Commit
+            </TabsTrigger>
+            <TabsTrigger value="blob" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+              2. Post Blob
+            </TabsTrigger>
+            <TabsTrigger value="reveal" className="data-[state=active]:bg-green-600 data-[state=active]:text-white">
+              3. Reveal
+            </TabsTrigger>
+          </TabsList>
+
+          {/* Commit Tab */}
+          <TabsContent value="commit" className="space-y-4 mt-6">
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="chainId" className="text-white mb-2 block">Target Chain ID</Label>
+                <select
+                  id="chainId"
+                  value={targetChainId}
+                  onChange={(e) => setTargetChainId(e.target.value)}
+                  className="w-full p-3 bg-gray-900 border border-gray-600 rounded text-white"
                 >
-                  {isVerifying || isUploading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      {isVerifying ? "Verifying JSON..." : "Uploading to IPFS..."}
-                    </>
-                  ) : !targetContract.trim() ? (
-                    "Enter Contract Address First"
-                  ) : !targetChainId ? (
-                    "Select Target Chain First"
-                  ) : (
-                    "Verify & Upload to IPFS"
-                  )}
-                </Button>
-              ) : !walletConnected ? (
-                <Button
-                  onClick={walletContextConnect}
-                  disabled={isConnecting}
-                  size="lg"
-                  className="w-full px-8 py-6 mt-2 text-base bg-blue-600 text-white hover:bg-blue-700"
-                >
-                  {isConnecting ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Connecting Wallet...
-                    </>
-                  ) : (
-                    "Connect Wallet"
-                  )}
-                </Button>
-              ) : commitState.status === 'idle' ? (
-                <Button
-                  onClick={commitSpec}
-                  disabled={false}
-                  size="lg"
-                  className="w-full px-8 py-6 mt-2 text-base bg-blue-600 text-white hover:bg-blue-700"
-                >
-                  {isSendingTransaction ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Committing...
-                    </>
-                  ) : (
-                    <>
-                      <Clock className="mr-2 h-4 w-4" />
-                      Commit Spec
-                    </>
-                  )}
-                </Button>
-              ) : commitState.status === 'committed' ? (
-                <div className="space-y-4">
-                  <div className="p-4 border border-green-700 rounded-lg bg-green-900/30">
-                    <div className="flex items-center mb-2">
-                      <CheckCircle className="h-5 w-5 text-green-400 mr-2" />
-                      <span className="font-medium text-green-100">Commitment Successful!</span>
-                    </div>
-                    <div className="text-sm text-gray-300 space-y-1">
-                      <div>Commitment ID: <code className="text-xs bg-gray-800 px-1 rounded">{commitState.commitmentId?.substring(0, 10)}...</code></div>
-                      <div>TX: <code className="text-xs bg-gray-800 px-1 rounded">{commitState.commitTxHash?.substring(0, 10)}...</code></div>
-                      <div className="text-orange-400 font-medium">⏰ You have 1 hour to reveal!</div>
-                    </div>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button
-                      onClick={revealSpec}
-                      disabled={false}
-                      size="lg"
-                      className="flex-1 px-8 py-6 text-base bg-green-600 text-white hover:bg-green-700"
-                    >
-                      {isSendingTransaction ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Revealing...
-                        </>
-                      ) : (
-                        <>
-                          <CheckCircle className="mr-2 h-4 w-4" />
-                          Reveal Spec
-                        </>
-                      )}
-                    </Button>
-                    <Button
-                      onClick={walletContextConnect}
-                      variant="outline"
-                      size="lg"
-                      className="px-4 py-6 text-base border-gray-600 hover:bg-gray-800 text-white"
-                    >
-                      Reconnect Wallet
-                    </Button>
-                  </div>
-                </div>
-              ) : commitState.status === 'revealed' ? (
-                <div className="p-4 border border-green-700 rounded-lg bg-green-900/30">
-                  <div className="flex items-center mb-2">
-                    <CheckCircle className="h-5 w-5 text-green-400 mr-2" />
-                    <span className="font-medium text-green-100">Spec Successfully Submitted!</span>
-                  </div>
-                  <div className="text-sm text-gray-300 space-y-1">
+                  <option value="1">Ethereum Mainnet (1)</option>
+                  <option value="11155111">Sepolia Testnet (11155111)</option>
+                  <option value="137">Polygon (137)</option>
+                  <option value="8453">Base (8453)</option>
+                  <option value="42161">Arbitrum (42161)</option>
+                  <option value="10">Optimism (10)</option>
+                </select>
+              </div>
+
+              <div>
+                <Label htmlFor="targetContract" className="text-white mb-2 block">Target Contract Address</Label>
+                <Input
+                  id="targetContract"
+                  type="text"
+                  placeholder="0x..."
+                  value={targetContract}
+                  onChange={(e) => setTargetContract(e.target.value)}
+                  className="bg-gray-900 border-gray-600 text-white"
+                />
+              </div>
+
+              {commitmentId && (
+                <div className="p-4 bg-green-900/30 border border-green-700 rounded-lg space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-300">Commitment ID:</span>
                     <div className="flex items-center gap-2">
-                      <span>Reveal TX:</span>
-                      <code className="text-xs bg-gray-800 px-1 rounded">{commitState.revealTxHash?.substring(0, 10)}...</code>
-                      {isValidTxHash(commitState.revealTxHash) && (
-                        <a
-                          href={`https://sepolia.etherscan.io/tx/${commitState.revealTxHash}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-xs text-blue-400 hover:underline"
-                        >
-                          View on Etherscan
-                        </a>
-                      )}
+                      <code className="text-xs bg-gray-800 px-2 py-1 rounded text-green-400">
+                        {commitmentId.substring(0, 16)}...
+                      </code>
+                      <Button size="sm" variant="ghost" onClick={() => copyToClipboard(commitmentId)} className="h-6 w-6 p-0">
+                        <Copy className="h-3 w-3" />
+                      </Button>
                     </div>
                   </div>
-                </div>
-              ) : (
-                <div className="w-full p-4 bg-green-900/30 border border-green-700 rounded-lg text-center">
-                  <p className="text-green-500 font-medium mb-1">Transaction Submitted!</p>
-                  {transactionHash && /^0x[a-fA-F0-9]{64}$/.test(transactionHash) ? (
-                    <a 
-                      href={`https://sepolia.etherscan.io/tx/${transactionHash}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-sm text-blue-400 hover:underline"
-                    >
-                      View on Etherscan
-                    </a>
-                  ) : (
-                    <span className="text-sm text-gray-400">Awaiting valid transaction hash…</span>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-300">Nonce:</span>
+                    <div className="flex items-center gap-2">
+                      <code className="text-xs bg-gray-800 px-2 py-1 rounded text-green-400">{commitNonce}</code>
+                      <Button size="sm" variant="ghost" onClick={() => copyToClipboard(commitNonce)} className="h-6 w-6 p-0">
+                        <Copy className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  </div>
+                  {commitTxHash && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-300">TX Hash:</span>
+                      <a
+                        href={`https://sepolia.etherscan.io/tx/${commitTxHash}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-blue-400 hover:underline"
+                      >
+                        View on Etherscan
+                      </a>
+                    </div>
                   )}
                 </div>
               )}
-            </div>
-          )}
-        </div>
-        </div>
-        
-        {/* Available Incentives Section */}
-        {walletConnected && targetContract && (
-          <div className="flex flex-col gap-2 mt-4">
-            <div className="flex items-center justify-between">
-              <Label className="text-sm font-medium text-gray-300 flex items-center">
-                <Gift className="mr-2 h-4 w-4 text-green-500" />
-                Available Incentives for this Contract
-                {isLoadingIncentives && <Loader2 className="ml-2 h-4 w-4 animate-spin" />}
-              </Label>
+
               <Button
-                onClick={loadAvailableIncentives}
-                size="sm"
-                variant="outline"
-                className="text-xs"
-                disabled={isLoadingIncentives}
+                onClick={handleCommit}
+                disabled={isCommitting || !targetContract || !jsonData}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
               >
-                Refresh
+                {isCommitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Committing...
+                  </>
+                ) : (
+                  <>
+                    <Clock className="mr-2 h-4 w-4" />
+                    Commit Specification
+                  </>
+                )}
               </Button>
-            </div>
-            
-            {availableIncentives.length > 0 ? (
-              <div className="space-y-2">
-                <div className="grid gap-2">
-                  <div 
-                    className={`p-3 border rounded-lg cursor-pointer transition-colors ${
-                      selectedIncentiveId === "" 
-                        ? "border-blue-500 bg-blue-900/20" 
-                        : "border-gray-700 bg-gray-900 hover:border-gray-600"
-                    }`}
-                    onClick={() => setSelectedIncentiveId("")}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-300">No Incentive (Standard Submission)</span>
-                      {selectedIncentiveId === "" && (
-                        <CheckCircle className="h-4 w-4 text-blue-500" />
-                      )}
-                    </div>
-                  </div>
-                  
-                  {availableIncentives.map((incentive: any) => (
-                    <div 
-                      key={incentive.id}
-                      className={`p-3 border rounded-lg cursor-pointer transition-colors ${
-                        selectedIncentiveId === incentive.id 
-                          ? "border-green-500 bg-green-900/20" 
-                          : "border-gray-700 bg-gray-900 hover:border-gray-600"
-                      }`}
-                      onClick={() => setSelectedIncentiveId(incentive.id)}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-2">
-                          <DollarSign className="h-4 w-4 text-green-500" />
-                          <span className="text-sm font-medium">
-                            {incentive.amount} {incentive.token === "0x0000000000000000000000000000000000000000" ? "ETH" : "Tokens"}
-                          </span>
-                          <Badge variant="secondary" className="bg-green-600">
-                            Active
-                          </Badge>
-                        </div>
-                        {selectedIncentiveId === incentive.id && (
-                          <CheckCircle className="h-4 w-4 text-green-500" />
-                        )}
-                      </div>
-                      <p className="text-xs text-gray-400 mt-1">{incentive.description}</p>
-                      <div className="flex items-center justify-between text-xs text-gray-500 mt-2">
-                        <span>Creator: {incentive.creator?.substring(0, 8)}...</span>
-                        <span>Expires: {new Date(incentive.deadline * 1000).toISOString().split('T')[0]}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                
-                <div className="mt-2 p-2 bg-green-900/30 border border-green-700 rounded text-xs text-green-400">
-                  <strong>💡 Tip:</strong> Select an incentive to earn additional rewards if your submission is accepted!
-                  The incentive will be automatically claimed when your specification is finalized.
-                </div>
-              </div>
-            ) : !isLoadingIncentives ? (
-              <div className="p-3 bg-gray-800 border border-gray-700 rounded text-center">
-                <Gift className="mx-auto h-6 w-6 text-gray-400 mb-2" />
-                <p className="text-sm text-gray-400">No incentives available for this contract</p>
-                <p className="text-xs text-gray-500 mt-1">
-                  Be the first to create an incentive in the <Link href="/kaisign-v1" className="text-blue-400 hover:underline">V1 Manager</Link>
+
+              <div className="p-3 bg-blue-900/20 border border-blue-700 rounded-lg">
+                <p className="text-sm text-blue-300">
+                  <strong>Note:</strong> After committing, you have 1 hour to complete the reveal. The commitment locks in your
+                  specification details without revealing them yet.
                 </p>
               </div>
-            ) : (
-              <div className="p-3 bg-gray-800 border border-gray-700 rounded text-center">
-                <Loader2 className="mx-auto h-6 w-6 animate-spin text-gray-400 mb-2" />
-                <p className="text-sm text-gray-400">Loading available incentives...</p>
-              </div>
-            )}
-          </div>
-        )}
-        
-        {verificationStatus === "success" && !ipfsHash && (
-          <div className="flex items-center gap-2 text-green-500 mt-4">
-            <CheckCircle className="h-5 w-5" />
-            <span>File verification process started!</span>
-          </div>
-        )}
-        
-        {ipfsHash && (
-          <div className="flex flex-col gap-2 text-green-500 mt-4">
-            <div className="flex items-center gap-2">
-              <CheckCircle className="h-5 w-5" />
-              <span className="ml-2">
-                Blob Versioned Hash: <span className="font-mono text-xs bg-gray-800 px-2 py-1 rounded">{ipfsHash}</span>
-              </span>
             </div>
-            
-            <div className="mt-3 p-4 bg-blue-900/30 border border-blue-700 rounded-lg">
-              <div className="flex items-center gap-2 mb-2">
-                <ExternalLink className="h-4 w-4 text-blue-400" />
-                <span className="text-blue-100 font-medium">Check Verification Status</span>
-              </div>
-              <p className="text-sm text-gray-300 mb-3">
-                To check the verification status and manage your submissions, visit the V1 Manager.
-              </p>
-              <Link 
-                href="/kaisign-v1"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-              >
-                <ExternalLink className="h-4 w-4" />
-                Go to V1 Manager
-              </Link>
-            </div>
-            
-            {bondInfo && (
-              <div className="mt-3 p-4 bg-gray-800 rounded-lg border border-gray-700">
-                <h4 className="text-sm font-medium text-white mb-2">Bond Information</h4>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                  <div>
-                    <span className="text-gray-400">Minimum Bond:</span>
-                    <div className="text-white font-mono">{(Number(bondInfo.minBond) / 10**18).toFixed(5)} ETH</div>
-                  </div>
-                  <div>
-                    <span className="text-gray-400">Current Bond:</span>
-                    <div className="text-white font-mono">
-                      {bondInfo.hasAnswers 
-                        ? `${(Number(bondInfo.currentBond) / 10**18).toFixed(5)} ETH`
-                        : "No answers yet"
-                      }
+          </TabsContent>
+
+          {/* Blob Tab */}
+          <TabsContent value="blob" className="space-y-4 mt-6">
+            <div className="space-y-4">
+              {blobVersionedHash && (
+                <div className="p-4 bg-green-900/30 border border-green-700 rounded-lg space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-300">Blob Hash:</span>
+                    <div className="flex items-center gap-2">
+                      <code className="text-xs bg-gray-800 px-2 py-1 rounded text-green-400">
+                        {blobVersionedHash.substring(0, 16)}...
+                      </code>
+                      <Button size="sm" variant="ghost" onClick={() => copyToClipboard(blobVersionedHash)} className="h-6 w-6 p-0">
+                        <Copy className="h-3 w-3" />
+                      </Button>
                     </div>
                   </div>
-                  <div>
-                    <span className="text-gray-400">Required Next Bond:</span>
-                    <div className="text-white font-mono">{(Number(bondInfo.requiredNextBond) / 10**18).toFixed(5)} ETH</div>
+                  {blobTxHash && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-300">TX Hash:</span>
+                      <a
+                        href={`https://sepolia.etherscan.io/tx/${blobTxHash}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs text-blue-400 hover:underline"
+                      >
+                        View on Etherscan
+                      </a>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <Button
+                onClick={handlePostBlob}
+                disabled={isPostingBlob || !jsonData}
+                className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+              >
+                {isPostingBlob ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Posting Blob (up to 3 min)...
+                  </>
+                ) : (
+                  <>
+                    <Upload className="mr-2 h-4 w-4" />
+                    Post as Blob
+                  </>
+                )}
+              </Button>
+
+              <div className="relative py-4">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-600"></div>
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-gray-950 px-2 text-gray-400">Or enter manually</span>
+                </div>
+              </div>
+
+              <div>
+                <Label htmlFor="manualBlob" className="text-white mb-2 block">
+                  Manual Blob Hash (if already posted)
+                </Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="manualBlob"
+                    type="text"
+                    placeholder="0x01..."
+                    value={manualBlobHash}
+                    onChange={(e) => setManualBlobHash(e.target.value)}
+                    className="bg-gray-900 border-gray-600 text-white flex-1"
+                  />
+                  <Button
+                    onClick={() => {
+                      if (manualBlobHash.startsWith('0x01') && manualBlobHash.length === 66) {
+                        setBlobVersionedHash(manualBlobHash);
+                        setRevealBlobHash(manualBlobHash);
+                        toast({
+                          title: "Blob Hash Set",
+                          description: "You can now proceed to reveal",
+                          variant: "default",
+                        });
+                      } else {
+                        toast({
+                          title: "Invalid Blob Hash",
+                          description: "Blob hash must start with 0x01 and be 66 characters",
+                          variant: "destructive",
+                        });
+                      }
+                    }}
+                    variant="outline"
+                    className="text-white border-gray-600 hover:bg-gray-800"
+                  >
+                    Set Hash
+                  </Button>
+                </div>
+              </div>
+
+              <div className="p-3 bg-purple-900/20 border border-purple-700 rounded-lg">
+                <p className="text-sm text-purple-300">
+                  <strong>Note:</strong> The blob contains your ERC7730 JSON data and will be publicly visible on-chain.
+                  Make sure you've committed before posting the blob.
+                </p>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Reveal Tab */}
+          <TabsContent value="reveal" className="space-y-4 mt-6">
+            <div className="space-y-4">
+              {/* Warning for manual entry */}
+              {(!commitmentId || revealCommitmentId !== commitmentId) && revealCommitmentId && (
+                <div className="p-3 bg-orange-900/30 border border-orange-700 rounded-lg">
+                  <p className="text-sm text-orange-300">
+                    <strong>⚠️ Manual Entry Mode:</strong> You're entering commitment details manually. 
+                    Make sure all values (commitment ID, nonce, metadata hash) match exactly what was used during the commit step.
+                    If you're getting errors, try starting fresh with a new commit.
+                  </p>
+                </div>
+              )}
+              
+              <div>
+                <Label htmlFor="revealCommitmentId" className="text-white mb-2 block">Commitment ID</Label>
+                <Input
+                  id="revealCommitmentId"
+                  type="text"
+                  placeholder="0x..."
+                  value={revealCommitmentId}
+                  onChange={(e) => setRevealCommitmentId(e.target.value)}
+                  className="bg-gray-900 border-gray-600 text-white"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="revealBlobHash" className="text-white mb-2 block">Blob Versioned Hash</Label>
+                <Input
+                  id="revealBlobHash"
+                  type="text"
+                  placeholder="0x01..."
+                  value={revealBlobHash}
+                  onChange={(e) => setRevealBlobHash(e.target.value)}
+                  className="bg-gray-900 border-gray-600 text-white"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="revealMetadataHash" className="text-white mb-2 block">Metadata Hash</Label>
+                <Input
+                  id="revealMetadataHash"
+                  type="text"
+                  placeholder="0x..."
+                  value={revealMetadataHash}
+                  onChange={(e) => setRevealMetadataHash(e.target.value)}
+                  className="bg-gray-900 border-gray-600 text-white"
+                />
+              </div>
+
+              <div>
+                <Label htmlFor="revealNonce" className="text-white mb-2 block">
+                  Nonce <span className="text-xs text-gray-400">(Must match the nonce from commit)</span>
+                </Label>
+                <Input
+                  id="revealNonce"
+                  type="text"
+                  placeholder="e.g., 123456"
+                  value={revealNonce}
+                  onChange={(e) => setRevealNonce(e.target.value)}
+                  className="bg-gray-900 border-gray-600 text-white"
+                />
+                {revealNonce && (
+                  <p className="text-xs text-gray-400 mt-1">
+                    This nonce must be the exact same value that was generated during the commit step.
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <Label htmlFor="bondAmount" className="text-white mb-2 block">Bond Amount (ETH)</Label>
+                <Input
+                  id="bondAmount"
+                  type="text"
+                  placeholder="0.01"
+                  value={bondAmount}
+                  onChange={(e) => setBondAmount(e.target.value)}
+                  className="bg-gray-900 border-gray-600 text-white"
+                />
+              </div>
+
+              {revealTxHash && (
+                <div className="p-4 bg-green-900/30 border border-green-700 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-300">Reveal TX:</span>
+                    <a
+                      href={`https://sepolia.etherscan.io/tx/${revealTxHash}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs text-blue-400 hover:underline"
+                    >
+                      View on Etherscan
+                    </a>
                   </div>
+                  {specId && (
+                    <div className="flex items-center justify-between mt-2">
+                      <span className="text-sm text-gray-300">Spec ID:</span>
+                      <code className="text-xs bg-gray-800 px-2 py-1 rounded text-green-400">
+                        {specId.substring(0, 16)}...
+                      </code>
+                    </div>
+                  )}
                 </div>
-                <div className="mt-2 text-xs text-gray-400">
-                  {bondInfo.hasAnswers 
-                    ? "⚠️ This question has existing answers. Your bond must be double the current bond to challenge."
-                    : "✅ This is the first answer. You only need to meet the minimum bond requirement."
-                  }
-                </div>
+              )}
+
+              <Button
+                onClick={handleReveal}
+                disabled={isRevealing || !revealCommitmentId || !revealBlobHash || !revealMetadataHash || !revealNonce}
+                className="w-full bg-green-600 hover:bg-green-700 text-white"
+              >
+                {isRevealing ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Revealing...
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle className="mr-2 h-4 w-4" />
+                    Reveal Specification
+                  </>
+                )}
+              </Button>
+
+              <div className="p-3 bg-green-900/20 border border-green-700 rounded-lg">
+                <p className="text-sm text-green-300">
+                  <strong>Note:</strong> The reveal must be done within 1 hour of commitment. This step requires a bond
+                  payment (minimum 0.01 ETH) which can be recovered after the challenge period.
+                </p>
+                <p className="text-xs text-orange-400 mt-2">
+                  <strong>⚠️ Important:</strong> Each commitment can only be revealed once. If you get an "InvalidReveal" error,
+                  it usually means the nonce doesn't match what was used during commit, or this commitment has already been revealed.
+                  Create a new commitment if needed.
+                </p>
               </div>
-            )}
-            
-            {blobReceiptUrl && (
-              <div className="text-sm text-gray-400">
-                View on: 
-                <a 
-                  href={blobReceiptUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ml-2 text-blue-400 hover:underline"
-                >
-                  Etherscan Blob
-                </a>
-              </div>
-            )}
-            {timeRemaining && (
-              <div className="mt-1 p-2 bg-gray-800 rounded-md text-sm">
-                <p className="text-amber-500">Verification Status: <span className="font-medium">In Progress</span></p>
-                <p className="text-gray-300 mt-1">{timeRemaining}</p>
-              </div>
-            )}
-            <p className="text-xs text-gray-500 mt-1">Note: Blob content is visible via Etherscan’s blob view.</p>
-          </div>
-        )}
-        
-        {verificationStatus === "error" && (
-          <div className="flex items-center gap-2 text-red-500 mt-4">
-            <AlertCircle className="h-5 w-5" />
-            <span>Invalid JSON format. Please upload a valid ERC7730 specification.</span>
-          </div>
-        )}
+            </div>
+          </TabsContent>
+        </Tabs>
+
+        {/* Navigation Buttons */}
+        <div className="flex justify-between pt-4 border-t border-gray-700">
+          <Button
+            variant="outline"
+            onClick={() => {
+              if (activeTab === "blob") setActiveTab("commit");
+              else if (activeTab === "reveal") setActiveTab("blob");
+            }}
+            disabled={activeTab === "commit"}
+            className="text-white border-gray-600 hover:bg-gray-800"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Previous Step
+          </Button>
+          <Button
+            variant="outline"
+            onClick={() => {
+              if (activeTab === "commit") setActiveTab("blob");
+              else if (activeTab === "blob") setActiveTab("reveal");
+            }}
+            disabled={activeTab === "reveal"}
+            className="text-white border-gray-600 hover:bg-gray-800"
+          >
+            Next Step
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        </div>
+
+        {/* Help Section */}
+        <div className="mt-6 p-4 bg-blue-900/20 border border-blue-700 rounded-lg">
+          <h3 className="text-lg font-medium text-blue-100 mb-2">Quick Guide</h3>
+          <ol className="list-decimal list-inside space-y-1 text-sm text-blue-200">
+            <li><strong>Commit:</strong> Create a hidden commitment with your contract details</li>
+            <li><strong>Post Blob:</strong> Upload your ERC7730 JSON as an EIP-4844 blob</li>
+            <li><strong>Reveal:</strong> Reveal your commitment with the blob hash and pay the bond</li>
+          </ol>
+          <p className="text-xs text-blue-300 mt-3">
+            You can navigate between tabs to enter values manually or use the automated flow.
+            All values are auto-populated when available.
+          </p>
+        </div>
       </div>
     </Card>
   );
-} 
+}

@@ -22,9 +22,15 @@ export interface FunctionMetadata {
 export interface SpecHistory {
   id: string;
   creator: string;
-  ipfsCID: string;
+  ipfsCID: string; // Legacy field
+  blobHash?: string; // New field for blob hash
   createdTimestamp: string;
+  proposedTimestamp?: string;
   status: 'COMMITTED' | 'SUBMITTED' | 'PROPOSED' | 'FINALIZED' | 'CANCELLED';
+  targetContract?: string;
+  chainId?: number;
+  questionId?: string;
+  incentiveId?: string;
 }
 
 export interface IPFSMetadata {
