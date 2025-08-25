@@ -10,7 +10,7 @@ dataSources:
     name: KaiSign
     network: sepolia
     source:
-      address: "0xA2119F82f3F595DB34fa059785BeA2f4F78D418B"
+      address: "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719"
       abi: KaiSign
       startBlock: 8840000
     mapping:
@@ -46,7 +46,7 @@ dataSources:
           handler: handleLogProposeSpec
         - event: LogHandleResult(indexed bytes32,bool)
           handler: handleLogHandleResult
-        - event: LogIncentiveCreated(indexed bytes32,indexed address,indexed address,uint256,address,uint256,uint64,string)
+        - event: LogIncentiveCreated(indexed bytes32,indexed address,indexed address,uint256,uint256,uint64,string)
           handler: handleLogIncentiveCreated
         - event: LogIncentiveClaimed(indexed bytes32,indexed address,indexed bytes32,uint256)
           handler: handleLogIncentiveClaimed
