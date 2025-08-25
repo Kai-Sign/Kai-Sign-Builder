@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ethers } from "ethers";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
@@ -11,6 +12,7 @@ import { Badge } from "~/components/ui/badge";
 import { useToast } from "~/hooks/use-toast";
 import { web3Service } from "~/lib/web3Service";
 import { createKaiSignClient } from "~/lib/graphClient";
+import { subgraphClient, type SubgraphSpec } from "~/lib/subgraphQueries";
 import { useWallet } from "~/contexts/WalletContext";
 import { 
   Gift, 
@@ -23,7 +25,8 @@ import {
   Coins,
   FileText,
   TrendingUp,
-  DollarSign
+  DollarSign,
+  RefreshCw
 } from "lucide-react";
 import Link from "next/link";
 
@@ -61,7 +64,6 @@ export default function KaiSignV1Page() {
   // Incentive creation state
   const [targetContract, setTargetContract] = useState("");
   const [selectedChain, setSelectedChain] = useState("1"); // Default to mainnet
-  const [tokenAddress, setTokenAddress] = useState("");
   const [incentiveAmount, setIncentiveAmount] = useState("");
   const [description, setDescription] = useState("");
   const [isCreatingIncentive, setIsCreatingIncentive] = useState(false);
@@ -148,156 +150,210 @@ export default function KaiSignV1Page() {
   const loadUserData = async (account: string) => {
     setIsLoadingData(true);
     try {
-      // Load user's incentive IDs
-      const incentiveIds = await web3Service.getUserIncentives(account);
-      
-      // Load detailed data for each incentive
-      const incentiveDetails = await Promise.all(
-        incentiveIds.map(async (id: string) => {
-          try {
-            const data = await web3Service.getIncentiveData(id);
-            return { incentiveId: id, ...data };
-          } catch (error) {
-            console.error(`Error loading incentive ${id}:`, error);
-            return null;
-          }
-        })
-      );
-      
-      // Filter out failed loads and set data
-      const validIncentives = incentiveDetails.filter(Boolean) as IncentiveData[];
-      setUserIncentives(validIncentives);
-      
-      // Load user's specifications from the subgraph (much more reliable!)
+      // Skip subgraph - go straight to direct queries
       const userSpecs: SpecData[] = [];
       
+      // Query ALL specs from EVERYONE using getSpecsByContract
       try {
-        console.log(`🔍 Querying subgraph for user specs: ${account}`);
+        const provider = new ethers.JsonRpcProvider("https://ethereum-sepolia-rpc.publicnode.com");
         
-        // Create subgraph client
-        const graphClient = createKaiSignClient('sepolia');
+        const contract = new ethers.Contract(
+          "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719",
+          [
+            "function getSpecsByContract(address,uint256) view returns (bytes32[])",
+            "function specs(bytes32) view returns (uint64,uint64,uint8,uint80,uint32,address,address,bytes32,bytes32,bytes32,uint256)",
+            "event LogCommitSpec(address indexed committer, bytes32 indexed commitmentId, address indexed targetContract, uint256 chainId, uint256 bondAmount, uint64 revealDeadline)",
+            "function commitments(bytes32) view returns (address,uint64,uint32,address,bool,uint80,uint8,uint64,uint256,bytes32)"
+          ],
+          provider
+        );
         
-        // Get all user specs from subgraph
-        const subgraphSpecs = await graphClient.getUserSpecs(account);
-        console.log(`📋 Found ${subgraphSpecs.length} specs from subgraph`);
+        // Get specs for the contract
+        const specIds = await contract.getSpecsByContract("0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719", 11155111);
+        console.log("=== LOADING ALL SPECS ===");
+        console.log("Found", specIds.length, "specs for contract");
         
-        // Convert subgraph data to our SpecData format
-        for (const spec of subgraphSpecs) {
-          const statusMap: { [key: string]: number } = {
-            'COMMITTED': 0,
-            'SUBMITTED': 1, 
-            'PROPOSED': 2,
-            'FINALIZED': 3,
-            'CANCELLED': 4
-          };
-          
-          const specData: SpecData = {
-            specId: spec.id,
-            creator: spec.creator,
-            targetContract: spec.targetContract || "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719",
-            blobHash: "", // No blob hash from subgraph
-            status: statusMap[spec.status] || 0,
-            createdTimestamp: parseInt(spec.createdTimestamp),
-            proposedTimestamp: parseInt(spec.proposedTimestamp || spec.createdTimestamp),
-            totalBonds: "0", // Not available in subgraph
-            chainId: 11155111, // Default to Sepolia
-            questionId: "",
-            incentiveId: ""
-          };
-          
-          userSpecs.push(specData);
-          console.log(`✅ Added spec: ${spec.id.substring(0, 8)}... status: ${spec.status} (${spec.status === 'FINALIZED' ? 'FINALIZED' : 'other'})`);
+        for (const specId of specIds) {
+          try {
+            const spec = await contract.specs(specId);
+            const specData = {
+              specId,
+              creator: spec[5], // creator address (index 5)
+              targetContract: spec[6], // targetContract (index 6)
+              blobHash: spec[7] || "", // blobHash (bytes32, index 7)
+              status: Number(spec[2]), // status (index 2)
+              createdTimestamp: Number(spec[0]), // createdTimestamp (index 0)
+              proposedTimestamp: Number(spec[1]), // proposedTimestamp (index 1)
+              totalBonds: spec[3]?.toString() || "0", // totalBonds (uint80, index 3)
+              chainId: Number(spec[10]), // chainId (index 10)
+              questionId: spec[8] || "", // questionId (index 8)
+              incentiveId: spec[9] || "" // incentiveId (index 9)
+            };
+            userSpecs.push(specData);
+            console.log("Added spec:", specId);
+          } catch (error) {
+            console.error(`Error loading spec ${specId}:`, error);
+          }
         }
         
-        console.log(`📋 Total user specs loaded from subgraph: ${userSpecs.length}`);
+        // Also get commitment info to find creators
+        const currentBlock = await provider.getBlockNumber();
+        const fromBlock = Math.max(currentBlock - 45000, 8840000);
         
-        // Always run fallback contract query if subgraph returned 0 specs or had errors
-        if (userSpecs.length === 0) {
-          console.log("🔄 Subgraph returned 0 specs, running direct contract queries...");
+        const commitFilter = contract.filters.LogCommitSpec();
+        const commitEvents = await contract.queryFilter(commitFilter, fromBlock, "latest");
+        
+        console.log("Found", commitEvents.length, "commitment events");
+        
+        // Map commitment creators
+        for (const event of commitEvents) {
+          const commitmentId = event.args.commitmentId;
+          const committer = event.args.committer;
+          
+          // Check if this commitment is revealed and matches any spec
+          try {
+            const commitment = await contract.commitments(commitmentId);
+            if (commitment[4]) { // isRevealed
+              // Try to find matching spec (commitment might be the spec ID for revealed ones)
+              const spec = userSpecs.find(s => s.specId === commitmentId);
+              if (spec) {
+                spec.creator = committer;
+                console.log("Updated spec creator:", commitmentId, "=>", committer);
+              }
+            }
+          } catch (error) {
+            console.error("Error checking commitment:", error);
+          }
+        }
+      } catch (error) {
+        console.error("Error loading specs:", error);
+      }
+      
+      console.log("Final userSpecs array before setting:", userSpecs);
+      console.log("Total specs to display:", userSpecs.length);
+      setContractSpecs(userSpecs);
+      
+      // Query ALL incentives using events OR by scanning known creators
+      const validIncentives: IncentiveData[] = [];
+      try {
+        const provider = new ethers.JsonRpcProvider("https://ethereum-sepolia-rpc.publicnode.com");
+        
+        const contract = new ethers.Contract(
+          "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719",
+          ["event LogIncentiveCreated(bytes32 indexed incentiveId, address indexed creator, address indexed targetContract, uint256 chainId, address token, uint256 amount, uint64 deadline, string description)",
+           "function incentives(bytes32) view returns (address,address,uint128,uint64,uint64,address,bool,bool,uint80,uint256,string)",
+           "function getUserIncentives(address) view returns (bytes32[])"],
+          provider
+        );
+        
+        console.log("=== LOADING ALL INCENTIVES ===");
+        
+        const allIncentiveIds = new Set<string>();
+        
+        // Try to get LogIncentiveCreated events in smaller chunks
+        const currentBlock = await provider.getBlockNumber();
+        const blockRanges = [
+          { from: currentBlock - 10000, to: currentBlock },
+          { from: currentBlock - 30000, to: currentBlock - 10001 },
+          { from: currentBlock - 50000, to: currentBlock - 30001 },
+          { from: 8840000, to: 8890000 }
+        ];
+        
+        for (const range of blockRanges) {
+          if (range.from < 0) continue;
+          try {
+            console.log(`Searching blocks ${range.from} to ${range.to} for incentive events...`);
+            const filter = contract.filters.LogIncentiveCreated();
+            const events = await contract.queryFilter(filter, range.from, range.to);
+            
+            if (events.length > 0) {
+              console.log(`Found ${events.length} incentive event(s)`);
+              for (const event of events) {
+                allIncentiveIds.add(event.args.incentiveId);
+              }
+            }
+          } catch (error) {
+            // If events fail, we'll fall back to checking known addresses
+            console.log("Could not query events in range:", error.message);
+          }
+        }
+        
+        // As a fallback, also check addresses we've seen in specs/commitments
+        // Get unique creator addresses from specs
+        const creatorAddresses = new Set<string>();
+        for (const spec of userSpecs) {
+          if (spec.creator && spec.creator !== "0x0000000000000000000000000000000000000000") {
+            creatorAddresses.add(spec.creator.toLowerCase());
+          }
+        }
+        
+        // Add the current connected account
+        if (account) {
+          creatorAddresses.add(account.toLowerCase());
+        }
+        
+        console.log(`Checking ${creatorAddresses.size} creator addresses for incentives...`);
+        
+        // Check each creator for their incentives
+        for (const addr of creatorAddresses) {
+          try {
+            const incentiveIds = await contract.getUserIncentives(addr);
+            if (incentiveIds.length > 0) {
+              console.log(`  ${addr}: ${incentiveIds.length} incentive(s)`);
+              for (const id of incentiveIds) {
+                allIncentiveIds.add(id);
+              }
+            }
+          } catch (error) {
+            console.error(`Error checking ${addr}:`, error.message);
+          }
+        }
+        
+        console.log(`Total unique incentives found: ${allIncentiveIds.size}`);
+        
+        // Load each incentive's data
+        for (const incentiveId of allIncentiveIds) {
+          try {
+            const data = await contract.incentives(incentiveId);
+            // Only add if incentive exists (has a creator)
+            if (data[0] !== "0x0000000000000000000000000000000000000000") {
+              validIncentives.push({
+                incentiveId: incentiveId,
+                id: incentiveId,
+                creator: data[0], // creator address
+                amount: data[2].toString(), // amount
+                deadline: Number(data[3]), // deadline
+                createdAt: Number(data[4]), // createdAt timestamp
+                targetContract: data[5], // targetContract
+                specID: "0x0000000000000000000000000000000000000000000000000000000000000000", // No spec field in this struct
+                isActive: data[7], // isActive
+                isClaimed: data[6], // isClaimed
+                chainId: Number(data[9]), // chainId
+                description: data[10] || "Incentive for ERC7730 spec creation", // description
+                token: data[1] // token address
+              });
+              console.log("Loaded incentive from:", data[0]);
+            }
+          } catch (error) {
+            console.error(`Error loading incentive ${incentiveId}:`, error);
+          }
         }
         
       } catch (error) {
-        console.error("Error loading user specifications from subgraph:", error);
+        console.error("Error loading incentives:", error);
       }
       
-      // Always run direct contract queries as fallback (either due to error or 0 results)
-      if (userSpecs.length === 0) {
-        try {
-          
-          // Get all user incentives to find target contracts
-          const contractsFromIncentives = new Set<string>();
-          validIncentives.forEach(incentive => {
-            contractsFromIncentives.add(incentive.targetContract);
-          });
-          
-          // Add common KaiSign contract addresses
-          const knownKaiSignContracts = [
-            "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719", // Current known address
-            // Add more known KaiSign deployments here as needed
-          ];
-          
-          const contractsToCheck = new Set([
-            ...contractsFromIncentives,
-            ...knownKaiSignContracts
-          ]);
-          
-          
-          for (const targetContract of contractsToCheck) {
-            try {
-              const specIds = await web3Service.getSpecsByContract(targetContract, 11155111);
-              
-              for (const specId of specIds) {
-                try {
-                  const specData = await web3Service.getSpecData(specId);
-                  
-                  if (specData.creator.toLowerCase() === account.toLowerCase()) {
-                    if (!userSpecs.find(s => s.specId === specId)) {
-                      userSpecs.push({
-                        specId,
-                        creator: specData.creator,
-                        targetContract: specData.targetContract,
-                        blobHash: specData.blobHash || "",
-                        status: specData.status,
-                        createdTimestamp: specData.createdTimestamp,
-                        proposedTimestamp: specData.proposedTimestamp,
-                        totalBonds: specData.totalBonds,
-                        chainId: specData.chainId || 11155111,
-                        questionId: specData.questionId || "",
-                        incentiveId: specData.incentiveId || ""
-                      });
-                    }
-                  } else {
-                    console.log(`❌ Not your spec. Creator: ${specData.creator}, You: ${account}`);
-                  }
-                } catch (error) {
-                  console.error(`Error loading spec ${specId}:`, error);
-                }
-              }
-            } catch (error) {
-              console.error(`Error loading specs for contract ${targetContract}:`, error);
-            }
-          }
-          
-        } catch (fallbackError) {
-          console.error("Contract query fallback also failed:", fallbackError);
-        }
-      }
+      console.log("=== SETTING STATE ===");
+      console.log("Setting incentives:", validIncentives.length);
+      setUserIncentives(validIncentives);
+      console.log("Setting specs:", userSpecs.length);
       
-      setContractSpecs(userSpecs);
-
-      // Also pull finalized specs from the subgraph and merge
-      try {
-        if (account) {
-          await loadFinalizedSpecs(account);
-        }
-      } catch {}
-      
-      // Show success toast with combined results
+      // Show results
       const totalItems = validIncentives.length + userSpecs.length;
       if (totalItems > 0) {
         toast({
-          title: "Data Loaded Successfully! 🎉",
-          description: `Found ${validIncentives.length} incentive(s) and ${userSpecs.length} specification(s)`,
+          title: "Data Loaded",
+          description: `Found ${validIncentives.length} incentive(s) and ${userSpecs.length} spec(s)`,
           variant: "default",
         });
       } else {
@@ -311,8 +367,8 @@ export default function KaiSignV1Page() {
     } catch (error: any) {
       console.error("Error loading user data:", error);
       toast({
-        title: "Error Loading Data",
-        description: error.message || "Failed to load your data. Please try refreshing.",
+        title: "Error",
+        description: error.message || "Failed to load data",
         variant: "destructive",
       });
     } finally {
@@ -455,7 +511,7 @@ export default function KaiSignV1Page() {
 
     setIsCreatingIncentive(true);
     try {
-      const durationSeconds = 90 * 24 * 60 * 60; // 90 days in seconds
+      const durationSeconds = 30 * 24 * 60 * 60; // 30 days in seconds (max allowed by contract)
       const amountWei = (parseFloat(incentiveAmount) * 10**18).toString();
       
       // Create the incentive on-chain with enhanced description
@@ -780,19 +836,6 @@ export default function KaiSignV1Page() {
                     <p>• Verify your contract above before creating the incentive</p>
                   </div>
                 
-                  <div>
-                    <Label htmlFor="tokenAddress">Token Address (Optional)</Label>
-                    <Input
-                      id="tokenAddress"
-                      value={tokenAddress}
-                      onChange={(e) => setTokenAddress(e.target.value)}
-                      placeholder="0x... (leave empty for ETH)"
-                      className="bg-gray-900 border-gray-700"
-                    />
-                    <p className="text-xs text-gray-500 mt-1">
-                      Leave empty for ETH incentive
-                    </p>
-                  </div>
                   
                   <div>
                     <Label htmlFor="amount">Incentive Amount</Label>
@@ -806,7 +849,7 @@ export default function KaiSignV1Page() {
                       className="bg-gray-900 border-gray-700"
                     />
                     <p className="text-xs text-gray-500 mt-1">
-                      Amount in {tokenAddress ? "tokens" : "ETH"}
+                      Amount in ETH
                     </p>
                   </div>
                   
@@ -844,25 +887,7 @@ export default function KaiSignV1Page() {
               
               {/* User's Incentives */}
               <Card className="p-6 bg-gray-950 border-gray-800">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-medium">Your Incentives</h2>
-                  <Button
-                    onClick={() => currentAccount && loadUserData(currentAccount)}
-                    disabled={isLoadingData}
-                    size="sm"
-                    variant="outline"
-                    className="text-xs"
-                  >
-                    {isLoadingData ? (
-                      <>
-                        <Loader2 className="mr-2 h-3 w-3 animate-spin" />
-                        Loading...
-                      </>
-                    ) : (
-                      "Refresh"
-                    )}
-                  </Button>
-                </div>
+                <h2 className="text-xl font-medium mb-4">All Incentives</h2>
                 
                 {isLoadingData ? (
                   <div className="flex items-center justify-center py-8">
@@ -905,13 +930,10 @@ export default function KaiSignV1Page() {
                         <p className="text-sm text-gray-400 mb-2">{incentive.description}</p>
                         
                         <div className="space-y-2">
-                          <div className="flex items-center justify-between text-xs text-gray-500">
-                            <span>
-                              Target: {incentive.targetContract.substring(0, 8)}...
-                            </span>
-                            <span>
-                              Expires: {new Date(incentive.deadline * 1000).toISOString().split('T')[0]}
-                            </span>
+                          <div className="text-xs text-gray-500">
+                            <p>Creator: {incentive.creator.substring(0, 6)}...{incentive.creator.substring(incentive.creator.length - 4)}</p>
+                            <p>Target: {incentive.targetContract.substring(0, 8)}...</p>
+                            <p>Expires: {new Date(incentive.deadline * 1000).toISOString().split('T')[0]}</p>
                           </div>
                           
                           {/* Incentive Status Indicator */}
@@ -1073,32 +1095,37 @@ export default function KaiSignV1Page() {
                           
                           setIsSearchingSpecs(true);
                           try {
-                            console.log(`🔍 Searching specs for target contract: ${specSearchContract}`);
-                            const specIds = await web3Service.getSpecsByContract(specSearchContract, 11155111);
-                            console.log(`📋 Found ${specIds.length} specs targeting ${specSearchContract}`);
+                            console.log(`🔍 Searching specs for target contract: ${specSearchContract} using subgraph`);
                             
+                            // Query subgraph for specs targeting this contract
+                            const contractSpecs = await subgraphClient.getContractSpecs(specSearchContract);
+                            console.log(`📋 Found ${contractSpecs.length} specs from subgraph`);
+                            
+                            // Filter for user's specs
                             const userSpecsFromSearch: SpecData[] = [];
+                            const statusMap: { [key: string]: number } = {
+                              'COMMITTED': 0,
+                              'SUBMITTED': 1,
+                              'PROPOSED': 2,
+                              'FINALIZED': 3,
+                              'CANCELLED': 4
+                            };
                             
-                            for (const specId of specIds) {
-                              try {
-                                const specData = await web3Service.getSpecData(specId);
-                                if (specData.creator.toLowerCase() === currentAccount?.toLowerCase()) {
-                                  userSpecsFromSearch.push({
-                                    specId,
-                                    creator: specData.creator,
-                                    targetContract: specData.targetContract,
-                                    blobHash: specData.blobHash || "",
-                                    status: specData.status,
-                                    createdTimestamp: specData.createdTimestamp,
-                                    proposedTimestamp: specData.proposedTimestamp,
-                                    totalBonds: specData.totalBonds,
-                                    chainId: specData.chainId || 11155111,
-                        questionId: specData.questionId || "",
-                        incentiveId: specData.incentiveId || ""
-                                  });
-                                }
-                              } catch (error) {
-                                console.error(`Error loading spec ${specId}:`, error);
+                            for (const spec of contractSpecs) {
+                              if (spec.user.toLowerCase() === currentAccount?.toLowerCase()) {
+                                userSpecsFromSearch.push({
+                                  specId: spec.id,
+                                  creator: spec.user,
+                                  targetContract: spec.targetContract || specSearchContract,
+                                  blobHash: spec.ipfs || "",
+                                  status: statusMap[spec.status] || 0,
+                                  createdTimestamp: parseInt(spec.blockTimestamp),
+                                  proposedTimestamp: parseInt(spec.proposedTimestamp || spec.blockTimestamp),
+                                  totalBonds: "0",
+                                  chainId: parseInt(spec.chainID || "11155111"),
+                                  questionId: spec.questionId || "",
+                                  incentiveId: spec.incentiveId || ""
+                                });
                               }
                             }
                             
@@ -1171,13 +1198,20 @@ export default function KaiSignV1Page() {
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex items-center space-x-2">
                           <FileText className="h-4 w-4 text-blue-500" />
-                          <span className="font-medium font-mono text-sm">
-                            {spec.blobHash.substring(0, 12)}...
-                          </span>
+                          <div className="flex flex-col">
+                            <span className="font-medium font-mono text-sm">
+                              Spec: {spec.specId.substring(0, 10)}...{spec.specId.substring(spec.specId.length - 4)}
+                            </span>
+                            {spec.blobHash && spec.blobHash !== "0x0000000000000000000000000000000000000000000000000000000000000000" && (
+                              <span className="text-xs text-gray-500">
+                                Blob: {spec.blobHash.substring(0, 10)}...
+                              </span>
+                            )}
+                          </div>
                           {getStatusBadge(spec.status)}
                         </div>
                         <a
-                          href={`https://sepolia.etherscan.io/blob/${spec.blobHash}`}
+                          href={`https://sepolia.etherscan.io/tx/${spec.specId}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-400 hover:text-blue-300"
@@ -1187,10 +1221,10 @@ export default function KaiSignV1Page() {
                       </div>
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-gray-400 mb-3">
+                        <span>Creator: {spec.creator.substring(0, 6)}...{spec.creator.substring(spec.creator.length - 4)}</span>
                         <span>Target: {spec.targetContract.substring(0, 10)}...</span>
                         <span>Bonds: {Number(spec.totalBonds) / 10**18} ETH</span>
-                        <span>Created: {new Date(spec.createdTimestamp * 1000).toISOString().split('T')[0]}</span>
-                        <span>Settled: {spec.totalBonds && Number(spec.totalBonds) > 0 ? "Yes" : "No"}</span>
+                        <span>Created: {spec.createdTimestamp > 0 ? new Date(spec.createdTimestamp * 1000).toLocaleDateString() : "Pending"}</span>
                       </div>
                       
                       {/* Action buttons based on status */}
@@ -1233,33 +1267,6 @@ export default function KaiSignV1Page() {
                             Finalize Spec
                           </Button>
                         )}
-                        
-                        <Button
-                          onClick={async () => {
-                            try {
-                              console.log("🔄 Force refreshing spec data...");
-                              if (currentAccount) await loadUserData(currentAccount);
-                              toast({
-                                title: "Data Refreshed! 🔄",
-                                description: "Spec data has been reloaded from contract",
-                                variant: "default",
-                              });
-                            } catch (error: any) {
-                              toast({
-                                title: "Refresh Failed",
-                                description: error.message,
-                                variant: "destructive",
-                              });
-                            }
-                          }}
-                          size="sm"
-                          variant="secondary"
-                          className="text-xs"
-                        >
-                          🔄 Refresh
-                        </Button>
-                        
-                        
                       </div>
                     </div>
                   ))}
@@ -1296,28 +1303,7 @@ export default function KaiSignV1Page() {
             </Card>
             
             <Card className="p-6 bg-gray-950 border-gray-800">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-medium">Finalized Contracts</h2>
-                <div className="flex gap-2">
-                  <Button
-                    onClick={() => {
-                      console.log("🗑️ Clearing all state data");
-                      setContractSpecs([]);
-                      setUserIncentives([]);
-                      toast({
-                        title: "Data Cleared",
-                        description: "All cached data has been cleared",
-                        variant: "default",
-                      });
-                    }}
-                    size="sm"
-                    variant="destructive"
-                    className="text-xs"
-                  >
-                    Clear Data
-                  </Button>
-                </div>
-              </div>
+              <h2 className="text-xl font-medium mb-4">Your Specifications</h2>
 
               {/* Manual Spec Search */}
               <div className="mb-4 space-y-4">
@@ -1340,29 +1326,33 @@ export default function KaiSignV1Page() {
                         
                         setIsSearchingSpecs(true);
                         try {
-                          const specIds = await web3Service.getSpecsByContract(specSearchContract, 11155111);
+                          // Query subgraph for specs targeting this contract
+                          const contractSpecs = await subgraphClient.getContractSpecs(specSearchContract);
                           const userSpecsFromSearch: SpecData[] = [];
                           
-                          for (const specId of specIds) {
-                            try {
-                              const specData = await web3Service.getSpecData(specId);
-                              if (currentAccount && specData.creator.toLowerCase() === currentAccount.toLowerCase()) {
-                                userSpecsFromSearch.push({
-                                  specId,
-                                  creator: specData.creator,
-                                  targetContract: specData.targetContract,
-                                  blobHash: specData.blobHash || "",
-                                  status: specData.status,
-                                  createdTimestamp: specData.createdTimestamp,
-                                  proposedTimestamp: specData.proposedTimestamp,
-                                  totalBonds: specData.totalBonds,
-                                  chainId: specData.chainId || 11155111,
-                        questionId: specData.questionId || "",
-                        incentiveId: specData.incentiveId || ""
-                                });
-                              }
-                            } catch (error) {
-                              console.error(`Error loading spec ${specId}:`, error);
+                          const statusMap: { [key: string]: number } = {
+                            'COMMITTED': 0,
+                            'SUBMITTED': 1,
+                            'PROPOSED': 2,
+                            'FINALIZED': 3,
+                            'CANCELLED': 4
+                          };
+                          
+                          for (const spec of contractSpecs) {
+                            if (currentAccount && spec.user.toLowerCase() === currentAccount.toLowerCase()) {
+                              userSpecsFromSearch.push({
+                                specId: spec.id,
+                                creator: spec.user,
+                                targetContract: spec.targetContract || specSearchContract,
+                                blobHash: spec.ipfs || "",
+                                status: statusMap[spec.status] || 0,
+                                createdTimestamp: parseInt(spec.blockTimestamp),
+                                proposedTimestamp: parseInt(spec.proposedTimestamp || spec.blockTimestamp),
+                                totalBonds: "0",
+                                chainId: parseInt(spec.chainID || "11155111"),
+                                questionId: spec.questionId || "",
+                                incentiveId: spec.incentiveId || ""
+                              });
                             }
                           }
                           
@@ -1397,94 +1387,6 @@ export default function KaiSignV1Page() {
                       disabled={isSearchingSpecs || !specSearchContract}
                       size="sm"
                       className="bg-blue-600 hover:bg-blue-700 text-xs"
-                    >
-                      {isSearchingSpecs ? (
-                        <Loader2 className="h-3 w-3 animate-spin" />
-                      ) : (
-                        "Search"
-                      )}
-                    </Button>
-                  </div>
-                </div>
-
-                {/* IPFS Hash Search */}
-                <div className="p-4 bg-purple-950/30 border border-purple-700 rounded">
-                  <h3 className="text-sm font-medium text-purple-200 mb-2">🔍 Search by IPFS Hash</h3>
-                  <p className="text-xs text-purple-300 mb-3">
-                    If you have the IPFS hash of your submitted specification:
-                  </p>
-                  <div className="flex gap-2">
-                    <Input
-                      value={selectedContract}
-                      onChange={(e) => setSelectedContract(e.target.value)}
-                      placeholder="Qm... or baf... IPFS hash"
-                      className="bg-gray-900 border-gray-700 text-xs"
-                    />
-                    <Button
-                      onClick={async () => {
-                        if (!selectedContract) return;
-                        
-                        setIsSearchingSpecs(true);
-                        try {
-                          // Generate specId from IPFS hash (same way contract does it)
-                          const { ethers } = await import('ethers');
-                          const specId = ethers.keccak256(ethers.toUtf8Bytes(selectedContract));
-                          
-                          console.log(`🔍 Searching for specId: ${specId} from IPFS: ${selectedContract}`);
-                          
-                          const specData = await web3Service.getSpecData(specId);
-                          
-                          if (currentAccount && specData.creator.toLowerCase() === currentAccount.toLowerCase()) {
-                            const newSpec: SpecData = {
-                              specId,
-                              creator: specData.creator,
-                              targetContract: specData.targetContract,
-                              blobHash: specData.blobHash || "",
-                              status: specData.status,
-                              createdTimestamp: specData.createdTimestamp,
-                              proposedTimestamp: specData.proposedTimestamp,
-                              totalBonds: specData.totalBonds,
-                              chainId: specData.chainId || 11155111,
-                        questionId: specData.questionId || "",
-                        incentiveId: specData.incentiveId || ""
-                            };
-                            
-                            // Check if already exists
-                            const existingSpecIds = contractSpecs.map(s => s.specId);
-                            if (!existingSpecIds.includes(specId)) {
-                              setContractSpecs([...contractSpecs, newSpec]);
-                              toast({
-                                title: "Specification Found! 🎉",
-                                description: `Found spec with status: ${specData.status === 3 ? 'FINALIZED' : 'Status ' + specData.status}`,
-                                variant: "default",
-                              });
-                            } else {
-                              toast({
-                                title: "Already Added",
-                                description: `This specification is already in your list`,
-                                variant: "default",
-                              });
-                            }
-                          } else {
-                            toast({
-                              title: "Not Your Specification",
-                              description: `This specification was created by ${specData.creator.substring(0, 8)}..., not you`,
-                              variant: "destructive",
-                            });
-                          }
-                        } catch (error: any) {
-                          toast({
-                            title: "Search Failed",
-                            description: error.message || "Specification not found or invalid IPFS hash",
-                            variant: "destructive",
-                          });
-                        } finally {
-                          setIsSearchingSpecs(false);
-                        }
-                      }}
-                      disabled={isSearchingSpecs || !selectedContract}
-                      size="sm"
-                      className="bg-purple-600 hover:bg-purple-700 text-xs"
                     >
                       {isSearchingSpecs ? (
                         <Loader2 className="h-3 w-3 animate-spin" />
@@ -1541,7 +1443,11 @@ export default function KaiSignV1Page() {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                               <div>
                                 <p className="text-xs text-gray-400 mb-1">Blob Hash</p>
-                                <p className="text-sm font-mono text-gray-300">{spec.blobHash.substring(0, 20)}...</p>
+                                <p className="text-sm font-mono text-gray-300">
+                                  {spec.blobHash && spec.blobHash.length > 20 
+                                    ? `${spec.blobHash.substring(0, 20)}...`
+                                    : spec.blobHash || 'No blob hash'}
+                                </p>
                               </div>
                               <div>
                                 <p className="text-xs text-gray-400 mb-1">Total Bonds</p>

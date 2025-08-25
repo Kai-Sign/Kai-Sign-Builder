@@ -142,12 +142,12 @@ const CONTRACT_ABI = [
     "name": "incentives",
     "outputs": [
       {"internalType": "address", "name": "creator", "type": "address"},
-      {"internalType": "uint80", "name": "amount", "type": "uint80"},
-      {"internalType": "uint16", "name": "reserved1", "type": "uint16"},
+      {"internalType": "uint256", "name": "amount", "type": "uint256"},
+      {"internalType": "uint256", "name": "reserved", "type": "uint256"},
       {"internalType": "uint64", "name": "deadline", "type": "uint64"},
       {"internalType": "uint64", "name": "createdAt", "type": "uint64"},
       {"internalType": "address", "name": "targetContract", "type": "address"},
-      {"internalType": "bool", "name": "isClaimed", "type": "bool"},
+      {"internalType": "bytes32", "name": "specID", "type": "bytes32"},
       {"internalType": "bool", "name": "isActive", "type": "bool"},
       {"internalType": "uint256", "name": "chainId", "type": "uint256"},
       {"internalType": "string", "name": "description", "type": "string"}
@@ -376,6 +376,44 @@ const CONTRACT_ABI = [
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "internalType": "address", "name": "creator", "type": "address"},
+      {"indexed": true, "internalType": "bytes32", "name": "specID", "type": "bytes32"},
+      {"indexed": false, "internalType": "string", "name": "blobHash", "type": "string"},
+      {"indexed": false, "internalType": "address", "name": "targetContract", "type": "address"},
+      {"indexed": false, "internalType": "uint256", "name": "chainId", "type": "uint256"},
+      {"indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256"},
+      {"indexed": false, "internalType": "bytes32", "name": "incentiveId", "type": "bytes32"}
+    ],
+    "name": "LogCreateSpec",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "internalType": "address", "name": "creator", "type": "address"},
+      {"indexed": true, "internalType": "bytes32", "name": "specID", "type": "bytes32"},
+      {"indexed": true, "internalType": "bytes32", "name": "commitmentId", "type": "bytes32"},
+      {"indexed": false, "internalType": "string", "name": "blobHash", "type": "string"},
+      {"indexed": false, "internalType": "address", "name": "targetContract", "type": "address"},
+      {"indexed": false, "internalType": "uint256", "name": "chainId", "type": "uint256"}
+    ],
+    "name": "LogRevealSpec",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "internalType": "address", "name": "user", "type": "address"},
+      {"indexed": true, "internalType": "bytes32", "name": "specID", "type": "bytes32"},
+      {"indexed": false, "internalType": "bytes32", "name": "questionId", "type": "bytes32"},
+      {"indexed": false, "internalType": "uint256", "name": "bond", "type": "uint256"}
+    ],
+    "name": "LogProposeSpec",
+    "type": "event"
+  },
+  {
     "inputs": [{"internalType": "bytes32", "name": "", "type": "bytes32"}],
     "name": "bondsSettled",
     "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
@@ -435,6 +473,20 @@ export class Web3Service {
   private signer: ethers.JsonRpcSigner | null = null;
   private contract: ContractWithMethods | null = null;
   private realityEthContract: RealityEthContract | null = null;
+  
+  /**
+   * Get the provider instance
+   */
+  getProvider(): ethers.BrowserProvider | null {
+    return this.provider;
+  }
+  
+  /**
+   * Get the contract instance
+   */
+  getContract(): ContractWithMethods | null {
+    return this.contract;
+  }
   
   /**
    * Connect to MetaMask and initialize the contract
@@ -2147,82 +2199,7 @@ export class Web3Service {
   //                          KAISIGN V1 FUNCTIONS
   // =============================================================================
 
-  async createIncentive(
-    targetContract: string,
-    targetChainId: number,
-    amount: string,
-    durationSeconds: number,
-    description: string
-  ): Promise<string> {
-    if (!this.contract || !this.signer) {
-      throw new Error("Not connected to MetaMask. Please connect first.");
-    }
-
-    try {
-      // Network check removed - let users connect on any network
-      
-
-      console.log("💰 Parameters:", {
-        targetContract,
-        targetChainId,
-        token,
-        amount,
-        durationSeconds,
-        description
-      });
-
-      // ETH only - value is the amount
-
-      
-      // Check if contract has the createIncentive function
-
-      if (typeof this.contract.createIncentive !== 'function') {
-        throw new Error("Contract does not have createIncentive function");
-      }
-      
-
-      const tx = await this.contract.createIncentive(
-        targetContract,
-        targetChainId,
-        amount,
-        durationSeconds,
-        description,
-        { value: amount }
-      );
-      
-
-
-      
-      const receipt = await tx.wait();
-
-      
-      // Log any events emitted
-      if (receipt.logs && receipt.logs.length > 0) {
-
-        receipt.logs.forEach((log: any, index: number) => {
-
-        });
-      }
-      
-      return tx.hash;
-    } catch (error: any) {
-      console.error("💥 Error creating incentive:", error);
-      console.error("🔧 Contract address:", this.contract?.target);
-      console.error("👤 Signer address:", await this.signer?.getAddress());
-      
-      if (error.code === 'UNPREDICTABLE_GAS_LIMIT') {
-        throw new Error("Transaction would fail - check your parameters and account balance");
-      }
-      if (error.code === 'INSUFFICIENT_FUNDS') {
-        throw new Error("Insufficient ETH balance to complete transaction");
-      }
-      if (error.message?.includes('user rejected')) {
-        throw new Error("Transaction was rejected by user");
-      }
-      
-      throw error;
-    }
-  }
+  
 
   async getUserIncentives(userAddress: string): Promise<string[]> {
     // Auto-connect if not connected
@@ -2275,19 +2252,19 @@ export class Web3Service {
     try {
       const incentive = await this.contract.incentives(incentiveId);
       
-      // Handle the struct response properly
+      // Now the ABI matches the actual structure
       const result = {
-        creator: incentive[0],              // address creator
-        token: incentive[1],                // address token  
-        amount: incentive[2].toString(),    // uint128 amount
-        deadline: Number(incentive[3]),     // uint64 deadline
-        createdAt: Number(incentive[4]),    // uint64 createdAt
-        targetContract: incentive[5],       // address targetContract
-        isClaimed: incentive[6],            // bool isClaimed
-        isActive: incentive[7],             // bool isActive
-        reserved: Number(incentive[8]),     // uint80 reserved
-        chainId: Number(incentive[9]),      // uint256 chainId
-        description: incentive[10]          // string description
+        creator: incentive.creator,
+        amount: incentive.amount.toString(),
+        deadline: Number(incentive.deadline),
+        createdAt: Number(incentive.createdAt),
+        targetContract: incentive.targetContract,
+        specID: incentive.specID,
+        isActive: incentive.isActive,
+        isClaimed: incentive.specID !== "0x0000000000000000000000000000000000000000000000000000000000000000", // if specID is set, it's claimed
+        chainId: Number(incentive.chainId),
+        description: incentive.description,
+        token: "0x0000000000000000000000000000000000000000" // ETH (no token field)
       };
       
       return result;
