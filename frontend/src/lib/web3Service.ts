@@ -156,6 +156,24 @@ const CONTRACT_ABI = [
     "type": "function"
   },
   {
+    "inputs": [{"internalType": "bytes32", "name": "commitmentId", "type": "bytes32"}],
+    "name": "commitments",
+    "outputs": [
+      {"internalType": "address", "name": "committer", "type": "address"},
+      {"internalType": "uint64", "name": "commitTimestamp", "type": "uint64"},
+      {"internalType": "uint32", "name": "reserved1", "type": "uint32"},
+      {"internalType": "address", "name": "targetContract", "type": "address"},
+      {"internalType": "bool", "name": "isRevealed", "type": "bool"},
+      {"internalType": "uint80", "name": "bondAmount", "type": "uint80"},
+      {"internalType": "uint8", "name": "reserved", "type": "uint8"},
+      {"internalType": "uint64", "name": "revealDeadline", "type": "uint64"},
+      {"internalType": "uint256", "name": "chainId", "type": "uint256"},
+      {"internalType": "bytes32", "name": "incentiveId", "type": "bytes32"}
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {"internalType": "address", "name": "targetContract", "type": "address"},
       {"internalType": "uint256", "name": "chainId", "type": "uint256"}
@@ -2360,6 +2378,31 @@ export class Web3Service {
       }
       
       throw new Error(`Failed to decode specification data. This might be due to a contract version mismatch. Original error: ${error.message}`);
+    }
+  }
+
+  async getCommitment(commitmentId: string): Promise<any | null> {
+    if (!this.contract) {
+      throw new Error("Not connected to contract.");
+    }
+    try {
+      const c = await this.contract.commitments(commitmentId);
+      if (!c) return null;
+      return {
+        committer: c[0],
+        commitTimestamp: Number(c[1]),
+        reserved1: Number(c[2]),
+        targetContract: c[3],
+        isRevealed: Boolean(c[4]),
+        bondAmount: c[5]?.toString?.() ?? "0",
+        reserved: Number(c[6]),
+        revealDeadline: Number(c[7]),
+        chainId: Number(c[8]),
+        incentiveId: c[9]
+      };
+    } catch (err) {
+      console.error("Error reading commitment:", err);
+      return null;
     }
   }
 
