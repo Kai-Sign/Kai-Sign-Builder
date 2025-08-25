@@ -172,12 +172,11 @@ const CONTRACT_ABI = [
       {"internalType": "uint64", "name": "createdTimestamp", "type": "uint64"},
       {"internalType": "uint64", "name": "proposedTimestamp", "type": "uint64"},
       {"internalType": "uint8", "name": "status", "type": "uint8"},
-      {"internalType": "bool", "name": "bondsSettled", "type": "bool"},
       {"internalType": "uint80", "name": "totalBonds", "type": "uint80"},
       {"internalType": "uint32", "name": "reserved", "type": "uint32"},
       {"internalType": "address", "name": "creator", "type": "address"},
       {"internalType": "address", "name": "targetContract", "type": "address"},
-      {"internalType": "string", "name": "ipfs", "type": "string"},
+      {"internalType": "bytes32", "name": "blobHash", "type": "bytes32"},
       {"internalType": "bytes32", "name": "questionId", "type": "bytes32"},
       {"internalType": "bytes32", "name": "incentiveId", "type": "bytes32"},
       {"internalType": "uint256", "name": "chainId", "type": "uint256"}
@@ -2311,21 +2310,20 @@ export class Web3Service {
       // Try to parse assuming the newer format with 'reserved' field
       let parsedSpec;
       
-      if (Array.isArray(spec) && spec.length >= 12) {
+      if (Array.isArray(spec) && spec.length >= 11) {
         // Handle tuple/array format - Updated to match exact contract struct order
         parsedSpec = {
           createdTimestamp: Number(spec[0]),     // uint64 createdTimestamp
           proposedTimestamp: Number(spec[1]),    // uint64 proposedTimestamp
           status: Number(spec[2]),               // Status enum (uint8)
-          bondsSettled: Boolean(spec[3]),        // bool bondsSettled
-          totalBonds: spec[4].toString(),        // uint80 totalBonds
-          reserved: Number(spec[5]),             // uint32 reserved
-          creator: spec[6],                      // address creator
-          targetContract: spec[7],               // address targetContract
-          ipfs: spec[8],                         // string ipfs
-          questionId: spec[9],                   // bytes32 questionId
-          incentiveId: spec[10],                 // bytes32 incentiveId
-          chainId: Number(spec[11])              // uint256 chainId
+          totalBonds: spec[3].toString(),        // uint80 totalBonds
+          reserved: Number(spec[4]),             // uint32 reserved
+          creator: spec[5],                      // address creator
+          targetContract: spec[6],               // address targetContract
+          blobHash: spec[7],                     // bytes32 blobHash
+          questionId: spec[8],                   // bytes32 questionId
+          incentiveId: spec[9],                  // bytes32 incentiveId
+          chainId: Number(spec[10])              // uint256 chainId
         };
       } else {
         // Handle named struct format
@@ -2333,12 +2331,11 @@ export class Web3Service {
           createdTimestamp: Number(spec.createdTimestamp || 0),
           proposedTimestamp: Number(spec.proposedTimestamp || 0),
           status: Number(spec.status || 0),
-          bondsSettled: Boolean(spec.bondsSettled),
           totalBonds: (spec.totalBonds || 0).toString(),
           reserved: Number(spec.reserved || 0),
           creator: spec.creator || "0x0000000000000000000000000000000000000000",
           targetContract: spec.targetContract || "0x0000000000000000000000000000000000000000",
-          ipfs: spec.ipfs || "",
+          blobHash: spec.blobHash || "0x",
           questionId: spec.questionId || "0x0000000000000000000000000000000000000000000000000000000000000000",
           incentiveId: spec.incentiveId || "0x0000000000000000000000000000000000000000000000000000000000000000",
           chainId: Number(spec.chainId || 0)
