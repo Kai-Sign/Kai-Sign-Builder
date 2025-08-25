@@ -622,6 +622,9 @@ video {
 .pointer-events-auto {
   pointer-events: auto;
 }
+.visible {
+  visibility: visible;
+}
 .fixed {
   position: fixed;
 }
@@ -750,10 +753,6 @@ video {
 .-mx-1 {
   margin-left: -0.25rem;
   margin-right: -0.25rem;
-}
-.mx-1 {
-  margin-left: 0.25rem;
-  margin-right: 0.25rem;
 }
 .mx-2 {
   margin-left: 0.5rem;
@@ -1151,9 +1150,6 @@ video {
 .min-w-\[100px\] {
   min-width: 100px;
 }
-.min-w-\[220px\] {
-  min-width: 220px;
-}
 .min-w-\[8rem\] {
   min-width: 8rem;
 }
@@ -1183,9 +1179,6 @@ video {
 }
 .max-w-lg {
   max-width: 32rem;
-}
-.max-w-md {
-  max-width: 28rem;
 }
 .max-w-xs {
   max-width: 20rem;
@@ -1502,9 +1495,6 @@ video {
 .border-t {
   border-top-width: 1px;
 }
-.border-dashed {
-  border-style: dashed;
-}
 .border-none {
   border-style: none;
 }
@@ -1526,13 +1516,6 @@ video {
 }
 .border-amber-500\/30 {
   border-color: rgb(245 158 11 / 0.3);
-}
-.border-amber-700\/50 {
-  border-color: rgb(180 83 9 / 0.5);
-}
-.border-blue-500 {
-  --tw-border-opacity: 1;
-  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
 }
 .border-blue-500\/50 {
   border-color: rgb(59 130 246 / 0.5);
@@ -1590,10 +1573,6 @@ video {
   --tw-border-opacity: 1;
   border-color: rgb(187 247 208 / var(--tw-border-opacity, 1));
 }
-.border-green-500 {
-  --tw-border-opacity: 1;
-  border-color: rgb(34 197 94 / var(--tw-border-opacity, 1));
-}
 .border-green-500\/30 {
   border-color: rgb(34 197 94 / 0.3);
 }
@@ -1621,6 +1600,10 @@ video {
 .border-neutral-300 {
   --tw-border-opacity: 1;
   border-color: rgb(212 212 212 / var(--tw-border-opacity, 1));
+}
+.border-orange-700 {
+  --tw-border-opacity: 1;
+  border-color: rgb(194 65 12 / var(--tw-border-opacity, 1));
 }
 .border-primary {
   border-color: hsl(var(--primary));
@@ -1792,6 +1775,9 @@ video {
 .bg-orange-300\/10 {
   background-color: rgb(253 186 116 / 0.1);
 }
+.bg-orange-900\/30 {
+  background-color: rgb(124 45 18 / 0.3);
+}
 .bg-popover {
   background-color: hsl(var(--popover));
 }
@@ -1812,6 +1798,9 @@ video {
 .bg-purple-900 {
   --tw-bg-opacity: 1;
   background-color: rgb(88 28 135 / var(--tw-bg-opacity, 1));
+}
+.bg-purple-900\/20 {
+  background-color: rgb(88 28 135 / 0.2);
 }
 .bg-purple-900\/30 {
   background-color: rgb(88 28 135 / 0.3);
@@ -2255,6 +2244,9 @@ video {
 .font-semibold {
   font-weight: 600;
 }
+.uppercase {
+  text-transform: uppercase;
+}
 .italic {
   font-style: italic;
 }
@@ -2286,10 +2278,6 @@ video {
 }
 .text-\[\#6EB260\]\/90 {
   color: rgb(110 178 96 / 0.9);
-}
-.text-amber-300 {
-  --tw-text-opacity: 1;
-  color: rgb(252 211 77 / var(--tw-text-opacity, 1));
 }
 .text-amber-400 {
   --tw-text-opacity: 1;
@@ -2403,6 +2391,10 @@ video {
 .text-muted-foreground {
   color: hsl(var(--muted-foreground));
 }
+.text-orange-300 {
+  --tw-text-opacity: 1;
+  color: rgb(253 186 116 / var(--tw-text-opacity, 1));
+}
 .text-orange-400 {
   --tw-text-opacity: 1;
   color: rgb(251 146 60 / var(--tw-text-opacity, 1));
@@ -2496,10 +2488,6 @@ video {
 .antialiased {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-.placeholder-gray-400::placeholder {
-  --tw-placeholder-opacity: 1;
-  color: rgb(156 163 175 / var(--tw-placeholder-opacity, 1));
 }
 .opacity-0 {
   opacity: 0;
@@ -2957,10 +2945,6 @@ html {
 .hover\:bg-destructive\/90:hover {
   background-color: hsl(var(--destructive) / 0.9);
 }
-.hover\:bg-gray-100:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
-}
 .hover\:bg-gray-200:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity, 1));
@@ -3063,10 +3047,6 @@ html {
   content: var(--tw-content);
   background-color: hsl(var(--sidebar-border));
 }
-.focus\:border-blue-500:focus {
-  --tw-border-opacity: 1;
-  border-color: rgb(59 130 246 / var(--tw-border-opacity, 1));
-}
 .focus\:border-blue-500\/70:focus {
   border-color: rgb(59 130 246 / 0.7);
 }
@@ -3142,9 +3122,6 @@ html {
 }
 .disabled\:opacity-70:disabled {
   opacity: 0.7;
-}
-.group[open] .group-open\:hidden {
-  display: none;
 }
 .group\/menu-item:focus-within .group-focus-within\/menu-item\:opacity-100 {
   opacity: 1;
@@ -3285,9 +3262,21 @@ html {
 .data-\[state\=active\]\:bg-background[data-state="active"] {
   background-color: hsl(var(--background));
 }
+.data-\[state\=active\]\:bg-blue-600[data-state="active"] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity, 1));
+}
 .data-\[state\=active\]\:bg-gray-800[data-state="active"] {
   --tw-bg-opacity: 1;
   background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
+}
+.data-\[state\=active\]\:bg-green-600[data-state="active"] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(22 163 74 / var(--tw-bg-opacity, 1));
+}
+.data-\[state\=active\]\:bg-purple-600[data-state="active"] {
+  --tw-bg-opacity: 1;
+  background-color: rgb(147 51 234 / var(--tw-bg-opacity, 1));
 }
 .data-\[state\=checked\]\:bg-primary[data-state="checked"] {
   background-color: hsl(var(--primary));

@@ -1,4 +1,4 @@
-// File: /Users/muhammadaushijri/Desktop/git/Kai-Sign-Builder/frontend/src/app/api/health/route.ts
+// File: /Users/richardha/Documents/軟體工程/Projects/Kai-Sign-Builder/frontend/src/app/api/health/route.ts
 import * as entry from '../../../../../src/app/api/health/route.js'
 import type { NextRequest } from 'next/server.js'
 

@@ -1,4 +1,4 @@
-// File: /Users/muhammadaushijri/Desktop/git/Kai-Sign-Builder/frontend/src/app/kaisign-v1/page.tsx
+// File: /Users/richardha/Documents/軟體工程/Projects/Kai-Sign-Builder/frontend/src/app/kaisign-v1/page.tsx
 import * as entry from '../../../../src/app/kaisign-v1/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

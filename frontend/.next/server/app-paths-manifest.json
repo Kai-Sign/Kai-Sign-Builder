@@ -1,5 +1,5 @@
 {
   "/api/health/route": "app/api/health/route.js",
   "/page": "app/page.js",
-  "/metadata-registry/page": "app/metadata-registry/page.js"
+  "/kaisign-v1/page": "app/kaisign-v1/page.js"
 }
