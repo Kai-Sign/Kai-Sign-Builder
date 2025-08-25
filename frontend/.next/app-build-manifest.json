@@ -16,10 +16,15 @@
       "static/chunks/main-app.js",
       "static/chunks/app/api/health/route.js"
     ],
-    "/kaisign-v1/page": [
+    "/verification-results/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/kaisign-v1/page.js"
+      "static/chunks/app/verification-results/page.js"
+    ],
+    "/api/blob/submit/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/blob/submit/route.js"
     ]
   }
 }
