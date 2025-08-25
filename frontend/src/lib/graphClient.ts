@@ -22,8 +22,7 @@ export interface FunctionMetadata {
 export interface SpecHistory {
   id: string;
   creator: string;
-  ipfsCID: string; // Legacy field
-  blobHash?: string; // New field for blob hash
+  blobHash: string; // EIP-4844 blob hash
   createdTimestamp: string;
   proposedTimestamp?: string;
   status: 'COMMITTED' | 'SUBMITTED' | 'PROPOSED' | 'FINALIZED' | 'CANCELLED';
@@ -66,7 +65,9 @@ export interface IPFSMetadata {
 interface SpecData {
   id: string;
   user: string;
-  ipfs: string;
+  blobHash: string;
+  targetContract?: string;
+  chainID?: string;
   blockTimestamp: string;
   status: string;
 }
@@ -119,7 +120,7 @@ export class KaiSignGraphClient {
           chainID: $chainID
         }) {
           id
-          ipfs
+          blobHash
           user
           status
           blockTimestamp
@@ -160,7 +161,7 @@ export class KaiSignGraphClient {
         orderBy: blockTimestamp
         orderDirection: desc) {
           id
-          ipfs
+          blobHash
           user
           status
           blockTimestamp
@@ -176,50 +177,8 @@ export class KaiSignGraphClient {
       { targetContract, chainID }
     );
     
-    let ipfsMetadata: IPFSMetadata | undefined;
-    
-    // Try to fetch IPFS metadata from the most recent spec
-    if (data.specs && data.specs.length > 0) {
-      const latestSpec = data.specs[0];
-      if (latestSpec) {
-        try {
-          // Always fetch from IPFS gateways for real data
-          const gateways = [
-            `https://gateway.pinata.cloud/ipfs/${latestSpec.ipfs}`,
-            `https://ipfs.io/ipfs/${latestSpec.ipfs}`,
-            `https://dweb.link/ipfs/${latestSpec.ipfs}`,
-            `https://cloudflare-ipfs.com/ipfs/${latestSpec.ipfs}`
-          ];
-          
-          console.log(`Fetching real IPFS data for hash: ${latestSpec.ipfs}`);
-          
-          for (const gateway of gateways) {
-            try {
-              console.log(`Trying IPFS gateway: ${gateway}`);
-              const ipfsResponse = await fetch(gateway, {
-                signal: AbortSignal.timeout(15000) // 15 second timeout per gateway
-              });
-              if (ipfsResponse.ok) {
-                ipfsMetadata = await ipfsResponse.json();
-                console.log(`Successfully fetched real metadata from: ${gateway}`);
-                break; // Success, exit the loop
-              }
-            } catch (error) {
-              console.log(`Gateway ${gateway} failed:`, error);
-              continue; // Try next gateway
-            }
-          }
-          
-          if (!ipfsMetadata) {
-            throw new Error(`Failed to fetch IPFS metadata for hash: ${latestSpec.ipfs}. All IPFS gateways failed.`);
-          }
-        } catch (error) {
-          console.log('Failed to fetch IPFS metadata:', error);
-        }
-      }
-    }
-    
-    return { specs: data.specs, ipfsMetadata };
+    // No IPFS fetching; rely on blobHash only
+    return { specs: data.specs };
   }
 
   /**
@@ -240,7 +199,7 @@ export class KaiSignGraphClient {
         ) {
           id
           user
-          ipfs
+          blobHash
           blockTimestamp
           status
         }
@@ -255,7 +214,7 @@ export class KaiSignGraphClient {
     return data.specs.map((spec: SpecData) => ({
       id: spec.id,
       creator: spec.user,
-      ipfsCID: spec.ipfs,
+      blobHash: spec.blobHash,
       createdTimestamp: spec.blockTimestamp,
       status: spec.status as SpecHistory['status']
     }));
@@ -326,7 +285,6 @@ export class KaiSignGraphClient {
         ) {
           id
           user
-          ipfs
           blobHash
           targetContract
           blockTimestamp
@@ -346,14 +304,13 @@ export class KaiSignGraphClient {
     return data.specs.map((spec: any) => ({
       id: spec.id,
       creator: spec.user,
-      ipfsCID: spec.ipfs,
       blobHash: spec.blobHash,
       createdTimestamp: spec.blockTimestamp,
       status: spec.status as SpecHistory['status'],
       targetContract: spec.targetContract,
-      totalBonds: "0", // Default since not available in subgraph
-      bondsSettled: false, // Default since not available in subgraph
-      proposedTimestamp: spec.blockTimestamp // Use blockTimestamp as fallback
+      totalBonds: "0",
+      bondsSettled: false,
+      proposedTimestamp: spec.blockTimestamp
     }));
   }
 
@@ -372,7 +329,7 @@ export class KaiSignGraphClient {
         ) {
           id
           user
-          ipfs
+          blobHash
           targetContract
           blockTimestamp
           status
@@ -391,13 +348,13 @@ export class KaiSignGraphClient {
     return data.specs.map((spec: any) => ({
       id: spec.id,
       creator: spec.user,
-      ipfsCID: spec.ipfs,
+      blobHash: spec.blobHash,
       createdTimestamp: spec.blockTimestamp,
       status: spec.status as SpecHistory['status'],
       targetContract: spec.targetContract,
-      totalBonds: "0", // Default since not available in subgraph
-      bondsSettled: false, // Default since not available in subgraph
-      proposedTimestamp: spec.blockTimestamp // Use blockTimestamp as fallback
+      totalBonds: "0",
+      bondsSettled: false,
+      proposedTimestamp: spec.blockTimestamp
     }));
   }
 }

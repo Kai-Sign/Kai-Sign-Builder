@@ -54,7 +54,7 @@ export function handleLogRevealSpec(event: LogRevealSpecEvent): void {
   entity.creator = event.params.creator
   entity.specID = event.params.specID
   entity.commitmentId = event.params.commitmentId
-  entity.blobHash = event.params.blobHash
+  entity.blobHash = event.params.blobHash.toHexString()
   entity.targetContract = event.params.targetContract
   entity.chainId = event.params.chainId
 
@@ -72,7 +72,7 @@ export function handleLogCreateSpec(event: LogCreateSpecEvent): void {
   )
   logEntity.creator = event.params.creator
   logEntity.specID = event.params.specID
-  logEntity.blobHash = event.params.blobHash
+  logEntity.blobHash = event.params.blobHash.toHexString()
   logEntity.targetContract = event.params.targetContract
   logEntity.chainId = event.params.chainId
   logEntity.timestamp = event.params.timestamp
@@ -86,7 +86,7 @@ export function handleLogCreateSpec(event: LogCreateSpecEvent): void {
   // Create or update the Spec entity
   let spec = new Spec(event.params.specID)
   spec.user = event.params.creator
-  spec.blobHash = event.params.blobHash
+  spec.blobHash = event.params.blobHash.toHexString()
   spec.targetContract = event.params.targetContract
   spec.chainID = event.params.chainId.toString()
   spec.status = "SUBMITTED"
@@ -215,7 +215,7 @@ export function handleLogContractSpecAdded(event: LogContractSpecAddedEvent): vo
   entity.specID = event.params.specID
   entity.creator = event.params.creator
   entity.chainId = event.params.chainId
-  entity.blobHash = event.params.blobHash
+  entity.blobHash = event.params.blobHash.toHexString()
 
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp

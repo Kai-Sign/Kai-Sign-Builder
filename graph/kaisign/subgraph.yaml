@@ -38,9 +38,9 @@ dataSources:
       eventHandlers:
         - event: LogCommitSpec(indexed address,indexed bytes32,indexed address,uint256,uint256,uint64)
           handler: handleLogCommitSpec
-        - event: LogRevealSpec(indexed address,indexed bytes32,indexed bytes32,string,address,uint256)
+        - event: LogRevealSpec(indexed address,indexed bytes32,indexed bytes32,bytes32,address,uint256)
           handler: handleLogRevealSpec
-        - event: LogCreateSpec(indexed address,indexed bytes32,string,indexed address,uint256,uint256,bytes32)
+        - event: LogCreateSpec(indexed address,indexed bytes32,indexed bytes32,address,uint256,uint256,bytes32)
           handler: handleLogCreateSpec
         - event: LogProposeSpec(indexed address,indexed bytes32,bytes32,uint256)
           handler: handleLogProposeSpec
@@ -52,7 +52,7 @@ dataSources:
           handler: handleLogIncentiveClaimed
         - event: LogIncentiveClawback(indexed bytes32,indexed address,uint256)
           handler: handleLogIncentiveClawback
-        - event: LogContractSpecAdded(indexed address,indexed bytes32,indexed address,uint256)
+        - event: LogContractSpecAdded(indexed address,indexed bytes32,indexed address,uint256,bytes32)
           handler: handleLogContractSpecAdded
         - event: LogEmergencyPause(indexed address)
           handler: handleLogEmergencyPause
