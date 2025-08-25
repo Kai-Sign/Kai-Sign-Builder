@@ -284,6 +284,13 @@ export default function KaiSignV1Page() {
       }
       
       setContractSpecs(userSpecs);
+
+      // Also pull finalized specs from the subgraph and merge
+      try {
+        if (account) {
+          await loadFinalizedSpecs(account);
+        }
+      } catch {}
       
       // Show success toast with combined results
       const totalItems = validIncentives.length + userSpecs.length;
@@ -1170,7 +1177,7 @@ export default function KaiSignV1Page() {
                           {getStatusBadge(spec.status)}
                         </div>
                         <a
-                          href={`https://sepolia.etherscan.io/tx/${spec.blobHash}`}
+                          href={`https://sepolia.etherscan.io/blob/${spec.blobHash}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-400 hover:text-blue-300"
@@ -1558,13 +1565,13 @@ export default function KaiSignV1Page() {
                             
                             <div className="flex flex-wrap gap-2 pt-4 border-t border-gray-700">
                               <a
-                                href={`https://sepolia.etherscan.io/tx/${spec.blobHash}`}
+                                href={`https://sepolia.etherscan.io/blob/${spec.blobHash}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded"
                               >
                                 <ExternalLink className="mr-1 h-3 w-3" />
-                                View Spec
+                                View Blob
                               </a>
                               
                               <Button
