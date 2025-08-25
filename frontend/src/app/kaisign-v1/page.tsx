@@ -1540,7 +1540,7 @@ export default function KaiSignV1Page() {
                             
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                               <div>
-                                <p className="text-xs text-gray-400 mb-1">IPFS Hash</p>
+                                <p className="text-xs text-gray-400 mb-1">Blob Hash</p>
                                 <p className="text-sm font-mono text-gray-300">{spec.blobHash.substring(0, 20)}...</p>
                               </div>
                               <div>
