@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const SUBGRAPH_URL = "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/version/latest";
+const SUBGRAPH_URL = "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.8";
 
 // Color codes for terminal output
 const colors = {
