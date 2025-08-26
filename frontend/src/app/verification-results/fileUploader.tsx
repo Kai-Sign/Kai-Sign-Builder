@@ -199,10 +199,10 @@ export default function FileUploader() {
       console.error("Blob post error:", error);
       
       // Handle timeout errors specifically
-      if (error.message?.includes('timeout') || error.message?.includes('timed out')) {
+      if (error.message?.includes('timeout') || error.message?.includes('timed out') || error.message?.includes('Endpoint request timed out')) {
         toast({ 
           title: "Blob posting timed out", 
-          description: "Blob transactions can take 1-3 minutes. Please try again in a few minutes.", 
+          description: "The blob transaction is taking longer than expected. This is normal for blob transactions. The AWS Lambda function may need a longer timeout. Please try again in a few minutes.", 
           variant: "destructive" 
         });
       } else {

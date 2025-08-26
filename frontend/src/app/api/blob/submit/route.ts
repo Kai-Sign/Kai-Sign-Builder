@@ -87,6 +87,7 @@ export async function POST(request: NextRequest) {
         blockNumber: lambdaData.blockNumber,
         success: true
       };
+      console.log('Transformed result:', result);
       return NextResponse.json(result);
     }
     
