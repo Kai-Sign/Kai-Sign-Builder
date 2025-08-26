@@ -6,6 +6,7 @@ import { Upload, CheckCircle, Loader2, Clock, ArrowRight, ArrowLeft, Copy } from
 import { Card } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { BlobHashInput } from "~/components/ui/blobHashInput";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { useErc7730Store } from "~/store/erc7730Provider";
 import { useToast } from "~/hooks/use-toast";
@@ -177,37 +178,23 @@ export default function FileUploader() {
         description: "Submitting blob transaction (may take up to 3 minutes)..." 
       });
 
-      const res = await fetch('/api/blob/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ json: jsonData }),
+      // Use the enhanced blob service with validation
+      const { postToBlobWithValidation } = await import('~/lib/blobService');
+      
+      const result = await postToBlobWithValidation(jsonData);
+      
+      setBlobVersionedHash(result.blobVersionedHash);
+      setRevealBlobHash(result.blobVersionedHash);
+      setBlobTxHash(result.txHash);
+
+      toast({ 
+        title: "Blob posted and validated successfully", 
+        description: `Blob hash: ${result.blobVersionedHash.substring(0, 10)}...`, 
+        variant: "default" 
       });
 
-      if (!res.ok) {
-        const text = await res.text().catch(() => '');
-        throw new Error(text || `HTTP ${res.status}`);
-      }
-
-      const result = await res.json();
-      const blobHash = result?.blobVersionedHash || result?.blobHash;
-      const txHash = result?.txHash || result?.blobTransactionHash;
-
-      if (blobHash) {
-        setBlobVersionedHash(blobHash);
-        setRevealBlobHash(blobHash);
-        setBlobTxHash(txHash);
-
-        toast({ 
-          title: "Blob posted successfully", 
-          description: `Blob hash: ${blobHash.substring(0, 10)}...`, 
-          variant: "default" 
-        });
-
-        // Auto-advance to reveal tab
-        setActiveTab("reveal");
-      } else {
-        throw new Error('No blob hash returned');
-      }
+      // Auto-advance to reveal tab
+      setActiveTab("reveal");
     } catch (error: any) {
       console.error("Blob post error:", error);
       toast({ 
@@ -554,42 +541,22 @@ export default function FileUploader() {
               </div>
 
               <div>
-                <Label htmlFor="manualBlob" className="text-white mb-2 block">
+                <Label className="text-white mb-2 block">
                   Manual Blob Hash (if already posted)
                 </Label>
-                <div className="flex gap-2">
-                  <Input
-                    id="manualBlob"
-                    type="text"
-                    placeholder="0x01..."
-                    value={manualBlobHash}
-                    onChange={(e) => setManualBlobHash(e.target.value)}
-                    className="bg-gray-900 border-gray-600 text-white flex-1"
-                  />
-                  <Button
-                    onClick={() => {
-                      if (manualBlobHash.startsWith('0x01') && manualBlobHash.length === 66) {
-                        setBlobVersionedHash(manualBlobHash);
-                        setRevealBlobHash(manualBlobHash);
-                        toast({
-                          title: "Blob Hash Set",
-                          description: "You can now proceed to reveal",
-                          variant: "default",
-                        });
-                      } else {
-                        toast({
-                          title: "Invalid Blob Hash",
-                          description: "Blob hash must start with 0x01 and be 66 characters",
-                          variant: "destructive",
-                        });
-                      }
-                    }}
-                    variant="outline"
-                    className="text-white border-gray-600 hover:bg-gray-800"
-                  >
-                    Set Hash
-                  </Button>
-                </div>
+                <BlobHashInput
+                  value={manualBlobHash}
+                  onChange={setManualBlobHash}
+                  onValidationChange={(isValid, validation) => {
+                    if (isValid && validation) {
+                      setBlobVersionedHash(manualBlobHash);
+                      setRevealBlobHash(manualBlobHash);
+                    }
+                  }}
+                  placeholder="0x01..."
+                  label=""
+                  showValidationStatus={true}
+                />
               </div>
 
               <div className="p-3 bg-purple-900/20 border border-purple-700 rounded-lg">
@@ -627,17 +594,13 @@ export default function FileUploader() {
                 />
               </div>
 
-              <div>
-                <Label htmlFor="revealBlobHash" className="text-white mb-2 block">Blob Versioned Hash</Label>
-                <Input
-                  id="revealBlobHash"
-                  type="text"
-                  placeholder="0x01..."
-                  value={revealBlobHash}
-                  onChange={(e) => setRevealBlobHash(e.target.value)}
-                  className="bg-gray-900 border-gray-600 text-white"
-                />
-              </div>
+              <BlobHashInput
+                value={revealBlobHash}
+                onChange={setRevealBlobHash}
+                placeholder="0x01..."
+                label="Blob Versioned Hash"
+                showValidationStatus={true}
+              />
 
               <div>
                 <Label htmlFor="revealMetadataHash" className="text-white mb-2 block">Metadata Hash</Label>

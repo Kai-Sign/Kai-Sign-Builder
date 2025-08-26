@@ -70,6 +70,7 @@ export default function Home() {
           <Eye className="h-4 w-4" />
           Metadata Registry
         </ExtensionSafeButton>
+
       </div>
 
       <div className="container relative m-auto flex min-h-screen items-center justify-center p-4 overflow-hidden">

@@ -1037,6 +1037,18 @@ export class Web3Service {
         bondAmount: bondAmount.toString()
       });
 
+      // Validate blob hash before proceeding
+      const { validateBlobHash } = await import('./blobService');
+      const blobValidation = await validateBlobHash(blobHash);
+      
+      if (!blobValidation.isValid) {
+        throw new Error(`Invalid blob hash: ${blobValidation.error}`);
+      }
+      
+      if (!blobValidation.exists) {
+        throw new Error(`Blob hash ${blobHash} does not exist on-chain. Please ensure the blob was posted successfully before revealing.`);
+      }
+
       // Debug: Check what the contract has stored for this commitment
       try {
         const storedCommitment = await this.contract.commitments(commitmentId);

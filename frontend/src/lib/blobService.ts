@@ -1,3 +1,5 @@
+import { blobValidationService, BlobValidationResult } from './blobValidationService';
+
 export type BlobPostResult = {
   txHash: string;
   blobVersionedHash: string;
@@ -21,6 +23,35 @@ export async function postToBlob(json: object | string): Promise<BlobPostResult>
     throw new Error('Blob upload did not return versioned hash');
   }
   return data as BlobPostResult;
+}
+
+/**
+ * Validates a blob hash before using it in transactions
+ */
+export async function validateBlobHash(blobHash: string): Promise<BlobValidationResult> {
+  return await blobValidationService.validateBlobHash(blobHash);
+}
+
+/**
+ * Validates multiple blob hashes at once
+ */
+export async function validateMultipleBlobHashes(blobHashes: string[]): Promise<Map<string, BlobValidationResult>> {
+  return await blobValidationService.validateMultipleBlobHashes(blobHashes);
+}
+
+/**
+ * Posts blob and validates the result
+ */
+export async function postToBlobWithValidation(json: object | string): Promise<BlobPostResult> {
+  const result = await postToBlob(json);
+  
+  // Validate the returned blob hash
+  const validation = await validateBlobHash(result.blobVersionedHash);
+  if (!validation.isValid || !validation.exists) {
+    throw new Error(`Blob posted but validation failed: ${validation.error || 'Unknown error'}`);
+  }
+  
+  return result;
 }
 
 
