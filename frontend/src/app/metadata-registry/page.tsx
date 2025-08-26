@@ -61,10 +61,13 @@ export default function MetadataRegistryPage() {
   const handleUpload = async () => {
     setIsUploading(true);
     try {
-      const blobRes = await postToBlob(erc7730Json);
+      // Use the enhanced blob service with validation
+      const { postToBlobWithValidation } = await import('~/lib/blobService');
+      
+      const blobRes = await postToBlobWithValidation(erc7730Json);
       setIpfsHash(blobRes.blobVersionedHash);
       setBlobInfo({ versionedHash: blobRes.blobVersionedHash, url: blobRes.etherscanBlobUrl, txHash: blobRes.txHash });
-      toast({ title: "Blob posted", description: blobRes.etherscanBlobUrl });
+      toast({ title: "Blob posted and validated", description: blobRes.etherscanBlobUrl });
     } catch (e: any) {
       toast({ title: "Blob post failed", description: e.message, variant: "destructive" });
     } finally {
