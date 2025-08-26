@@ -197,11 +197,21 @@ export default function FileUploader() {
       setActiveTab("reveal");
     } catch (error: any) {
       console.error("Blob post error:", error);
-      toast({ 
-        title: "Blob post failed", 
-        description: error.message || "Could not post blob", 
-        variant: "destructive" 
-      });
+      
+      // Handle timeout errors specifically
+      if (error.message?.includes('timeout') || error.message?.includes('timed out')) {
+        toast({ 
+          title: "Blob posting timed out", 
+          description: "Blob transactions can take 1-3 minutes. Please try again in a few minutes.", 
+          variant: "destructive" 
+        });
+      } else {
+        toast({ 
+          title: "Blob post failed", 
+          description: error.message || "Could not post blob", 
+          variant: "destructive" 
+        });
+      }
     } finally {
       setIsPostingBlob(false);
     }

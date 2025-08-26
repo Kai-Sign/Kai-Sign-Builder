@@ -13,7 +13,7 @@ export interface BlobValidationResult {
 }
 
 export class BlobValidationService {
-  private provider: ethers.JsonRpcProvider | null = null;
+  private provider: ethers.JsonRpcProvider | ethers.BrowserProvider | null = null;
 
   constructor(rpcUrl?: string) {
     if (rpcUrl) {
@@ -86,22 +86,40 @@ export class BlobValidationService {
       };
     }
 
-    // Check if it's exactly 66 characters (0x + 64 hex chars)
-    if (blobHash.length !== 66) {
+    // Check if it's exactly 68 characters (0x01 + 64 hex chars)
+    if (blobHash.length !== 68) {
       return {
         isValid: false,
         exists: false,
-        error: `Blob hash must be exactly 66 characters (got ${blobHash.length}). Expected format: 0x01 + 64 hex characters`
+        error: `Blob hash must be exactly 68 characters (got ${blobHash.length}). Expected format: 0x01 + 64 hex characters`
       };
     }
 
     // Check if it contains only valid hex characters
     const hexRegex = /^0x01[a-fA-F0-9]{64}$/;
     if (!hexRegex.test(blobHash)) {
+      // Find the first invalid character for better error reporting
+      const afterPrefix = blobHash.substring(4); // Remove "0x01"
+      let invalidChar = '';
+      let invalidPos = -1;
+      
+      for (let i = 0; i < afterPrefix.length; i++) {
+        const char = afterPrefix[i];
+        if (!/[0-9a-fA-F]/.test(char)) {
+          invalidChar = char;
+          invalidPos = i + 4; // +4 to account for "0x01" prefix
+          break;
+        }
+      }
+      
+      const errorMessage = invalidChar 
+        ? `Invalid character '${invalidChar}' at position ${invalidPos}. Only hex characters (0-9, a-f, A-F) are allowed after 0x01`
+        : 'Blob hash contains invalid characters. Only hex characters (0-9, a-f, A-F) are allowed after 0x01';
+      
       return {
         isValid: false,
         exists: false,
-        error: 'Blob hash contains invalid characters. Only hex characters (0-9, a-f, A-F) are allowed after 0x01'
+        error: errorMessage
       };
     }
 
@@ -168,13 +186,14 @@ export class BlobValidationService {
           if (!block || !block.transactions) continue;
 
           for (const tx of block.transactions) {
-            if (tx.type === 3 && tx.blobVersionedHashes) { // Type 3 = blob transaction
-              for (let j = 0; j < tx.blobVersionedHashes.length; j++) {
-                if (tx.blobVersionedHashes[j]?.toLowerCase() === blobHash.toLowerCase()) {
+            if (tx && typeof tx === 'object' && 'type' in tx && tx.type === 3 && 'blobVersionedHashes' in tx && tx.blobVersionedHashes) {
+              const blobHashes = tx.blobVersionedHashes as string[];
+              for (let j = 0; j < blobHashes.length; j++) {
+                if (blobHashes[j]?.toLowerCase() === blobHash.toLowerCase()) {
                   return {
                     exists: true,
                     blobData: {
-                      txHash: tx.hash,
+                      txHash: (tx as any).hash || 'Unknown',
                       blockNumber: blockNumber,
                       blobIndex: j,
                       etherscanUrl: `https://sepolia.etherscan.io/blob/${blobHash}`

@@ -5,7 +5,8 @@ import { Input } from "./input";
 import { Button } from "./button";
 import { Label } from "./label";
 import { CheckCircle, XCircle, Loader2, ExternalLink } from "lucide-react";
-import { validateBlobHash, BlobValidationResult } from "~/lib/blobService";
+import { validateBlobHash } from "~/lib/blobService";
+import { BlobValidationResult } from "~/lib/blobValidationService";
 import { useToast } from "~/hooks/use-toast";
 
 interface BlobHashInputProps {
@@ -39,7 +40,8 @@ export function BlobHashInput({
     if (!value || value === lastValidatedValue) return;
 
     const timeoutId = setTimeout(async () => {
-      if (value.length === 66) { // Only validate when complete
+      // Only validate if it looks like a complete blob hash
+      if (value.length === 68 && value.startsWith('0x01')) {
         setIsValidating(true);
         try {
           const result = await validateBlobHash(value);
@@ -57,6 +59,11 @@ export function BlobHashInput({
         } finally {
           setIsValidating(false);
         }
+      } else if (value.length > 0) {
+        // For incomplete inputs, do basic format validation only
+        const basicValidation = validateBasicFormat(value);
+        setValidation(basicValidation);
+        onValidationChange?.(false, basicValidation);
       } else {
         setValidation(null);
         onValidationChange?.(false, null);
@@ -65,6 +72,41 @@ export function BlobHashInput({
 
     return () => clearTimeout(timeoutId);
   }, [value, lastValidatedValue, onValidationChange]);
+
+  // Basic format validation for incomplete inputs
+  const validateBasicFormat = (input: string): BlobValidationResult => {
+    if (!input.startsWith('0x01')) {
+      return {
+        isValid: false,
+        exists: false,
+        error: 'Blob hash must start with 0x01'
+      };
+    }
+    
+    if (input.length < 68) {
+      return {
+        isValid: false,
+        exists: false,
+        error: `Incomplete blob hash (${input.length}/68 characters)`
+      };
+    }
+    
+    if (input.length > 68) {
+      return {
+        isValid: false,
+        exists: false,
+        error: 'Blob hash is too long'
+      };
+    }
+    
+    // If we get here, it's exactly 68 characters and starts with 0x01
+    // Let the full validation handle the rest
+    return {
+      isValid: false,
+      exists: false,
+      error: 'Validating...'
+    };
+  };
 
   const handleManualValidation = async () => {
     if (!value) {
