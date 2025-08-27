@@ -510,25 +510,15 @@ export class Web3Service {
         throw new Error("No accounts found. Please make sure MetaMask is unlocked.");
       }
 
-      // Initialize provider and signer
+      // Initialize provider and signer temporarily (will be reinitialized by ensureSepoliaNetwork)
       this.provider = new ethers.BrowserProvider(window.ethereum);
       this.signer = await this.provider.getSigner();
-
-      // Initialize contract (network check moved to individual functions that need it)
-      const kaisignContract = new ethers.Contract(
-        RAW_CONTRACT_ADDRESS,
-        CONTRACT_ABI,
-        this.signer
-      ) as ContractWithMethods;
-
-      // Assign to instance variables after successful initialization
-      this.contract = kaisignContract;
-      // Initialize Reality.eth contract now for read calls (bond info)
-      this.realityEthContract = new ethers.Contract(
-        REALITY_ETH_ADDRESS,
-        REALITY_ETH_ABI,
-        this.provider
-      ) as RealityEthContract;
+      
+      // FORCE SWITCH TO SEPOLIA IMMEDIATELY AFTER CONNECTING
+      // This will also reinitialize provider, signer, and contracts on the correct network
+      await this.ensureSepoliaNetwork();
+      
+      // No need to initialize contracts here - ensureSepoliaNetwork already did it
 
 
 
@@ -551,6 +541,114 @@ export class Web3Service {
     } catch (error) {
       console.error("Error checking network:", error);
       return false;
+    }
+  }
+
+  /**
+   * Ensure we're on the Sepolia network, switch if not
+   */
+  async ensureSepoliaNetwork(): Promise<void> {
+    if (!this.provider || !window.ethereum) {
+      throw new Error("MetaMask is not connected.");
+    }
+
+    try {
+      const network = await this.provider.getNetwork();
+      const currentChainId = Number(network.chainId);
+      
+      if (currentChainId !== SEPOLIA_CHAIN_ID) {
+        // Try to switch to Sepolia
+        try {
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: `0x${SEPOLIA_CHAIN_ID.toString(16)}` }],
+          });
+          
+          // Wait a moment for the switch to complete
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          
+          // Reinitialize provider and signer after network switch
+          this.provider = new ethers.BrowserProvider(window.ethereum);
+          this.signer = await this.provider.getSigner();
+          
+          // Initialize contracts with new signer
+          this.contract = new ethers.Contract(
+            RAW_CONTRACT_ADDRESS,
+            CONTRACT_ABI,
+            this.signer
+          ) as ContractWithMethods;
+          
+          this.realityEthContract = new ethers.Contract(
+            REALITY_ETH_ADDRESS,
+            REALITY_ETH_ABI,
+            this.provider
+          ) as RealityEthContract;
+          
+        } catch (switchError: any) {
+          // This error code indicates that the chain has not been added to MetaMask
+          if (switchError.code === 4902) {
+            try {
+              await window.ethereum.request({
+                method: 'wallet_addEthereumChain',
+                params: [{
+                  chainId: `0x${SEPOLIA_CHAIN_ID.toString(16)}`,
+                  chainName: 'Sepolia Testnet',
+                  nativeCurrency: {
+                    name: 'Sepolia ETH',
+                    symbol: 'ETH',
+                    decimals: 18
+                  },
+                  rpcUrls: ['https://ethereum-sepolia-rpc.publicnode.com'],
+                  blockExplorerUrls: ['https://sepolia.etherscan.io/']
+                }],
+              });
+              
+              // Wait for network to be added and switched
+              await new Promise(resolve => setTimeout(resolve, 1500));
+              
+              // Reinitialize after adding network
+              this.provider = new ethers.BrowserProvider(window.ethereum);
+              this.signer = await this.provider.getSigner();
+              this.contract = new ethers.Contract(
+                RAW_CONTRACT_ADDRESS,
+                CONTRACT_ABI,
+                this.signer
+              ) as ContractWithMethods;
+              
+              this.realityEthContract = new ethers.Contract(
+                REALITY_ETH_ADDRESS,
+                REALITY_ETH_ABI,
+                this.provider
+              ) as RealityEthContract;
+              
+            } catch (addError) {
+              throw new Error("Failed to add Sepolia network to MetaMask. Please add it manually.");
+            }
+          } else {
+            throw new Error(`Please switch to Sepolia testnet in MetaMask. Current network ID: ${currentChainId}`);
+          }
+        }
+      } else {
+        // Already on Sepolia, just initialize contracts if not already initialized
+        if (!this.contract) {
+          this.contract = new ethers.Contract(
+            RAW_CONTRACT_ADDRESS,
+            CONTRACT_ABI,
+            this.signer
+          ) as ContractWithMethods;
+        }
+        
+        if (!this.realityEthContract) {
+          this.realityEthContract = new ethers.Contract(
+            REALITY_ETH_ADDRESS,
+            REALITY_ETH_ABI,
+            this.provider
+          ) as RealityEthContract;
+        }
+      }
+    } catch (error: any) {
+      console.error("Network validation error:", error);
+      throw new Error(`Network error: ${error.message || 'Please ensure you are on Sepolia testnet'}`);
     }
   }
   
@@ -717,6 +815,9 @@ export class Web3Service {
       if (!this.contract || !this.signer) {
         throw new Error("Not connected to MetaMask. Please connect first.");
       }
+
+      // Ensure we're on Sepolia network
+      await this.ensureSepoliaNetwork();
       
       // Make sure we're on the Sepolia network
       // Network check removed - let users connect on any network
@@ -812,8 +913,12 @@ export class Web3Service {
 
         
         // Test a simple read function first
-        const testMinBond = await this.contract.minBond();
-
+        try {
+          const testMinBond = await this.contract.minBond();
+        } catch (minBondError) {
+          console.warn("minBond() function not available or failed, using default value");
+          // Continue without failing - the contract might not have this function
+        }
         
         // Check if contract is paused (V1 has Pausable)
         try {
@@ -984,39 +1089,8 @@ export class Web3Service {
       
       // Enhanced error handling for V1 contract specific issues
       if (error.message?.includes("missing revert data") && !error.data) {
-
-
-
-
-
-
-        
-        // Try a different approach - use a known good contract as target
-        const knownGoodContracts = [
-          "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238", // USDC on Sepolia
-          "0x779877A7B0D9E8603169DdbD7836e478b4624789", // Another known contract
-        ];
-        
-        for (const testTarget of knownGoodContracts) {
-          try {
-
-            const testCode = await this.provider!.getCode(testTarget);
-            if (testCode !== "0x") {
-
-              return await this.directCommitReveal(ipfsHash, bondAmount, testTarget);
-            }
-          } catch (testError) {
-
-          }
-        }
-        
-
-        try {
-          return await this.directCommitReveal(ipfsHash, bondAmount, RAW_CONTRACT_ADDRESS);
-        } catch (directError) {
-          console.error("Direct transaction also failed:", directError);
-          // Continue with original error handling
-        }
+        console.error("Contract call failed with missing revert data");
+        // Remove the problematic fallback - just throw the error properly
       }
       
       // Try to decode custom error
@@ -1321,8 +1395,8 @@ export class Web3Service {
         throw new Error("Not connected to MetaMask. Please connect first.");
       }
 
-
-
+      // Ensure we're on Sepolia network
+      await this.ensureSepoliaNetwork();
 
       const tx = await this.contract.createIncentive(
         targetContract,
@@ -1330,7 +1404,9 @@ export class Web3Service {
         amount,
         duration,
         description,
-        { value: amount }
+        { 
+          value: amount
+        }
       );
 
 
@@ -1338,8 +1414,20 @@ export class Web3Service {
 
 
       return tx.hash;
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error creating incentive:", error);
+      
+      // Provide more helpful error messages
+      if (error.code === 'INSUFFICIENT_FUNDS') {
+        throw new Error("Insufficient funds on Sepolia testnet. Please get test ETH from a Sepolia faucet.");
+      } else if (error.message?.includes('gas')) {
+        throw new Error("Gas estimation failed. Please ensure you're on Sepolia testnet with sufficient test ETH.");
+      } else if (error.message?.includes('user rejected')) {
+        throw new Error("Transaction was cancelled by user.");
+      } else if (error.message?.includes('Network')) {
+        throw error; // Pass through network-related errors from ensureSepoliaNetwork
+      }
+      
       throw error;
     }
   }
@@ -1678,9 +1766,12 @@ export class Web3Service {
       }
       
       // 5. Check minimum bond requirement
-      const contractMinBond = await this.contract.minBond();
-
-
+      let contractMinBond = BigInt("10000000000000000"); // Default 0.01 ETH
+      try {
+        contractMinBond = await this.contract.minBond();
+      } catch (minBondError) {
+        console.warn("Could not fetch minBond from contract, using default 0.01 ETH");
+      }
       
       // Skip bond amount check for commitSpec (bondAmount is 0 for commit)
       // Bonds are only required during reveal
@@ -2062,13 +2153,13 @@ export class Web3Service {
         throw new Error("No contract deployed at this address");
       }
       
-      // Test 2: Get minimum bond
+      // Test 2: Get minimum bond (optional - some contracts may not have this)
       try {
         const minBond = await this.contract.minBond();
 
       } catch (error) {
-        console.error("✗ minBond() failed:", error);
-        throw new Error("Contract exists but minBond() function failed - wrong ABI?");
+        console.warn("✗ minBond() not available - contract might not have this function");
+        // Don't throw - this is optional
       }
       
       // Test 2b: Check if this looks like the V1 contract by checking constructor elements
@@ -2171,11 +2262,18 @@ export class Web3Service {
 
 
 
+        let testBondAmount = BigInt("10000000000000000"); // Default 0.01 ETH
+        try {
+          testBondAmount = await this.contract.minBond();
+        } catch {
+          // Use default if minBond fails
+        }
+        
         const gasEstimate = await this.contract.commitSpec.estimateGas(
           testCommitment,
           testTarget,
           1, // Default to mainnet for test
-          { value: await this.contract.minBond() }
+          { value: testBondAmount }
         );
 
       } catch (error) {
@@ -2401,7 +2499,8 @@ export class Web3Service {
     }
 
     try {
-      // Network check removed - let users connect on any network
+      // Ensure we're on Sepolia network
+      await this.ensureSepoliaNetwork();
 
       const tx = await this.contract.proposeSpec(specId, { value: bondAmount });
       const receipt = await tx.wait();
@@ -2455,7 +2554,8 @@ export class Web3Service {
     }
 
     try {
-
+      // Ensure we're on Sepolia network
+      await this.ensureSepoliaNetwork();
       
       // First check the current status of the spec
       const specData = await this.contract.specs(specId);

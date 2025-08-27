@@ -315,22 +315,32 @@ export default function KaiSignV1Page() {
         for (const incentiveId of allIncentiveIds) {
           try {
             const data = await contract.incentives(incentiveId);
-            // Only add if incentive exists (has a creator)
-            if (data[0] !== "0x0000000000000000000000000000000000000000") {
+            
+            // Check if the pool for this contract/chain has already been claimed
+            const targetContract = data[5]; // targetContract
+            const chainId = data[8]; // chainId
+            const poolAmount = await contract.incentivePool(chainId, targetContract);
+            
+            console.log(`Incentive ${incentiveId}: pool=${poolAmount}, isActive=${data[7]}`);
+            
+            // Only add if incentive exists, is active, AND pool hasn't been claimed (pool > 0)
+            if (data[0] !== "0x0000000000000000000000000000000000000000" && 
+                data[7] && // isActive
+                poolAmount > 0) { // Pool not yet claimed
               validIncentives.push({
                 incentiveId: incentiveId,
                 id: incentiveId,
                 creator: data[0], // creator address
-                amount: data[2].toString(), // amount
-                deadline: Number(data[3]), // deadline
-                createdAt: Number(data[4]), // createdAt timestamp
-                targetContract: data[5], // targetContract
+                amount: data[1].toString(), // amount (index 1)
+                deadline: Number(data[3]), // deadline (index 3)
+                createdAt: Number(data[4]), // createdAt (index 4)
+                targetContract: data[5], // targetContract (index 5)
                 specID: "0x0000000000000000000000000000000000000000000000000000000000000000", // No spec field in this struct
-                isActive: data[7], // isActive
-                isClaimed: data[6], // isClaimed
-                chainId: Number(data[9]), // chainId
-                description: data[10] || "Incentive for ERC7730 spec creation", // description
-                token: data[1] // token address
+                isActive: data[7], // isActive (index 7)
+                isClaimed: data[6], // isClaimed (index 6)
+                chainId: Number(data[8]), // chainId (index 8)
+                description: data[9] || "Incentive for ERC7730 spec creation", // description (index 9)
+                token: "0x0000000000000000000000000000000000000000" // No token field in current contract
               });
               console.log("Loaded incentive from:", data[0]);
             }
