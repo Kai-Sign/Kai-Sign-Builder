@@ -30,6 +30,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
   const [walletConnected, setWalletConnected] = useState(false);
   const [currentAccount, setCurrentAccount] = useState<string | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
+  const [isInitialConnection, setIsInitialConnection] = useState(false);
 
   const checkConnection = async () => {
     // Only check connection on client side
@@ -53,6 +54,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
 
   const connectWallet = async () => {
     setIsConnecting(true);
+    setIsInitialConnection(true); // Set flag to prevent reload during connection
     try {
       const account = await web3Service.connect();
       setCurrentAccount(account);
@@ -64,6 +66,8 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
       throw error;
     } finally {
       setIsConnecting(false);
+      // Clear the flag after a short delay to ensure chain change event has been handled
+      setTimeout(() => setIsInitialConnection(false), 1000);
     }
   };
 
@@ -88,9 +92,24 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
       }
     };
 
-    const handleChainChanged = () => {
-      // Reload the page when chain changes to avoid state issues
-      window.location.reload();
+    const handleChainChanged = async (chainId: string) => {
+      // Don't reload during initial connection (when we're forcing Sepolia)
+      if (isInitialConnection) {
+        console.log("Chain changed during initial connection, ignoring...");
+        return;
+      }
+      
+      // Don't reload if we're switching to Sepolia (0xaa36a7)
+      const chainIdNumber = parseInt(chainId, 16);
+      if (chainIdNumber === 11155111) { // Sepolia chain ID
+        // We're on Sepolia, just update the connection status
+        console.log("Switched to Sepolia network successfully");
+        // Don't reload or reconnect - just update status
+      } else {
+        // If switching to any other chain, reload to force reconnection to Sepolia
+        console.warn("Wrong network detected, reloading to force Sepolia...");
+        window.location.reload();
+      }
     };
 
     if (typeof window !== 'undefined' && window.ethereum) {
@@ -107,7 +126,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
         window.ethereum.removeListener?.('chainChanged', handleChainChanged);
       }
     };
-  }, [currentAccount]);
+  }, [currentAccount, isInitialConnection]);
 
   const value: WalletContextType = {
     walletConnected,

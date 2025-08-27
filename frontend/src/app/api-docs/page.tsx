@@ -72,10 +72,10 @@ fi`
       code: `# Get proposed specs from subgraph
 curl -s -X POST \\
   -H "Content-Type: application/json" \\
-  -d '{"query":"{ specs(where: {targetContract: \\"0x4dfea0c2b472a14cd052a8f9df9f19fa5cf03719\\", status: \\"PROPOSED\\"}) { ipfs blockTimestamp user } }"}' \\
+  -d '{"query":"{ specs(where: {targetContract: \\"0x4dfea0c2b472a14cd052a8f9df9f19fa5cf03719\\", status: \\"PROPOSED\\"}) { blobHash blockTimestamp user } }"}' \\
   "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/version/latest"
 
-# Note: The 'ipfs' field currently contains the blob hash data
+# Note: The 'blobHash' field contains the EIP-4844 blob versioned hash
 # Status values: COMMITTED, SUBMITTED, PROPOSED, FINALIZED, CANCELLED`
     },
     {
@@ -109,7 +109,7 @@ USER_ADDRESS="0xbb6e6d6dabd150c4a000d1fd8a7de46a750477f4"
 
 curl -s -X POST \\
   -H "Content-Type: application/json" \\
-  -d "{\\"query\\":\\"{ specs(where: {user: \\\\\\"$USER_ADDRESS\\\\\\"}) { id ipfs targetContract status blockTimestamp incentiveId } }\\"}" \\
+  -d "{\\"query\\":\\"{ specs(where: {user: \\\\\\"$USER_ADDRESS\\\\\\"}) { id blobHash targetContract status blockTimestamp incentiveId } }\\"" \\
   "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/version/latest" | jq`
     },
     {
@@ -117,7 +117,7 @@ curl -s -X POST \\
       description: "Get multiple data types in one request",
       code: `curl -s -X POST \\
   -H "Content-Type: application/json" \\
-  -d '{"query":"{ proposedSpecs: specs(where: {status: \\"PROPOSED\\"}, first: 5) { id user ipfs targetContract blockTimestamp } finalizedSpecs: specs(where: {status: \\"FINALIZED\\"}, first: 5) { id user ipfs targetContract isAccepted } recentSpecs: specs(first: 5, orderBy: blockTimestamp, orderDirection: desc) { id status blockTimestamp } }"}' \\
+  -d '{"query":"{ proposedSpecs: specs(where: {status: \\"PROPOSED\\"}, first: 5) { id user blobHash targetContract blockTimestamp } finalizedSpecs: specs(where: {status: \\"FINALIZED\\"}, first: 5) { id user blobHash targetContract isAccepted } recentSpecs: specs(first: 5, orderBy: blockTimestamp, orderDirection: desc) { id status blockTimestamp } }"}' \\
   "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/version/latest" | jq`
     },
     {

@@ -33,28 +33,28 @@ export async function GET(request: NextRequest) {
     // Call our existing KaiSign service to get metadata
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://kai-sign-production.up.railway.app';
     
-    // Try to get complete metadata from our KaiSign graph with IPFS data
+    // Try to get complete metadata from our KaiSign graph with blob data
     const client = new (await import('~/lib/graphClient')).KaiSignGraphClient(
       process.env.NEXT_PUBLIC_KAISIGN_GRAPH_URL || 'https://api.studio.thegraph.com/query/117022/kaisign-subgraph/v0.0.7'
     );
     
     let contractMetadata = null;
-    let ipfsMetadata = null;
+    let blobMetadata = null;
     
     try {
       const completeData = await client.getCompleteContractMetadata(contractAddress, chainId);
       if (completeData.specs && completeData.specs.length > 0) {
         contractMetadata = completeData.specs;
-        ipfsMetadata = completeData.ipfsMetadata;
+        blobMetadata = completeData.blobMetadata;
       }
     } catch (graphError) {
       console.log('Graph metadata not available:', graphError);
     }
 
-    // Try to get IPFS-based metadata from Railway API as fallback
-    if (!ipfsMetadata) {
+    // Try to get blob-based metadata from Railway API as fallback
+    if (!blobMetadata) {
       try {
-        const ipfsResponse = await fetch(`${apiUrl}/api/py/getIPFSMetadata`, {
+        const blobResponse = await fetch(`${apiUrl}/api/py/getBlobMetadata`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -65,11 +65,11 @@ export async function GET(request: NextRequest) {
           })
         });
 
-        if (ipfsResponse.ok) {
-          ipfsMetadata = await ipfsResponse.json();
+        if (blobResponse.ok) {
+          blobMetadata = await blobResponse.json();
         }
-      } catch (ipfsError) {
-        console.log('IPFS metadata not available:', ipfsError);
+      } catch (blobError) {
+        console.log('Blob metadata not available:', blobError);
       }
     }
 
@@ -89,27 +89,27 @@ export async function GET(request: NextRequest) {
           graph: true
         }),
         // Complete ERC-7730 metadata
-        ...(ipfsMetadata && {
-          erc7730: ipfsMetadata,
+        ...(blobMetadata && {
+          erc7730: blobMetadata,
           // Extract function information for easier access
-          functions: ipfsMetadata.metadata?.functions ? Object.entries(ipfsMetadata.metadata.functions).map(([selector, func]: [string, any]) => ({
+          functions: blobMetadata.metadata?.functions ? Object.entries(blobMetadata.metadata.functions).map(([selector, func]: [string, any]) => ({
             selector,
             name: selector,
             intent: func.intent,
             fields: func.fields
           })) : [],
           // Extract constants and enums
-          constants: ipfsMetadata.metadata?.constants || {},
-          enums: ipfsMetadata.metadata?.enums || {},
+          constants: blobMetadata.metadata?.constants || {},
+          enums: blobMetadata.metadata?.enums || {},
           // Contract info
-          owner: ipfsMetadata.metadata?.owner,
-          info: ipfsMetadata.metadata?.info
+          owner: blobMetadata.metadata?.owner,
+          info: blobMetadata.metadata?.info
         }),
       },
       // Indicate which sources provided data
       sources: {
         graph: !!contractMetadata,
-        ipfs: !!ipfsMetadata,
+        blob: !!blobMetadata,
       },
       timestamp: new Date().toISOString()
     };

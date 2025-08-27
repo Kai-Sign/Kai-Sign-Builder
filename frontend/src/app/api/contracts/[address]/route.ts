@@ -63,7 +63,7 @@ export async function GET(
         specHistory: specHistory.map(spec => ({
           id: spec.id,
           creator: spec.creator,
-          ipfsCID: spec.ipfsCID,
+          blobHash: spec.blobHash,
           timestamp: spec.createdTimestamp,
           status: spec.status
         })),

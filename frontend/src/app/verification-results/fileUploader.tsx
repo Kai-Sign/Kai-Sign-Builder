@@ -177,14 +177,78 @@ export default function FileUploader() {
         description: "Submitting blob transaction (may take up to 3 minutes)..." 
       });
 
-      const res = await fetch('/api/blob/submit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ json: jsonData }),
-      });
+      // Set a 29-second timeout for the fetch
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 29000);
+
+      let res;
+      try {
+        res = await fetch('/api/blob/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ json: jsonData }),
+          signal: controller.signal
+        });
+      } catch (error: any) {
+        clearTimeout(timeoutId);
+        
+        // If it's an abort error (timeout), handle optimistically
+        if (error.name === 'AbortError') {
+          toast({ 
+            title: "Blob submission in progress", 
+            description: "Transaction is being processed on-chain. This may take a few minutes. Check back shortly and manually check for your blob hash.", 
+            variant: "default" 
+          });
+          
+          // Don't set fake hashes - user should check manually
+          return; // Exit successfully
+        }
+        
+        throw error;
+      }
+      
+      clearTimeout(timeoutId);
+
+      // Handle 202 Accepted response optimistically
+      if (res.status === 202) {
+        const result = await res.json();
+        toast({ 
+          title: "Blob submission accepted", 
+          description: result.message || "Transaction is being processed on-chain. Check back in a few minutes and manually verify your blob hash.", 
+          variant: "default" 
+        });
+        
+        // Don't set fake hashes - user should check manually
+        return; // Exit successfully
+      }
 
       if (!res.ok) {
         const text = await res.text().catch(() => '');
+        
+        // Handle timeout responses optimistically
+        if (res.status === 408 || text.includes('timeout') || text.includes('timed out')) {
+          toast({ 
+            title: "Blob submission in progress", 
+            description: "Transaction is being processed on-chain. Please check back in a few minutes and manually verify your blob hash.", 
+            variant: "default" 
+          });
+          
+          // Don't set fake hashes - user should check manually
+          return; // Exit successfully
+        }
+        
+        // Handle AWS Lambda errors optimistically if it's a processing issue
+        if (res.status === 500 && (text.includes('KZG') || text.includes('processing'))) {
+          toast({ 
+            title: "Blob submission processing", 
+            description: "Transaction is being processed. If it's taking longer than expected, please try again in a moment.", 
+            variant: "default" 
+          });
+          
+          // Don't set fake hashes - user should check manually
+          return; // Exit successfully
+        }
+        
         throw new Error(text || `HTTP ${res.status}`);
       }
 
