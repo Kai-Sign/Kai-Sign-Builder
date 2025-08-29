@@ -57,3 +57,5 @@ secrets/
 
 # idea files
 .idea
+frontend/.next
+frontend/.next

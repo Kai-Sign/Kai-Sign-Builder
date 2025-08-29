@@ -57,7 +57,7 @@ export async function fetchIPFSMetadataFromAPI(specID: string): Promise<IPFSMeta
     console.log(`Original spec ID: ${specID}`);
     console.log(`Formatted spec ID: ${formattedSpecId}`);
   } catch (validationError) {
-    throw new Error(`Invalid spec ID format: ${validationError.message}`);
+    throw new Error(`Invalid spec ID format: ${validationError instanceof Error ? validationError.message : String(validationError)}`);
   }
   
   for (let attempt = 0; attempt <= maxRetries; attempt++) {

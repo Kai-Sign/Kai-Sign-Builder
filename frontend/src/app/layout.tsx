@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   title: "Create Erc7730 Json",
   description: "Clear sign all the things",
   icons: [{ rel: "icon", url: "/ledger-logo-short-black.svg" }],
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://kaisign.cipherlogic.xyz'),
   openGraph: {
     title: "Create Erc7730 Json",
     description: "Clear sign all the things",

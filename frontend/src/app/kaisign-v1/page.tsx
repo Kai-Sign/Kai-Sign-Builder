@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
+import type { Log, EventLog } from "ethers";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
@@ -94,7 +95,7 @@ export default function KaiSignV1Page() {
         specId: spec.id,
         creator: spec.creator,
         targetContract: spec.targetContract || "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719",
-        blobHash: spec.blobHash || spec.ipfsCID || "", // Use blobHash if available, fallback to ipfsCID
+        blobHash: spec.blobHash || "", // Use blobHash if available
         status: 3, // FINALIZED
         createdTimestamp: parseInt(spec.createdTimestamp),
         proposedTimestamp: parseInt(spec.proposedTimestamp || spec.createdTimestamp),
@@ -157,6 +158,13 @@ export default function KaiSignV1Page() {
       try {
         const provider = new ethers.JsonRpcProvider("https://ethereum-sepolia-rpc.publicnode.com");
         
+        type KaiSignSpecsContract = ethers.Contract & {
+          getSpecsByContract: (addr: string, chainId: number) => Promise<string[]>;
+          specs: (id: string) => Promise<any>;
+          commitments: (id: string) => Promise<any>;
+          filters: { LogCommitSpec: (...args: any[]) => any };
+        };
+
         const contract = new ethers.Contract(
           "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719",
           [
@@ -166,7 +174,7 @@ export default function KaiSignV1Page() {
             "function commitments(bytes32) view returns (address,uint64,uint32,address,bool,uint80,uint8,uint64,uint256,bytes32)"
           ],
           provider
-        );
+        ) as unknown as KaiSignSpecsContract;
         
         // Get specs for the contract
         const specIds = await contract.getSpecsByContract("0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719", 11155111);
@@ -207,8 +215,8 @@ export default function KaiSignV1Page() {
         
         // Map commitment creators
         for (const event of commitEvents) {
-          const commitmentId = event.args.commitmentId;
-          const committer = event.args.committer;
+          if (!("args" in event) || !(event as EventLog).args) continue;
+          const { commitmentId, committer } = (event as EventLog).args as any;
           
           // Check if this commitment is revealed and matches any spec
           try {
@@ -222,7 +230,7 @@ export default function KaiSignV1Page() {
               }
             }
           } catch (error) {
-            console.error("Error checking commitment:", error);
+            console.error("Error checking commitment:", error instanceof Error ? error.message : String(error));
           }
         }
       } catch (error) {
@@ -238,13 +246,24 @@ export default function KaiSignV1Page() {
       try {
         const provider = new ethers.JsonRpcProvider("https://ethereum-sepolia-rpc.publicnode.com");
         
+        type KaiSignIncentivesContract = ethers.Contract & {
+          filters: { LogIncentiveCreated: (...args: any[]) => any };
+          queryFilter: (filter: any, fromBlock: number, toBlock: number | string) => Promise<(Log | EventLog)[]>;
+          getUserIncentives: (addr: string) => Promise<string[]>;
+          incentives: (id: string) => Promise<any>;
+          incentivePool: (chainId: bigint | number, targetContract: string) => Promise<bigint>;
+        };
+
         const contract = new ethers.Contract(
           "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719",
-          ["event LogIncentiveCreated(bytes32 indexed incentiveId, address indexed creator, address indexed targetContract, uint256 chainId, address token, uint256 amount, uint64 deadline, string description)",
-           "function incentives(bytes32) view returns (address,address,uint128,uint64,uint64,address,bool,bool,uint80,uint256,string)",
-           "function getUserIncentives(address) view returns (bytes32[])"],
+          [
+            "event LogIncentiveCreated(bytes32 indexed incentiveId, address indexed creator, address indexed targetContract, uint256 chainId, address token, uint256 amount, uint64 deadline, string description)",
+            "function incentives(bytes32) view returns (address,address,uint128,uint64,uint64,address,bool,bool,uint80,uint256,string)",
+            "function getUserIncentives(address) view returns (bytes32[])",
+            "function incentivePool(uint256,address) view returns (uint256)"
+          ],
           provider
-        );
+        ) as unknown as KaiSignIncentivesContract;
         
         console.log("=== LOADING ALL INCENTIVES ===");
         
@@ -269,12 +288,14 @@ export default function KaiSignV1Page() {
             if (events.length > 0) {
               console.log(`Found ${events.length} incentive event(s)`);
               for (const event of events) {
-                allIncentiveIds.add(event.args.incentiveId);
+                if (("args" in event) && (event as EventLog).args) {
+                  allIncentiveIds.add(((event as EventLog).args as any).incentiveId);
+                }
               }
             }
           } catch (error) {
             // If events fail, we'll fall back to checking known addresses
-            console.log("Could not query events in range:", error.message);
+            console.log("Could not query events in range:", error instanceof Error ? error.message : String(error));
           }
         }
         
@@ -305,7 +326,7 @@ export default function KaiSignV1Page() {
               }
             }
           } catch (error) {
-            console.error(`Error checking ${addr}:`, error.message);
+            console.error(`Error checking ${addr}:`, error instanceof Error ? error.message : String(error));
           }
         }
         
@@ -318,27 +339,24 @@ export default function KaiSignV1Page() {
             
             // Check if the pool for this contract/chain has already been claimed
             const targetContract = data[5]; // targetContract
-            const chainId = data[8]; // chainId
-            const poolAmount = await contract.incentivePool(chainId, targetContract);
+            const chainId = data[8]; // chainId (likely bigint)
+            const poolAmount = await contract.incentivePool(chainId as bigint, targetContract);
             
             console.log(`Incentive ${incentiveId}: pool=${poolAmount}, isActive=${data[7]}`);
             
             // Only add if incentive exists, is active, AND pool hasn't been claimed (pool > 0)
             if (data[0] !== "0x0000000000000000000000000000000000000000" && 
                 data[7] && // isActive
-                poolAmount > 0) { // Pool not yet claimed
+                poolAmount > 0n) { // Pool not yet claimed
               validIncentives.push({
                 incentiveId: incentiveId,
-                id: incentiveId,
                 creator: data[0], // creator address
                 amount: data[1].toString(), // amount (index 1)
                 deadline: Number(data[3]), // deadline (index 3)
                 createdAt: Number(data[4]), // createdAt (index 4)
                 targetContract: data[5], // targetContract (index 5)
-                specID: "0x0000000000000000000000000000000000000000000000000000000000000000", // No spec field in this struct
                 isActive: data[7], // isActive (index 7)
                 isClaimed: data[6], // isClaimed (index 6)
-                chainId: Number(data[8]), // chainId (index 8)
                 description: data[9] || "Incentive for ERC7730 spec creation", // description (index 9)
                 token: "0x0000000000000000000000000000000000000000" // No token field in current contract
               });
@@ -1108,8 +1126,8 @@ export default function KaiSignV1Page() {
                             console.log(`🔍 Searching specs for target contract: ${specSearchContract} using subgraph`);
                             
                             // Query subgraph for specs targeting this contract
-                            const contractSpecs = await subgraphClient.getContractSpecs(specSearchContract);
-                            console.log(`📋 Found ${contractSpecs.length} specs from subgraph`);
+                            const specsFromSubgraph = await subgraphClient.getContractSpecs(specSearchContract);
+                            console.log(`📋 Found ${specsFromSubgraph.length} specs from subgraph`);
                             
                             // Filter for user's specs
                             const userSpecsFromSearch: SpecData[] = [];
@@ -1121,7 +1139,7 @@ export default function KaiSignV1Page() {
                               'CANCELLED': 4
                             };
                             
-                            for (const spec of contractSpecs) {
+                            for (const spec of specsFromSubgraph) {
                               if (spec.user.toLowerCase() === currentAccount?.toLowerCase()) {
                                 userSpecsFromSearch.push({
                                   specId: spec.id,
@@ -1337,7 +1355,7 @@ export default function KaiSignV1Page() {
                         setIsSearchingSpecs(true);
                         try {
                           // Query subgraph for specs targeting this contract
-                          const contractSpecs = await subgraphClient.getContractSpecs(specSearchContract);
+                          const contractSpecsFromSubgraph = await subgraphClient.getContractSpecs(specSearchContract);
                           const userSpecsFromSearch: SpecData[] = [];
                           
                           const statusMap: { [key: string]: number } = {
@@ -1348,7 +1366,7 @@ export default function KaiSignV1Page() {
                             'CANCELLED': 4
                           };
                           
-                          for (const spec of contractSpecs) {
+                          for (const spec of contractSpecsFromSubgraph) {
                             if (currentAccount && spec.user.toLowerCase() === currentAccount.toLowerCase()) {
                               userSpecsFromSearch.push({
                                 specId: spec.id,
