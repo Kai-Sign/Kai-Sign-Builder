@@ -45,7 +45,9 @@ export async function GET(request: NextRequest) {
       const completeData = await client.getCompleteContractMetadata(contractAddress, chainId);
       if (completeData.specs && completeData.specs.length > 0) {
         contractMetadata = completeData.specs;
-        blobMetadata = completeData.blobMetadata;
+        // Align with current client return type (uses ipfsMetadata)
+        // Keep local var name for downstream shaping
+        blobMetadata = (completeData as any).ipfsMetadata;
       }
     } catch (graphError) {
       console.log('Graph metadata not available:', graphError);

@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ethers } from "ethers";
 
-// Dynamically import c-kzg only on the server
+// Dynamically import c-kzg only at runtime (avoid bundler resolution)
 let cKzg: any;
 try {
-  // @ts-ignore
-  cKzg = require("c-kzg");
+  const req = eval('require') as (m: string) => any;
+  cKzg = req("c-kzg");
 } catch {}
 
 function toBlob(data: string): Uint8Array {
