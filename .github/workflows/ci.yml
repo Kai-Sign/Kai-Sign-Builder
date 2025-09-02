@@ -105,6 +105,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
       
+      - name: Copy package files to frontend
+        run: |
+          cp package.json frontend/
+          cp package-lock.json frontend/
+      
       - name: Build project
         run: npm run build
         env:
@@ -116,3 +121,15 @@ jobs:
             echo "Build failed: frontend/.next directory not found"
             exit 1
           fi
+      
+      - name: Verify Vercel configuration
+        run: |
+          if [ ! -f "frontend/vercel.json" ]; then
+            echo "Error: frontend/vercel.json not found"
+            exit 1
+          fi
+          if [ ! -f "frontend/package.json" ]; then
+            echo "Error: frontend/package.json not found (should have been copied)"
+            exit 1
+          fi
+          echo "✅ Vercel deployment files are in place"
