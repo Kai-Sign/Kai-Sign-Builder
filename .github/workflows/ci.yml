@@ -112,7 +112,7 @@ jobs:
       
       - name: Check build output
         run: |
-          if [ ! -d ".next" ]; then
-            echo "Build failed: .next directory not found"
+          if [ ! -d "frontend/.next" ]; then
+            echo "Build failed: frontend/.next directory not found"
             exit 1
           fi
