@@ -6,6 +6,11 @@
 .pnp.js
 __pycache__/
 
+# Python virtual environments
+venv/
+backend/venv/
+*.pyc
+
 # testing
 /coverage
 
@@ -52,3 +57,5 @@ secrets/
 
 # idea files
 .idea
+frontend/.next
+frontend/.next

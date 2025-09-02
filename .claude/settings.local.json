@@ -2,7 +2,22 @@
   "permissions": {
     "allow": [
       "Bash(cat:*)",
-      "WebFetch(domain:sepolia.etherscan.io)"
+      "WebFetch(domain:sepolia.etherscan.io)",
+      "WebSearch",
+      "Bash(node:*)",
+      "Bash(zip:*)",
+      "Bash(cast sig:*)",
+      "Bash(cast 4byte:*)",
+      "Bash(npm run typecheck:*)",
+      "WebSearch",
+      "Bash(npx graph auth:*)",
+      "Bash(graph deploy:*)",
+      "Bash(npx graph:*)",
+      "Bash(npx hardhat:*)",
+      "Bash(node:*)",
+      "Bash(cast call:*)",
+      "Bash(cast abi-decode:*)",
+      "Bash(cast sig-list:*)"
     ],
     "deny": []
   }

@@ -54,7 +54,7 @@ export function handleLogRevealSpec(event: LogRevealSpecEvent): void {
   entity.creator = event.params.creator
   entity.specID = event.params.specID
   entity.commitmentId = event.params.commitmentId
-  entity.ipfs = event.params.ipfs
+  entity.blobHash = event.params.blobHash.toHexString()
   entity.targetContract = event.params.targetContract
   entity.chainId = event.params.chainId
 
@@ -72,7 +72,7 @@ export function handleLogCreateSpec(event: LogCreateSpecEvent): void {
   )
   logEntity.creator = event.params.creator
   logEntity.specID = event.params.specID
-  logEntity.ipfs = event.params.ipfs
+  logEntity.blobHash = event.params.blobHash.toHexString()
   logEntity.targetContract = event.params.targetContract
   logEntity.chainId = event.params.chainId
   logEntity.timestamp = event.params.timestamp
@@ -86,7 +86,7 @@ export function handleLogCreateSpec(event: LogCreateSpecEvent): void {
   // Create or update the Spec entity
   let spec = new Spec(event.params.specID)
   spec.user = event.params.creator
-  spec.ipfs = event.params.ipfs
+  spec.blobHash = event.params.blobHash.toHexString()
   spec.targetContract = event.params.targetContract
   spec.chainID = event.params.chainId.toString()
   spec.status = "SUBMITTED"
@@ -96,22 +96,8 @@ export function handleLogCreateSpec(event: LogCreateSpecEvent): void {
   spec.isFinalized = false
   spec.isAccepted = false
   
-  // Try to get additional metadata from IPFS
-  let metadata = ipfs.cat(event.params.ipfs)
-  if (metadata) {
-    let jsonData = json.fromBytes(metadata as Bytes)
-    if (jsonData) {
-      let jsonObject = jsonData.toObject()
-      if (jsonObject) {
-        // Extract additional metadata if available
-        let context = jsonObject.get("context")
-        if (context) {
-          // Additional processing can be done here if needed
-          context.toObject()
-        }
-      }
-    }
-  }
+  // Note: Blob data cannot be accessed directly in The Graph
+  // Additional metadata would need to be included in the event or retrieved off-chain
   
   spec.save()
 }
@@ -179,7 +165,6 @@ export function handleLogIncentiveCreated(event: LogIncentiveCreatedEvent): void
   entity.creator = event.params.creator
   entity.targetContract = event.params.targetContract
   entity.chainId = event.params.chainId
-  entity.token = event.params.token
   entity.amount = event.params.amount
   entity.deadline = event.params.deadline
   entity.description = event.params.description
@@ -230,6 +215,7 @@ export function handleLogContractSpecAdded(event: LogContractSpecAddedEvent): vo
   entity.specID = event.params.specID
   entity.creator = event.params.creator
   entity.chainId = event.params.chainId
+  entity.blobHash = event.params.blobHash.toHexString()
 
   entity.blockNumber = event.block.number
   entity.blockTimestamp = event.block.timestamp
@@ -313,118 +299,17 @@ function clearContractFunctions(_contractId: string): void {
 }
 
 function processSpecMetadata(contract: Contract, spec: Spec): void {
-  // Fetch IPFS content
-  let metadata = ipfs.cat(spec.ipfs)
-  if (!metadata) return
-  
-  let jsonData = json.fromBytes(metadata as Bytes)
-  if (!jsonData) return
-  
-  let jsonObject = jsonData.toObject()
-  if (!jsonObject) return
-  
-  // Extract metadata
-  let metadataObj = jsonObject.get("metadata")
-  if (metadataObj) {
-    let metadata = metadataObj.toObject()
-    if (metadata) {
-      let name = metadata.get("name")
-      let version = metadata.get("version") 
-      let description = metadata.get("description")
-      
-      if (name) contract.name = name.toString()
-      if (version) contract.version = version.toString()
-      if (description) contract.description = description.toString()
-    }
-  }
+  // Note: Cannot fetch blob content directly in The Graph
+  // Metadata processing would need to be handled off-chain
+  // For now, just mark that we have approved metadata but don't process it
   
   contract.hasApprovedMetadata = true
-  
-  // Process selectors and create Function entities
-  let selectors = jsonObject.get("selectors")
-  let displayFormats = jsonObject.get("display")
-  
-  if (selectors && displayFormats) {
-    let selectorsObj = selectors.toObject()
-    let displayObj = displayFormats.toObject()
-    
-    if (selectorsObj && displayObj) {
-      let formats = displayObj.get("formats")
-      if (formats) {
-        let formatsObj = formats.toObject()
-        if (formatsObj) {
-          processSelectors(contract, selectorsObj as TypedMap<string, JSONValue>, formatsObj as TypedMap<string, JSONValue>, spec.blockTimestamp)
-        }
-      }
-    }
-  }
+  contract.functionCount = 0 // Cannot extract function data from blob
+  contract.name = "Unknown" // Would need to get from off-chain
+  contract.version = "Unknown"
   
   contract.save()
 }
 
-function processSelectors(
-  contract: Contract,
-  selectors: TypedMap<string, JSONValue>,
-  formats: TypedMap<string, JSONValue>,
-  timestamp: BigInt
-): void {
-  let functionCount = 0
-  
-  // Get entries as array for iteration
-  let selectorEntries = selectors.entries
-  for (let i = 0; i < selectorEntries.length; i++) {
-    let entry = selectorEntries[i]
-    let selector = entry.key
-    let selectorData = entry.value.toObject()
-    
-    if (!selectorData) continue
-    
-    let formatName = selectorData.get("format")
-    if (!formatName) continue
-    
-    let format = formats.get(formatName.toString())
-    if (!format) continue
-    
-    let formatObj = format.toObject()
-    if (!formatObj) continue
-    
-    let intent = formatObj.get("intent")
-    if (!intent) continue
-    
-    // Create Function entity with unique ID: contract+chainID+selector
-    let functionId = contract.id + "-" + selector
-    let func = new Function(functionId)
-    
-    func.contract = contract.id
-    func.selector = selector
-    func.chainID = contract.chainID
-    func.name = formatName.toString()
-    func.intent = intent.toString()
-    func.displayFormat = formatName.toString()
-    func.createdAt = timestamp
-    
-    // Extract parameter types
-    let params = selectorData.get("params")
-    if (params) {
-      let paramsArray = params.toArray()
-      let paramTypes: string[] = []
-      
-      for (let j = 0; j < paramsArray.length; j++) {
-        let param = paramsArray[j].toObject()
-        if (param) {
-          let abiType = param.get("abiType")
-          if (abiType) {
-            paramTypes.push(abiType.toString())
-          }
-        }
-      }
-      
-      func.parameterTypes = paramTypes
-    }
-    
-    func.save()
-    functionCount++
-  }
-  
-  contract.functionCount = functionCount
-}
+// Function removed: processSelectors() 
+// Cannot process selector data from blobs in The Graph indexer

@@ -69,6 +69,12 @@
         "type": "uint256",
         "indexed": false,
         "internalType": "uint256"
+      },
+      {
+        "name": "blobHash",
+        "type": "bytes32",
+        "indexed": false,
+        "internalType": "bytes32"
       }
     ],
     "anonymous": false
@@ -90,15 +96,15 @@
         "internalType": "bytes32"
       },
       {
-        "name": "ipfs",
-        "type": "string",
-        "indexed": false,
-        "internalType": "string"
+        "name": "blobHash",
+        "type": "bytes32",
+        "indexed": true,
+        "internalType": "bytes32"
       },
       {
         "name": "targetContract",
         "type": "address",
-        "indexed": true,
+        "indexed": false,
         "internalType": "address"
       },
       {
@@ -252,12 +258,6 @@
         "internalType": "uint256"
       },
       {
-        "name": "token",
-        "type": "address",
-        "indexed": false,
-        "internalType": "address"
-      },
-      {
         "name": "amount",
         "type": "uint256",
         "indexed": false,
@@ -326,16 +326,16 @@
         "internalType": "bytes32"
       },
       {
-        "name": "commitmentId",
+        "name": "blobHash",
         "type": "bytes32",
         "indexed": true,
         "internalType": "bytes32"
       },
       {
-        "name": "ipfs",
-        "type": "string",
+        "name": "commitmentId",
+        "type": "bytes32",
         "indexed": false,
-        "internalType": "string"
+        "internalType": "bytes32"
       },
       {
         "name": "targetContract",
