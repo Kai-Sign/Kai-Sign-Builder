@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
       txHash: resp.hash,
       blockNumber: receipt?.blockNumber ?? null,
       blobVersionedHash: versionedHash,
-      etherscanBlobUrl: `https://sepolia.etherscan.io/blob/${versionedHash}`,
+      etherscanBlobUrl: `https://sepolia.blobscan.com/blob/${versionedHash}`,
     });
   } catch (err: any) {
     return NextResponse.json(

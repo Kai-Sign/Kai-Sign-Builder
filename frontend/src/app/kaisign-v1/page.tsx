@@ -1499,7 +1499,7 @@ export default function KaiSignV1Page() {
                             
                             <div className="flex flex-wrap gap-2 pt-4 border-t border-gray-700">
                               <a
-                                href={`https://sepolia.etherscan.io/blob/${spec.blobHash}`}
+                                href={`https://sepolia.blobscan.com/blob/${spec.blobHash}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded"

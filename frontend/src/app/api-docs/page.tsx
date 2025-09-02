@@ -40,7 +40,7 @@ export default function ApiDocsPage() {
     {
       title: "Fetch Blob Data",
       description: "Get contract metadata from blob using the hash from specs",
-      code: `curl -s "https://sepolia.etherscan.io/blob/0x0192d6c8c1e4f8e3f8e3f8e3f8e3f8e3f8e3f8e3f8e3f8e3f8e3f8e3f8e3f8e3"`
+      code: `curl -s "https://sepolia.blobscan.com/blob/0x0192d6c8c1e4f8e3f8e3f8e3f8e3f8e3f8e3f8e3f8e3f8e3f8e3f8e3f8e3f8e3"`
     },
     {
       title: "Complete Shell Script",
@@ -61,7 +61,7 @@ BLOB_HASH=$(echo "$SPECS" | jq -r '.data.specs[0].blobHash')
 
 if [ "$BLOB_HASH" != "null" ]; then
   echo -e "\\n\\nFetching metadata from blob: $BLOB_HASH"
-  curl -s "https://sepolia.etherscan.io/blob/$BLOB_HASH"
+  curl -s "https://sepolia.blobscan.com/blob/$BLOB_HASH"
 else
   echo "No specs found for this contract"
 fi`
@@ -231,13 +231,13 @@ chmod +x query.sh
             <ul className="space-y-2">
               <li className="flex items-center gap-2">
                 <code className="bg-gray-700 px-2 py-1 rounded text-sm text-gray-200">
-                  https://sepolia.etherscan.io/blob/[blobHash]
+                  https://sepolia.blobscan.com/blob/[blobHash]
                 </code>
                 <span className="text-green-400 text-sm">(Sepolia Testnet)</span>
               </li>
               <li>
                 <code className="bg-gray-700 px-2 py-1 rounded text-sm text-gray-200">
-                  https://etherscan.io/blob/[blobHash]
+                  https://blobscan.com/blob/[blobHash]
                 </code>
                 <span className="text-gray-400 text-sm">(Mainnet)</span>
               </li>

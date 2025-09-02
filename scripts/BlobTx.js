@@ -125,7 +125,7 @@ async function sendActualBlobTx() {
             console.log('Block:', receipt.blockNumber);
             console.log('Type:', receipt.type);
             console.log('Blob gas used:', receipt.blobGasUsed);
-            console.log(`Blob: https://sepolia.etherscan.io/blob/${versionedHash}`);
+            console.log(`Blob: https://sepolia.blobscan.com/blob/${versionedHash}`);
             
             return;
         } catch (e1) {
