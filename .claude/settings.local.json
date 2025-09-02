@@ -17,7 +17,9 @@
       "Bash(node:*)",
       "Bash(cast call:*)",
       "Bash(cast abi-decode:*)",
-      "Bash(cast sig-list:*)"
+      "Bash(cast sig-list:*)",
+      "WebFetch(domain:docs.eigencloud.xyz)",
+      "WebFetch(domain:docs.eigenda.xyz)"
     ],
     "deny": []
   }

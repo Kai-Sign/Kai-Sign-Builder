@@ -1,0 +1,23 @@
+{
+  "name": "kaisign-blob-lambda",
+  "version": "1.0.0",
+  "description": "KaiSign Blob Submission Lambda Functions with KMS",
+  "main": "lambda-kms-optimized.js",
+  "scripts": {
+    "build": "npm install --production",
+    "package": "zip -r lambda-deployment.zip *.js node_modules/",
+    "deploy": "npm run build && npm run package && aws lambda update-function-code --function-name $LAMBDA_NAME --zip-file fileb://lambda-deployment.zip",
+    "test": "node test-local.js"
+  },
+  "dependencies": {
+    "ethers": "^6.9.0",
+    "@aws-sdk/client-kms": "^3.450.0",
+    "@aws-sdk/client-dynamodb": "^3.450.0",
+    "@aws-sdk/client-sns": "^3.450.0",
+    "micro-eth-signer": "^0.7.2",
+    "@paulmillr/trusted-setups": "^0.1.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "kaisign-kms-blob-lambda-js",
+  "version": "1.0.0",
+  "description": "AWS Lambda function with pure JS KZG implementation",
+  "main": "kms-blob-lambda.js",
+  "dependencies": {
+    "@aws-sdk/client-kms": "^3.450.0",
+    "ethers": "^6.15.0",
+    "micro-eth-signer": "^0.11.0",
+    "@paulmillr/trusted-setups": "^0.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

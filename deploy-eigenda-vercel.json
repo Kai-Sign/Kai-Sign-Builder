@@ -1,0 +1,21 @@
+{
+  "name": "kaisign-eigenda-proxy",
+  "version": 2,
+  "builds": [
+    {
+      "src": "backend/eigenda-api.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/backend/eigenda-api.js"
+    }
+  ],
+  "env": {
+    "EIGENDA_PROXY_URL": "https://eigenda-proxy.kaisign.vercel.app",
+    "EIGENDA_DISPERSER_RPC": "disperser-testnet-holesky.eigenda.xyz:443",
+    "EIGENDA_SERVICE_MANAGER": "0xD4A7E1Bd8015057293f0D0A557088c286942e84b"
+  }
+}

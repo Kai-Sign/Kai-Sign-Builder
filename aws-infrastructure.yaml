@@ -1,0 +1,436 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'KaiSign Blob Submission Infrastructure with KMS and Optimistic Response'
+
+Parameters:
+  KMSKeyId:
+    Type: String
+    Description: KMS Key ID for transaction signing
+    Default: ''
+  
+  SepoliaRpcUrl:
+    Type: String
+    Description: Sepolia RPC endpoint URL
+    NoEcho: true
+  
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+    Description: Environment name
+
+Resources:
+  # DynamoDB Table for transaction status
+  BlobTransactionTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub 'KaiSign-BlobTransactions-${Environment}'
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: txHash
+          AttributeType: S
+        - AttributeName: status
+          AttributeType: S
+        - AttributeName: timestamp
+          AttributeType: S
+      KeySchema:
+        - AttributeName: txHash
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: StatusIndex
+          KeySchema:
+            - AttributeName: status
+              KeyType: HASH
+            - AttributeName: timestamp
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      TimeToLiveSpecification:
+        Enabled: true
+        AttributeName: ttl
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Application
+          Value: KaiSign
+
+  # Lambda Execution Role
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'KaiSign-LambdaRole-${Environment}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: KMSSigningPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - kms:Sign
+                  - kms:GetPublicKey
+                  - kms:DescribeKey
+                Resource: !Sub 'arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/${KMSKeyId}'
+        - PolicyName: DynamoDBPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:PutItem
+                  - dynamodb:GetItem
+                  - dynamodb:UpdateItem
+                  - dynamodb:Query
+                Resource:
+                  - !GetAtt BlobTransactionTable.Arn
+                  - !Sub '${BlobTransactionTable.Arn}/index/*'
+        - PolicyName: SNSPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - sns:Publish
+                Resource: !Ref BlobNotificationTopic
+
+  # Main Lambda Function (Optimized for 29s timeout)
+  BlobSubmissionFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub 'KaiSign-BlobSubmit-${Environment}'
+      Runtime: nodejs18.x
+      Handler: lambda-kms-optimized.handler
+      Code:
+        ZipFile: |
+          // Placeholder - Replace with actual code from lambda-kms-optimized.js
+          exports.handler = async (event) => {
+            return { statusCode: 200, body: JSON.stringify({ message: 'Deploy actual code' }) };
+          };
+      MemorySize: 1024  # Higher memory for faster execution
+      Timeout: 29  # API Gateway limit
+      ReservedConcurrentExecutions: 10  # Prevent runaway invocations
+      Environment:
+        Variables:
+          AWS_KMS_KEY_ID: !Ref KMSKeyId
+          SEPOLIA_RPC_URL: !Ref SepoliaRpcUrl
+          DYNAMO_TABLE_NAME: !Ref BlobTransactionTable
+          SNS_TOPIC_ARN: !Ref BlobNotificationTopic
+          ENVIRONMENT: !Ref Environment
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  # Monitor Lambda Function
+  BlobMonitorFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub 'KaiSign-BlobMonitor-${Environment}'
+      Runtime: nodejs18.x
+      Handler: lambda-blob-monitor.handler
+      Code:
+        ZipFile: |
+          // Placeholder - Replace with actual code from lambda-blob-monitor.js
+          exports.handler = async (event) => {
+            return { statusCode: 200, body: JSON.stringify({ message: 'Deploy actual code' }) };
+          };
+      MemorySize: 512
+      Timeout: 60  # Longer timeout for monitoring
+      Environment:
+        Variables:
+          SEPOLIA_RPC_URL: !Ref SepoliaRpcUrl
+          DYNAMO_TABLE_NAME: !Ref BlobTransactionTable
+          SNS_TOPIC_ARN: !Ref BlobNotificationTopic
+          ENVIRONMENT: !Ref Environment
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  # API Gateway
+  BlobAPI:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: !Sub 'KaiSign-BlobAPI-${Environment}'
+      ProtocolType: HTTP
+      CorsConfiguration:
+        AllowOrigins:
+          - '*'
+        AllowMethods:
+          - POST
+          - GET
+          - OPTIONS
+        AllowHeaders:
+          - Content-Type
+          - X-Amz-Date
+          - Authorization
+          - X-Api-Key
+        MaxAge: 300
+
+  # Lambda Integration
+  BlobSubmissionIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref BlobAPI
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Sub
+        - 'arn:aws:apigatewayv2:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaArn}/invocations'
+        - LambdaArn: !GetAtt BlobSubmissionFunction.Arn
+      PayloadFormatVersion: '2.0'
+      TimeoutInMillis: 29000
+
+  # Routes
+  SubmitRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref BlobAPI
+      RouteKey: 'POST /submit'
+      Target: !Sub 'integrations/${BlobSubmissionIntegration}'
+
+  StatusRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref BlobAPI
+      RouteKey: 'GET /status'
+      Target: !Sub 'integrations/${BlobSubmissionIntegration}'
+
+  # API Stage
+  ApiStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref BlobAPI
+      StageName: !Ref Environment
+      AutoDeploy: true
+      DefaultRouteSettings:
+        ThrottlingBurstLimit: 100
+        ThrottlingRateLimit: 50
+
+  # Lambda Permissions for API Gateway
+  ApiInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref BlobSubmissionFunction
+      Principal: apigateway.amazonaws.com
+      Action: lambda:InvokeFunction
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${BlobAPI}/*/*'
+
+  # SNS Topic for notifications
+  BlobNotificationTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub 'KaiSign-BlobNotifications-${Environment}'
+      DisplayName: 'KaiSign Blob Transaction Notifications'
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  # EventBridge Rule for monitoring pending transactions
+  MonitorScheduleRule:
+    Type: AWS::Events::Rule
+    Properties:
+      Name: !Sub 'KaiSign-MonitorSchedule-${Environment}'
+      Description: 'Monitor pending blob transactions'
+      ScheduleExpression: 'rate(1 minute)'  # Check every minute
+      State: ENABLED
+      Targets:
+        - Arn: !GetAtt BlobMonitorFunction.Arn
+          Id: MonitorTarget
+          Input: !Sub |
+            {
+              "action": "check_pending",
+              "source": "scheduled"
+            }
+
+  # Permission for EventBridge to invoke Lambda
+  MonitorSchedulePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref BlobMonitorFunction
+      Principal: events.amazonaws.com
+      Action: lambda:InvokeFunction
+      SourceArn: !GetAtt MonitorScheduleRule.Arn
+
+  # Step Functions State Machine for complex workflows
+  BlobWorkflowStateMachine:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      StateMachineName: !Sub 'KaiSign-BlobWorkflow-${Environment}'
+      RoleArn: !GetAtt StepFunctionsRole.Arn
+      DefinitionString: !Sub |
+        {
+          "Comment": "Blob submission workflow with retry logic",
+          "StartAt": "SubmitBlob",
+          "States": {
+            "SubmitBlob": {
+              "Type": "Task",
+              "Resource": "${BlobSubmissionFunction.Arn}",
+              "TimeoutSeconds": 30,
+              "Retry": [
+                {
+                  "ErrorEquals": ["States.TaskFailed", "States.Timeout"],
+                  "IntervalSeconds": 2,
+                  "MaxAttempts": 2,
+                  "BackoffRate": 2.0
+                }
+              ],
+              "Next": "CheckSubmissionResult"
+            },
+            "CheckSubmissionResult": {
+              "Type": "Choice",
+              "Choices": [
+                {
+                  "Variable": "$.status",
+                  "StringEquals": "blob_submitted",
+                  "Next": "Success"
+                },
+                {
+                  "Variable": "$.status",
+                  "StringEquals": "pending_blob_submission",
+                  "Next": "WaitForConfirmation"
+                }
+              ],
+              "Default": "HandleError"
+            },
+            "WaitForConfirmation": {
+              "Type": "Wait",
+              "Seconds": 30,
+              "Next": "MonitorTransaction"
+            },
+            "MonitorTransaction": {
+              "Type": "Task",
+              "Resource": "${BlobMonitorFunction.Arn}",
+              "TimeoutSeconds": 60,
+              "Retry": [
+                {
+                  "ErrorEquals": ["States.TaskFailed"],
+                  "IntervalSeconds": 5,
+                  "MaxAttempts": 3,
+                  "BackoffRate": 1.5
+                }
+              ],
+              "Next": "CheckMonitorResult"
+            },
+            "CheckMonitorResult": {
+              "Type": "Choice",
+              "Choices": [
+                {
+                  "Variable": "$.confirmed",
+                  "BooleanEquals": true,
+                  "Next": "Success"
+                }
+              ],
+              "Default": "WaitForConfirmation"
+            },
+            "Success": {
+              "Type": "Succeed"
+            },
+            "HandleError": {
+              "Type": "Fail",
+              "Error": "BlobSubmissionFailed",
+              "Cause": "Failed to submit blob transaction"
+            }
+          }
+        }
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  # Step Functions Execution Role
+  StepFunctionsRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub 'KaiSign-StepFunctionsRole-${Environment}'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: states.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: InvokeLambdaPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - lambda:InvokeFunction
+                Resource:
+                  - !GetAtt BlobSubmissionFunction.Arn
+                  - !GetAtt BlobMonitorFunction.Arn
+
+  # CloudWatch Alarms
+  HighErrorRateAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub 'KaiSign-HighErrorRate-${Environment}'
+      AlarmDescription: 'Alert when Lambda error rate is high'
+      MetricName: Errors
+      Namespace: AWS/Lambda
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 10
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref BlobSubmissionFunction
+      AlarmActions:
+        - !Ref BlobNotificationTopic
+
+  TimeoutAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub 'KaiSign-Timeouts-${Environment}'
+      AlarmDescription: 'Alert when Lambda timeouts occur'
+      MetricName: Duration
+      Namespace: AWS/Lambda
+      Statistic: Maximum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 28000  # 28 seconds (close to 29s limit)
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref BlobSubmissionFunction
+      AlarmActions:
+        - !Ref BlobNotificationTopic
+
+Outputs:
+  APIEndpoint:
+    Description: 'API Gateway endpoint URL'
+    Value: !Sub 'https://${BlobAPI}.execute-api.${AWS::Region}.amazonaws.com/${Environment}'
+    Export:
+      Name: !Sub 'KaiSign-APIEndpoint-${Environment}'
+
+  SubmitEndpoint:
+    Description: 'Blob submission endpoint'
+    Value: !Sub 'https://${BlobAPI}.execute-api.${AWS::Region}.amazonaws.com/${Environment}/submit'
+
+  StatusEndpoint:
+    Description: 'Transaction status endpoint'
+    Value: !Sub 'https://${BlobAPI}.execute-api.${AWS::Region}.amazonaws.com/${Environment}/status'
+
+  DynamoTableName:
+    Description: 'DynamoDB table name'
+    Value: !Ref BlobTransactionTable
+    Export:
+      Name: !Sub 'KaiSign-TableName-${Environment}'
+
+  StateMachineArn:
+    Description: 'Step Functions state machine ARN'
+    Value: !Ref BlobWorkflowStateMachine
+    Export:
+      Name: !Sub 'KaiSign-StateMachine-${Environment}'

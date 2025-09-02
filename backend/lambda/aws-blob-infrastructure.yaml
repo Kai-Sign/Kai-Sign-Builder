@@ -1,0 +1,301 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Async blob submission infrastructure with SQS and DynamoDB'
+
+Parameters:
+  KmsKeyId:
+    Type: String
+    Description: KMS Key ID for signing transactions
+    
+  SepoliaRpcUrl:
+    Type: String
+    Description: Sepolia RPC endpoint URL
+    NoEcho: true
+
+Resources:
+  # DynamoDB table for job tracking
+  BlobJobsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: blob-submission-jobs
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: jobId
+          AttributeType: S
+        - AttributeName: status
+          AttributeType: S
+        - AttributeName: createdAt
+          AttributeType: S
+      KeySchema:
+        - AttributeName: jobId
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: status-index
+          KeySchema:
+            - AttributeName: status
+              KeyType: HASH
+            - AttributeName: createdAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      TimeToLiveSpecification:
+        AttributeName: ttl
+        Enabled: true
+
+  # SQS queue for blob processing
+  BlobProcessingQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: blob-processing-queue
+      VisibilityTimeout: 900  # 15 minutes for processing
+      MessageRetentionPeriod: 86400  # 24 hours
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt BlobProcessingDLQ.Arn
+        maxReceiveCount: 3
+
+  # Dead letter queue
+  BlobProcessingDLQ:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: blob-processing-dlq
+      MessageRetentionPeriod: 1209600  # 14 days
+
+  # Lambda execution role
+  BlobLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: BlobProcessingPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - kms:Sign
+                  - kms:GetPublicKey
+                Resource: !Sub 'arn:aws:kms:${AWS::Region}:${AWS::AccountId}:key/${KmsKeyId}'
+              - Effect: Allow
+                Action:
+                  - dynamodb:PutItem
+                  - dynamodb:GetItem
+                  - dynamodb:UpdateItem
+                  - dynamodb:Query
+                Resource: 
+                  - !GetAtt BlobJobsTable.Arn
+                  - !Sub '${BlobJobsTable.Arn}/index/*'
+              - Effect: Allow
+                Action:
+                  - sqs:SendMessage
+                  - sqs:ReceiveMessage
+                  - sqs:DeleteMessage
+                  - sqs:GetQueueAttributes
+                Resource: 
+                  - !GetAtt BlobProcessingQueue.Arn
+                  - !GetAtt BlobProcessingDLQ.Arn
+
+  # Lambda layer for dependencies
+  BlobDependenciesLayer:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      LayerName: blob-dependencies
+      Description: Dependencies for blob processing
+      Content:
+        S3Bucket: !Ref DeploymentBucket
+        S3Key: layers/blob-dependencies.zip
+      CompatibleRuntimes:
+        - nodejs18.x
+        - nodejs20.x
+
+  # Async handler Lambda (API-facing)
+  BlobAsyncHandler:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: kms-blob-async-handler
+      Runtime: nodejs18.x
+      Handler: kms-blob-async-handler.handler
+      Code:
+        S3Bucket: !Ref DeploymentBucket
+        S3Key: functions/kms-blob-async-handler.zip
+      Layers:
+        - !Ref BlobDependenciesLayer
+      Role: !GetAtt BlobLambdaRole.Arn
+      Timeout: 28  # API Gateway timeout minus 1 second
+      MemorySize: 512
+      Environment:
+        Variables:
+          AWS_KMS_KEY_ID: !Ref KmsKeyId
+          SEPOLIA_RPC_URL: !Ref SepoliaRpcUrl
+          BLOB_QUEUE_URL: !Ref BlobProcessingQueue
+          BLOB_JOBS_TABLE: !Ref BlobJobsTable
+
+  # Processor Lambda (SQS-triggered)
+  BlobProcessor:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: kms-blob-processor
+      Runtime: nodejs18.x
+      Handler: kms-blob-processor.handler
+      Code:
+        S3Bucket: !Ref DeploymentBucket
+        S3Key: functions/kms-blob-processor.zip
+      Layers:
+        - !Ref BlobDependenciesLayer
+      Role: !GetAtt BlobLambdaRole.Arn
+      Timeout: 900  # 15 minutes max
+      MemorySize: 1024
+      Environment:
+        Variables:
+          AWS_KMS_KEY_ID: !Ref KmsKeyId
+          SEPOLIA_RPC_URL: !Ref SepoliaRpcUrl
+          BLOB_JOBS_TABLE: !Ref BlobJobsTable
+      ReservedConcurrentExecutions: 5  # Limit concurrent executions
+
+  # SQS trigger for processor
+  BlobProcessorEventSource:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      EventSourceArn: !GetAtt BlobProcessingQueue.Arn
+      FunctionName: !Ref BlobProcessor
+      BatchSize: 1  # Process one message at a time
+      MaximumBatchingWindowInSeconds: 0
+
+  # API Gateway
+  BlobApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: blob-submission-api
+      ProtocolType: HTTP
+      CorsConfiguration:
+        AllowOrigins:
+          - '*'
+        AllowMethods:
+          - POST
+          - GET
+          - OPTIONS
+        AllowHeaders:
+          - Content-Type
+
+  # API Gateway integration
+  BlobApiIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref BlobApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Sub 'arn:aws:apigatewayv2:${AWS::Region}:lambda:path/2015-03-31/functions/${BlobAsyncHandler.Arn}/invocations'
+      PayloadFormatVersion: '2.0'
+
+  # API routes
+  BlobSubmitRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref BlobApi
+      RouteKey: 'POST /blob/submit'
+      Target: !Sub 'integrations/${BlobApiIntegration}'
+
+  BlobStatusRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref BlobApi
+      RouteKey: 'GET /blob/status'
+      Target: !Sub 'integrations/${BlobApiIntegration}'
+
+  # API deployment
+  BlobApiDeployment:
+    Type: AWS::ApiGatewayV2::Deployment
+    DependsOn:
+      - BlobSubmitRoute
+      - BlobStatusRoute
+    Properties:
+      ApiId: !Ref BlobApi
+
+  # API stage
+  BlobApiStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref BlobApi
+      StageName: prod
+      DeploymentId: !Ref BlobApiDeployment
+      AutoDeploy: true
+
+  # Lambda permissions for API Gateway
+  BlobHandlerApiPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref BlobAsyncHandler
+      Principal: apigateway.amazonaws.com
+      Action: lambda:InvokeFunction
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${BlobApi}/*/*'
+
+  # S3 bucket for deployment artifacts
+  DeploymentBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'blob-deployment-${AWS::AccountId}'
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Id: DeleteOldVersions
+            Status: Enabled
+            NoncurrentVersionExpirationInDays: 30
+
+  # CloudWatch Dashboard
+  BlobMonitoringDashboard:
+    Type: AWS::CloudWatch::Dashboard
+    Properties:
+      DashboardName: blob-submission-monitoring
+      DashboardBody: !Sub |
+        {
+          "widgets": [
+            {
+              "type": "metric",
+              "properties": {
+                "metrics": [
+                  ["AWS/Lambda", "Invocations", {"stat": "Sum", "label": "API Handler"}],
+                  [".", ".", {"stat": "Sum", "label": "Processor"}],
+                  [".", "Errors", {"stat": "Sum", "label": "Errors"}],
+                  [".", "Duration", {"stat": "Average", "label": "Avg Duration"}]
+                ],
+                "period": 300,
+                "stat": "Average",
+                "region": "${AWS::Region}",
+                "title": "Lambda Metrics"
+              }
+            },
+            {
+              "type": "metric",
+              "properties": {
+                "metrics": [
+                  ["AWS/SQS", "ApproximateNumberOfMessagesVisible", {"stat": "Average", "label": "Queue Depth"}],
+                  [".", "ApproximateNumberOfMessagesDelayed", {"stat": "Average", "label": "Delayed"}],
+                  [".", "ApproximateNumberOfMessagesNotVisible", {"stat": "Average", "label": "In Flight"}]
+                ],
+                "period": 300,
+                "stat": "Average",
+                "region": "${AWS::Region}",
+                "title": "SQS Queue Status"
+              }
+            }
+          ]
+        }
+
+Outputs:
+  ApiEndpoint:
+    Description: API Gateway endpoint URL
+    Value: !Sub 'https://${BlobApi}.execute-api.${AWS::Region}.amazonaws.com/prod'
+    
+  QueueUrl:
+    Description: SQS Queue URL
+    Value: !Ref BlobProcessingQueue
+    
+  TableName:
+    Description: DynamoDB Table Name
+    Value: !Ref BlobJobsTable

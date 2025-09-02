@@ -1,0 +1,19 @@
+{
+  "name": "kms-blob-lambda",
+  "version": "2.0.0",
+  "description": "Async blob submission with KMS signing",
+  "main": "kms-blob-async-handler.js",
+  "dependencies": {
+    "ethers": "^6.8.0",
+    "@aws-sdk/client-kms": "^3.450.0",
+    "@aws-sdk/client-sqs": "^3.450.0",
+    "@aws-sdk/client-dynamodb": "^3.450.0",
+    "micro-eth-signer": "^0.7.2",
+    "@paulmillr/trusted-setups": "^0.1.2",
+    "uuid": "^9.0.1"
+  },
+  "scripts": {
+    "deploy": "./deploy-async.sh",
+    "test": "node test-async.js"
+  }
+}

@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  eigenda-proxy:
+    image: ghcr.io/layr-labs/eigenda-proxy:latest
+    container_name: eigenda-proxy
+    ports:
+      - "3100:3100"
+    environment:
+      # Network configuration for Holesky testnet
+      - EIGENDA_PROXY_EIGENDA_ETH_RPC=https://ethereum-holesky-rpc.publicnode.com
+      - EIGENDA_PROXY_EIGENDA_NETWORK=holesky_testnet
+      
+      # V2 Configuration
+      - EIGENDA_PROXY_EIGENDA_DISPERSAL_BACKEND=V2
+      - EIGENDA_PROXY_EIGENDA_STORAGE_BACKENDS_ENABLED=V1,V2
+      
+      # Disperser endpoint
+      - EIGENDA_PROXY_EIGENDA_DISPERSER_RPC=disperser-testnet-holesky.eigenda.xyz:443
+      - EIGENDA_PROXY_EIGENDA_SERVICE_MANAGER_ADDR=0xD4A7E1Bd8015057293f0D0A557088c286942e84b
+      
+      # Signer configuration (use a test key - DO NOT use in production)
+      - EIGENDA_PROXY_EIGENDA_SIGNER_PRIVATE_KEY_HEX=${EIGENDA_SIGNER_KEY:-0000000000000000000100000000000000000000000000000000000000000000}
+      
+      # Timeouts and limits
+      - EIGENDA_PROXY_EIGENDA_MAX_BLOB_LENGTH=1MiB
+      - EIGENDA_PROXY_EIGENDA_BLOB_DISPERSE_TIMEOUT=2m
+      - EIGENDA_PROXY_EIGENDA_BLOB_CERTIFICATION_TIMEOUT=2m
+      
+      # Server configuration
+      - EIGENDA_PROXY_SERVER_PORT=3100
+      
+      # Enable memstore for local testing (optional)
+      # - EIGENDA_PROXY_MEMSTORE_ENABLED=true
+      
+    restart: unless-stopped
+    networks:
+      - eigenda-network
+
+  eigenda-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.eigenda
+    container_name: eigenda-api
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - EIGENDA_PROXY_URL=http://eigenda-proxy:3100
+    depends_on:
+      - eigenda-proxy
+    restart: unless-stopped
+    networks:
+      - eigenda-network
+
+networks:
+  eigenda-network:
+    driver: bridge

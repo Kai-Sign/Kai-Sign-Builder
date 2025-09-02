@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EigenDA Direct Usage - No Decoding Needed</title>
+    <style>
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #00ff00;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .container {
+            background: #1a1a1a;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        button {
+            background: #00ff00;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+        }
+        button:hover {
+            background: #00cc00;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            background: #000;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            margin: 10px 0;
+            font-family: inherit;
+        }
+        .output {
+            background: #000;
+            padding: 15px;
+            border: 1px solid #333;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .success { color: #00ff00; }
+        .error { color: #ff0000; }
+        .info { color: #00ffff; }
+        .warning { color: #ffff00; }
+        h2 { color: #00ff00; border-bottom: 1px solid #00ff00; padding-bottom: 10px; }
+        a { color: #00ffff; }
+    </style>
+</head>
+<body>
+    <h1>🚀 EigenDA Direct Usage - No Decoding Required!</h1>
+    
+    <div class="container">
+        <h2>🚀 RECOMMENDED: Use EigenDA Proxy</h2>
+        <p class="success">The proxy is the actual endpoint you should use - it handles everything!</p>
+        
+        <div class="output">
+<span class="success">Start the Proxy (one-time setup):</span>
+docker run --rm -p 3100:3100 ghcr.io/layr-labs/eigenda-proxy:latest \
+  --eigenda.disperser-rpc=disperser-holesky.eigenda.xyz:443 \
+  --eigenda.signer-private-key-hex=0x0000000000000000000100000000000000000000000000000000000000000001 \
+  --port=3100
+
+<span class="info">Then use these simple endpoints:</span>
+• POST http://localhost:3100/put → Send raw JSON, get certificate
+• GET http://localhost:3100/get/{cert} → Get decoded JSON back!
+
+<span class="warning">No encoding/decoding needed - the proxy does it all!</span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h2>1️⃣ Post Data to EigenDA (Via Proxy)</h2>
+        <p class="info">The proxy handles all encoding automatically!</p>
+        
+        <textarea id="postData" rows="5" placeholder='{"type": "ERC7730", "contract": "0x123...", "data": "your spec here"}'>{
+  "type": "ERC7730",
+  "contract": "0x1234567890123456789012345678901234567890",
+  "chainId": 11155111,
+  "timestamp": null,
+  "message": "Test from browser"
+}</textarea>
+        
+        <button onclick="postToEigenDA()">Post to EigenDA</button>
+        <button onclick="postToMockServer()">Post to Mock Server (Local)</button>
+        
+        <div id="postOutput" class="output"></div>
+    </div>
+
+    <div class="container">
+        <h2>2️⃣ Retrieve Data from EigenDA</h2>
+        <p class="info">Just use the certificate - proxy returns decoded data!</p>
+        
+        <input type="text" id="certificate" placeholder="Enter certificate (hex string)">
+        <button onclick="retrieveFromEigenDA()">Retrieve Data</button>
+        
+        <div id="retrieveOutput" class="output"></div>
+    </div>
+
+    <div class="container">
+        <h2>3️⃣ Generate grpcurl Commands</h2>
+        <p class="info">Generate exact commands for your data:</p>
+        
+        <textarea id="grpcData" rows="5" placeholder='Enter your JSON data here...'>{
+  "type": "ERC7730",
+  "contract": "0x1234567890123456789012345678901234567890",
+  "chainId": 11155111,
+  "message": "Test from browser"
+}</textarea>
+        
+        <button onclick="generateGrpcCommands()">Generate grpcurl Commands</button>
+        
+        <div id="grpcOutput" class="output" style="display: none;">
+            <div style="margin-bottom: 20px;">
+                <span class="success">1️⃣ Post blob to EigenDA:</span>
+                <pre id="grpcPost" style="background: #000; padding: 10px; margin: 10px 0; overflow-x: auto;"></pre>
+                <button onclick="copyCommand('grpcPost')">📋 Copy Command</button>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <span class="success">2️⃣ Check status (use request_id from step 1):</span>
+                <input type="text" id="grpcRequestId" placeholder="Paste request_id here" style="width: 100%; margin: 10px 0;">
+                <pre id="grpcStatus" style="background: #000; padding: 10px; margin: 10px 0; overflow-x: auto;"></pre>
+                <button onclick="updateStatusCommand()">Update Command</button>
+                <button onclick="copyCommand('grpcStatus')">📋 Copy Command</button>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <span class="success">3️⃣ Retrieve blob (use values from step 2):</span>
+                <input type="text" id="grpcBatchHash" placeholder="batch_header_hash from status" style="width: 100%; margin: 5px 0;">
+                <input type="number" id="grpcBlobIndex" placeholder="blob_index from status" style="width: 100%; margin: 5px 0;">
+                <pre id="grpcRetrieve" style="background: #000; padding: 10px; margin: 10px 0; overflow-x: auto;"></pre>
+                <button onclick="updateRetrieveCommand()">Update Command</button>
+                <button onclick="copyCommand('grpcRetrieve')">📋 Copy Command</button>
+            </div>
+            
+            <div style="border-top: 1px solid #00ff00; padding-top: 15px; margin-top: 15px;">
+                <span class="warning">⚠️ Note about encoding:</span>
+                <p style="font-size: 12px; color: #888;">
+                    Simple base64 encoding may fail with "field element" error. 
+                    For production, use proper KZG encoding or the EigenDA proxy which handles this automatically.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>4️⃣ Verify on Explorer</h2>
+        <p class="info">View your blobs on the official explorer:</p>
+        
+        <input type="text" id="blobHash" placeholder="Enter blob hash (from request ID)">
+        <button onclick="openExplorer()">Open in Explorer</button>
+        
+        <div class="output">
+<span class="info">Explorer URLs:</span>
+• Mainnet: <a href="https://blobs.eigenda.xyz" target="_blank">https://blobs.eigenda.xyz</a>
+• Holesky: <a href="https://blobs-holesky.eigenda.xyz" target="_blank">https://blobs-holesky.eigenda.xyz</a>
+
+<span class="warning">To extract blob hash from request ID:</span>
+1. Base64 decode the request ID
+2. Take the part before the first hyphen (-)
+3. That's your blob hash!
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>5️⃣ Working Example - Verified Blob</h2>
+        <p class="info">Here's a real blob that's confirmed on EigenDA testnet:</p>
+        <div class="output">
+<span class="success">✅ Confirmed Blob Details:</span>
+Blob Hash: <code>5160c838fb028f7fd2779a5a62c24320cb31eb0de0c40eae04e017993c1b6ac7</code>
+Batch ID: 300497
+Blob Index: 16
+Request ID: <code style="word-break: break-all;">NTE2MGM4MzhmYjAyOGY3ZmQyNzc5YTVhNjJjMjQzMjBjYjMxZWIwZGUwYzQwZWFlMDRlMDE3OTkzYzFiNmFjNy0zMTM3MzUzNjM0MzczMzM3MzAzOTMwMzYzNTM4MzgzMjMwMzIzNjJmMzAyZjMzMzMyZjMxMmYzMzMzMmZlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1</code>
+
+<span class="warning">Try these working commands:</span>
+
+<span class="info">1. Check status (should show CONFIRMED):</span>
+echo '{"request_id":"NTE2MGM4MzhmYjAyOGY3ZmQyNzc5YTVhNjJjMjQzMjBjYjMxZWIwZGUwYzQwZWFlMDRlMDE3OTkzYzFiNmFjNy0zMTM3MzUzNjM0MzczMzM3MzAzOTMwMzYzNTM4MzgzMjMwMzIzNjJmMzAyZjMzMzMyZjMxMmYzMzMzMmZlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1"}' | \
+  grpcurl -d @ disperser-holesky.eigenda.xyz:443 \
+  disperser.Disperser/GetBlobStatus
+
+<span class="info">2. Retrieve the actual data (returns encoded):</span>
+echo '{"batch_header_hash":"Ef4bgErwlXJL+W17U9McLVT0wMmerY5qPo7TYaGEWZ4=","blob_index":16}' | \
+  grpcurl -d @ disperser-holesky.eigenda.xyz:443 \
+  disperser.Disperser/RetrieveBlob
+
+<span class="warning">⚠️ Direct disperser returns encoded data!</span>
+Response: {"data": "AHsibWVzc2FnZSI6IkthaVNpZ24gcG9zdGluZyB0byAARWlnZW5EQSIsInRpbWVzdGFtcCI6MTc1NjQ3MzcwNwA4NzIsIm5ldHdvcmsiOiJob2xlc2t5LXRlc3RuZXQiAAAAAAAAAAAAAAAAAAAAAAAAACwidGVzdCI6dHJ1ZX0="}
+
+<span class="info">To decode: echo "BASE64_DATA" | base64 -d | tr -d '\0'</span>
+
+<span class="success">Decoded result:</span>
+{
+  "message": "KaiSign posting to EigenDA",
+  "timestamp": 1756473707872,
+  "network": "holesky-testnet",
+  "test": true
+}
+
+<span class="error">⭐ This is why you should use the proxy!</span>
+The proxy handles decoding automatically - you get raw JSON back!
+        </div>
+        <button onclick="copyWorkingExample()">📋 Copy Working Commands</button>
+    </div>
+
+    <div class="container">
+        <h2>6️⃣ Understanding the Flow</h2>
+        <div class="output">
+<span class="success">✅ WITH PROXY/RELAYER (Recommended):</span>
+1. Send raw JSON → POST /put
+2. Get certificate back
+3. Use certificate to retrieve → GET /get/{certificate}
+4. <strong>Data comes back DECODED automatically!</strong> ✨
+
+<span class="warning">⚠️ WITHOUT PROXY (Direct gRPC):</span>
+1. Base64 encode your data
+2. Call DisperseBlob via grpcurl
+3. Get request_id back
+4. Check status with GetBlobStatus
+5. Retrieve with RetrieveBlob when confirmed
+6. <strong>Data comes back ENCODED - you must decode it!</strong> 😓
+
+<span class="error">Key Difference:</span>
+• Proxy/Relayer: Handles ALL encoding/decoding for you
+• Direct gRPC: Returns encoded data, you decode manually
+
+<span class="info">The blob hash can be stored in your smart contract as bytes32!</span>
+        </div>
+    </div>
+
+    <script>
+        // Set timestamp on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = JSON.parse(document.getElementById('postData').value);
+            data.timestamp = Date.now();
+            document.getElementById('postData').value = JSON.stringify(data, null, 2);
+            
+            // Also update grpc data
+            const grpcData = JSON.parse(document.getElementById('grpcData').value);
+            grpcData.timestamp = Date.now();
+            document.getElementById('grpcData').value = JSON.stringify(grpcData, null, 2);
+        });
+
+        // Generate grpcurl commands
+        function generateGrpcCommands() {
+            const dataTextarea = document.getElementById('grpcData');
+            const output = document.getElementById('grpcOutput');
+            
+            try {
+                const data = JSON.parse(dataTextarea.value);
+                
+                // Base64 encode the data
+                const jsonString = JSON.stringify(data);
+                const base64Data = btoa(jsonString);
+                
+                // Generate post command
+                const postCommand = `echo '{"data":"${base64Data}"}' | \\
+  grpcurl -d @ disperser-holesky.eigenda.xyz:443 \\
+  disperser.Disperser/DisperseBlob`;
+                
+                document.getElementById('grpcPost').textContent = postCommand;
+                
+                // Show initial status command
+                document.getElementById('grpcStatus').textContent = `echo '{"request_id":"YOUR_REQUEST_ID"}' | \\
+  grpcurl -d @ disperser-holesky.eigenda.xyz:443 \\
+  disperser.Disperser/GetBlobStatus`;
+                
+                // Show initial retrieve command
+                document.getElementById('grpcRetrieve').textContent = `echo '{"batch_header_hash":"BATCH_HASH","blob_index":0}' | \\
+  grpcurl -d @ disperser-holesky.eigenda.xyz:443 \\
+  disperser.Disperser/RetrieveBlob`;
+                
+                output.style.display = 'block';
+                
+            } catch (error) {
+                alert('Invalid JSON: ' + error.message);
+            }
+        }
+        
+        // Update status command with request ID
+        function updateStatusCommand() {
+            const requestId = document.getElementById('grpcRequestId').value.trim();
+            if (!requestId) {
+                alert('Please enter the request_id from step 1');
+                return;
+            }
+            
+            const command = `echo '{"request_id":"${requestId}"}' | \\
+  grpcurl -d @ disperser-holesky.eigenda.xyz:443 \\
+  disperser.Disperser/GetBlobStatus`;
+            
+            document.getElementById('grpcStatus').textContent = command;
+        }
+        
+        // Update retrieve command with batch info
+        function updateRetrieveCommand() {
+            const batchHash = document.getElementById('grpcBatchHash').value.trim();
+            const blobIndex = document.getElementById('grpcBlobIndex').value || '0';
+            
+            if (!batchHash) {
+                alert('Please enter the batch_header_hash from step 2');
+                return;
+            }
+            
+            const command = `echo '{"batch_header_hash":"${batchHash}","blob_index":${blobIndex}}' | \\
+  grpcurl -d @ disperser-holesky.eigenda.xyz:443 \\
+  disperser.Disperser/RetrieveBlob`;
+            
+            document.getElementById('grpcRetrieve').textContent = command;
+        }
+        
+        // Copy command to clipboard
+        function copyCommand(elementId) {
+            const element = document.getElementById(elementId);
+            const command = element.textContent;
+            
+            navigator.clipboard.writeText(command).then(() => {
+                // Visual feedback
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = '✅ Copied!';
+                button.style.background = '#00ff00';
+                button.style.color = '#000';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                    button.style.color = '';
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy: ' + err);
+            });
+        }
+
+        // Post to EigenDA via proxy
+        async function postToEigenDA() {
+            const output = document.getElementById('postOutput');
+            output.innerHTML = '<span class="info">Posting to EigenDA proxy...</span>';
+            
+            try {
+                const data = document.getElementById('postData').value;
+                const jsonData = JSON.parse(data); // Validate JSON
+                
+                // Assuming proxy is running at localhost:3100
+                const response = await fetch('http://localhost:3100/put?commitment_mode=standard', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/octet-stream'
+                    },
+                    body: JSON.stringify(jsonData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                // Certificate comes back as bytes
+                const buffer = await response.arrayBuffer();
+                const certificate = Array.from(new Uint8Array(buffer))
+                    .map(b => b.toString(16).padStart(2, '0'))
+                    .join('');
+                
+                output.innerHTML = `
+<span class="success">✅ Success! Blob posted to EigenDA</span>
+
+<span class="info">Certificate (save this!):</span>
+${certificate}
+
+<span class="info">Blob Hash (first 32 bytes):</span>
+0x${certificate.substring(0, 64)}
+
+<span class="warning">Use the certificate to retrieve your data!</span>`;
+                
+                // Auto-fill retrieve field
+                document.getElementById('certificate').value = certificate;
+                
+            } catch (error) {
+                output.innerHTML = `<span class="error">❌ Error: ${error.message}</span>
+                
+<span class="warning">Make sure the EigenDA proxy is running:
+docker run --rm -p 3100:3100 ghcr.io/layr-labs/eigenda-proxy:latest \\
+  --eigenda.disperser-rpc=disperser-holesky.eigenda.xyz:443 \\
+  --eigenda.signer-private-key-hex=YOUR_KEY \\
+  --port=3100</span>`;
+            }
+        }
+
+        // Post to mock server
+        async function postToMockServer() {
+            const output = document.getElementById('postOutput');
+            output.innerHTML = '<span class="info">Posting to mock server...</span>';
+            
+            try {
+                const data = document.getElementById('postData').value;
+                
+                const response = await fetch('http://localhost:3100/put', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/octet-stream'
+                    },
+                    body: data
+                });
+                
+                const buffer = await response.arrayBuffer();
+                const certificate = Array.from(new Uint8Array(buffer))
+                    .map(b => b.toString(16).padStart(2, '0'))
+                    .join('');
+                
+                output.innerHTML = `<span class="success">✅ Posted to mock server!</span>
+Certificate: ${certificate}`;
+                
+                document.getElementById('certificate').value = certificate;
+                
+            } catch (error) {
+                output.innerHTML = `<span class="error">❌ Error: ${error.message}</span>
+<span class="warning">Start mock server: node mock-eigenda-server.js</span>`;
+            }
+        }
+
+        // Retrieve from EigenDA
+        async function retrieveFromEigenDA() {
+            const output = document.getElementById('retrieveOutput');
+            const certificate = document.getElementById('certificate').value.trim();
+            
+            if (!certificate) {
+                output.innerHTML = '<span class="error">Please enter a certificate</span>';
+                return;
+            }
+            
+            output.innerHTML = '<span class="info">Retrieving from EigenDA...</span>';
+            
+            try {
+                const response = await fetch(`http://localhost:3100/get/${certificate}?commitment_mode=standard`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                
+                const data = await response.text();
+                
+                // Try to parse as JSON for pretty display
+                try {
+                    const jsonData = JSON.parse(data);
+                    output.innerHTML = `<span class="success">✅ Data retrieved successfully!</span>
+
+<span class="info">Decoded Data:</span>
+${JSON.stringify(jsonData, null, 2)}`;
+                } catch {
+                    output.innerHTML = `<span class="success">✅ Data retrieved!</span>
+${data}`;
+                }
+                
+            } catch (error) {
+                output.innerHTML = `<span class="error">❌ Error: ${error.message}</span>`;
+            }
+        }
+
+        // Open explorer
+        function openExplorer() {
+            const blobHash = document.getElementById('blobHash').value.trim();
+            if (!blobHash) {
+                alert('Please enter a blob hash');
+                return;
+            }
+            
+            // Remove 0x prefix if present
+            const cleanHash = blobHash.replace('0x', '');
+            
+            // Open in Holesky explorer
+            window.open(`https://blobs-holesky.eigenda.xyz/blobs/${cleanHash}`, '_blank');
+        }
+        
+        // Copy working example commands
+        function copyWorkingExample() {
+            const commands = `# Check status (should show CONFIRMED):
+echo '{"request_id":"NTE2MGM4MzhmYjAyOGY3ZmQyNzc5YTVhNjJjMjQzMjBjYjMxZWIwZGUwYzQwZWFlMDRlMDE3OTkzYzFiNmFjNy0zMTM3MzUzNjM0MzczMzM3MzAzOTMwMzYzNTM4MzgzMjMwMzIzNjJmMzAyZjMzMzMyZjMxMmYzMzMzMmZlM2IwYzQ0Mjk4ZmMxYzE0OWFmYmY0Yzg5OTZmYjkyNDI3YWU0MWU0NjQ5YjkzNGNhNDk1OTkxYjc4NTJiODU1"}' | grpcurl -d @ disperser-holesky.eigenda.xyz:443 disperser.Disperser/GetBlobStatus
+
+# Retrieve the actual data:
+echo '{"batch_header_hash":"Ef4bgErwlXJL+W17U9McLVT0wMmerY5qPo7TYaGEWZ4=","blob_index":16}' | grpcurl -d @ disperser-holesky.eigenda.xyz:443 disperser.Disperser/RetrieveBlob`;
+            
+            navigator.clipboard.writeText(commands).then(() => {
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = '✅ Copied Working Commands!';
+                button.style.background = '#00ff00';
+                button.style.color = '#000';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.style.background = '';
+                    button.style.color = '';
+                }, 2000);
+            }).catch(err => {
+                alert('Failed to copy: ' + err);
+            });
+        }
+    </script>
+</body>
+</html>
