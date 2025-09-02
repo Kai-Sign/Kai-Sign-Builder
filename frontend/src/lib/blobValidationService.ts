@@ -166,7 +166,7 @@ export class BlobValidationService {
 							txHash: 'Unknown',
 							blockNumber: 0,
 							blobIndex: 0,
-							etherscanUrl: `https://sepolia.etherscan.io/blob/${blobHash}`
+							etherscanUrl: `https://sepolia.blobscan.com/blob/${blobHash}`
 						}
 					};
 				}
@@ -198,7 +198,7 @@ export class BlobValidationService {
 											txHash: (tx as ethers.TransactionResponse).hash,
 											blockNumber: blockNumber,
 											blobIndex: j,
-											etherscanUrl: `https://sepolia.etherscan.io/blob/${blobHash}`
+											etherscanUrl: `https://sepolia.blobscan.com/blob/${blobHash}`
 										}
 									};
 								}
@@ -233,7 +233,7 @@ export class BlobValidationService {
 								txHash: log.transactionHash,
 								blockNumber: log.blockNumber,
 								blobIndex: 0,
-								etherscanUrl: `https://sepolia.etherscan.io/blob/${blobHash}`
+								etherscanUrl: `https://sepolia.blobscan.com/blob/${blobHash}`
 							}
 						};
 					}
@@ -280,7 +280,7 @@ export class BlobValidationService {
 						txHash: result.hash ?? 'Unknown',
 						blockNumber: result.blockNumber ? parseInt(result.blockNumber, 16) : 0,
 						blobIndex: 0,
-						etherscanUrl: `https://sepolia.etherscan.io/blob/${blobHash}`
+						etherscanUrl: `https://sepolia.blobscan.com/blob/${blobHash}`
 					}
 				};
 			}

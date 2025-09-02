@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
       const result = {
         txHash: lambdaData.txHash || lambdaData.blobTransactionHash || lambdaData.transactionHash,
         blobVersionedHash: lambdaData.blobVersionedHash || lambdaData.blobHash,
-        etherscanBlobUrl: lambdaData.etherscanBlobUrl || lambdaData.blobUrl || `https://sepolia.etherscan.io/blob/${lambdaData.blobVersionedHash || lambdaData.blobHash}`,
+        etherscanBlobUrl: lambdaData.etherscanBlobUrl || lambdaData.blobUrl || `https://sepolia.blobscan.com/blob/${lambdaData.blobVersionedHash || lambdaData.blobHash}`,
         blockNumber: lambdaData.blockNumber,
         success: true
       };

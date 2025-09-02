@@ -584,7 +584,7 @@ exports.handler = async (event, context) => {
       blobGasUsed: receipt?.blobGasUsed?.toString() || null,
       etherscanBlobUrl: `https://sepolia.etherscan.io/tx/${transactionHash}`,
       etherscanTransferUrl: transferTxHash ? `https://sepolia.etherscan.io/tx/${transferTxHash}` : null,
-      blobUrl: `https://sepolia.etherscan.io/blob/${versionedHash}`,
+      blobUrl: `https://sepolia.blobscan.com/blob/${versionedHash}`,
       signerAddress: signerAddress,
       dataSize: dataStr.length,
       kmsKeyId: KMS_KEY_ID.split('/').pop() // Just the key part, not full ARN
