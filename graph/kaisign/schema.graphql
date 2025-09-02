@@ -33,7 +33,7 @@ type Spec @entity(immutable: false) {
   id: Bytes!
   targetContract: Bytes!            # contract this spec is for
   user: Bytes!                      # creator address
-  ipfs: String!                     # IPFS CID
+  blobHash: String!                 # EIP-4844 blob hash
   questionId: Bytes                 # RealityETH question ID
   chainID: String                   # from event
   status: SpecStatus!
@@ -59,7 +59,7 @@ type LogCreateSpec @entity(immutable: true) {
   id: Bytes!
   creator: Bytes! # address (was 'user')
   specID: Bytes! # bytes32
-  ipfs: String! # string
+  blobHash: String! # EIP-4844 blob hash
   targetContract: Bytes! # address (new field)
   chainId: BigInt! # uint256 (new field)
   timestamp: BigInt! # uint256 (new field)
@@ -107,7 +107,7 @@ type LogRevealSpec @entity(immutable: true) {
   creator: Bytes! # address
   specID: Bytes! # bytes32
   commitmentId: Bytes! # bytes32
-  ipfs: String! # string
+  blobHash: String! # EIP-4844 blob hash
   targetContract: Bytes! # address
   chainId: BigInt! # uint256
   blockNumber: BigInt!
@@ -121,7 +121,6 @@ type LogIncentiveCreated @entity(immutable: true) {
   creator: Bytes! # address
   targetContract: Bytes! # address
   chainId: BigInt! # uint256
-  token: Bytes! # address
   amount: BigInt! # uint256
   deadline: BigInt! # uint64
   description: String! # string
@@ -157,6 +156,7 @@ type LogContractSpecAdded @entity(immutable: true) {
   specID: Bytes! # bytes32
   creator: Bytes! # address
   chainId: BigInt! # uint256
+  blobHash: String! # EIP-4844 blob hash
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!

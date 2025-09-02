@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
@@ -32,10 +32,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
@@ -51,10 +51,10 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       
@@ -78,12 +78,13 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Run npm audit
         run: npm audit --audit-level=high || echo "Security vulnerabilities found but continuing"
       
-      - name: Run Snyk security scan
+      - name: Run Snyk security scan (optional)
+        if: ${{ secrets.SNYK_TOKEN != '' }}
         uses: snyk/actions/node@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -94,16 +95,21 @@ jobs:
     needs: [lint, test-frontend]
     
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
           cache: 'npm'
       
       - name: Install dependencies
         run: npm ci
+      
+      - name: Copy package files to frontend
+        run: |
+          cp package.json frontend/
+          cp package-lock.json frontend/
       
       - name: Build project
         run: npm run build
@@ -112,7 +118,19 @@ jobs:
       
       - name: Check build output
         run: |
-          if [ ! -d ".next" ]; then
-            echo "Build failed: .next directory not found"
+          if [ ! -d "frontend/.next" ]; then
+            echo "Build failed: frontend/.next directory not found"
             exit 1
           fi
+      
+      - name: Verify Vercel configuration
+        run: |
+          if [ ! -f "frontend/vercel.json" ]; then
+            echo "Error: frontend/vercel.json not found"
+            exit 1
+          fi
+          if [ ! -f "frontend/package.json" ]; then
+            echo "Error: frontend/package.json not found (should have been copied)"
+            exit 1
+          fi
+          echo "✅ Vercel deployment files are in place"

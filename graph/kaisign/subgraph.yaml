@@ -10,7 +10,7 @@ dataSources:
     name: KaiSign
     network: sepolia
     source:
-      address: "0xA2119F82f3F595DB34fa059785BeA2f4F78D418B"
+      address: "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719"
       abi: KaiSign
       startBlock: 8840000
     mapping:
@@ -38,21 +38,21 @@ dataSources:
       eventHandlers:
         - event: LogCommitSpec(indexed address,indexed bytes32,indexed address,uint256,uint256,uint64)
           handler: handleLogCommitSpec
-        - event: LogRevealSpec(indexed address,indexed bytes32,indexed bytes32,string,address,uint256)
+        - event: LogRevealSpec(indexed address,indexed bytes32,indexed bytes32,bytes32,address,uint256)
           handler: handleLogRevealSpec
-        - event: LogCreateSpec(indexed address,indexed bytes32,string,indexed address,uint256,uint256,bytes32)
+        - event: LogCreateSpec(indexed address,indexed bytes32,indexed bytes32,address,uint256,uint256,bytes32)
           handler: handleLogCreateSpec
         - event: LogProposeSpec(indexed address,indexed bytes32,bytes32,uint256)
           handler: handleLogProposeSpec
         - event: LogHandleResult(indexed bytes32,bool)
           handler: handleLogHandleResult
-        - event: LogIncentiveCreated(indexed bytes32,indexed address,indexed address,uint256,address,uint256,uint64,string)
+        - event: LogIncentiveCreated(indexed bytes32,indexed address,indexed address,uint256,uint256,uint64,string)
           handler: handleLogIncentiveCreated
         - event: LogIncentiveClaimed(indexed bytes32,indexed address,indexed bytes32,uint256)
           handler: handleLogIncentiveClaimed
         - event: LogIncentiveClawback(indexed bytes32,indexed address,uint256)
           handler: handleLogIncentiveClawback
-        - event: LogContractSpecAdded(indexed address,indexed bytes32,indexed address,uint256)
+        - event: LogContractSpecAdded(indexed address,indexed bytes32,indexed address,uint256,bytes32)
           handler: handleLogContractSpecAdded
         - event: LogEmergencyPause(indexed address)
           handler: handleLogEmergencyPause
