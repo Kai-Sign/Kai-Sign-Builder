@@ -11,6 +11,8 @@ import { useErc7730Store } from "~/store/erc7730Provider";
 import { useToast } from "~/hooks/use-toast";
 import { web3Service } from "~/lib/web3Service";
 import { useWallet } from "~/contexts/WalletContext";
+import { ethStorageService } from "~/lib/ethStorageService";
+import { ethers } from "ethers";
 
 export default function FileUploader() {
   const [file, setFile] = useState<File | null>(null);
@@ -34,6 +36,8 @@ export default function FileUploader() {
   const [blobTxHash, setBlobTxHash] = useState<string>("");
   const [isPostingBlob, setIsPostingBlob] = useState(false);
   const [manualBlobHash, setManualBlobHash] = useState<string>("");
+  const [ethStorageKey, setEthStorageKey] = useState<string>("");
+  const [ethStorageProofUrl, setEthStorageProofUrl] = useState<string>("");
 
   // Reveal Step State
   const [revealCommitmentId, setRevealCommitmentId] = useState<string>("");
@@ -170,113 +174,55 @@ export default function FileUploader() {
       return;
     }
 
+    if (!walletConnected) {
+      toast({
+        title: "Wallet Required",
+        description: "Connect your wallet to post blob to EthStorage",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsPostingBlob(true);
     try {
       toast({ 
-        title: "Posting blob", 
-        description: "Submitting blob transaction (may take up to 3 minutes)..." 
+        title: "Posting blob to EthStorage", 
+        description: "Preparing transaction for permanent storage..." 
       });
 
-      // Set a 29-second timeout for the fetch
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 29000);
+      // Get the wallet signer
+      const provider = new ethers.BrowserProvider((window as any).ethereum);
+      const signer = await provider.getSigner();
 
-      let res;
-      try {
-        res = await fetch('/api/blob/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ json: jsonData }),
-          signal: controller.signal
-        });
-      } catch (error: any) {
-        clearTimeout(timeoutId);
-        
-        // If it's an abort error (timeout), handle optimistically
-        if (error.name === 'AbortError') {
-          toast({ 
-            title: "Blob submission in progress", 
-            description: "Transaction is being processed on-chain. This may take a few minutes. Check back shortly and manually check for your blob hash.", 
-            variant: "default" 
-          });
-          
-          // Don't set fake hashes - user should check manually
-          return; // Exit successfully
-        }
-        
-        throw error;
-      }
-      
-      clearTimeout(timeoutId);
+      // Post blob to EthStorage
+      const result = await ethStorageService.postBlob(jsonData, signer);
 
-      // Handle 202 Accepted response optimistically
-      if (res.status === 202) {
-        const result = await res.json();
-        toast({ 
-          title: "Blob submission accepted", 
-          description: result.message || "Transaction is being processed on-chain. Check back in a few minutes and manually verify your blob hash.", 
-          variant: "default" 
-        });
+      if (result.success) {
+        // Set EthStorage specific values
+        setEthStorageKey(result.key);
+        setEthStorageProofUrl(result.ethStorageProofUrl);
+        setBlobTxHash(result.txHash);
         
-        // Don't set fake hashes - user should check manually
-        return; // Exit successfully
-      }
-
-      if (!res.ok) {
-        const text = await res.text().catch(() => '');
-        
-        // Handle timeout responses optimistically
-        if (res.status === 408 || text.includes('timeout') || text.includes('timed out')) {
-          toast({ 
-            title: "Blob submission in progress", 
-            description: "Transaction is being processed on-chain. Please check back in a few minutes and manually verify your blob hash.", 
-            variant: "default" 
-          });
-          
-          // Don't set fake hashes - user should check manually
-          return; // Exit successfully
-        }
-        
-        // Handle AWS Lambda errors optimistically if it's a processing issue
-        if (res.status === 500 && (text.includes('KZG') || text.includes('processing'))) {
-          toast({ 
-            title: "Blob submission processing", 
-            description: "Transaction is being processed. If it's taking longer than expected, please try again in a moment.", 
-            variant: "default" 
-          });
-          
-          // Don't set fake hashes - user should check manually
-          return; // Exit successfully
-        }
-        
-        throw new Error(text || `HTTP ${res.status}`);
-      }
-
-      const result = await res.json();
-      const blobHash = result?.blobVersionedHash || result?.blobHash;
-      const txHash = result?.txHash || result?.blobTransactionHash;
-
-      if (blobHash) {
-        setBlobVersionedHash(blobHash);
-        setRevealBlobHash(blobHash);
-        setBlobTxHash(txHash);
+        // For backwards compatibility with reveal step, we use the key as "blob hash"
+        setBlobVersionedHash(result.key);
+        setRevealBlobHash(result.key);
 
         toast({ 
-          title: "Blob posted successfully", 
-          description: `Blob hash: ${blobHash && blobHash.length > 10 ? `${blobHash.substring(0, 10)}...` : blobHash || 'N/A'}`, 
+          title: "Blob posted to EthStorage", 
+          description: `Stored permanently with key: ${result.key.substring(0, 10)}...`, 
           variant: "default" 
         });
 
         // Auto-advance to reveal tab
         setActiveTab("reveal");
       } else {
-        throw new Error('No blob hash returned');
+        throw new Error(result.error || 'EthStorage posting failed');
       }
     } catch (error: any) {
-      console.error("Blob post error:", error);
+      console.error("EthStorage post error:", error);
       toast({ 
-        title: "Blob post failed", 
-        description: error.message || "Could not post blob", 
+        title: "EthStorage post failed", 
+        description: error.message || "Could not post blob to EthStorage", 
         variant: "destructive" 
       });
     } finally {
@@ -564,7 +510,9 @@ export default function FileUploader() {
               {blobVersionedHash && (
                 <div className="p-4 bg-green-900/30 border border-green-700 rounded-lg space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-300">Blob Hash:</span>
+                    <span className="text-sm text-gray-300">
+                      {ethStorageKey ? "EthStorage Key:" : "Blob Hash:"}
+                    </span>
                     <div className="flex items-center gap-2">
                       <code className="text-xs bg-gray-800 px-2 py-1 rounded text-green-400">
                         {blobVersionedHash.substring(0, 16)}...
@@ -583,27 +531,53 @@ export default function FileUploader() {
                         rel="noopener noreferrer"
                         className="text-xs text-blue-400 hover:underline"
                       >
-                        View on Etherscan
+                        View Transaction
                       </a>
                     </div>
+                  )}
+                  {ethStorageProofUrl && (
+                    <>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-300">Proof URL:</span>
+                        <a
+                          href={ethStorageProofUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-blue-400 hover:underline"
+                        >
+                          View Metadata
+                        </a>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-300">EthStorage Explorer:</span>
+                        <a
+                          href={`http://65.108.236.27:9540/blob/${ethStorageKey}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs text-blue-400 hover:underline"
+                        >
+                          Raw Data
+                        </a>
+                      </div>
+                    </>
                   )}
                 </div>
               )}
 
               <Button
                 onClick={handlePostBlob}
-                disabled={isPostingBlob || !jsonData}
+                disabled={isPostingBlob || !jsonData || !walletConnected}
                 className="w-full bg-purple-600 hover:bg-purple-700 text-white"
               >
                 {isPostingBlob ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Posting Blob (up to 3 min)...
+                    Posting to EthStorage...
                   </>
                 ) : (
                   <>
                     <Upload className="mr-2 h-4 w-4" />
-                    Post as Blob
+                    Post to EthStorage
                   </>
                 )}
               </Button>
@@ -619,31 +593,33 @@ export default function FileUploader() {
 
               <div>
                 <Label htmlFor="manualBlob" className="text-white mb-2 block">
-                  Manual Blob Hash (if already posted)
+                  Manual EthStorage Key (if already posted)
                 </Label>
                 <div className="flex gap-2">
                   <Input
                     id="manualBlob"
                     type="text"
-                    placeholder="0x01..."
+                    placeholder="0x..."
                     value={manualBlobHash}
                     onChange={(e) => setManualBlobHash(e.target.value)}
                     className="bg-gray-900 border-gray-600 text-white flex-1"
                   />
                   <Button
                     onClick={() => {
-                      if (manualBlobHash.startsWith('0x01') && manualBlobHash.length === 66) {
+                      if (manualBlobHash.startsWith('0x') && manualBlobHash.length === 66) {
                         setBlobVersionedHash(manualBlobHash);
                         setRevealBlobHash(manualBlobHash);
+                        setEthStorageKey(manualBlobHash);
+                        setEthStorageProofUrl(ethStorageService.createProofLink(manualBlobHash));
                         toast({
-                          title: "Blob Hash Set",
+                          title: "EthStorage Key Set",
                           description: "You can now proceed to reveal",
                           variant: "default",
                         });
                       } else {
                         toast({
-                          title: "Invalid Blob Hash",
-                          description: "Blob hash must start with 0x01 and be 66 characters",
+                          title: "Invalid EthStorage Key",
+                          description: "Key must start with 0x and be 66 characters",
                           variant: "destructive",
                         });
                       }
@@ -651,15 +627,16 @@ export default function FileUploader() {
                     variant="outline"
                     className="text-white border-gray-600 hover:bg-gray-800"
                   >
-                    Set Hash
+                    Set Key
                   </Button>
                 </div>
               </div>
 
               <div className="p-3 bg-purple-900/20 border border-purple-700 rounded-lg">
                 <p className="text-sm text-purple-300">
-                  <strong>Note:</strong> The blob contains your ERC7730 JSON data and will be publicly visible on-chain.
-                  Make sure you've committed before posting the blob.
+                  <strong>EthStorage:</strong> Your ERC7730 JSON will be stored permanently on EthStorage Layer 2 
+                  and can be retrieved at any time using the storage key. Requires wallet connection and 
+                  small storage fee (~0.001 ETH). Make sure you've committed before posting.
                 </p>
               </div>
             </div>
@@ -692,11 +669,13 @@ export default function FileUploader() {
               </div>
 
               <div>
-                <Label htmlFor="revealBlobHash" className="text-white mb-2 block">Blob Versioned Hash</Label>
+                <Label htmlFor="revealBlobHash" className="text-white mb-2 block">
+                  EthStorage Key / Blob Hash
+                </Label>
                 <Input
                   id="revealBlobHash"
                   type="text"
-                  placeholder="0x01..."
+                  placeholder="0x..."
                   value={revealBlobHash}
                   onChange={(e) => setRevealBlobHash(e.target.value)}
                   className="bg-gray-900 border-gray-600 text-white"

@@ -3,6 +3,7 @@ import { Button } from "~/components/ui/button";
 import { ExtensionSafeButton } from "~/components/ExtensionSafeButton";
 import Link from "next/link";
 import FileUploader from "./fileUploader";
+import BlobViewer from "~/components/BlobViewer";
 
 export default function VerificationResultsPage() {
   return (
@@ -11,6 +12,9 @@ export default function VerificationResultsPage() {
         <h1 className="mb-8 text-4xl font-bold">ERC7730 JSON Verification</h1>
         
         <FileUploader />
+        
+        {/* Blob Viewer */}
+        <BlobViewer />
         
         {/* KaiSign V1 Management Link */}
         <div className="mb-8 rounded-lg bg-green-950 p-6 border border-green-800">
