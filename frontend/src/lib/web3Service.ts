@@ -473,6 +473,59 @@ export class Web3Service {
   private signer: ethers.JsonRpcSigner | null = null;
   private contract: ContractWithMethods | null = null;
   private realityEthContract: RealityEthContract | null = null;
+
+  /**
+   * Get RPC URL for a given chain ID
+   */
+  private getChainRpcUrl(chainId: number): string | null {
+    const rpcUrls: { [key: number]: string } = {
+      // Mainnet RPCs - tested and reliable
+      1: 'https://eth.llamarpc.com', // Ethereum Mainnet ✅ tested
+      137: 'https://polygon-rpc.com', // Polygon ✅ tested  
+      8453: 'https://mainnet.base.org', // Base ✅ tested
+      42161: 'https://arb1.arbitrum.io/rpc', // Arbitrum ✅ tested
+      10: 'https://mainnet.optimism.io', // Optimism
+      56: 'https://bsc-dataseed.binance.org', // BSC (more reliable endpoint)
+      43114: 'https://api.avax.network/ext/bc/C/rpc', // Avalanche
+      
+      // Testnet RPCs - using reliable public endpoints
+      11155111: 'https://ethereum-sepolia.blockpi.network/v1/rpc/public', // Sepolia (reliable public)
+      5: 'https://goerli.blockpi.network/v1/rpc/public', // Goerli (reliable public)
+      80001: 'https://rpc-mumbai.matic.today', // Mumbai (Polygon official)
+      97: 'https://data-seed-prebsc-1-s1.binance.org:8545', // BSC Testnet
+      43113: 'https://api.avax-test.network/ext/bc/C/rpc', // Avalanche Fuji
+      84531: 'https://goerli.base.org', // Base Goerli
+      
+      // Additional reliable alternatives
+      1666600000: 'https://api.harmony.one', // Harmony ONE
+      250: 'https://rpc.ftm.tools', // Fantom
+    };
+    return rpcUrls[chainId] || null;
+  }
+
+  /**
+   * Get human-readable chain name for a given chain ID
+   */
+  private getChainName(chainId: number): string {
+    const chainNames: { [key: number]: string } = {
+      1: 'Ethereum Mainnet',
+      11155111: 'Sepolia Testnet',
+      137: 'Polygon',
+      8453: 'Base',
+      42161: 'Arbitrum One',
+      10: 'Optimism',
+      56: 'BNB Smart Chain',
+      43114: 'Avalanche C-Chain',
+      5: 'Goerli Testnet',
+      80001: 'Mumbai Testnet',
+      97: 'BSC Testnet',
+      43113: 'Avalanche Fuji Testnet',
+      84531: 'Base Goerli Testnet',
+      1666600000: 'Harmony ONE',
+      250: 'Fantom Opera',
+    };
+    return chainNames[chainId] || `Chain ${chainId}`;
+  }
   
   /**
    * Get the provider instance
@@ -625,7 +678,7 @@ export class Web3Service {
               throw new Error("Failed to add Sepolia network to MetaMask. Please add it manually.");
             }
           } else {
-            throw new Error(`Please switch to Sepolia testnet in MetaMask. Current network ID: ${currentChainId}`);
+            throw new Error(`Please switch to Sepolia testnet (chain ID: ${SEPOLIA_CHAIN_ID}) in MetaMask. Current network ID: ${currentChainId}`);
           }
         }
       } else {
@@ -843,43 +896,20 @@ export class Web3Service {
 
 
       
-      // The V1 contract requires the target contract to exist on Sepolia (extcodesize check)
-      // For ERC7730 specs, we want to allow any contract address (even from other chains)
-      // But V1 contract validates existence, so we need a deployed contract on Sepolia
+      // Validate target contract address format and requirement
       let target = targetContract;
       
-      // Known working Sepolia contracts for testing
-      const validSepoliaContracts = [
-        RAW_CONTRACT_ADDRESS, // KaiSign itself
-        "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238", // USDC on Sepolia
-        "0x779877A7B0D9E8603169DdbD7836e478b4624789", // Another known contract
-      ];
-      
-      if (!target || target.trim() === "" || !target.match(/^0x[a-fA-F0-9]{40}$/)) {
-        // Use KaiSign contract as default if no valid target specified
-        target = RAW_CONTRACT_ADDRESS;
-
-      } else {
-
-        
-        // Check if the target contract exists on Sepolia
-        try {
-          const targetCode = await this.provider!.getCode(target);
-
-          if (targetCode === "0x") {
-            console.warn("⚠️ Target contract", target, "does not exist on Sepolia");
-            console.warn("V1 contract requires target to exist on same network");
-            console.warn("Falling back to KaiSign contract as target");
-            target = RAW_CONTRACT_ADDRESS;
-          } else {
-
-
-          }
-        } catch (codeCheckError) {
-          console.warn("Could not verify target contract existence, using KaiSign contract as fallback");
-          target = RAW_CONTRACT_ADDRESS;
-        }
+      if (!target || target.trim() === "") {
+        throw new Error("Target contract address is required. Please enter the contract address this ERC7730 specification describes.");
       }
+      
+      if (!target.match(/^0x[a-fA-F0-9]{40}$/)) {
+        throw new Error("Invalid contract address format. Address must be a valid 40-character hex string starting with '0x'.");
+      }
+
+      const effectiveChainId = targetChainId || SEPOLIA_CHAIN_ID;
+      const chainName = this.getChainName(effectiveChainId);
+      console.log(`📝 Creating specification for Contract ${target} on ${chainName} (chain ${effectiveChainId})`)
       
       // Incentives are no longer passed during commit. Any incentive will be automatically
       // associated by the contract when a spec is accepted. Keep a zero bytes32 for
@@ -901,10 +931,6 @@ export class Web3Service {
 
 
 
-      
-      // CRITICAL: Run comprehensive diagnostics BEFORE attempting transaction
-      // For commitSpec, we don't send any value, so pass 0n for bond amount
-      await this.runPreTransactionDiagnostics(target, 0n);
       
       // Additional validation: Check if contract is properly deployed and accessible
       try {
@@ -934,20 +960,6 @@ export class Web3Service {
             throw new Error("Contract is currently paused");
           }
         } catch (pauseCheckError) {
-
-        }
-        
-        // Special test: Check if the target contract validation is the issue
-
-
-        const targetContractCode = await this.provider!.getCode(target);
-
-        
-        if (targetContractCode === "0x") {
-          console.error("❌ FOUND THE ISSUE: Target contract has no code!");
-          console.error("The contract's extcodesize check will fail for this target.");
-          throw new Error(`Target contract ${target} does not exist or has no bytecode. The V1 contract requires the target contract to exist on Sepolia.`);
-        } else {
 
         }
         
@@ -1136,7 +1148,7 @@ export class Web3Service {
         throw new Error("Insufficient bond amount. Please check the minimum bond requirement.");
       }
       if (error.message?.includes("ContractNotFound")) {
-        throw new Error(`The target contract ${targetContract || 'specified'} does not exist on Sepolia testnet. The V1 contract requires target contracts to be deployed on the same network. Please use a valid Sepolia contract address or leave empty for general specifications.`);
+        throw new Error(`The target contract ${targetContract || 'specified'} does not exist on the specified network. Please verify the contract address is correct and deployed on the target blockchain.`);
       }
       if (error.message?.includes("InvalidContract")) {
         throw new Error("Invalid target contract address format.");
@@ -1419,9 +1431,9 @@ export class Web3Service {
       
       // Provide more helpful error messages
       if (error.code === 'INSUFFICIENT_FUNDS') {
-        throw new Error("Insufficient funds on Sepolia testnet. Please get test ETH from a Sepolia faucet.");
+        throw new Error("Insufficient funds. Please ensure you have enough ETH in your wallet for the transaction.");
       } else if (error.message?.includes('gas')) {
-        throw new Error("Gas estimation failed. Please ensure you're on Sepolia testnet with sufficient test ETH.");
+        throw new Error("Gas estimation failed. Please check your network connection and ensure you have sufficient funds.");
       } else if (error.message?.includes('user rejected')) {
         throw new Error("Transaction was cancelled by user.");
       } else if (error.message?.includes('Network')) {
@@ -1669,7 +1681,7 @@ export class Web3Service {
   /**
    * Run comprehensive diagnostics before attempting a transaction
    */
-  async runPreTransactionDiagnostics(targetContract: string, bondAmount: bigint): Promise<void> {
+  async runPreTransactionDiagnostics(targetContract: string, bondAmount: bigint, targetChainId?: number): Promise<void> {
     try {
       if (!this.contract || !this.signer || !this.provider) {
         throw new Error("Not connected");
@@ -1703,13 +1715,25 @@ export class Web3Service {
 
       }
       
-      // 3. Validate target contract exists and has bytecode
-      const targetCode = await this.provider.getCode(targetContract);
-
-
+      // 3. Validate target contract exists and has bytecode on the target network
+      const effectiveChainId = targetChainId || SEPOLIA_CHAIN_ID;
+      const chainRpcUrl = this.getChainRpcUrl(effectiveChainId);
+      const chainName = this.getChainName(effectiveChainId);
       
-      if (targetCode === "0x") {
-        throw new Error(`Target contract ${targetContract} does not exist on Sepolia testnet`);
+      if (chainRpcUrl) {
+        // Use the appropriate provider for the target chain
+        const targetProvider = effectiveChainId === SEPOLIA_CHAIN_ID ? 
+          this.provider : new ethers.JsonRpcProvider(chainRpcUrl);
+          
+        const targetCode = await targetProvider.getCode(targetContract);
+        
+        if (targetCode === "0x") {
+          throw new Error(`Target contract ${targetContract} does not exist on ${chainName} (chain ${effectiveChainId}). Please verify the contract address is correct and deployed on the specified network.`);
+        }
+        
+        console.log(`✅ Target contract ${targetContract} verified on ${chainName}`);
+      } else {
+        console.warn(`⚠️ Cannot verify contract on unsupported chain ${effectiveChainId}. Proceeding without verification.`);
       }
       
       // 4. Check treasury address configuration

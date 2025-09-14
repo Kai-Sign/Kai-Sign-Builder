@@ -476,8 +476,16 @@ export default function FileUploader() {
                   <option value="11155111">Sepolia Testnet (11155111)</option>
                   <option value="137">Polygon (137)</option>
                   <option value="8453">Base (8453)</option>
-                  <option value="42161">Arbitrum (42161)</option>
+                  <option value="42161">Arbitrum One (42161)</option>
                   <option value="10">Optimism (10)</option>
+                  <option value="56">BNB Smart Chain (56)</option>
+                  <option value="43114">Avalanche C-Chain (43114)</option>
+                  {/* Testnets */}
+                  <option value="5">Goerli Testnet (5)</option>
+                  <option value="80001">Mumbai Testnet (80001)</option>
+                  <option value="97">BSC Testnet (97)</option>
+                  <option value="43113">Avalanche Fuji Testnet (43113)</option>
+                  <option value="84531">Base Goerli Testnet (84531)</option>
                 </select>
               </div>
 
