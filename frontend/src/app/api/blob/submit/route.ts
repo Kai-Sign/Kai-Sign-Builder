@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 const AWS_LAMBDA_BLOB_API = "https://azmnxl590h.execute-api.ap-southeast-2.amazonaws.com/prod/blob";
 
-// Extend the timeout for this API route to handle blob transactions
-export const maxDuration = 180; // 3 minutes to handle Lambda execution time
+// Maximum timeout for Vercel deployment
+export const maxDuration = 60; // 60 seconds (maximum allowed)
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,28 +18,29 @@ export async function POST(request: NextRequest) {
     try {
       console.log(`Posting blob to AWS Lambda...`);
       
-      // Forward the request to AWS Lambda with 2.5 minute timeout
+      // Forward the request to AWS Lambda with 55 second timeout (5 second buffer)
       lambdaResponse = await fetch(AWS_LAMBDA_BLOB_API, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
-        // Set timeout to 2.5 minutes (leaving 30 seconds buffer)
-        signal: AbortSignal.timeout(150000)
+        // Set timeout to 55 seconds (leaving 5 seconds buffer for Vercel processing)
+        signal: AbortSignal.timeout(55000)
       });
       
     } catch (error: any) {
       console.error('Lambda request failed or timed out:', error);
       
-      // If it's a timeout, return an optimistic response
+      // If it's a timeout, return an optimistic response since Lambda takes ~52 seconds
       if (error.name === 'AbortError' || error.message?.includes('timeout')) {
         return NextResponse.json(
           { 
             success: true,
             pending: true,
-            message: "Blob transaction is being processed. This may take a few minutes.",
-            note: "Transaction accepted and processing on-chain"
+            message: "Blob transaction is being processed. Due to Vercel timeout limits, please check your blob manually.",
+            note: "Lambda is still processing - transaction should complete within 1-2 minutes",
+            checkInstructions: "Look for blob transactions from address: 0x49d81a2f1DC42d230927e224c42E8b8E6A7f6f7D on Sepolia Etherscan"
           },
           { status: 202 } // Accepted
         );
