@@ -86,17 +86,17 @@ export class BlobValidationService {
 			};
 		}
 
-		// Check if it's exactly 68 characters (0x01 + 64 hex chars)
-		if (blobHash.length !== 68) {
+		// Check if it's exactly 66 characters (0x01 + 62 hex chars = 32 bytes total)
+		if (blobHash.length !== 66) {
 			return {
 				isValid: false,
 				exists: false,
-				error: `Blob hash must be exactly 68 characters (got ${blobHash.length}). Expected format: 0x01 + 64 hex characters`
+				error: `Blob hash must be exactly 66 characters (got ${blobHash.length}). Expected format: 0x01 + 62 hex characters`
 			};
 		}
 
-		// Check if it contains only valid hex characters
-		const hexRegex = /^0x01[a-fA-F0-9]{64}$/;
+		// Check if it contains only valid hex characters (0x01 + 62 hex chars)
+		const hexRegex = /^0x01[a-fA-F0-9]{62}$/;
 		if (!hexRegex.test(blobHash)) {
 			// Find the first invalid character for better error reporting
 			const afterPrefix = blobHash.substring(4); // Remove "0x01"
