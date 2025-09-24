@@ -463,12 +463,13 @@ exports.handler = async (event, context) => {
     // SIMPLE SOLUTION: Transfer ETH from KMS address to temporary wallet, then use temp wallet for blob tx
     let transactionHash;
     let transferTxHash = null;
+    let tempWallet; // Declare outside try block for scope access
     
     try {
       console.log('Using ETH transfer approach - creating temporary wallet...');
       
       // Create a temporary wallet with random private key
-      const tempWallet = new ethers.Wallet(ethers.Wallet.createRandom().privateKey, provider);
+      tempWallet = new ethers.Wallet(ethers.Wallet.createRandom().privateKey, provider);
       console.log('Temporary wallet address:', tempWallet.address);
       
       // Calculate EXACT amount needed for blob transaction only
@@ -561,33 +562,34 @@ exports.handler = async (event, context) => {
       console.error('ETH transfer + blob tx approach failed:', error.message);
       throw error;
     }
-    console.log('Transaction sent:', transactionHash);
+    console.log('✅ Transaction sent:', transactionHash);
     
-    // Wait for confirmation (simplified)
-    let receipt = null;
-    for (let i = 0; i < 30; i++) { // Wait up to 5 minutes
-      try {
-        receipt = await provider.getTransactionReceipt(transactionHash);
-        if (receipt) break;
-      } catch (e) {}
-      await new Promise(resolve => setTimeout(resolve, 10000)); // Wait 10 seconds
-    }
-    
-    // Return success response
+    // Return immediately - let frontend handle confirmation tracking
     const result = {
       success: true,
+      confirmed: false, // Will be confirmed by frontend polling
       blobTransactionHash: transactionHash,
-      ethTransferHash: transferTxHash || null, // Include the ETH transfer tx hash
-      blockNumber: receipt?.blockNumber || null,
+      ethTransferHash: transferTxHash || null,
+      blobDeploymentAddress: tempWallet.address, // The temp wallet address that deployed the blob
       blobHash: versionedHash,
-      gasUsed: receipt?.gasUsed?.toString() || null,
-      blobGasUsed: receipt?.blobGasUsed?.toString() || null,
-      etherscanBlobUrl: `https://sepolia.etherscan.io/tx/${transactionHash}`,
-      etherscanTransferUrl: transferTxHash ? `https://sepolia.etherscan.io/tx/${transferTxHash}` : null,
-      blobUrl: `https://sepolia.blobscan.com/blob/${versionedHash}`,
+      transactionStatus: 'PENDING',
       signerAddress: signerAddress,
       dataSize: dataStr.length,
-      kmsKeyId: KMS_KEY_ID.split('/').pop() // Just the key part, not full ARN
+      kmsKeyId: KMS_KEY_ID.split('/').pop(),
+      // Frontend tracking data
+      trackingUrls: {
+        etherscan: `https://sepolia.etherscan.io/tx/${transactionHash}`,
+        blobscan: `https://sepolia.blobscan.com/blob/${versionedHash}`,
+        blobTx: `https://sepolia.blobscan.com/tx/${transactionHash}`
+      },
+      // Polling data for frontend
+      pollingData: {
+        transactionHash: transactionHash,
+        deploymentAddress: tempWallet.address,
+        blobHash: versionedHash,
+        chainId: 11155111, // Sepolia
+        rpcUrl: RPC_URL
+      }
     };
     
     console.log('Blob posted successfully with KMS:', result);

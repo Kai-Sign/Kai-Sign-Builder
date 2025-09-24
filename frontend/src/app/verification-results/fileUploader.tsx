@@ -689,52 +689,114 @@ export default function FileUploader() {
               
               <div>
                 <Label htmlFor="revealCommitmentId" className="text-white mb-2 block">Commitment ID</Label>
-                <Input
-                  id="revealCommitmentId"
-                  type="text"
-                  placeholder="0x..."
-                  value={revealCommitmentId}
-                  onChange={(e) => setRevealCommitmentId(e.target.value)}
-                  className="bg-gray-900 border-gray-600 text-white"
-                />
+                <div className="flex gap-2">
+                  <Input
+                    id="revealCommitmentId"
+                    type="text"
+                    placeholder="0x..."
+                    value={revealCommitmentId}
+                    onChange={(e) => setRevealCommitmentId(e.target.value)}
+                    className="bg-gray-900 border-gray-600 text-white flex-1"
+                  />
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard(revealCommitmentId)}
+                    disabled={!revealCommitmentId}
+                    className="h-10 w-10 p-0"
+                    title="Copy Commitment ID"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
 
               <div>
                 <Label htmlFor="revealBlobHash" className="text-white mb-2 block">Blob Versioned Hash</Label>
-                <Input
-                  id="revealBlobHash"
-                  type="text"
-                  placeholder="0x01..."
-                  value={revealBlobHash}
-                  onChange={(e) => setRevealBlobHash(e.target.value)}
-                  className="bg-gray-900 border-gray-600 text-white"
-                />
+                <div className="flex gap-2">
+                  <Input
+                    id="revealBlobHash"
+                    type="text"
+                    placeholder="0x01..."
+                    value={revealBlobHash}
+                    onChange={(e) => setRevealBlobHash(e.target.value)}
+                    className="bg-gray-900 border-gray-600 text-white flex-1"
+                  />
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard(revealBlobHash)}
+                    disabled={!revealBlobHash}
+                    className="h-10 w-10 p-0"
+                    title="Copy Blob Hash"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                  {revealBlobHash && revealBlobHash.startsWith('0x01') && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => window.open(`https://sepolia.blobscan.com/blob/${revealBlobHash}`, '_blank')}
+                      className="text-blue-400 border-blue-600 hover:bg-blue-900 px-3"
+                      title="View on Blobscan"
+                    >
+                      <svg className="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clipRule="evenodd" />
+                      </svg>
+                      Blobscan
+                    </Button>
+                  )}
+                </div>
               </div>
 
               <div>
                 <Label htmlFor="revealMetadataHash" className="text-white mb-2 block">Metadata Hash</Label>
-                <Input
-                  id="revealMetadataHash"
-                  type="text"
-                  placeholder="0x..."
-                  value={revealMetadataHash}
-                  onChange={(e) => setRevealMetadataHash(e.target.value)}
-                  className="bg-gray-900 border-gray-600 text-white"
-                />
+                <div className="flex gap-2">
+                  <Input
+                    id="revealMetadataHash"
+                    type="text"
+                    placeholder="0x..."
+                    value={revealMetadataHash}
+                    onChange={(e) => setRevealMetadataHash(e.target.value)}
+                    className="bg-gray-900 border-gray-600 text-white flex-1"
+                  />
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard(revealMetadataHash)}
+                    disabled={!revealMetadataHash}
+                    className="h-10 w-10 p-0"
+                    title="Copy Metadata Hash"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
 
               <div>
                 <Label htmlFor="revealNonce" className="text-white mb-2 block">
                   Nonce <span className="text-xs text-gray-400">(Must match the nonce from commit)</span>
                 </Label>
-                <Input
-                  id="revealNonce"
-                  type="text"
-                  placeholder="e.g., 123456"
-                  value={revealNonce}
-                  onChange={(e) => setRevealNonce(e.target.value)}
-                  className="bg-gray-900 border-gray-600 text-white"
-                />
+                <div className="flex gap-2">
+                  <Input
+                    id="revealNonce"
+                    type="text"
+                    placeholder="e.g., 352443"
+                    value={revealNonce}
+                    onChange={(e) => setRevealNonce(e.target.value)}
+                    className="bg-gray-900 border-gray-600 text-white flex-1"
+                  />
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard(revealNonce)}
+                    disabled={!revealNonce}
+                    className="h-10 w-10 p-0"
+                    title="Copy Nonce"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
                 {revealNonce && (
                   <p className="text-xs text-gray-400 mt-1">
                     This nonce must be the exact same value that was generated during the commit step.
@@ -744,14 +806,26 @@ export default function FileUploader() {
 
               <div>
                 <Label htmlFor="bondAmount" className="text-white mb-2 block">Bond Amount (ETH)</Label>
-                <Input
-                  id="bondAmount"
-                  type="text"
-                  placeholder="0.01"
-                  value={bondAmount}
-                  onChange={(e) => setBondAmount(e.target.value)}
-                  className="bg-gray-900 border-gray-600 text-white"
-                />
+                <div className="flex gap-2">
+                  <Input
+                    id="bondAmount"
+                    type="text"
+                    placeholder="0.01"
+                    value={bondAmount}
+                    onChange={(e) => setBondAmount(e.target.value)}
+                    className="bg-gray-900 border-gray-600 text-white flex-1"
+                  />
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => copyToClipboard(bondAmount)}
+                    disabled={!bondAmount}
+                    className="h-10 w-10 p-0"
+                    title="Copy Bond Amount"
+                  >
+                    <Copy className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
 
               {revealTxHash && (

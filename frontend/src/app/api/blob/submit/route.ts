@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 
 const AWS_LAMBDA_BLOB_API = "https://azmnxl590h.execute-api.ap-southeast-2.amazonaws.com/prod/blob";
 
-// Extend the timeout for this API route
-export const maxDuration = 30; // 30 seconds to match Vercel's limit
+// Extend the timeout for this API route to handle blob transactions
+export const maxDuration = 180; // 3 minutes to handle Lambda execution time
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,15 +18,15 @@ export async function POST(request: NextRequest) {
     try {
       console.log(`Posting blob to AWS Lambda...`);
       
-      // Forward the request to AWS Lambda with 28-second timeout
+      // Forward the request to AWS Lambda with 2.5 minute timeout
       lambdaResponse = await fetch(AWS_LAMBDA_BLOB_API, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(body),
-        // Set timeout to 28 seconds (leaving 2 seconds buffer)
-        signal: AbortSignal.timeout(28000)
+        // Set timeout to 2.5 minutes (leaving 30 seconds buffer)
+        signal: AbortSignal.timeout(150000)
       });
       
     } catch (error: any) {
@@ -97,33 +97,9 @@ export async function POST(request: NextRequest) {
     
     console.log('Lambda response:', lambdaData); // Debug log
     
-    // Check for success field and blob hash (the restored Lambda returns "blobHash")
-    if (lambdaData?.success && lambdaData?.blobHash) {
-      // Transform to expected frontend format
-      const result = {
-        txHash: lambdaData.blobTransactionHash,
-        blobVersionedHash: lambdaData.blobHash,
-        etherscanBlobUrl: lambdaData.blobUrl,
-        blockNumber: lambdaData.blockNumber,
-        success: true
-      };
-      console.log('Transformed result:', result);
-      return NextResponse.json(result);
-    }
-    
-    // If no success field but has blob data, assume success
-    if (lambdaData?.blobVersionedHash || lambdaData?.blobHash) {
-      const result = {
-        txHash: lambdaData.txHash || lambdaData.blobTransactionHash || lambdaData.transactionHash,
-        blobVersionedHash: lambdaData.blobVersionedHash || lambdaData.blobHash,
-        etherscanBlobUrl: lambdaData.etherscanBlobUrl || lambdaData.blobUrl || `https://sepolia.blobscan.com/blob/${lambdaData.blobVersionedHash || lambdaData.blobHash}`,
-        blockNumber: lambdaData.blockNumber,
-        success: true
-      };
-      return NextResponse.json(result);
-    }
-
-    return NextResponse.json({ error: "Lambda response missing blob data", response: lambdaData }, { status: 500 });
+    // Return the Lambda response directly - it already has the correct format
+    // The Lambda now returns: success, blobDeploymentAddress, blobHash, trackingUrls, etc.
+    return NextResponse.json(lambdaData);
 
   } catch (err: any) {
     console.error('Blob submit error:', err);
