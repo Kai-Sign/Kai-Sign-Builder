@@ -108,8 +108,8 @@ export default function ApiDocsPage() {
   const [queryNetwork, setQueryNetwork] = useState<'sepolia' | 'mainnet'>('sepolia');
   const [queryResults, setQueryResults] = useState<{testResult: any, dataResult: any} | null>(null);
   const [queryTesting, setQueryTesting] = useState(false);
-  const [exampleResults, setExampleResults] = useState<Record<number, any>>({});
-  const [exampleLoading, setExampleLoading] = useState<Record<number, boolean>>({});
+  const [exampleResults, setExampleResults] = useState<Record<string | number, any>>({});
+  const [exampleLoading, setExampleLoading] = useState<Record<string | number, boolean>>({});
   const { testResults, testing, testBlobEndpoint } = useBlobTester();
 
   const copyToClipboard = (text: string, index: number) => {
@@ -777,9 +777,16 @@ export default function ApiDocsPage() {
       query: '{ specs(where: {status: "FINALIZED"}) { blobHash targetContract } }'
     },
     {
-      title: "Fetch Blob Data (UTF-8 Metadata)",
-      description: "Get the actual UTF-8 blob data directly",
-      code: `curl -s "https://storage.googleapis.com/blobscan-production/11155111/01/96/d7/0196d7c56bbc18b22ea2ac4e65b968e39c918bfed9f7ac0c0fccabda8d0e2239.bin" | tr -d '\\0'`,
+      title: "Access Blob Data (Multiple Options)",
+      description: "Get blob data via blobscan web, swarm gateway, or direct download",
+      code: `# Option 1: View in Blobscan (Browser-friendly)
+https://sepolia.blobscan.com/blob/0x0196d7c56bbc18b22ea2ac4e65b968e39c918bfed9f7ac0c0fccabda8d0e2239
+
+# Option 2: Swarm Gateway (JSON format, browser-friendly)
+https://api.gateway.ethswarm.org/bzz/44f8e7faf6c280f3bcce8cb35eeee136ce4fda47f5fb61b63e9c7b2a5452ef02
+
+# Option 3: Direct download (use curl, not browser)
+curl -s "https://storage.googleapis.com/blobscan-production/11155111/01/96/d7/0196d7c56bbc18b22ea2ac4e65b968e39c918bfed9f7ac0c0fccabda8d0e2239.bin" | tr -d '\\0'`,
       blobHash: "0x0196d7c56bbc18b22ea2ac4e65b968e39c918bfed9f7ac0c0fccabda8d0e2239",
       executable: true,
       executeType: 'blob'
@@ -1146,32 +1153,58 @@ chmod +x query.sh
             })}
           </div>
 
-          {/* Blob Explorer */}
+          {/* Blob Data Access */}
           <div className="mt-8">
-            <h2 className="text-xl font-semibold text-white mb-4">Blob API Access</h2>
-            <p className="text-gray-300 mb-4">
-              Use the Blobscan REST API to get blob metadata and data:
-            </p>
-            <ul className="space-y-2">
-              <li className="flex items-center gap-2">
-                <code className="bg-gray-700 px-2 py-1 rounded text-sm text-gray-200">
-                  https://api.sepolia.blobscan.com/blobs/[blobHash]
-                </code>
-                <span className="text-green-400 text-sm">(Sepolia Metadata API)</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <code className="bg-gray-700 px-2 py-1 rounded text-sm text-gray-200">
-                  https://api.blobscan.com/blobs/[blobHash]
-                </code>
-                <span className="text-blue-400 text-sm">(Mainnet Metadata API)</span>
-              </li>
-              <li className="flex items-center gap-2">
+            <h2 className="text-xl font-semibold text-white mb-4">🔗 Blob Data Access Solutions</h2>
+            <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-lg p-4 mb-4">
+              <h3 className="text-yellow-400 font-medium mb-2">⚠️ CORS Issue Solution</h3>
+              <p className="text-gray-300 text-sm">
+                Direct blob data fetching from Google Cloud Storage fails due to CORS policy. 
+                Use these browser-friendly alternatives instead:
+              </p>
+            </div>
+            
+            <div className="space-y-3">
+              <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-4">
+                <h3 className="text-green-400 font-medium mb-2">✅ Recommended: Blobscan Web Interface</h3>
                 <code className="bg-gray-700 px-2 py-1 rounded text-sm text-gray-200">
                   https://sepolia.blobscan.com/blob/[blobHash]
                 </code>
-                <span className="text-gray-400 text-sm">(Sepolia Web Interface)</span>
-              </li>
-            </ul>
+                <p className="text-gray-300 text-xs mt-2">
+                  Click to open in new tab - works perfectly in browsers
+                </p>
+              </div>
+
+              <div className="bg-orange-900/20 border border-orange-500/30 rounded-lg p-4">
+                <h3 className="text-orange-400 font-medium mb-2">🐝 Alternative: Swarm Gateway</h3>
+                <code className="bg-gray-700 px-2 py-1 rounded text-sm text-gray-200">
+                  https://api.gateway.ethswarm.org/bzz/[swarmReference]
+                </code>
+                <p className="text-gray-300 text-xs mt-2">
+                  Direct JSON viewing - browser friendly, no CORS issues
+                </p>
+              </div>
+
+              <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-4">
+                <h3 className="text-blue-400 font-medium mb-2">📊 API Metadata</h3>
+                <code className="bg-gray-700 px-2 py-1 rounded text-sm text-gray-200">
+                  https://api.sepolia.blobscan.com/blobs/[blobHash]
+                </code>
+                <p className="text-gray-300 text-xs mt-2">
+                  Returns metadata and storage references
+                </p>
+              </div>
+
+              <div className="bg-gray-700 rounded-lg p-4">
+                <h3 className="text-gray-300 font-medium mb-2">📥 For Developers (CLI)</h3>
+                <code className="bg-gray-800 px-2 py-1 rounded text-sm text-gray-200 block mb-2">
+                  curl -s "https://storage.googleapis.com/..." | tr -d '\0'
+                </code>
+                <p className="text-gray-400 text-xs">
+                  Command line access works fine - only browser requests are blocked by CORS
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Links */}
