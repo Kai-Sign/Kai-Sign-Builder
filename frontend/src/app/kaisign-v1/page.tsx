@@ -82,6 +82,65 @@ export default function KaiSignV1Page() {
   const [searchedSpecs, setSearchedSpecs] = useState<SpecData[]>([]);
   const [isSearchingSpecs, setIsSearchingSpecs] = useState(false);
 
+  // GraphQL query helper using the same pattern as api-docs
+  const executeGraphQLQuery = async (query: string) => {
+    const response = await fetch('https://api.studio.thegraph.com/query/117022/kaisign-subgraph/version/latest', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query })
+    });
+    return response.json();
+  };
+
+  // Fetch blob data using the same approach as api-docs
+  const fetchBlobData = async (blobHash: string, network: 'sepolia' | 'mainnet' = 'sepolia') => {
+    const baseUrls = {
+      sepolia: 'https://api.sepolia.blobscan.com',
+      mainnet: 'https://api.blobscan.com'
+    };
+
+    try {
+      // Get blob metadata first
+      const metadataResponse = await fetch(`${baseUrls[network]}/blobs/${blobHash}`);
+      if (!metadataResponse.ok) {
+        throw new Error(`Metadata fetch failed: ${metadataResponse.status}`);
+      }
+      
+      const metadata = await metadataResponse.json();
+      
+      // Find storage URLs for clickable links
+      const googleStorage = metadata.dataStorageReferences?.find((ref: any) => ref.storage === 'google');
+      const swarmStorage = metadata.dataStorageReferences?.find((ref: any) => ref.storage === 'swarm');
+      
+      // Create access links instead of fetching data directly
+      const swarmRef = swarmStorage?.url?.split('/bzz/')[1];
+      const accessLinks = {
+        blobscanWeb: `https://${network === 'sepolia' ? 'sepolia.' : ''}blobscan.com/blob/${blobHash}`,
+        googleStorage: googleStorage?.url,
+        swarmGateway: swarmRef ? `https://api.gateway.ethswarm.org/bzz/${swarmRef}` : null
+      };
+
+      return {
+        success: true,
+        metadata,
+        accessLinks,
+        network,
+        blobHash,
+        fetchedAt: new Date().toISOString()
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        error: error.message,
+        network,
+        blobHash,
+        fetchedAt: new Date().toISOString()
+      };
+    }
+  };
+
   // Add a method to load finalized specs specifically from subgraph
   const loadFinalizedSpecs = async (account: string) => {
     try {
@@ -1040,9 +1099,59 @@ export default function KaiSignV1Page() {
                           setIsSearchingSpecs(true);
                           try {
                             console.log(`🔍 Adding spec by ID: ${selectedContract}`);
-                            const specData = await web3Service.getSpecData(selectedContract);
                             
-                            if (specData.creator.toLowerCase() === currentAccount?.toLowerCase()) {
+                            // Try GraphQL first, then fallback to blockchain
+                            const query = `{
+                              specs(where: {id: "${selectedContract}"}) {
+                                id
+                                user
+                                blobHash
+                                targetContract
+                                chainID
+                                blockTimestamp
+                                proposedTimestamp
+                                status
+                                questionId
+                                incentiveId
+                              }
+                            }`;
+                            
+                            let specData: any = null;
+                            
+                            try {
+                              const result = await executeGraphQLQuery(query);
+                              const specs = result.data?.specs || [];
+                              
+                              if (specs.length > 0) {
+                                const spec = specs[0];
+                                const statusMap: { [key: string]: number } = {
+                                  'COMMITTED': 0,
+                                  'SUBMITTED': 1,
+                                  'PROPOSED': 2,
+                                  'FINALIZED': 3,
+                                  'CANCELLED': 4
+                                };
+                                
+                                specData = {
+                                  creator: spec.user,
+                                  targetContract: spec.targetContract,
+                                  blobHash: spec.blobHash || "",
+                                  status: statusMap[spec.status] || 0,
+                                  createdTimestamp: parseInt(spec.blockTimestamp),
+                                  proposedTimestamp: parseInt(spec.proposedTimestamp || spec.blockTimestamp),
+                                  totalBonds: "0",
+                                  chainId: parseInt(spec.chainID) || 11155111,
+                                  questionId: spec.questionId || "",
+                                  incentiveId: spec.incentiveId || ""
+                                };
+                              }
+                            } catch (subgraphError) {
+                              console.log("Subgraph query failed, falling back to blockchain:", subgraphError);
+                              // Fallback to blockchain query
+                              specData = await web3Service.getSpecData(selectedContract);
+                            }
+                            
+                            if (specData && specData.creator.toLowerCase() === currentAccount?.toLowerCase()) {
                               const newSpec: SpecData = {
                                 specId: selectedContract,
                                 creator: specData.creator,
@@ -1051,10 +1160,10 @@ export default function KaiSignV1Page() {
                                 status: specData.status,
                                 createdTimestamp: specData.createdTimestamp,
                                 proposedTimestamp: specData.proposedTimestamp,
-                                totalBonds: specData.totalBonds,
+                                totalBonds: specData.totalBonds || "0",
                                 chainId: specData.chainId || 11155111,
-                        questionId: specData.questionId || "",
-                        incentiveId: specData.incentiveId || ""
+                                questionId: specData.questionId || "",
+                                incentiveId: specData.incentiveId || ""
                               };
                               
                               // Check if already exists
@@ -1123,13 +1232,29 @@ export default function KaiSignV1Page() {
                           
                           setIsSearchingSpecs(true);
                           try {
-                            console.log(`🔍 Searching specs for target contract: ${specSearchContract} using subgraph`);
+                            console.log(`🔍 Searching specs for target contract: ${specSearchContract} using GraphQL`);
                             
-                            // Query subgraph for specs targeting this contract
-                            const specsFromSubgraph = await subgraphClient.getContractSpecs(specSearchContract);
+                            // Query subgraph for specs targeting this contract using GraphQL
+                            const query = `{
+                              specs(where: {targetContract: "${specSearchContract.toLowerCase()}", user: "${currentAccount?.toLowerCase()}"}) {
+                                id
+                                user
+                                blobHash
+                                targetContract
+                                chainID
+                                blockTimestamp
+                                proposedTimestamp
+                                status
+                                questionId
+                                incentiveId
+                              }
+                            }`;
+                            
+                            const result = await executeGraphQLQuery(query);
+                            const specsFromSubgraph = result.data?.specs || [];
                             console.log(`📋 Found ${specsFromSubgraph.length} specs from subgraph`);
                             
-                            // Filter for user's specs
+                            // Convert specs to our format
                             const userSpecsFromSearch: SpecData[] = [];
                             const statusMap: { [key: string]: number } = {
                               'COMMITTED': 0,
@@ -1140,21 +1265,19 @@ export default function KaiSignV1Page() {
                             };
                             
                             for (const spec of specsFromSubgraph) {
-                              if (spec.user.toLowerCase() === currentAccount?.toLowerCase()) {
-                                userSpecsFromSearch.push({
-                                  specId: spec.id,
-                                  creator: spec.user,
-                                  targetContract: spec.targetContract || specSearchContract,
-                                  blobHash: spec.ipfs || "",
-                                  status: statusMap[spec.status] || 0,
-                                  createdTimestamp: parseInt(spec.blockTimestamp),
-                                  proposedTimestamp: parseInt(spec.proposedTimestamp || spec.blockTimestamp),
-                                  totalBonds: "0",
-                                  chainId: parseInt(spec.chainID || "11155111"),
-                                  questionId: spec.questionId || "",
-                                  incentiveId: spec.incentiveId || ""
-                                });
-                              }
+                              userSpecsFromSearch.push({
+                                specId: spec.id,
+                                creator: spec.user,
+                                targetContract: spec.targetContract || specSearchContract,
+                                blobHash: spec.blobHash || "",
+                                status: statusMap[spec.status] || 0,
+                                createdTimestamp: parseInt(spec.blockTimestamp),
+                                proposedTimestamp: parseInt(spec.proposedTimestamp || spec.blockTimestamp),
+                                totalBonds: "0",
+                                chainId: parseInt(spec.chainID || "11155111"),
+                                questionId: spec.questionId || "",
+                                incentiveId: spec.incentiveId || ""
+                              });
                             }
                             
                             // Add new specs to existing ones (avoid duplicates)
@@ -1354,8 +1477,24 @@ export default function KaiSignV1Page() {
                         
                         setIsSearchingSpecs(true);
                         try {
-                          // Query subgraph for specs targeting this contract
-                          const contractSpecsFromSubgraph = await subgraphClient.getContractSpecs(specSearchContract);
+                          // Query subgraph for specs targeting this contract using GraphQL
+                          const query = `{
+                            specs(where: {targetContract: "${specSearchContract.toLowerCase()}", user: "${currentAccount?.toLowerCase()}"}) {
+                              id
+                              user
+                              blobHash
+                              targetContract
+                              chainID
+                              blockTimestamp
+                              proposedTimestamp
+                              status
+                              questionId
+                              incentiveId
+                            }
+                          }`;
+                          
+                          const result = await executeGraphQLQuery(query);
+                          const contractSpecsFromSubgraph = result.data?.specs || [];
                           const userSpecsFromSearch: SpecData[] = [];
                           
                           const statusMap: { [key: string]: number } = {
@@ -1367,21 +1506,19 @@ export default function KaiSignV1Page() {
                           };
                           
                           for (const spec of contractSpecsFromSubgraph) {
-                            if (currentAccount && spec.user.toLowerCase() === currentAccount.toLowerCase()) {
-                              userSpecsFromSearch.push({
-                                specId: spec.id,
-                                creator: spec.user,
-                                targetContract: spec.targetContract || specSearchContract,
-                                blobHash: spec.ipfs || "",
-                                status: statusMap[spec.status] || 0,
-                                createdTimestamp: parseInt(spec.blockTimestamp),
-                                proposedTimestamp: parseInt(spec.proposedTimestamp || spec.blockTimestamp),
-                                totalBonds: "0",
-                                chainId: parseInt(spec.chainID || "11155111"),
-                                questionId: spec.questionId || "",
-                                incentiveId: spec.incentiveId || ""
-                              });
-                            }
+                            userSpecsFromSearch.push({
+                              specId: spec.id,
+                              creator: spec.user,
+                              targetContract: spec.targetContract || specSearchContract,
+                              blobHash: spec.blobHash || "",
+                              status: statusMap[spec.status] || 0,
+                              createdTimestamp: parseInt(spec.blockTimestamp),
+                              proposedTimestamp: parseInt(spec.proposedTimestamp || spec.blockTimestamp),
+                              totalBonds: "0",
+                              chainId: parseInt(spec.chainID || "11155111"),
+                              questionId: spec.questionId || "",
+                              incentiveId: spec.incentiveId || ""
+                            });
                           }
                           
                           // Add new specs to existing ones (avoid duplicates)
@@ -1498,15 +1635,36 @@ export default function KaiSignV1Page() {
                             </div>
                             
                             <div className="flex flex-wrap gap-2 pt-4 border-t border-gray-700">
-                              <a
-                                href={`https://sepolia.blobscan.com/blob/${spec.blobHash}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded"
-                              >
-                                <ExternalLink className="mr-1 h-3 w-3" />
-                                View Blob
-                              </a>
+                              {spec.blobHash && spec.blobHash !== "0x0000000000000000000000000000000000000000000000000000000000000000" && (
+                                <Button
+                                  onClick={async () => {
+                                    try {
+                                      const blobData = await fetchBlobData(spec.blobHash, 'sepolia');
+                                      if (blobData.success && blobData.accessLinks) {
+                                        // Open all available links in new tabs
+                                        if (blobData.accessLinks.blobscanWeb) {
+                                          window.open(blobData.accessLinks.blobscanWeb, '_blank');
+                                        }
+                                        if (blobData.accessLinks.googleStorage) {
+                                          window.open(blobData.accessLinks.googleStorage, '_blank');
+                                        }
+                                        if (blobData.accessLinks.swarmGateway) {
+                                          window.open(blobData.accessLinks.swarmGateway, '_blank');
+                                        }
+                                      }
+                                    } catch (error) {
+                                      console.error('Failed to fetch blob data:', error);
+                                      // Fallback to direct blobscan link
+                                      window.open(`https://sepolia.blobscan.com/blob/${spec.blobHash}`, '_blank');
+                                    }
+                                  }}
+                                  size="sm"
+                                  className="text-xs bg-blue-600 hover:bg-blue-700"
+                                >
+                                  <ExternalLink className="mr-1 h-3 w-3" />
+                                  View Blob Data
+                                </Button>
+                              )}
                               
                               <Button
                                 onClick={() => window.open(`https://reality.eth.limo/app/`, '_blank')}

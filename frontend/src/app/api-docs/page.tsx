@@ -256,20 +256,23 @@ export default function ApiDocsPage() {
       const metadataResponse = await fetch(`https://api.sepolia.blobscan.com/blobs/${blobHash}`);
       const metadata = await metadataResponse.json();
       
-      // Get blob data if storage URL exists
-      let blobData = null;
+      // Create access links instead of fetching data directly
       const googleStorage = metadata.dataStorageReferences?.find((ref: any) => ref.storage === 'google');
-      if (googleStorage) {
-        const dataResponse = await fetch(googleStorage.url);
-        blobData = await dataResponse.text();
-      }
+      const swarmStorage = metadata.dataStorageReferences?.find((ref: any) => ref.storage === 'swarm');
+      
+      const swarmRef = swarmStorage?.url?.split('/bzz/')[1];
+      const blobLinks = {
+        blobscanWeb: `https://sepolia.blobscan.com/blob/${blobHash}`,
+        googleStorage: googleStorage?.url,
+        swarmGateway: swarmRef ? `https://api.gateway.ethswarm.org/bzz/${swarmRef}` : null
+      };
 
       setExampleResults(prev => ({
         ...prev,
         [exampleIndex]: {
           success: true,
           metadata,
-          blobData,
+          blobLinks,
           timestamp: new Date().toISOString(),
           type: 'blob'
         }
@@ -321,11 +324,16 @@ export default function ApiDocsPage() {
           const metadataResponse = await fetch(`https://api.sepolia.blobscan.com/blobs/${blobHash}`);
           blobMetadata = await metadataResponse.json();
           
+          // Create blob access links instead of fetching directly
           const googleStorage = blobMetadata.dataStorageReferences?.find((ref: any) => ref.storage === 'google');
-          if (googleStorage) {
-            const dataResponse = await fetch(googleStorage.url);
-            blobData = await dataResponse.text();
-          }
+          const swarmStorage = blobMetadata.dataStorageReferences?.find((ref: any) => ref.storage === 'swarm');
+          
+          const swarmRef = swarmStorage?.url?.split('/bzz/')[1];
+          blobData = {
+            blobscanWeb: `https://sepolia.blobscan.com/blob/${blobHash}`,
+            googleStorage: googleStorage?.url,
+            swarmGateway: swarmRef ? `https://api.gateway.ethswarm.org/bzz/${swarmRef}` : null
+          };
         } catch (blobError) {
           console.warn('Failed to fetch blob data:', blobError);
         }
@@ -430,24 +438,22 @@ export default function ApiDocsPage() {
       
       const metadata = await metadataResponse.json();
       
-      // Find Google Cloud Storage URL
+      // Find storage URLs for clickable links
       const googleStorage = metadata.dataStorageReferences?.find((ref: any) => ref.storage === 'google');
-      if (!googleStorage) {
-        throw new Error('No Google Cloud storage URL found');
-      }
+      const swarmStorage = metadata.dataStorageReferences?.find((ref: any) => ref.storage === 'swarm');
+      
+      // Create access links instead of fetching data directly
+      const swarmRef = swarmStorage?.url?.split('/bzz/')[1];
+      const accessLinks = {
+        blobscanWeb: `https://${network === 'sepolia' ? 'sepolia.' : ''}blobscan.com/blob/${blobHash}`,
+        googleStorage: googleStorage?.url,
+        swarmGateway: swarmRef ? `https://api.gateway.ethswarm.org/bzz/${swarmRef}` : null
+      };
 
-      // Fetch the actual blob data
-      const blobDataResponse = await fetch(googleStorage.url);
-      if (!blobDataResponse.ok) {
-        throw new Error(`Blob data fetch failed: ${blobDataResponse.status}`);
-      }
-
-      const blobData = await blobDataResponse.text();
       const result = {
         success: true,
         metadata,
-        blobData,
-        storageUrl: googleStorage.url,
+        accessLinks,
         network,
         blobHash,
         fetchedAt: new Date().toISOString()
@@ -568,7 +574,7 @@ export default function ApiDocsPage() {
       <div className="mt-4 bg-gray-800 border border-gray-600 rounded-lg p-4">
         <div className="flex items-center gap-2 mb-3">
           <AlertCircle size={16} className="text-purple-400" />
-          <h4 className="font-medium text-white">UTF-8 Blob Data</h4>
+          <h4 className="font-medium text-white">Blob Data Access Links</h4>
           <span className="text-xs px-2 py-1 bg-purple-900/30 text-purple-300 rounded">
             {results.network.toUpperCase()}
           </span>
@@ -577,32 +583,76 @@ export default function ApiDocsPage() {
         {results.success ? (
           <div className="space-y-3 text-sm">
             <div className="bg-green-900/20 border border-green-500/30 rounded p-3">
-              <div className="flex items-center gap-2 mb-2">
+              <div className="flex items-center gap-2 mb-3">
                 <CheckCircle size={14} className="text-green-400" />
-                <span className="font-medium text-green-400">UTF-8 Data Retrieved</span>
+                <span className="font-medium text-green-400">Blob Data Access Links Found</span>
               </div>
               
-              <div className="space-y-2">
-                <div>
-                  <span className="text-gray-400 text-xs">Storage URL:</span>
-                  <div className="font-mono text-xs text-green-300 break-all">{results.storageUrl}</div>
-                </div>
-                
-                <div>
-                  <span className="text-gray-400 text-xs">Data Size:</span>
-                  <span className="ml-2 text-xs text-white">{results.blobData.length} characters</span>
-                </div>
-                
-                <div>
-                  <span className="text-gray-400 text-xs">UTF-8 Blob Content:</span>
-                  <div className="mt-2 bg-gray-900 p-3 rounded text-xs max-h-80 overflow-y-auto">
-                    <pre className="text-gray-200 whitespace-pre-wrap font-mono">{results.blobData}</pre>
+              <div className="space-y-3">
+                {/* Blobscan Web Interface */}
+                <div className="border border-gray-600 rounded p-3 bg-gray-800">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-gray-300 text-sm font-medium">📊 Blobscan Web Interface</span>
+                    <button
+                      onClick={() => window.open(results.accessLinks.blobscanWeb, '_blank')}
+                      className="flex items-center gap-2 px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded transition-colors"
+                    >
+                      <ExternalLink size={12} />
+                      View Blob
+                    </button>
+                  </div>
+                  <div className="font-mono text-xs text-gray-400 break-all">
+                    {results.accessLinks.blobscanWeb}
                   </div>
                 </div>
 
+                {/* Google Cloud Storage */}
+                {results.accessLinks.googleStorage && (
+                  <div className="border border-gray-600 rounded p-3 bg-gray-800">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-gray-300 text-sm font-medium">☁️ Google Cloud Storage (Raw Data)</span>
+                      <button
+                        onClick={() => window.open(results.accessLinks.googleStorage, '_blank')}
+                        className="flex items-center gap-2 px-3 py-1 bg-green-600 hover:bg-green-700 text-white text-xs rounded transition-colors"
+                      >
+                        <ExternalLink size={12} />
+                        View Data
+                      </button>
+                    </div>
+                    <div className="font-mono text-xs text-gray-400 break-all">
+                      {results.accessLinks.googleStorage}
+                    </div>
+                    <div className="mt-1 text-xs text-green-300">
+                      ✅ Direct blob data access
+                    </div>
+                  </div>
+                )}
+
+                {/* Swarm Gateway */}
+                {results.accessLinks.swarmGateway && (
+                  <div className="border border-gray-600 rounded p-3 bg-gray-800">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-gray-300 text-sm font-medium">🐝 Swarm Gateway (JSON)</span>
+                      <button
+                        onClick={() => window.open(results.accessLinks.swarmGateway, '_blank')}
+                        className="flex items-center gap-2 px-3 py-1 bg-orange-600 hover:bg-orange-700 text-white text-xs rounded transition-colors"
+                      >
+                        <ExternalLink size={12} />
+                        View JSON
+                      </button>
+                    </div>
+                    <div className="font-mono text-xs text-gray-400 break-all">
+                      {results.accessLinks.swarmGateway}
+                    </div>
+                    <div className="mt-1 text-xs text-green-300">
+                      ✅ JSON format
+                    </div>
+                  </div>
+                )}
+
                 <div className="mt-3 pt-2 border-t border-gray-600">
                   <div className="text-green-300 text-xs">
-                    ✅ Raw UTF-8 blob data successfully retrieved from Google Cloud Storage
+                    ✅ Click buttons to open blob data in new tabs
                   </div>
                 </div>
               </div>
@@ -672,14 +722,49 @@ export default function ApiDocsPage() {
                   </div>
                 </div>
                 
-                {result.blobData && (
+                {result.blobLinks && (
                   <div className="bg-purple-900/20 border border-purple-500/30 rounded p-3">
                     <div className="flex items-center gap-2 mb-2">
                       <CheckCircle size={14} className="text-purple-400" />
-                      <span className="font-medium text-purple-400">UTF-8 Blob Data</span>
+                      <span className="font-medium text-purple-400">Blob Data Access Links</span>
                     </div>
-                    <div className="bg-gray-900 p-3 rounded text-xs max-h-80 overflow-y-auto">
-                      <pre className="text-gray-200 whitespace-pre-wrap font-mono">{result.blobData}</pre>
+                    <div className="space-y-2">
+                      {result.blobLinks.blobscanWeb && (
+                        <div className="flex items-center justify-between p-2 bg-gray-800 rounded">
+                          <span className="text-xs text-gray-300">Blobscan Web:</span>
+                          <button
+                            onClick={() => window.open(result.blobLinks.blobscanWeb, '_blank')}
+                            className="flex items-center gap-1 px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded"
+                          >
+                            <ExternalLink size={10} />
+                            View
+                          </button>
+                        </div>
+                      )}
+                      {result.blobLinks.swarmGateway && (
+                        <div className="flex items-center justify-between p-2 bg-gray-800 rounded">
+                          <span className="text-xs text-gray-300">Swarm Gateway:</span>
+                          <button
+                            onClick={() => window.open(result.blobLinks.swarmGateway, '_blank')}
+                            className="flex items-center gap-1 px-2 py-1 bg-orange-600 hover:bg-orange-700 text-white text-xs rounded"
+                          >
+                            <ExternalLink size={10} />
+                            View JSON
+                          </button>
+                        </div>
+                      )}
+                      {result.blobLinks.googleStorage && (
+                        <div className="flex items-center justify-between p-2 bg-gray-800 rounded">
+                          <span className="text-xs text-gray-300">Google Storage:</span>
+                          <button
+                            onClick={() => window.open(result.blobLinks.googleStorage, '_blank')}
+                            className="flex items-center gap-1 px-2 py-1 bg-green-600 hover:bg-green-700 text-white text-xs rounded"
+                          >
+                            <ExternalLink size={10} />
+                            View Data
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -700,14 +785,49 @@ export default function ApiDocsPage() {
                   </div>
                 </div>
                 
-                {result.blobData && (
+                {result.blobData && typeof result.blobData === 'object' && (
                   <div className="bg-purple-900/20 border border-purple-500/30 rounded p-3">
                     <div className="flex items-center gap-2 mb-2">
                       <CheckCircle size={14} className="text-purple-400" />
-                      <span className="font-medium text-purple-400">Retrieved Blob Data</span>
+                      <span className="font-medium text-purple-400">Blob Data Access Links</span>
                     </div>
-                    <div className="bg-gray-900 p-3 rounded text-xs max-h-80 overflow-y-auto">
-                      <pre className="text-gray-200 whitespace-pre-wrap font-mono">{result.blobData}</pre>
+                    <div className="space-y-2">
+                      {result.blobData.blobscanWeb && (
+                        <div className="flex items-center justify-between p-2 bg-gray-800 rounded">
+                          <span className="text-xs text-gray-300">Blobscan Web:</span>
+                          <button
+                            onClick={() => window.open(result.blobData.blobscanWeb, '_blank')}
+                            className="flex items-center gap-1 px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded"
+                          >
+                            <ExternalLink size={10} />
+                            View
+                          </button>
+                        </div>
+                      )}
+                      {result.blobData.swarmGateway && (
+                        <div className="flex items-center justify-between p-2 bg-gray-800 rounded">
+                          <span className="text-xs text-gray-300">Swarm Gateway:</span>
+                          <button
+                            onClick={() => window.open(result.blobData.swarmGateway, '_blank')}
+                            className="flex items-center gap-1 px-2 py-1 bg-orange-600 hover:bg-orange-700 text-white text-xs rounded"
+                          >
+                            <ExternalLink size={10} />
+                            View JSON
+                          </button>
+                        </div>
+                      )}
+                      {result.blobData.googleStorage && (
+                        <div className="flex items-center justify-between p-2 bg-gray-800 rounded">
+                          <span className="text-xs text-gray-300">Google Storage:</span>
+                          <button
+                            onClick={() => window.open(result.blobData.googleStorage, '_blank')}
+                            className="flex items-center gap-1 px-2 py-1 bg-green-600 hover:bg-green-700 text-white text-xs rounded"
+                          >
+                            <ExternalLink size={10} />
+                            View Data
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
@@ -777,16 +897,9 @@ export default function ApiDocsPage() {
       query: '{ specs(where: {status: "FINALIZED"}) { blobHash targetContract } }'
     },
     {
-      title: "Access Blob Data (Multiple Options)",
-      description: "Get blob data via blobscan web, swarm gateway, or direct download",
-      code: `# Option 1: View in Blobscan (Browser-friendly)
-https://sepolia.blobscan.com/blob/0x0196d7c56bbc18b22ea2ac4e65b968e39c918bfed9f7ac0c0fccabda8d0e2239
-
-# Option 2: Swarm Gateway (JSON format, browser-friendly)
-https://api.gateway.ethswarm.org/bzz/44f8e7faf6c280f3bcce8cb35eeee136ce4fda47f5fb61b63e9c7b2a5452ef02
-
-# Option 3: Direct download (use curl, not browser)
-curl -s "https://storage.googleapis.com/blobscan-production/11155111/01/96/d7/0196d7c56bbc18b22ea2ac4e65b968e39c918bfed9f7ac0c0fccabda8d0e2239.bin" | tr -d '\\0'`,
+      title: "Fetch Blob Data (UTF-8 Metadata)",
+      description: "Get the actual UTF-8 blob data directly",
+      code: `curl -s "https://storage.googleapis.com/blobscan-production/11155111/01/96/d7/0196d7c56bbc18b22ea2ac4e65b968e39c918bfed9f7ac0c0fccabda8d0e2239.bin" | tr -d '\\0'`,
       blobHash: "0x0196d7c56bbc18b22ea2ac4e65b968e39c918bfed9f7ac0c0fccabda8d0e2239",
       executable: true,
       executeType: 'blob'
@@ -1157,10 +1270,9 @@ chmod +x query.sh
           <div className="mt-8">
             <h2 className="text-xl font-semibold text-white mb-4">🔗 Blob Data Access Solutions</h2>
             <div className="bg-yellow-900/20 border border-yellow-500/30 rounded-lg p-4 mb-4">
-              <h3 className="text-yellow-400 font-medium mb-2">⚠️ CORS Issue Solution</h3>
+              <h3 className="text-yellow-400 font-medium mb-2">⚠️ Blob Data Access Methods</h3>
               <p className="text-gray-300 text-sm">
-                Direct blob data fetching from Google Cloud Storage fails due to CORS policy. 
-                Use these browser-friendly alternatives instead:
+                Multiple ways to access blob data with browser-friendly options:
               </p>
             </div>
             
@@ -1181,7 +1293,7 @@ chmod +x query.sh
                   https://api.gateway.ethswarm.org/bzz/[swarmReference]
                 </code>
                 <p className="text-gray-300 text-xs mt-2">
-                  Direct JSON viewing - browser friendly, no CORS issues
+                  Direct JSON viewing - browser friendly
                 </p>
               </div>
 
@@ -1201,7 +1313,7 @@ chmod +x query.sh
                   curl -s "https://storage.googleapis.com/..." | tr -d '\0'
                 </code>
                 <p className="text-gray-400 text-xs">
-                  Command line access works fine - only browser requests are blocked by CORS
+                  Command line access for developers
                 </p>
               </div>
             </div>
