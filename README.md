@@ -1,33 +1,52 @@
-# Kai-Sign
+# Kai Sign Builder
 
-A Next.js + FastAPI application for generating and managing ERC7730 descriptors.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-000000?logo=next.js&logoColor=white)](https://nextjs.org/)
 
-## Repository Structure
+An open-source tool for building, visualizing, and managing **ERC7730** transaction descriptors for hardware wallets. Create clear, user-friendly transaction displays that help users understand what they're signing before approving blockchain transactions.
+
+## 🚀 What is ERC7730?
+
+[ERC7730](https://eips.ethereum.org/EIPS/eip-7730) is an Ethereum standard that defines structured metadata for describing smart contract interactions in human-readable format. It enables hardware wallets and dApps to show users clear transaction details instead of raw bytecode.
+
+**Example**: Instead of seeing `0xa9059cbb000000000000000000...`, users see:
+- **Action**: Transfer USDC
+- **To**: vitalik.eth  
+- **Amount**: 100.00 USDC
+
+## ✨ Features
+
+- 🎨 **Visual ERC7730 Builder** - Drag-and-drop interface for creating transaction descriptors
+- 📱 **Hardware Wallet Preview** - See exactly how transactions appear on Ledger devices
+- 🔍 **Multi-Contract Support** - Handle complex transactions (Safe + Token operations)
+- 📊 **Real Transaction Testing** - Validate descriptors with actual blockchain data
+- 🌐 **Blob Storage** - Decentralized metadata storage via Ethereum blobs
+- 🔐 **Digital Signatures** - Cryptographic verification of metadata authenticity
+
+## 🏗️ Architecture
 
 ```
-api/
-    └── index.py             # FastAPI backend
-contracts/                   # Smart contract files
-graph/                       # Subgraph for contract events
-llm/                         # LLM integration
-public/                      # Static assets
-src/                         # Next.js frontend
-    ├── app/                 # Next.js App Router
-    ├── components/          # React components
-    └── ...
+├── frontend/               # Next.js application
+│   ├── src/app/           # App router pages
+│   ├── src/components/    # React components
+│   └── src/lib/          # Utilities and services
+├── backend/               # Python FastAPI server
+├── contracts/             # Solidity contracts (Foundry)
+├── graph/                # Subgraph for indexing events
+└── llm/                  # AI-assisted descriptor generation
 ```
 
-## Technology Stack
+## 🛠️ Tech Stack
 
-- **Frontend**: Next.js, React, TypeScript, Tailwind CSS
-- **Backend**: FastAPI (Python), Go API
-- **Smart Contracts**: Foundry, Solidity
-- **Deployment**: Vercel (frontend), Railway (backend)
+- **Frontend**: Next.js, TypeScript, Tailwind CSS
+- **Backend**: Python FastAPI
+- **Contracts**: Solidity, Foundry
+- **Deployment**: Vercel, Railway
 
 ## Contract Addresses (Sepolia Testnet)
 
 - **KaiSign Contract**: `0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719`
-- **Treasury Multisig**: `0x7D8730aD11f0D421bd41c6E5584F20c744CBAf29`
 
 ## Getting Started
 
@@ -92,7 +111,6 @@ To use the deployed Railway backend instead of the local backend:
 ```bash
 ALCHEMY_RPC_URL=your_alchemy_rpc_endpoint
 KAISIGN_CONTRACT_ADDRESS=0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719
-TREASURY_MULTISIG_ADDRESS=0x7D8730aD11f0D421bd41c6E5584F20c744CBAf29
 CURVEGRID_JWT=your_curvegrid_jwt_token
 ETHERSCAN_API_KEY=your_etherscan_api_key
 USE_MOCK=false
@@ -100,14 +118,8 @@ USE_MOCK=false
 
 **Frontend Variables**:
 ```bash
-NEXT_PUBLIC_API_URL=https://your-railway-app-url.railway.app  # Optional: Use Railway backend
-NEXT_PUBLIC_GTM=your_google_tag_manager_id
-NEXT_PUBLIC_ONETRUST=your_onetrust_id
-NEXT_PUBLIC_IPFS_API_KEY=your_ipfs_api_key
-NEXT_PUBLIC_IPFS_API_SECRET=your_ipfs_api_secret
+NEXT_PUBLIC_API_URL=https://your-railway-app-url.railway.app
 NEXT_PUBLIC_KAISIGN_CONTRACT_ADDRESS=0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719
-NEXT_PUBLIC_TREASURY_MULTISIG_ADDRESS=0x7D8730aD11f0D421bd41c6E5584F20c744CBAf29
-NEXT_PUBLIC_IPFS_GATEWAY_URL=https://ipfs.io/ipfs/
 ```
 
 ### Running Locally
@@ -160,10 +172,75 @@ curl -X POST https://your-railway-app.railway.app/api/py/getIPFSMetadata \
   -d '{"spec_id": "0xa0ffcaf51795d9c96dcdab2deadf864f458480f629eb683d591916369df49316"}'
 ```
 
-## Contributing
+## 🤝 Contributing
 
-1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/your-feature`
-3. Commit your changes: `git commit -m 'Add your feature'`
-4. Push to the branch: `git push origin feature/your-feature`
-5. Submit a pull request
+We welcome contributions from the community! This project follows standard open source practices.
+
+### Quick Start for Contributors
+
+1. **Fork** the repository
+2. **Clone** your fork: `git clone https://github.com/your-username/Kai-Sign-Builder.git`
+3. **Install** dependencies: `cd Kai-Sign-Builder && npm install`
+4. **Create** a branch: `git checkout -b feature/your-feature-name`
+5. **Make** your changes
+6. **Test** your changes: `npm run dev`
+7. **Commit** with clear messages: `git commit -m "feat: add new feature"`
+8. **Push** to your fork: `git push origin feature/your-feature-name`
+9. **Create** a Pull Request
+
+### Development Guidelines
+
+- **Code Style**: We use Prettier and ESLint - run `npm run lint` before committing
+- **TypeScript**: Maintain type safety - no `any` types without justification
+- **Testing**: Add tests for new features in the appropriate test files
+- **Documentation**: Update README and add JSDoc comments for new functions
+
+### Types of Contributions Welcome
+
+- 🐛 **Bug fixes** - Help us squash issues
+- ✨ **New features** - Enhance ERC7730 tooling
+- 📝 **Documentation** - Improve guides and examples
+- 🎨 **UI/UX** - Better user experience
+- 🧪 **Testing** - Increase test coverage
+- 🔧 **DevOps** - Improve build and deployment
+
+### Reporting Issues
+
+When reporting bugs, please include:
+- **Description** - Clear description of the issue
+- **Steps to reproduce** - How to trigger the bug
+- **Expected behavior** - What should happen
+- **Actual behavior** - What actually happens
+- **Environment** - OS, browser, Node.js version
+- **Screenshots** - If applicable
+
+### Pull Request Guidelines
+
+- **One feature per PR** - Keep changes focused
+- **Clear title** - Use conventional commits (feat:, fix:, docs:, etc.)
+- **Description** - Explain what and why
+- **Link issues** - Reference related issue numbers
+- **Tests pass** - Ensure CI checks pass
+- **Review ready** - Mark as ready when complete
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🆘 Support
+
+- **Documentation**: Check our [wiki](../../wiki) for detailed guides
+- **Issues**: Report bugs via [GitHub Issues](../../issues)
+- **Discussions**: Join [GitHub Discussions](../../discussions) for questions
+- **Community**: Follow us for updates and announcements
+
+## 🙏 Acknowledgments
+
+- [ERC7730 Standard](https://eips.ethereum.org/EIPS/eip-7730) - The foundation of this project
+- [Ledger](https://www.ledger.com/) - Hardware wallet integration insights
+- [Ethereum Foundation](https://ethereum.org/) - Supporting ecosystem development
+- **Contributors** - Thank you to everyone who has contributed code, ideas, and feedback
+
+---
+
+**Built with ❤️ for the Ethereum ecosystem**
