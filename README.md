@@ -238,9 +238,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - [ERC7730 Standard](https://eips.ethereum.org/EIPS/eip-7730) - The foundation of this project
 - [Ledger](https://www.ledger.com/) - Hardware wallet integration insights
-- [Ethereum Foundation](https://ethereum.org/) - Supporting ecosystem development
+- [ENS PG Builder Grants](https://builder.ensgrants.xyz/) - Supporting ecosystem development
 - **Contributors** - Thank you to everyone who has contributed code, ideas, and feedback
 
 ---
 
-**Built with ❤️ for the Ethereum ecosystem**
+**Built with ⟠ for the Ethereum ecosystem**
