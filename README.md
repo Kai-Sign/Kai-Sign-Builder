@@ -229,9 +229,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🆘 Support
 
-- **Documentation**: Check our [wiki](../../wiki) for detailed guides
+- **Documentation**: Check our [Gitbook](kaisign.gitbook.io) for detailed guides
 - **Issues**: Report bugs via [GitHub Issues](../../issues)
-- **Discussions**: Join [GitHub Discussions](../../discussions) for questions
 - **Community**: Follow us for updates and announcements
 
 ## 🙏 Acknowledgments
