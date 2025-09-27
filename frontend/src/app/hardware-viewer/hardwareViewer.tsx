@@ -678,7 +678,20 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
 
   // Get the actual field value from decoded transaction data
   const getFieldValueFromTransaction = (path: string, format: string, field?: any): string => {
-    if (!transactionData) {
+    // Use nested transaction data if available in the field, otherwise use main transaction data
+    const contextData = field?.nestedTransactionData || transactionData;
+    
+    console.log('DEBUG getFieldValueFromTransaction:', {
+      path,
+      format,
+      hasField: !!field,
+      hasNestedData: !!field?.nestedTransactionData,
+      contextData,
+      mainTransactionData: transactionData
+    });
+    
+    if (!contextData) {
+      console.log('DEBUG: No context data, returning mock value');
       return `Mock ${format} value`;
     }
     
@@ -686,14 +699,8 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
     const useNestedContext = field && field.useNestedContext;
     const hasNestedTransactionData = field && field.nestedTransactionData;
     console.log('DEBUG: hasNestedTransactionData:', hasNestedTransactionData, 'field:', field);
-    let contextData = transactionData;
     
-    if (hasNestedTransactionData) {
-      // Use the specific nested transaction data provided with the field
-      contextData = field.nestedTransactionData;
-      // Also use the main transaction data for addressesMeta lookup
-      console.log('DEBUG: Using nested transaction data:', contextData);
-    } else if (useNestedContext) {
+    if (useNestedContext && !hasNestedTransactionData) {
       // Find the first transfer operation in nested data
       const dataParam = transactionData.methodCall?.params?.find((p: any) => p.name === 'data' && p.valueDecoded);
       if (dataParam?.valueDecoded?.params) {
@@ -898,20 +905,40 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
          switch (format) {
            case "tokenAmount":
              const rawValue = value.toString();
+             console.log('DEBUG tokenAmount:', {
+               rawValue,
+               hasField: !!field,
+               fieldParams: field?.params,
+               tokenPath: field?.params?.tokenPath,
+               metadataEntriesCount: metadataEntries.length
+             });
              
-             // If we're in nested context, get the contract address from main transaction
-             if (hasNestedTransactionData) {
-               // Get the "to" address from the main Safe transaction (this is the token contract)
-               const tokenContractAddress = transactionData?.methodCall?.params?.find((p: any) => p.name === 'to')?.value;
-               if (tokenContractAddress) {
-                 const tokenInfo = transactionData?.addressesMeta?.[tokenContractAddress];
-                 if (tokenInfo && tokenInfo.decimals && tokenInfo.tokenSymbol) {
-                   const decimals = tokenInfo.decimals;
-                   const tokenSymbol = tokenInfo.tokenSymbol;
-                   const formattedAmount = (parseInt(rawValue) / Math.pow(10, decimals)).toString();
-                   return `${formattedAmount} ${tokenSymbol}`;
-                 }
+             // If field has tokenPath, find matching metadata with token info
+             if (field.params?.tokenPath) {
+               const tokenAddress = field.params.tokenPath;
+               console.log('DEBUG: Looking for token metadata for address:', tokenAddress);
+               
+               const tokenMetadata = metadataEntries.find(entry => 
+                 entry.metadata.context?.contract?.deployments?.some(dep => 
+                   dep.address === tokenAddress
+                 )
+               );
+               
+               console.log('DEBUG: tokenMetadata found:', !!tokenMetadata);
+               console.log('DEBUG: tokenMetadata.metadata keys:', Object.keys(tokenMetadata?.metadata || {}));
+               console.log('DEBUG: tokenMetadata.metadata.metadata exists:', !!tokenMetadata?.metadata?.metadata);
+               
+               if (tokenMetadata?.metadata?.metadata?.token?.decimals) {
+                 const decimals = tokenMetadata.metadata.metadata.token.decimals;
+                 const ticker = tokenMetadata.metadata.metadata.token.ticker;
+                 console.log('DEBUG: Using token info:', { decimals, ticker });
+                 const formattedAmount = (parseInt(rawValue) / Math.pow(10, decimals)).toString();
+                 return `${formattedAmount} ${ticker}`;
+               } else {
+                 console.log('DEBUG: No token decimals found in metadata');
                }
+             } else {
+               console.log('DEBUG: No tokenPath in field params');
              }
              
              return rawValue;
