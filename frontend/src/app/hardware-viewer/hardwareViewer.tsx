@@ -66,7 +66,11 @@ interface MetadataEntry {
   metadata: Erc7730;
 }
 
-const HardwareViewer = () => {
+interface HardwareViewerProps {
+  initialTransactionData?: DecodedTransaction;
+}
+
+const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) => {
   const [activeTab, setActiveTab] = useState("simple");
   const [jsonInput, setJsonInput] = useState("");
   const [selectedOperation, setSelectedOperation] = useState("");
@@ -342,25 +346,25 @@ const HardwareViewer = () => {
     }
   };
 
-  const sampleUSDCMetadata = {
+  const sampleTokenMetadata = {
     "$schema": "https://schemas.ledger.com/erc7730/1.0.0",
     "context": {
       "contract": {
-        "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        "address": "dynamic",
         "chainId": 1
       }
     },
     "metadata": {
-      "owner": "Circle",
+      "owner": "Token Contract",
       "info": {
-        "url": "https://circle.com",
-        "legalName": "Circle"
+        "url": "https://example.com",
+        "legalName": "Generic ERC20 Token"
       }
     },
     "display": {
       "formats": {
         "transfer": {
-          "intent": "Transfer USDC",
+          "intent": "Transfer Tokens",
           "fields": [
             {
               "path": "to",
@@ -380,6 +384,39 @@ const HardwareViewer = () => {
         }
       }
     }
+  };
+
+  // Function to get function selector from transaction data
+  const getTransactionFunctionSelector = (transactionData: DecodedTransaction | null): string | null => {
+    if (!transactionData?.methodCall?.name || !transactionData?.methodCall?.params) {
+      return null;
+    }
+    
+    const functionName = transactionData.methodCall.name;
+    const params = transactionData.methodCall.params;
+    
+    // Build function signature
+    const paramTypes = params.map(param => param.type).join(',');
+    const functionSignature = `${functionName}(${paramTypes})`;
+    
+    return functionSignature;
+  };
+
+  // Function to check if operation matches transaction
+  const operationMatchesTransaction = (operationKey: string, transactionData: DecodedTransaction | null): boolean => {
+    if (!transactionData) return true; // Show all operations if no transaction data
+    
+    const txSelector = getTransactionFunctionSelector(transactionData);
+    if (!txSelector) return true; // Show all if we can't determine selector
+    
+    // Direct match
+    if (operationKey === txSelector) return true;
+    
+    // Check if operation key contains the function name from transaction
+    const txFunctionName = transactionData.methodCall?.name;
+    if (txFunctionName && operationKey.includes(txFunctionName)) return true;
+    
+    return false;
   };
 
   // Sample decoded transaction data
@@ -455,26 +492,8 @@ const HardwareViewer = () => {
         }
       ]
     },
-    transfers: [
-      {
-        type: "ERC20",
-        name: "USD Coin",
-        symbol: "USDC",
-        address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-        amount: "521.419831",
-        to: "0xA1371748D65baEF4509A3c067b3fe3a1b79183aE",
-        from: "0x6092722B33FcF90af6e99C93F5F9349473869e23"
-      }
-    ],
-    addressesMeta: {
-      "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
-        contractAddress: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-        contractName: "USD Coin",
-        tokenSymbol: "USDC",
-        decimals: 6,
-        type: "ERC20"
-      }
-    }
+    transfers: [],
+    addressesMeta: {}
   };
 
   useEffect(() => {
@@ -488,6 +507,13 @@ const HardwareViewer = () => {
       setSelected(api.selectedScrollSnap());
     });
   }, [api]);
+
+  // Load initial transaction data if provided
+  useEffect(() => {
+    if (initialTransactionData) {
+      setTransactionData(initialTransactionData);
+    }
+  }, [initialTransactionData]);
 
   const handleJsonChange = (value: string) => {
     setJsonInput(value);
@@ -523,22 +549,61 @@ const HardwareViewer = () => {
     handleJsonChange(sampleJson);
   };
 
-  const loadSampleMultiMetadata = () => {
-    setMetadataEntries([
-      {
-        id: "safe",
-        name: "Safe Contract",
-        metadata: sampleSafeMetadata as unknown as Erc7730
-      },
-      {
-        id: "usdc",
-        name: "USDC Token",
-        metadata: sampleUSDCMetadata as unknown as Erc7730
+  const loadActualMetadata = async () => {
+    try {
+      // Load the actual ERC-7730 files from the file system
+      const usdcResponse = await fetch('/erc7730-usdc-mainnet.json');
+      const safeResponse = await fetch('/erc7730-safe-wallet-enhanced.json');
+      
+      if (!usdcResponse.ok || !safeResponse.ok) {
+        throw new Error('Failed to load ERC-7730 metadata files');
       }
-    ]);
-    setTransactionData(sampleTransactionData);
-    setSelectedMetadataId("safe");
-    setSelectedOperation("execTransaction(address,uint256,bytes,uint8,uint256,uint256,uint256,address,address,bytes)");
+      
+      const usdcMetadata = await usdcResponse.json();
+      const safeMetadata = await safeResponse.json();
+
+      const entries = [];
+      
+      if (safeMetadata) {
+        entries.push({
+          id: `metadata-${Date.now()}-safe`,
+          name: safeMetadata.metadata?.owner || "Metadata",
+          metadata: safeMetadata as unknown as Erc7730
+        });
+      }
+      
+      if (usdcMetadata) {
+        entries.push({
+          id: `metadata-${Date.now()}-usdc`,
+          name: usdcMetadata.metadata?.owner || "Metadata", 
+          metadata: usdcMetadata as unknown as Erc7730
+        });
+      }
+      
+      setMetadataEntries(entries);
+      
+      if (entries.length > 0) {
+        // PRIORITIZE Safe metadata - find Safe metadata first
+        const safeEntry = entries.find(entry => 
+          entry.name === 'Safe Ecosystem Foundation' || 
+          Object.keys(entry.metadata.display?.formats || {}).some(op => op.includes('execTransaction'))
+        );
+        
+        const defaultEntry = safeEntry || entries[0];
+        if (defaultEntry) {
+          setSelectedMetadataId(defaultEntry.id);
+          
+          // Auto-select the first operation if it exists
+          const firstOperation = Object.keys(defaultEntry.metadata.display?.formats || {})[0];
+          if (firstOperation) {
+            setSelectedOperation(firstOperation);
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Failed to load metadata files:', error);
+      setError('Failed to load ERC-7730 metadata files');
+    }
   };
 
   const addMetadataEntry = () => {
@@ -570,13 +635,89 @@ const HardwareViewer = () => {
     ));
   };
 
+  // Auto-select matching operation when transaction data changes - PRIORITIZE SAFE OPERATIONS
+  useEffect(() => {
+    if (transactionData && selectedMetadataId) {
+      const selectedMetadata = metadataEntries.find(entry => entry.id === selectedMetadataId);
+      if (selectedMetadata?.metadata.display?.formats) {
+        const detectedSelector = getTransactionFunctionSelector(transactionData);
+        
+        // ALWAYS prioritize Safe execTransaction over nested operations
+        const availableOperations = Object.keys(selectedMetadata.metadata.display.formats);
+        
+        // Check if this is Safe metadata with execTransaction
+        const safeExecOperation = availableOperations.find(op => 
+          op.includes('execTransaction') && op === detectedSelector
+        );
+        
+        if (safeExecOperation) {
+          // If this is Safe metadata and we have execTransaction, select it
+          setSelectedOperation(safeExecOperation);
+        } else {
+          // Only select nested operations if we're not looking at Safe metadata
+          const exactMatch = availableOperations.find(op => op === detectedSelector);
+          
+          if (exactMatch) {
+            setSelectedOperation(exactMatch);
+          } else {
+            // Find partial match by function name only for non-Safe operations
+            const txFunctionName = transactionData.methodCall?.name;
+            if (txFunctionName && txFunctionName !== 'execTransaction') {
+              const partialMatch = availableOperations.find(op => 
+                operationMatchesTransaction(op, transactionData)
+              );
+              if (partialMatch) {
+                setSelectedOperation(partialMatch);
+              }
+            }
+          }
+        }
+      }
+    }
+  }, [transactionData, selectedMetadataId, metadataEntries]);
+
   // Get the actual field value from decoded transaction data
-  const getFieldValueFromTransaction = (path: string, format: string): string => {
+  const getFieldValueFromTransaction = (path: string, format: string, field?: any): string => {
     if (!transactionData) {
       return `Mock ${format} value`;
     }
+    
+    // Check if this field should use nested transaction context
+    const useNestedContext = field && field.useNestedContext;
+    const hasNestedTransactionData = field && field.nestedTransactionData;
+    let contextData = transactionData;
+    
+    if (hasNestedTransactionData) {
+      // Use the specific nested transaction data provided with the field
+      contextData = field.nestedTransactionData;
+    } else if (useNestedContext) {
+      // Find the first transfer operation in nested data
+      const dataParam = transactionData.methodCall?.params?.find((p: any) => p.name === 'data' && p.valueDecoded);
+      if (dataParam?.valueDecoded?.params) {
+        const transactionsParam = dataParam.valueDecoded.params.find((p: any) => p.name === 'transactions');
+        if (transactionsParam?.value && Array.isArray(transactionsParam.value)) {
+          // Find the first transaction with a transfer
+          for (const txItem of transactionsParam.value) {
+            if (txItem?.data?.valueDecoded?.name === 'transfer') {
+              contextData = {
+                methodCall: {
+                  name: 'transfer',
+                  params: txItem.data.valueDecoded.params
+                }
+              };
+              break;
+            }
+          }
+        }
+      }
+    }
 
     try {
+      // Debug logging
+      console.log("Parsing path:", path, "format:", format);
+      if (path.includes("orders.orders")) {
+        console.log("Transaction data structure:", JSON.stringify(transactionData, null, 2));
+      }
       // Handle ERC7730 path format: "#.fieldName" means direct parameter access
       let cleanPath = path;
       let isDirectParam = false;
@@ -587,37 +728,124 @@ const HardwareViewer = () => {
       }
       
       const pathParts = cleanPath.split('.');
-      let value: any = transactionData;
+      let value: any = contextData;
       
-      if (transactionData.methodCall && transactionData.methodCall.params) {
+      if (contextData.methodCall && contextData.methodCall.params) {
         if (isDirectParam) {
-          // Direct parameter access for ERC7730 format (e.g., "#.to", "#.value", "#.operation")
-          const param = transactionData.methodCall.params.find((p: any) => p.name === pathParts[0]);
+          // Direct parameter access for ERC7730 format (e.g., "#.to", "#.value", "#.inputs.orders.orders[0].collection")
+          const param = contextData.methodCall.params.find((p: any) => p.name === pathParts[0]);
           if (param) {
-            value = param.value;
+            value = param;
             
-            // Navigate through any remaining path parts
-            for (let i = 1; i < pathParts.length; i++) {
+            // Navigate through the path parts
+            for (let i = 0; i < pathParts.length; i++) {
               const part = pathParts[i];
-              if (value && typeof value === 'object' && part) {
-                if (value[part] !== undefined) {
-                  value = value[part];
+              if (i === 0) {
+                // First part is the parameter name, already found
+                continue;
+              }
+              
+              // Handle array access notation like "orders[0]"
+              let arrayIndex: number | null = null;
+              let partName = part;
+              if (part && part.includes('[') && part.includes(']')) {
+                const match = part.match(/^(.+)\[(\d+)\]$/);
+                if (match && match[1] && match[2]) {
+                  partName = match[1];
+                  arrayIndex = parseInt(match[2]);
+                }
+              }
+              
+              // For nested tuple structures, check both 'value' and 'components'
+              if (value && typeof value === 'object') {
+                console.log(`Processing part "${partName}" with array index ${arrayIndex}`, {
+                  hasComponents: !!value.components,
+                  hasValue: !!value.value,
+                  valueType: typeof value.value,
+                  valueKeys: value.value ? Object.keys(value.value) : null
+                });
+                
+                if (value.components && Array.isArray(value.components)) {
+                  // This is a tuple parameter, find the component by name
+                  const component = value.components.find((c: any) => c.name === partName);
+                  if (component) {
+                    value = component;
+                    console.log(`Found component "${partName}":`, component);
+                    // If there's an array index, access that specific element
+                    if (arrayIndex !== null && value.value && Array.isArray(value.value)) {
+                      if (arrayIndex < value.value.length) {
+                        value = { value: value.value[arrayIndex] };
+                        console.log(`Accessed array index ${arrayIndex}:`, value);
+                      } else {
+                        console.log(`Array index ${arrayIndex} out of bounds for array length ${value.value.length}`);
+                        value = undefined;
+                        break;
+                      }
+                    }
+                  } else {
+                    console.log(`Component "${partName}" not found in components:`, value.components.map((c: any) => c.name));
+                    value = undefined;
+                    break;
+                  }
+                } else if (value.value && typeof value.value === 'object') {
+                  // Direct access to nested value
+                  if (partName && value.value[partName] !== undefined) {
+                    value = { value: value.value[partName] };
+                    console.log(`Direct value access "${partName}":`, value);
+                    // If there's an array index, access that specific element
+                    if (arrayIndex !== null && value.value && Array.isArray(value.value)) {
+                      if (arrayIndex < value.value.length) {
+                        value = { value: value.value[arrayIndex] };
+                        console.log(`Accessed nested array index ${arrayIndex}:`, value);
+                      } else {
+                        console.log(`Nested array index ${arrayIndex} out of bounds`);
+                        value = undefined;
+                        break;
+                      }
+                    }
+                  } else {
+                    console.log(`Property "${partName}" not found in value object:`, value.value ? Object.keys(value.value) : 'null');
+                    value = undefined;
+                    break;
+                  }
+                } else if (partName && value[partName] !== undefined) {
+                  // Direct property access
+                  value = value[partName];
+                  console.log(`Direct property access "${partName}":`, value);
+                  // If there's an array index, access that specific element
+                  if (arrayIndex !== null && Array.isArray(value)) {
+                    if (arrayIndex < value.length) {
+                      value = value[arrayIndex];
+                      console.log(`Accessed property array index ${arrayIndex}:`, value);
+                    } else {
+                      console.log(`Property array index ${arrayIndex} out of bounds`);
+                      value = undefined;
+                      break;
+                    }
+                  }
                 } else {
+                  console.log(`Property "${partName}" not found in object:`, Object.keys(value));
                   value = undefined;
                   break;
                 }
               } else {
+                console.log(`Value is not an object, cannot access "${partName}":`, value);
                 value = undefined;
                 break;
               }
+            }
+            
+            // Extract the final value
+            if (value && typeof value === 'object' && value.value !== undefined) {
+              value = value.value;
             }
             
           } else {
             value = undefined;
           }
         } else {
-          // Legacy path format - try inner decoded transaction first for USDC transfers
-          const dataParam = transactionData.methodCall.params.find((p: any) => p.name === 'data' && p.valueDecoded);
+          // Legacy path format - try inner decoded transaction first for token transfers
+          const dataParam = contextData.methodCall.params.find((p: any) => p.name === 'data' && p.valueDecoded);
           
           if (dataParam && dataParam.valueDecoded && dataParam.valueDecoded.params) {
             // First try to find the parameter in the inner decoded transaction
@@ -642,7 +870,7 @@ const HardwareViewer = () => {
               }
             } else {
               // Fall back to outer transaction parameters
-              const rootParam = transactionData.methodCall.params.find((p: any) => p.name === pathParts[0]);
+              const rootParam = contextData.methodCall.params.find((p: any) => p.name === pathParts[0]);
               if (rootParam) {
                 value = rootParam.value || rootParam;
               } else {
@@ -651,7 +879,7 @@ const HardwareViewer = () => {
             }
           } else {
             // No inner decoded transaction, use outer parameters
-            const rootParam = transactionData.methodCall.params.find((p: any) => p.name === pathParts[0]);
+            const rootParam = contextData.methodCall.params.find((p: any) => p.name === pathParts[0]);
             if (rootParam) {
               value = rootParam.value || rootParam;
             } else {
@@ -667,41 +895,30 @@ const HardwareViewer = () => {
                  // Format the value based on the format type
          switch (format) {
            case "tokenAmount":
-             if (transactionData.transfers && transactionData.transfers.length > 0) {
-               const transfer = transactionData.transfers[0];
-               if (transfer) {
-                 return `${transfer.amount} ${transfer.symbol}`;
-               }
-             }
-             // Fallback: format raw value with decimals if available
-             const rawValue = value.toString();
-             if (transactionData.addressesMeta) {
-               // Try to find token info for decimal conversion
-               for (const [address, meta] of Object.entries(transactionData.addressesMeta)) {
-                 if (meta.type === "ERC20" && meta.decimals) {
-                   const decimals = meta.decimals;
-                   const formattedAmount = (parseInt(rawValue) / Math.pow(10, decimals)).toString();
-                   return `${formattedAmount} ${meta.tokenSymbol}`;
-                 }
-               }
-             }
-             return rawValue;
+             return value.toString();
            case "addressName":
              const addressValue = value.toString();
-             if (transactionData.addressesMeta && transactionData.addressesMeta[addressValue]) {
-               const meta = transactionData.addressesMeta[addressValue];
-               if (meta) {
-                 return meta.contractName || meta.tokenSymbol || addressValue;
-               }
-             }
-             // For addresses not in metadata, show shortened format
              if (addressValue.startsWith('0x') && addressValue.length === 42) {
                return `${addressValue.slice(0, 6)}...${addressValue.slice(-4)}`;
              }
              return addressValue;
            case "amount":
-             if (value === "0") return "0 ETH";
-             return value.toString();
+             if (value === "0") return "0";
+             // For Aave repay operations, try to get token info from addressesMeta
+             const rawAmount = value.toString();
+             if (transactionData.addressesMeta && transactionData.methodCall?.params) {
+               // Find the asset parameter to get token info
+               const assetParam = transactionData.methodCall.params.find((p: any) => p.name === 'asset');
+               if (assetParam && transactionData.addressesMeta[assetParam.value]) {
+                 const tokenMeta = transactionData.addressesMeta[assetParam.value];
+                 if (tokenMeta && tokenMeta.decimals) {
+                   const decimals = tokenMeta.decimals;
+                   const formattedAmount = (parseInt(rawAmount) / Math.pow(10, decimals)).toString();
+                   return `${formattedAmount} ${tokenMeta.tokenSymbol || ''}`;
+                 }
+               }
+             }
+             return rawAmount;
            case "raw":
              const rawValueStr = value.toString();
              // For long hex strings (like signatures), show shortened format
@@ -737,31 +954,7 @@ const HardwareViewer = () => {
         return null;
       }
       
-      // Check if we're trying to view a token operation
-      const isTokenOperation = selectedOperation === "transfer" || selectedOperation.includes("transfer");
-      
-      if (isTokenOperation) {
-        // For token operations, we must have a Safe execTransaction first
-        const safeMetadata = metadataEntries.find(entry => {
-          const formats = entry.metadata.display?.formats;
-          return formats && Object.keys(formats).some(key => key.includes("execTransaction"));
-        });
-        
-        if (!safeMetadata) {
-          return null; // No Safe metadata found, cannot show token operation
-        }
-        
-        // Check if transaction data has execTransaction with inner decoded data
-        if (!transactionData?.methodCall?.name?.includes("execTransaction")) {
-          return null; // Not a Safe execTransaction
-        }
-        
-        // Check if there's inner decoded data matching the token operation
-        const dataParam = transactionData.methodCall.params?.find((p: any) => p.name === 'data' && p.valueDecoded);
-        if (!dataParam?.valueDecoded?.name?.includes("transfer")) {
-          return null; // No inner transfer operation
-        }
-      }
+      // No hardcoded operation assumptions - just return what's in the metadata
       
       return selectedMetadata.metadata.display.formats[selectedOperation] || null;
     }
@@ -800,6 +993,109 @@ const HardwareViewer = () => {
     }
   };
 
+
+  // Function to check if bytecode matches any available metadata
+  const findMetadataForBytecode = (bytecode: string): {operation: Operation, metadata: any} | null => {
+    if (!bytecode || !bytecode.startsWith('0x') || bytecode.length < 10) {
+      return null;
+    }
+    
+    // For now, we rely on the existing valueDecoded structure
+    // since proper selector calculation requires crypto libraries
+    // This function will work when the transaction already has valueDecoded data
+    
+    return null;
+  };
+
+  // Function to get all operations for current transaction (including nested)
+  const getAllOperationsForTransaction = (transactionData: DecodedTransaction | null): Array<{operation: Operation, metadata: any, context: string, nestedData?: any}> => {
+    if (!transactionData) return [];
+    
+    console.log('DEBUG: getAllOperationsForTransaction called with:', transactionData);
+    console.log('DEBUG: Available metadata entries:', metadataEntries);
+    
+    const operations: Array<{operation: Operation, metadata: any, context: string, nestedData?: any}> = [];
+    
+    // Check if current transaction has an operation that matches metadata
+    const currentSelector = getTransactionFunctionSelector(transactionData);
+    if (currentSelector) {
+      for (const entry of metadataEntries) {
+        const formats = entry.metadata.display?.formats;
+        if (formats && formats[currentSelector]) {
+          operations.push({
+            operation: formats[currentSelector],
+            metadata: entry.metadata.metadata,
+            context: 'main'
+          });
+          break;
+        }
+      }
+    }
+    
+    // Look specifically for nested operations in the transaction data
+    if (transactionData.methodCall?.params) {
+      for (const param of transactionData.methodCall.params) {
+        // Check if this is a 'data' parameter with decoded value (common in Safe transactions)
+        if (param.name === 'data' && param.valueDecoded) {
+          const nestedTx = param.valueDecoded;
+          console.log('DEBUG: Found nested transaction in data param:', nestedTx);
+          
+          // Check if we have metadata for this nested operation
+          const nestedSelector = (nestedTx as any).signature || nestedTx.name;
+          console.log('DEBUG: Looking for nested selector:', nestedSelector);
+          
+          if (nestedSelector) {
+            for (const entry of metadataEntries) {
+              const formats = entry.metadata.display?.formats;
+              if (formats) {
+                // Check for exact match first
+                if (formats[nestedSelector]) {
+                  console.log('DEBUG: Found exact match for nested operation:', nestedSelector);
+                  operations.push({
+                    operation: formats[nestedSelector] as Operation,
+                    metadata: entry.metadata.metadata,
+                    context: 'nested',
+                    nestedData: {
+                      methodCall: {
+                        name: nestedTx.name,
+                        params: nestedTx.params
+                      }
+                    }
+                  });
+                  break;
+                }
+                // Check for function name match (e.g., "transfer" matches "transfer(address,uint256)")
+                else {
+                  const matchingFormat = Object.keys(formats).find(formatKey => 
+                    formatKey.startsWith(nestedTx.name + '(') || formatKey === nestedTx.name
+                  );
+                  if (matchingFormat) {
+                    console.log('DEBUG: Found function name match for nested operation:', matchingFormat);
+                    operations.push({
+                      operation: formats[matchingFormat] as Operation,
+                      metadata: entry.metadata.metadata,
+                      context: 'nested',
+                      nestedData: {
+                        methodCall: {
+                          name: nestedTx.name,
+                          params: nestedTx.params
+                        }
+                      }
+                    });
+                    break;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    console.log('DEBUG: Final operations found:', operations);
+    return operations;
+  };
+
   // Enhanced getScreensForOperation that uses real transaction data
   const getScreensForOperationWithRealData = (operation: Operation) => {
     const displays = operation.fields.filter((field) => {
@@ -823,11 +1119,14 @@ const HardwareViewer = () => {
       const format = hasFormat ? displayItem.format : "raw";
       const path = displayItem.path || "";
       
-      const displayValue = activeTab === "advanced" && transactionData
-        ? getFieldValueFromTransaction(path, format || "raw")
-        : (hasFormat && format
-          ? `Mock ${format} value`
-          : "displayValue");
+      let displayValue;
+      if (path === "separator") {
+        displayValue = "";
+      } else if (activeTab === "advanced" && transactionData) {
+        displayValue = getFieldValueFromTransaction(path, format || "raw", displayItem);
+      } else {
+        displayValue = hasFormat && format ? `Mock ${format} value` : "displayValue";
+      }
 
       screen.push({
         label,
@@ -848,60 +1147,119 @@ const HardwareViewer = () => {
   const operationMetadata = getOperationMetadata();
 
   const renderHardwareUI = () => {
-    if (!operation || !operationMetadata) {
-      // Enhanced error messaging for multi-metadata mode
-      if (activeTab === "advanced" && selectedMetadataId && selectedOperation) {
-        const selectedMetadata = metadataEntries.find(entry => entry.id === selectedMetadataId);
-        const isTokenOperation = selectedOperation === "transfer" || selectedOperation.includes("transfer");
+    // Get all operations for this transaction (including nested)
+    const allOperations = activeTab === "advanced" && transactionData ? getAllOperationsForTransaction(transactionData) : [];
+    
+    // For Safe transactions with nested operations, show the proper flow
+    if (allOperations.length > 1) {
+      const mainOperation = allOperations.find(op => op.context === 'main');
+      const nestedOperations = allOperations.filter(op => op.context !== 'main');
+      
+      if (mainOperation && nestedOperations.length > 0) {
+        const firstNestedOp = nestedOperations[0];
         
-        if (isTokenOperation && selectedMetadata) {
-          const safeMetadataExists = metadataEntries.some(entry => {
-            const formats = entry.metadata.display?.formats;
-            return formats && Object.keys(formats).some(key => key.includes("execTransaction"));
-          });
+        if (firstNestedOp && firstNestedOp.operation) {
+          // Combine both operations into one complete flow: Review → Details → Sign
+          const modifiedNestedOperation = {
+            ...firstNestedOp.operation,
+            fields: firstNestedOp.operation.fields.map(field => ({
+              ...field,
+              nestedTransactionData: firstNestedOp.nestedData
+            }))
+          };
           
-          if (!safeMetadataExists) {
-            return (
-              <div className="text-center text-red-500 py-8">
-                <div className="font-medium mb-2">Cannot display token operation</div>
-                <div className="text-sm">
-                  Token operations like "{selectedOperation}" can only be viewed when there's a Safe contract metadata with "execTransaction" operation.
-                  <br /><br />
-                  Please add Safe metadata first, then view token operations as inner transactions.
-                </div>
-              </div>
-            );
-          }
+          const nestedScreens = getScreensForOperationWithRealData(modifiedNestedOperation);
+          const combinedOperationMeta = {
+            operationName: `${typeof mainOperation.operation.intent === 'string' ? mainOperation.operation.intent : 'Execute Transaction'} → ${typeof firstNestedOp.operation.intent === 'string' ? firstNestedOp.operation.intent : 'Transfer'}`,
+            metadata: firstNestedOp.metadata
+          };
+          const allScreens = operationScreens(nestedScreens, combinedOperationMeta);
           
-          if (!transactionData?.methodCall?.name?.includes("execTransaction")) {
-            return (
-              <div className="text-center text-orange-500 py-8">
-                <div className="font-medium mb-2">Invalid transaction structure</div>
-                <div className="text-sm">
-                  The transaction data must contain an "execTransaction" method call to view token operations.
-                  <br /><br />
-                  Current transaction: {transactionData?.methodCall?.name || "None"}
-                </div>
+          return (
+            <div className="mx-auto flex max-w-96 flex-col">
+              <div className="text-center text-sm text-gray-600 mb-4">
+                {combinedOperationMeta.operationName}
               </div>
-            );
-          }
-          
-          const dataParam = transactionData.methodCall.params?.find((p: any) => p.name === 'data' && p.valueDecoded);
-          if (!dataParam?.valueDecoded?.name?.includes("transfer")) {
-            return (
-              <div className="text-center text-orange-500 py-8">
-                <div className="font-medium mb-2">No inner token operation found</div>
-                <div className="text-sm">
-                  The Safe transaction's "data" parameter must contain a decoded "{selectedOperation}" operation.
-                  <br /><br />
-                  Current inner operation: {dataParam?.valueDecoded?.name || "None"}
-                </div>
+              <Carousel setApi={setApi}>
+                <CarouselContent>
+                  {allScreens.map((screen, index) => (
+                    <CarouselItem
+                      key={index}
+                      className="flex w-full items-center justify-center"
+                    >
+                      <Device.Frame>{screen}</Device.Frame>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="hidden md:flex" />
+                <CarouselNext className="hidden md:flex" />
+              </Carousel>
+              <div className="mx-auto flex flex-row items-center gap-4 p-2">
+                {allScreens.map((_, index) => (
+                  <div
+                    key={"carousel-thumbnail-" + index}
+                    className={cn("w-fit rounded p-1 ring-primary hover:ring-2 cursor-pointer", {
+                      "ring-2": index === selected,
+                    })}
+                    onClick={() => api?.scrollTo(index)}
+                  >
+                    <Device.Frame size="small">{index + 1}</Device.Frame>
+                  </div>
+                ))}
               </div>
-            );
-          }
+            </div>
+          );
         }
       }
-      
+    }
+    
+    // Single operation display (fallback)
+    if (allOperations.length === 1) {
+      const mainOperation = allOperations[0];
+      if (mainOperation) {
+        const screens = getScreensForOperationWithRealData(mainOperation.operation);
+        const operationMeta = {
+          operationName: typeof mainOperation.operation.intent === 'string' ? mainOperation.operation.intent : 'Execute Transaction',
+          metadata: mainOperation.metadata
+        };
+        const fullOperationScreens = operationScreens(screens, operationMeta);
+        
+        return (
+        <div className="mx-auto flex max-w-96 flex-col">
+          <Carousel setApi={setApi}>
+            <CarouselContent>
+              {fullOperationScreens.map((screen, index) => (
+                <CarouselItem
+                  key={index}
+                  className="flex w-full items-center justify-center"
+                >
+                  <Device.Frame>{screen}</Device.Frame>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex" />
+            <CarouselNext className="hidden md:flex" />
+          </Carousel>
+          <div className="mx-auto flex flex-row items-center gap-4 p-2">
+            {fullOperationScreens.map((_, index) => (
+              <div
+                key={"carousel-thumbnail-" + index}
+                className={cn("w-fit rounded p-1 ring-primary hover:ring-2 cursor-pointer", {
+                  "ring-2": index === selected,
+                })}
+                onClick={() => api?.scrollTo(index)}
+              >
+                <Device.Frame size="small">{index + 1}</Device.Frame>
+              </div>
+            ))}
+          </div>
+        </div>
+        );
+      }
+    }
+    
+    // Fallback to single operation display
+    if (!operation || !operationMetadata) {
       return (
         <div className="text-center text-gray-500 py-8">
           {activeTab === "simple" 
@@ -1055,7 +1413,9 @@ const HardwareViewer = () => {
                 ))}
 
                 <div className="space-y-2">
-                  <Label>Transaction Data (Decoded)</Label>
+                  <div className="flex items-center justify-between">
+                    <Label>Transaction Data (Decoded)</Label>
+                  </div>
                   <Textarea
                     placeholder="Paste decoded transaction data JSON..."
                     value={transactionData ? JSON.stringify(transactionData, null, 2) : ""}
@@ -1073,9 +1433,9 @@ const HardwareViewer = () => {
                   />
                 </div>
 
-                <Button onClick={loadSampleMultiMetadata} variant="outline" className="w-full">
+                <Button onClick={loadActualMetadata} variant="outline" className="w-full">
                   <FileJson className="h-4 w-4 mr-2" />
-                  Load Sample Safe + USDC Transaction
+                  Load Metadata Files
                 </Button>
 
                 {metadataEntries.length > 0 && (
@@ -1098,7 +1458,14 @@ const HardwareViewer = () => {
 
                 {selectedMetadataId && (
                   <div className="space-y-2">
-                    <Label>Select Operation</Label>
+                    <div className="flex items-center justify-between">
+                      <Label>Select Operation</Label>
+                      {transactionData && (
+                        <div className="text-xs text-gray-500">
+                          Detected: {getTransactionFunctionSelector(transactionData) || "Unknown"}
+                        </div>
+                      )}
+                    </div>
                     <Select value={selectedOperation} onValueChange={setSelectedOperation}>
                       <SelectTrigger>
                         <SelectValue placeholder="Choose an operation to view" />
@@ -1108,26 +1475,37 @@ const HardwareViewer = () => {
                           const selectedMetadata = metadataEntries.find(entry => entry.id === selectedMetadataId);
                           if (!selectedMetadata?.metadata.display?.formats) return null;
                           
+                          // Get detected function selector from transaction
+                          const detectedSelector = getTransactionFunctionSelector(transactionData);
+                          
                           // Check if Safe metadata exists
                           const safeMetadataExists = metadataEntries.some(entry => {
                             const formats = entry.metadata.display?.formats;
-                            return formats && Object.keys(formats).some(key => key.includes("execTransaction"));
+                            return formats && Object.keys(formats).length > 0;
                           });
                           
-                          return Object.keys(selectedMetadata.metadata.display.formats).map((operationName) => {
-                            const isTokenOperation = operationName === "transfer" || operationName.includes("transfer");
-                            const isDisabled = isTokenOperation && !safeMetadataExists;
-                            
-                            return (
-                              <SelectItem 
-                                key={operationName} 
-                                value={operationName}
-                                disabled={isDisabled}
-                              >
-                                {operationName} {isDisabled ? "(Requires Safe metadata)" : ""}
-                              </SelectItem>
-                            );
-                          });
+                          return Object.keys(selectedMetadata.metadata.display.formats)
+                            .filter(operationName => {
+                              // Filter operations based on transaction data
+                              return operationMatchesTransaction(operationName, transactionData);
+                            })
+                            .map((operationName) => {
+                              const isTokenOperation = operationName === "transfer" || operationName.includes("transfer");
+                              const isDisabled = isTokenOperation && !safeMetadataExists;
+                              const isExactMatch = detectedSelector === operationName;
+                              
+                              return (
+                                <SelectItem 
+                                  key={operationName} 
+                                  value={operationName}
+                                  disabled={isDisabled}
+                                >
+                                  {operationName} 
+                                  {isExactMatch ? " ✓" : ""}
+                                  {isDisabled ? " (Requires Safe metadata)" : ""}
+                                </SelectItem>
+                              );
+                            });
                         })()}
                       </SelectContent>
                     </Select>
