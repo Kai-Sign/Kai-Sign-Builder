@@ -71,7 +71,7 @@ interface HardwareViewerProps {
 }
 
 const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) => {
-  const [activeTab, setActiveTab] = useState(initialTransactionData ? "advanced" : "simple");
+  const [activeTab, setActiveTab] = useState("simple");
   const [jsonInput, setJsonInput] = useState("");
   const [selectedOperation, setSelectedOperation] = useState("");
   const [parsedData, setParsedData] = useState<Erc7730 | null>(null);
@@ -508,6 +508,8 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
     });
   }, [api]);
 
+  // Don't load anything on mount - start empty
+
   // Load initial transaction data if provided
   useEffect(() => {
     if (initialTransactionData) {
@@ -552,8 +554,8 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
   const loadActualMetadata = async () => {
     try {
       // Load the actual ERC-7730 files from the file system
-      const usdcResponse = await fetch('/erc7730-usdc-mainnet.json');
-      const safeResponse = await fetch('/erc7730-safe-wallet-enhanced.json');
+      const usdcResponse = await fetch('/erc7730/erc7730-usdc-mainnet.json');
+      const safeResponse = await fetch('/erc7730/erc7730-safe-wallet-enhanced.json');
       
       if (!usdcResponse.ok || !safeResponse.ok) {
         throw new Error('Failed to load ERC-7730 metadata files');
@@ -581,6 +583,93 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
       }
       
       setMetadataEntries(entries);
+      
+      // Load the USDC Safe transaction data
+      const testTransactionData = {
+        "txHash": "0x22a244794f155ce4a5765588353cf82dfc842c33ee3ed98e95ef488f6964f4fb",
+        "txType": "contract interaction",
+        "fromAddress": "0x049bdd0528e2d5f2e579e1bdd133Daed7c935DFC",
+        "toAddress": "0x6092722B33FcF90af6e99C93F5F9349473869e23",
+        "contractName": "",
+        "contractType": "SAFE-PROXY",
+        "methodCall": {
+          "name": "execTransaction",
+          "type": "function",
+          "signature": "execTransaction(address,uint256,bytes,uint8,uint256,uint256,uint256,address,address,bytes)",
+          "params": [
+            {
+              "name": "to",
+              "type": "address",
+              "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            },
+            {
+              "name": "value",
+              "type": "uint256",
+              "value": "0"
+            },
+            {
+              "name": "data",
+              "type": "bytes",
+              "value": "0xa9059cbb000000000000000000000000a1371748d65baef4509a3c067b3fe3a1b79183ae000000000000000000000000000000000000000000000000000000001f143c37",
+              "valueDecoded": {
+                "name": "transfer",
+                "signature": "transfer(address,uint256)",
+                "type": "function",
+                "params": [
+                  {
+                    "name": "to",
+                    "type": "address",
+                    "value": "0xA1371748D65baEF4509A3c067b3fe3a1b79183aE"
+                  },
+                  {
+                    "name": "value",
+                    "type": "uint256",
+                    "value": "521419831"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "operation",
+              "type": "uint8",
+              "value": "0"
+            },
+            {
+              "name": "safeTxGas",
+              "type": "uint256",
+              "value": "0"
+            },
+            {
+              "name": "baseGas",
+              "type": "uint256",
+              "value": "0"
+            },
+            {
+              "name": "gasPrice",
+              "type": "uint256",
+              "value": "0"
+            },
+            {
+              "name": "gasToken",
+              "type": "address",
+              "value": "0x0000000000000000000000000000000000000000"
+            },
+            {
+              "name": "refundReceiver",
+              "type": "address",
+              "value": "0x0000000000000000000000000000000000000000"
+            },
+            {
+              "name": "signatures",
+              "type": "bytes",
+              "value": "0x000000000000000000000000049bdd0528e2d5f2e579e1bdd133daed7c935dfc000000000000000000000000000000000000000000000000000000000000000001be6195185c0afdda36c5ccc9951d628873f0c2546d68edd266c4a6142ef05ed30be88a934eac08bb8d86705cb7a339d61c2342fdd7607806c488e0055a0232e51c"
+            }
+          ]
+        }
+      };
+      
+      setTransactionData(testTransactionData as DecodedTransaction);
+      setActiveTab("advanced");
       
       if (entries.length > 0) {
         // PRIORITIZE Safe metadata - find Safe metadata first
@@ -1059,6 +1148,8 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
     
     console.log('DEBUG: getAllOperationsForTransaction called with:', transactionData);
     console.log('DEBUG: Available metadata entries:', metadataEntries);
+    console.log('DEBUG: Method name:', transactionData.methodCall?.name);
+    console.log('DEBUG: Method params:', transactionData.methodCall?.params?.map(p => p.name));
     
     const operations: Array<{operation: Operation, metadata: any, context: string, nestedData?: any}> = [];
     
@@ -1080,6 +1171,53 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
     
     // Look specifically for nested operations in the transaction data
     if (transactionData.methodCall?.params) {
+      // Handle multiSend transactions 
+      if (transactionData.methodCall.name === 'multiSend') {
+        const transactionsParam = transactionData.methodCall.params.find((p: any) => p.name === 'transactions' && p.valueDecoded);
+        if (transactionsParam && transactionsParam.valueDecoded && transactionsParam.valueDecoded.params) {
+          // The actual transactions are in params[0].components
+          const txComponents = transactionsParam.valueDecoded.params[0]?.components;
+          if (txComponents && Array.isArray(txComponents)) {
+            console.log('DEBUG: Found multiSend with transactions:', txComponents.length);
+            
+            // Process each transaction component
+            txComponents.forEach((txComponent: any, index: number) => {
+              // Each component is a tuple with nested valueDecoded containing execTransaction
+              const execTxData = txComponent.components?.find((comp: any) => comp.name === 'data' && comp.valueDecoded);
+              if (execTxData && execTxData.valueDecoded && execTxData.valueDecoded.name === 'execTransaction') {
+                // Look for the nested transfer call within the execTransaction data
+                const dataParam = execTxData.valueDecoded.params?.find((p: any) => p.name === 'data' && p.valueDecoded);
+                if (dataParam && dataParam.valueDecoded && dataParam.valueDecoded.name === 'transfer') {
+                  console.log(`DEBUG: MultiSend tx ${index} - found transfer:`, dataParam.valueDecoded);
+                  const transferData = dataParam.valueDecoded;
+                  const nestedSelector = `${transferData.name}(${transferData.params?.map((p: any) => p.type).join(',') || ''})`;
+                  console.log('DEBUG: Looking for multiSend nested selector:', nestedSelector);
+                  
+                  // Find matching metadata for this transfer
+                  for (const entry of metadataEntries) {
+                    if (entry.metadata.display?.formats?.[nestedSelector]) {
+                      console.log('DEBUG: Found exact match for multiSend nested operation:', nestedSelector);
+                      operations.push({
+                        operation: entry.metadata.display.formats[nestedSelector] as Operation,
+                        metadata: entry.metadata.metadata,
+                        context: 'nested',
+                        nestedData: {
+                          methodCall: {
+                            name: transferData.name,
+                            params: transferData.params?.map((p: any) => ({ name: p.name, value: p.value })) || []
+                          }
+                        }
+                      });
+                      break;
+                    }
+                  }
+                }
+              }
+            });
+          }
+        }
+      }
+      
       for (const param of transactionData.methodCall.params) {
         // Check if this is a 'data' parameter with decoded value (common in Safe transactions)
         if (param.name === 'data' && param.valueDecoded) {
@@ -1432,10 +1570,26 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
                 </div>
                 <div className="flex items-center justify-between">
                   <Label>ERC7730 Metadata Files</Label>
-                  <Button onClick={addMetadataEntry} size="sm" variant="outline">
-                    <Plus className="h-4 w-4 mr-1" />
-                    Add Metadata
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button onClick={loadActualMetadata} size="sm" variant="outline">
+                      Sample Metadata Files
+                    </Button>
+                    <Button onClick={addMetadataEntry} size="sm" variant="outline">
+                      <Plus className="h-4 w-4 mr-1" />
+                      Add Metadata
+                    </Button>
+                  </div>
+                </div>
+                
+                <div className="text-center">
+                  <a 
+                    href="https://loop-decoder-web.vercel.app/decode" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-blue-500 hover:text-blue-700 underline text-sm"
+                  >
+                    Get transaction data from Loop Decoder
+                  </a>
                 </div>
 
                 {metadataEntries.map((entry) => (
@@ -1492,11 +1646,6 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
                   />
                 </div>
 
-                <Button onClick={loadActualMetadata} variant="outline" className="w-full">
-                  <FileJson className="h-4 w-4 mr-2" />
-                  Load Metadata Files
-                </Button>
-
                 {metadataEntries.length > 0 && (
                   <div className="space-y-2">
                     <Label>Select Metadata to View</Label>
@@ -1520,7 +1669,7 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
                     <div className="flex items-center justify-between">
                       <Label>Select Operation</Label>
                       {transactionData && (
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-gray-500 break-all">
                           Detected: {getTransactionFunctionSelector(transactionData) || "Unknown"}
                         </div>
                       )}
@@ -1591,7 +1740,6 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
             Hardware Wallet Preview
             {activeTab === "advanced" && transactionData && (
               <span className="text-sm font-normal text-green-600">
-                (Using Real Transaction Data)
               </span>
             )}
           </CardTitle>
