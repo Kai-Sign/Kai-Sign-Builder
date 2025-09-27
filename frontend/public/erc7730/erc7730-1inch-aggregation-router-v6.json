@@ -1,0 +1,235 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x111111125421cA6dc452d289314280a0f8842A65"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "fillOrder",
+          "inputs": [
+            {"name": "order", "type": "tuple", "components": [
+              {"name": "salt", "type": "uint256"},
+              {"name": "maker", "type": "address"},
+              {"name": "receiver", "type": "address"},
+              {"name": "makerAsset", "type": "address"},
+              {"name": "takerAsset", "type": "address"},
+              {"name": "makingAmount", "type": "uint256"},
+              {"name": "takingAmount", "type": "uint256"},
+              {"name": "makerTraits", "type": "uint256"}
+            ]},
+            {"name": "signature", "type": "bytes"},
+            {"name": "interaction", "type": "bytes"},
+            {"name": "makingAmount", "type": "uint256"},
+            {"name": "takingAmount", "type": "uint256"},
+            {"name": "thresholdAmount", "type": "uint256"}
+          ],
+          "outputs": [
+            {"name": "actualMakingAmount", "type": "uint256"},
+            {"name": "actualTakingAmount", "type": "uint256"},
+            {"name": "orderHash", "type": "bytes32"}
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "fillContractOrder",
+          "inputs": [
+            {"name": "order", "type": "tuple", "components": [
+              {"name": "salt", "type": "uint256"},
+              {"name": "maker", "type": "address"},
+              {"name": "receiver", "type": "address"},
+              {"name": "makerAsset", "type": "address"},
+              {"name": "takerAsset", "type": "address"},
+              {"name": "makingAmount", "type": "uint256"},
+              {"name": "takingAmount", "type": "uint256"},
+              {"name": "makerTraits", "type": "uint256"}
+            ]},
+            {"name": "signature", "type": "bytes"},
+            {"name": "interaction", "type": "bytes"},
+            {"name": "makingAmount", "type": "uint256"},
+            {"name": "takingAmount", "type": "uint256"},
+            {"name": "thresholdAmount", "type": "uint256"}
+          ],
+          "outputs": [
+            {"name": "actualMakingAmount", "type": "uint256"},
+            {"name": "actualTakingAmount", "type": "uint256"},
+            {"name": "orderHash", "type": "bytes32"}
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swap",
+          "inputs": [
+            {"name": "executor", "type": "address"},
+            {"name": "desc", "type": "tuple", "components": [
+              {"name": "srcToken", "type": "address"},
+              {"name": "dstToken", "type": "address"},
+              {"name": "srcReceiver", "type": "address"},
+              {"name": "dstReceiver", "type": "address"},
+              {"name": "amount", "type": "uint256"},
+              {"name": "minReturnAmount", "type": "uint256"},
+              {"name": "flags", "type": "uint256"}
+            ]},
+            {"name": "data", "type": "bytes"}
+          ],
+          "outputs": [
+            {"name": "returnAmount", "type": "uint256"},
+            {"name": "spentAmount", "type": "uint256"}
+          ],
+          "stateMutability": "payable"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "1inch",
+    "info": {
+      "legalName": "1inch Network",
+      "url": "https://1inch.io"
+    }
+  },
+  "display": {
+    "formats": {
+      "fillOrder((uint256,address,address,address,address,uint256,uint256,uint256),bytes,bytes,uint256,uint256,uint256)": {
+        "intent": "1inch Fill Order",
+        "fields": [
+          {
+            "label": "Maker",
+            "format": "addressName",
+            "path": "#.order.maker"
+          },
+          {
+            "label": "Maker Asset",
+            "format": "addressName",
+            "path": "#.order.makerAsset"
+          },
+          {
+            "label": "Taker Asset",
+            "format": "addressName",
+            "path": "#.order.takerAsset"
+          },
+          {
+            "label": "Making Amount",
+            "format": "tokenAmount",
+            "path": "#.order.makingAmount",
+            "params": {
+              "tokenPath": "#.order.makerAsset"
+            }
+          },
+          {
+            "label": "Taking Amount",
+            "format": "tokenAmount",
+            "path": "#.order.takingAmount",
+            "params": {
+              "tokenPath": "#.order.takerAsset"
+            }
+          },
+          {
+            "label": "Receiver",
+            "format": "addressName",
+            "path": "#.order.receiver"
+          },
+          {
+            "label": "Order Salt",
+            "format": "raw",
+            "path": "#.order.salt"
+          }
+        ]
+      },
+      "fillContractOrder((uint256,address,address,address,address,uint256,uint256,uint256),bytes,bytes,uint256,uint256,uint256)": {
+        "intent": "1inch Fill Contract Order",
+        "fields": [
+          {
+            "label": "Maker",
+            "format": "addressName",
+            "path": "#.order.maker"
+          },
+          {
+            "label": "Maker Asset",
+            "format": "addressName",
+            "path": "#.order.makerAsset"
+          },
+          {
+            "label": "Taker Asset",
+            "format": "addressName",
+            "path": "#.order.takerAsset"
+          },
+          {
+            "label": "Making Amount",
+            "format": "tokenAmount",
+            "path": "#.order.makingAmount",
+            "params": {
+              "tokenPath": "#.order.makerAsset"
+            }
+          },
+          {
+            "label": "Taking Amount",
+            "format": "tokenAmount",
+            "path": "#.order.takingAmount",
+            "params": {
+              "tokenPath": "#.order.takerAsset"
+            }
+          },
+          {
+            "label": "Receiver",
+            "format": "addressName",
+            "path": "#.order.receiver"
+          },
+          {
+            "label": "Order Salt",
+            "format": "raw",
+            "path": "#.order.salt"
+          }
+        ]
+      },
+      "swap(address,(address,address,address,address,uint256,uint256,uint256),bytes)": {
+        "intent": "1inch Token Swap",
+        "fields": [
+          {
+            "label": "Executor",
+            "format": "addressName",
+            "path": "#.executor"
+          },
+          {
+            "label": "Source Token",
+            "format": "addressName",
+            "path": "#.desc.srcToken"
+          },
+          {
+            "label": "Destination Token",
+            "format": "addressName",
+            "path": "#.desc.dstToken"
+          },
+          {
+            "label": "Amount",
+            "format": "tokenAmount",
+            "path": "#.desc.amount",
+            "params": {
+              "tokenPath": "#.desc.srcToken"
+            }
+          },
+          {
+            "label": "Min Return Amount",
+            "format": "tokenAmount",
+            "path": "#.desc.minReturnAmount",
+            "params": {
+              "tokenPath": "#.desc.dstToken"
+            }
+          },
+          {
+            "label": "Destination Receiver",
+            "format": "addressName",
+            "path": "#.desc.dstReceiver"
+          }
+        ]
+      }
+    }
+  }
+}
