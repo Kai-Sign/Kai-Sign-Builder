@@ -71,7 +71,7 @@ interface HardwareViewerProps {
 }
 
 const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) => {
-  const [activeTab, setActiveTab] = useState("simple");
+  const [activeTab, setActiveTab] = useState(initialTransactionData ? "advanced" : "simple");
   const [jsonInput, setJsonInput] = useState("");
   const [selectedOperation, setSelectedOperation] = useState("");
   const [parsedData, setParsedData] = useState<Erc7730 | null>(null);
@@ -685,11 +685,14 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
     // Check if this field should use nested transaction context
     const useNestedContext = field && field.useNestedContext;
     const hasNestedTransactionData = field && field.nestedTransactionData;
+    console.log('DEBUG: hasNestedTransactionData:', hasNestedTransactionData, 'field:', field);
     let contextData = transactionData;
     
     if (hasNestedTransactionData) {
       // Use the specific nested transaction data provided with the field
       contextData = field.nestedTransactionData;
+      // Also use the main transaction data for addressesMeta lookup
+      console.log('DEBUG: Using nested transaction data:', contextData);
     } else if (useNestedContext) {
       // Find the first transfer operation in nested data
       const dataParam = transactionData.methodCall?.params?.find((p: any) => p.name === 'data' && p.valueDecoded);
@@ -714,10 +717,9 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
 
     try {
       // Debug logging
-      console.log("Parsing path:", path, "format:", format);
-      if (path.includes("orders.orders")) {
-        console.log("Transaction data structure:", JSON.stringify(transactionData, null, 2));
-      }
+      console.log("DEBUG: Parsing path:", path, "format:", format, "hasNestedData:", hasNestedTransactionData);
+      console.log("DEBUG: Context data:", contextData);
+      console.log("DEBUG: Field object:", field);
       // Handle ERC7730 path format: "#.fieldName" means direct parameter access
       let cleanPath = path;
       let isDirectParam = false;
@@ -895,7 +897,24 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
                  // Format the value based on the format type
          switch (format) {
            case "tokenAmount":
-             return value.toString();
+             const rawValue = value.toString();
+             
+             // If we're in nested context, get the contract address from main transaction
+             if (hasNestedTransactionData) {
+               // Get the "to" address from the main Safe transaction (this is the token contract)
+               const tokenContractAddress = transactionData?.methodCall?.params?.find((p: any) => p.name === 'to')?.value;
+               if (tokenContractAddress) {
+                 const tokenInfo = transactionData?.addressesMeta?.[tokenContractAddress];
+                 if (tokenInfo && tokenInfo.decimals && tokenInfo.tokenSymbol) {
+                   const decimals = tokenInfo.decimals;
+                   const tokenSymbol = tokenInfo.tokenSymbol;
+                   const formattedAmount = (parseInt(rawValue) / Math.pow(10, decimals)).toString();
+                   return `${formattedAmount} ${tokenSymbol}`;
+                 }
+               }
+             }
+             
+             return rawValue;
            case "addressName":
              const addressValue = value.toString();
              if (addressValue.startsWith('0x') && addressValue.length === 42) {
@@ -1149,23 +1168,34 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
   const renderHardwareUI = () => {
     // Get all operations for this transaction (including nested)
     const allOperations = activeTab === "advanced" && transactionData ? getAllOperationsForTransaction(transactionData) : [];
+    console.log('DEBUG: activeTab:', activeTab, 'transactionData exists:', !!transactionData);
     
     // For Safe transactions with nested operations, show the proper flow
+    console.log('DEBUG: allOperations.length:', allOperations.length, 'allOperations:', allOperations);
     if (allOperations.length > 1) {
       const mainOperation = allOperations.find(op => op.context === 'main');
       const nestedOperations = allOperations.filter(op => op.context !== 'main');
+      console.log('DEBUG: mainOperation:', mainOperation, 'nestedOperations:', nestedOperations);
       
       if (mainOperation && nestedOperations.length > 0) {
         const firstNestedOp = nestedOperations[0];
         
         if (firstNestedOp && firstNestedOp.operation) {
           // Combine both operations into one complete flow: Review → Details → Sign
+          // Use the USDC metadata directly for the nested operation
+          const usdcMetadata = metadataEntries.find(entry => 
+            entry.metadata.display?.formats?.['transfer(address,uint256)']
+          );
+          
           const modifiedNestedOperation = {
             ...firstNestedOp.operation,
-            fields: firstNestedOp.operation.fields.map(field => ({
-              ...field,
-              nestedTransactionData: firstNestedOp.nestedData
-            }))
+            fields: firstNestedOp.operation.fields.map(field => {
+              console.log('DEBUG: Creating field with nestedData:', firstNestedOp.nestedData);
+              return {
+                ...field,
+                nestedTransactionData: firstNestedOp.nestedData
+              };
+            })
           };
           
           const nestedScreens = getScreensForOperationWithRealData(modifiedNestedOperation);
@@ -1259,6 +1289,7 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
     }
     
     // Fallback to single operation display
+    console.log('DEBUG: Using fallback - operation exists:', !!operation, 'operationMetadata exists:', !!operationMetadata);
     if (!operation || !operationMetadata) {
       return (
         <div className="text-center text-gray-500 py-8">
@@ -1278,6 +1309,7 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
       );
     }
 
+    console.log('DEBUG: Rendering final fallback operation:', operation);
     const screens = getScreensForOperationWithRealData(operation);
     const fullOperationScreens = operationScreens(screens, operationMetadata);
 
