@@ -1,0 +1,69 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x6092722B33FcF90af6e99C93F5F9349473869e23"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "execTransaction",
+          "inputs": [
+            {"name": "to", "type": "address"},
+            {"name": "value", "type": "uint256"},
+            {"name": "data", "type": "bytes"},
+            {"name": "operation", "type": "uint8"},
+            {"name": "safeTxGas", "type": "uint256"},
+            {"name": "baseGas", "type": "uint256"},
+            {"name": "gasPrice", "type": "uint256"},
+            {"name": "gasToken", "type": "address"},
+            {"name": "refundReceiver", "type": "address"},
+            {"name": "signatures", "type": "bytes"}
+          ],
+          "outputs": [{"name": "success", "type": "bool"}],
+          "stateMutability": "payable"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Safe Ecosystem Foundation",
+    "info": {
+      "legalName": "Safe Ecosystem Foundation", 
+      "url": "https://safe.global"
+    }
+  },
+  "display": {
+    "formats": {
+      "execTransaction(address,uint256,bytes,uint8,uint256,uint256,uint256,address,address,bytes)": {
+        "intent": "Execute Transaction via Safe",
+        "fields": [
+          {
+            "label": "Target Contract",
+            "format": "addressName",
+            "path": "#.to"
+          },
+          {
+            "label": "ETH Value",
+            "format": "amount",
+            "path": "#.value"
+          },
+          {
+            "label": "Operation Type",
+            "format": "raw",
+            "path": "#.operation"
+          },
+          {
+            "label": "Gas Limit",
+            "format": "raw",
+            "path": "#.safeTxGas"
+          }
+        ]
+      }
+    }
+  }
+}

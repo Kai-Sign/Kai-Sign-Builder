@@ -1,0 +1,616 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "transfer",
+          "inputs": [
+            {"name": "to", "type": "address"},
+            {"name": "value", "type": "uint256"}
+          ],
+          "outputs": [{"name": "", "type": "bool"}],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "inputs": [
+            {"name": "from", "type": "address"},
+            {"name": "to", "type": "address"},
+            {"name": "value", "type": "uint256"}
+          ],
+          "outputs": [{"name": "", "type": "bool"}],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "inputs": [
+            {"name": "spender", "type": "address"},
+            {"name": "value", "type": "uint256"}
+          ],
+          "outputs": [{"name": "", "type": "bool"}],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowance",
+          "inputs": [
+            {"name": "spender", "type": "address"},
+            {"name": "increment", "type": "uint256"}
+          ],
+          "outputs": [{"name": "", "type": "bool"}],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowance",
+          "inputs": [
+            {"name": "spender", "type": "address"},
+            {"name": "decrement", "type": "uint256"}
+          ],
+          "outputs": [{"name": "", "type": "bool"}],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "inputs": [
+            {"name": "_to", "type": "address"},
+            {"name": "_amount", "type": "uint256"}
+          ],
+          "outputs": [{"name": "", "type": "bool"}],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "inputs": [
+            {"name": "_amount", "type": "uint256"}
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "blacklist",
+          "inputs": [
+            {"name": "_account", "type": "address"}
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unBlacklist",
+          "inputs": [
+            {"name": "_account", "type": "address"}
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "configureMinter",
+          "inputs": [
+            {"name": "minter", "type": "address"},
+            {"name": "minterAllowedAmount", "type": "uint256"}
+          ],
+          "outputs": [{"name": "", "type": "bool"}],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeMinter",
+          "inputs": [
+            {"name": "minter", "type": "address"}
+          ],
+          "outputs": [{"name": "", "type": "bool"}],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "permit",
+          "inputs": [
+            {"name": "owner", "type": "address"},
+            {"name": "spender", "type": "address"},
+            {"name": "value", "type": "uint256"},
+            {"name": "deadline", "type": "uint256"},
+            {"name": "v", "type": "uint8"},
+            {"name": "r", "type": "bytes32"},
+            {"name": "s", "type": "bytes32"}
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferWithAuthorization",
+          "inputs": [
+            {"name": "from", "type": "address"},
+            {"name": "to", "type": "address"},
+            {"name": "value", "type": "uint256"},
+            {"name": "validAfter", "type": "uint256"},
+            {"name": "validBefore", "type": "uint256"},
+            {"name": "nonce", "type": "bytes32"},
+            {"name": "v", "type": "uint8"},
+            {"name": "r", "type": "bytes32"},
+            {"name": "s", "type": "bytes32"}
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "receiveWithAuthorization",
+          "inputs": [
+            {"name": "from", "type": "address"},
+            {"name": "to", "type": "address"},
+            {"name": "value", "type": "uint256"},
+            {"name": "validAfter", "type": "uint256"},
+            {"name": "validBefore", "type": "uint256"},
+            {"name": "nonce", "type": "bytes32"},
+            {"name": "v", "type": "uint8"},
+            {"name": "r", "type": "bytes32"},
+            {"name": "s", "type": "bytes32"}
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "cancelAuthorization",
+          "inputs": [
+            {"name": "authorizer", "type": "address"},
+            {"name": "nonce", "type": "bytes32"},
+            {"name": "v", "type": "uint8"},
+            {"name": "r", "type": "bytes32"},
+            {"name": "s", "type": "bytes32"}
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "rescueERC20",
+          "inputs": [
+            {"name": "tokenContract", "type": "address"},
+            {"name": "to", "type": "address"},
+            {"name": "amount", "type": "uint256"}
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pause",
+          "inputs": [],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unpause",
+          "inputs": [],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updatePauser",
+          "inputs": [
+            {"name": "_newPauser", "type": "address"}
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateBlacklister",
+          "inputs": [
+            {"name": "_newBlacklister", "type": "address"}
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateMasterMinter",
+          "inputs": [
+            {"name": "_newMasterMinter", "type": "address"}
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "inputs": [
+            {"name": "newOwner", "type": "address"}
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Centre Consortium",
+    "info": {
+      "legalName": "Centre Consortium",
+      "url": "https://centre.io",
+      "contractName": "USD Coin"
+    },
+    "token": {
+      "ticker": "USDC",
+      "name": "USD Coin",
+      "decimals": 6
+    }
+  },
+  "display": {
+    "formats": {
+      "transfer(address,uint256)": {
+        "intent": "Transfer USDC",
+        "fields": [
+          {
+            "label": "Recipient",
+            "format": "addressName",
+            "path": "#.to"
+          },
+          {
+            "label": "Amount",
+            "format": "tokenAmount",
+            "path": "#.value",
+            "params": {
+              "tokenPath": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            }
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Transfer USDC From",
+        "fields": [
+          {
+            "label": "From",
+            "format": "addressName",
+            "path": "#.from"
+          },
+          {
+            "label": "To",
+            "format": "addressName",
+            "path": "#.to"
+          },
+          {
+            "label": "Amount",
+            "format": "tokenAmount",
+            "path": "#.value",
+            "params": {
+              "tokenPath": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            }
+          }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Approve USDC Spending",
+        "fields": [
+          {
+            "label": "Spender",
+            "format": "addressName",
+            "path": "#.spender"
+          },
+          {
+            "label": "Amount",
+            "format": "tokenAmount",
+            "path": "#.value",
+            "params": {
+              "tokenPath": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            }
+          }
+        ]
+      },
+      "increaseAllowance(address,uint256)": {
+        "intent": "Increase USDC Allowance",
+        "fields": [
+          {
+            "label": "Spender",
+            "format": "addressName",
+            "path": "#.spender"
+          },
+          {
+            "label": "Increase By",
+            "format": "tokenAmount",
+            "path": "#.increment",
+            "params": {
+              "tokenPath": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            }
+          }
+        ]
+      },
+      "decreaseAllowance(address,uint256)": {
+        "intent": "Decrease USDC Allowance",
+        "fields": [
+          {
+            "label": "Spender",
+            "format": "addressName",
+            "path": "#.spender"
+          },
+          {
+            "label": "Decrease By",
+            "format": "tokenAmount",
+            "path": "#.decrement",
+            "params": {
+              "tokenPath": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            }
+          }
+        ]
+      },
+      "mint(address,uint256)": {
+        "intent": "Mint USDC",
+        "fields": [
+          {
+            "label": "Recipient",
+            "format": "addressName",
+            "path": "#._to"
+          },
+          {
+            "label": "Amount",
+            "format": "tokenAmount",
+            "path": "#._amount",
+            "params": {
+              "tokenPath": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            }
+          }
+        ]
+      },
+      "burn(uint256)": {
+        "intent": "Burn USDC",
+        "fields": [
+          {
+            "label": "Amount",
+            "format": "tokenAmount",
+            "path": "#._amount",
+            "params": {
+              "tokenPath": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            }
+          }
+        ]
+      },
+      "blacklist(address)": {
+        "intent": "Add to USDC Blacklist",
+        "fields": [
+          {
+            "label": "Address to Blacklist",
+            "format": "addressName",
+            "path": "#._account"
+          }
+        ]
+      },
+      "unBlacklist(address)": {
+        "intent": "Remove from USDC Blacklist",
+        "fields": [
+          {
+            "label": "Address to Unblacklist",
+            "format": "addressName",
+            "path": "#._account"
+          }
+        ]
+      },
+      "configureMinter(address,uint256)": {
+        "intent": "Configure USDC Minter",
+        "fields": [
+          {
+            "label": "Minter Address",
+            "format": "addressName",
+            "path": "#.minter"
+          },
+          {
+            "label": "Allowed Amount",
+            "format": "tokenAmount",
+            "path": "#.minterAllowedAmount",
+            "params": {
+              "tokenPath": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            }
+          }
+        ]
+      },
+      "removeMinter(address)": {
+        "intent": "Remove USDC Minter",
+        "fields": [
+          {
+            "label": "Minter Address",
+            "format": "addressName",
+            "path": "#.minter"
+          }
+        ]
+      },
+      "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "USDC Permit (EIP-2612)",
+        "fields": [
+          {
+            "label": "Owner",
+            "format": "addressName",
+            "path": "#.owner"
+          },
+          {
+            "label": "Spender",
+            "format": "addressName",
+            "path": "#.spender"
+          },
+          {
+            "label": "Amount",
+            "format": "tokenAmount",
+            "path": "#.value",
+            "params": {
+              "tokenPath": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            }
+          },
+          {
+            "label": "Deadline",
+            "format": "raw",
+            "path": "#.deadline"
+          }
+        ]
+      },
+      "transferWithAuthorization(address,address,uint256,uint256,uint256,bytes32,uint8,bytes32,bytes32)": {
+        "intent": "Transfer USDC with Authorization",
+        "fields": [
+          {
+            "label": "From",
+            "format": "addressName",
+            "path": "#.from"
+          },
+          {
+            "label": "To",
+            "format": "addressName",
+            "path": "#.to"
+          },
+          {
+            "label": "Amount",
+            "format": "tokenAmount",
+            "path": "#.value",
+            "params": {
+              "tokenPath": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            }
+          },
+          {
+            "label": "Valid After",
+            "format": "raw",
+            "path": "#.validAfter"
+          },
+          {
+            "label": "Valid Before",
+            "format": "raw",
+            "path": "#.validBefore"
+          }
+        ]
+      },
+      "receiveWithAuthorization(address,address,uint256,uint256,uint256,bytes32,uint8,bytes32,bytes32)": {
+        "intent": "Receive USDC with Authorization",
+        "fields": [
+          {
+            "label": "From",
+            "format": "addressName",
+            "path": "#.from"
+          },
+          {
+            "label": "To",
+            "format": "addressName",
+            "path": "#.to"
+          },
+          {
+            "label": "Amount",
+            "format": "tokenAmount",
+            "path": "#.value",
+            "params": {
+              "tokenPath": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            }
+          },
+          {
+            "label": "Valid After",
+            "format": "raw",
+            "path": "#.validAfter"
+          },
+          {
+            "label": "Valid Before",
+            "format": "raw",
+            "path": "#.validBefore"
+          }
+        ]
+      },
+      "cancelAuthorization(address,bytes32,uint8,bytes32,bytes32)": {
+        "intent": "Cancel USDC Authorization",
+        "fields": [
+          {
+            "label": "Authorizer",
+            "format": "addressName",
+            "path": "#.authorizer"
+          },
+          {
+            "label": "Nonce",
+            "format": "raw",
+            "path": "#.nonce"
+          }
+        ]
+      },
+      "rescueERC20(address,address,uint256)": {
+        "intent": "Rescue ERC20 Tokens",
+        "fields": [
+          {
+            "label": "Token Contract",
+            "format": "addressName",
+            "path": "#.tokenContract"
+          },
+          {
+            "label": "Recipient",
+            "format": "addressName",
+            "path": "#.to"
+          },
+          {
+            "label": "Amount",
+            "format": "tokenAmount",
+            "path": "#.amount",
+            "params": {
+              "tokenPath": "#.tokenContract"
+            }
+          }
+        ]
+      },
+      "pause()": {
+        "intent": "Pause USDC Contract",
+        "fields": []
+      },
+      "unpause()": {
+        "intent": "Unpause USDC Contract",
+        "fields": []
+      },
+      "updatePauser(address)": {
+        "intent": "Update USDC Pauser",
+        "fields": [
+          {
+            "label": "New Pauser",
+            "format": "addressName",
+            "path": "#._newPauser"
+          }
+        ]
+      },
+      "updateBlacklister(address)": {
+        "intent": "Update USDC Blacklister",
+        "fields": [
+          {
+            "label": "New Blacklister",
+            "format": "addressName",
+            "path": "#._newBlacklister"
+          }
+        ]
+      },
+      "updateMasterMinter(address)": {
+        "intent": "Update USDC Master Minter",
+        "fields": [
+          {
+            "label": "New Master Minter",
+            "format": "addressName",
+            "path": "#._newMasterMinter"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Transfer USDC Contract Ownership",
+        "fields": [
+          {
+            "label": "New Owner",
+            "format": "addressName",
+            "path": "#.newOwner"
+          }
+        ]
+      }
+    }
+  }
+}

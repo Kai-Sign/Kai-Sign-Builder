@@ -1,0 +1,57 @@
+{
+  "$schema": "https://schemas.erc7730.org/erc7730-v1.json",
+  "context": {
+    "eip712Domain": {
+      "name": "Aave V2 Lending Pool",
+      "version": "1"
+    },
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "info": {
+      "url": "https://aave.com",
+      "legalName": "Aave",
+      "lastUpdate": "2025-01-27"
+    },
+    "token": {
+      "standard": "ERC20"
+    }
+  },
+  "display": {
+    "formats": {
+      "repay(address,uint256,uint256,address)": {
+        "intent": "Repay borrowed assets to Aave lending pool",
+        "fields": [
+          {
+            "path": "#.asset",
+            "label": "Asset",
+            "format": "addressName"
+          },
+          {
+            "path": "#.amount",
+            "label": "Amount",
+            "format": "amount"
+          },
+          {
+            "path": "#.rateMode",
+            "label": "Interest Rate Mode",
+            "format": "raw"
+          },
+          {
+            "path": "#.onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "addressName"
+          }
+        ]
+      }
+    }
+  }
+}
