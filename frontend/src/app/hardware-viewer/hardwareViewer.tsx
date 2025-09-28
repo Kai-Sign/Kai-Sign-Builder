@@ -397,20 +397,27 @@ const HardwareViewer = ({
 
   // Dynamic loading of sample data
   const loadSampleSetsConfig = async () => {
+    console.log("loadSampleSetsConfig called, samplesBasePath:", samplesBasePath);
     try {
       const response = await fetch(`${samplesBasePath}/sample-sets.json`);
+      console.log("sample-sets.json response:", response);
       if (response.ok) {
         const config = await response.json();
+        console.log("sample-sets.json config:", config);
         setSampleSets(config.sampleSets || []);
       }
     } catch (error) {
+      console.error("Error loading sample sets:", error);
     }
   };
 
   // Dynamic sample set loading
   const loadSampleSet = async (sampleSetId: string) => {
+    console.log("loadSampleSet called with:", sampleSetId);
+    console.log("Available sampleSets:", sampleSets);
     try {
       const sampleSet = sampleSets.find(set => set.id === sampleSetId);
+      console.log("Found sampleSet:", sampleSet);
       if (!sampleSet) return;
 
       const entries = [];
@@ -752,7 +759,6 @@ const HardwareViewer = ({
     }
 
     try {
-      // Debug logging
       // Handle ERC7730 path format: "#.fieldName" means direct parameter access
       let cleanPath = path;
       let isDirectParam = false;
@@ -767,84 +773,87 @@ const HardwareViewer = ({
       
       if (contextData.methodCall && contextData.methodCall.params) {
         if (isDirectParam) {
-          // Direct parameter access for ERC7730 format (e.g., "#.to", "#.value", "#.inputs.orders.orders[0].collection")
+          // Direct parameter access for ERC7730 format
           const param = contextData.methodCall.params.find((p: any) => p.name === pathParts[0]);
           if (param) {
             value = param;
             
             // Navigate through the path parts
-            for (let i = 0; i < pathParts.length; i++) {
+            for (let i = 1; i < pathParts.length; i++) {
               const part = pathParts[i];
-              if (i === 0) {
-                // First part is the parameter name, already found
-                continue;
-              }
               
-              // Handle array access notation like "orders[0]"
-              let arrayIndex: number | null = null;
-              let partName = part;
-              if (part && part.includes('[') && part.includes(']')) {
-                const match = part.match(/^(.+)\[(\d+)\]$/);
-                if (match && match[1] && match[2]) {
-                  partName = match[1];
-                  arrayIndex = parseInt(match[2]);
-                }
-              }
+              if (!value) break;
               
-              // For nested tuple structures, check both 'value' and 'components'
-              if (value && typeof value === 'object') {
+              // Handle numeric array access (e.g., "0" for first element)
+              if (/^\d+$/.test(part)) {
+                const arrayIndex = parseInt(part);
                 
-                if (value.components && Array.isArray(value.components)) {
-                  // This is a tuple parameter, find the component by name
-                  const component = value.components.find((c: any) => c.name === partName);
-                  if (component) {
-                    value = component;
-                    // If there's an array index, access that specific element
-                    if (arrayIndex !== null && value.value && Array.isArray(value.value)) {
-                      if (arrayIndex < value.value.length) {
-                        value = { value: value.value[arrayIndex] };
-                      } else {
-                        value = undefined;
-                        break;
-                      }
-                    }
+                // If we have a component with an array value
+                if (value.value && Array.isArray(value.value)) {
+                  if (arrayIndex < value.value.length) {
+                    value = { value: value.value[arrayIndex] };
                   } else {
                     value = undefined;
                     break;
                   }
-                } else if (value.value && typeof value.value === 'object') {
-                  // Direct access to nested value
-                  if (partName && value.value[partName] !== undefined) {
-                    value = { value: value.value[partName] };
-                    // If there's an array index, access that specific element
-                    if (arrayIndex !== null && value.value && Array.isArray(value.value)) {
-                      if (arrayIndex < value.value.length) {
-                        value = { value: value.value[arrayIndex] };
-                      } else {
-                        value = undefined;
-                        break;
-                      }
-                    }
+                }
+                // If value itself is an array
+                else if (Array.isArray(value)) {
+                  if (arrayIndex < value.length) {
+                    value = value[arrayIndex];
                   } else {
                     value = undefined;
                     break;
-                  }
-                } else if (partName && value[partName] !== undefined) {
-                  // Direct property access
-                  value = value[partName];
-                  // If there's an array index, access that specific element
-                  if (arrayIndex !== null && Array.isArray(value)) {
-                    if (arrayIndex < value.length) {
-                      value = value[arrayIndex];
-                    } else {
-                      value = undefined;
-                      break;
-                    }
                   }
                 } else {
                   value = undefined;
                   break;
                 }
+                continue;
+              }
+              
+              // Handle property access on nested structures
+              if (typeof value === 'object') {
+                // Check if we have components (for tuple parameters)
+                if (value.components && Array.isArray(value.components)) {
+                  const component = value.components.find((c: any) => c.name === part);
+                  if (component) {
+                    value = component;
+                    continue;
+                  }
+                }
+                
+                // Check if we have a .value property (this is the main case for Blur Exchange)
+                if (value.value !== undefined) {
+                  // If value.value is an object, try to access the property directly
+                  if (typeof value.value === 'object' && value.value !== null && !Array.isArray(value.value)) {
+                    if (value.value[part] !== undefined) {
+                      // For direct property access, wrap in value object for consistency
+                      const nextValue = value.value[part];
+                      if (Array.isArray(nextValue)) {
+                        value = { value: nextValue };
+                      } else {
+                        value = nextValue;
+                      }
+                      continue;
+                    }
+                  }
+                  // If value.value is an array, keep the current structure for next iteration
+                  else if (Array.isArray(value.value)) {
+                    // Keep value as is, next part should be numeric
+                    continue;
+                  }
+                }
+                
+                // Direct property access (fallback)
+                if (value[part] !== undefined) {
+                  value = value[part];
+                  continue;
+                }
+                
+                // If nothing worked, set to undefined and break
+                value = undefined;
+                break;
               } else {
                 value = undefined;
                 break;
@@ -852,7 +861,7 @@ const HardwareViewer = ({
             }
             
             // Extract the final value
-            if (value && typeof value === 'object' && value.value !== undefined) {
+            if (value && typeof value === 'object' && 'value' in value) {
               value = value.value;
             }
             
@@ -908,65 +917,72 @@ const HardwareViewer = ({
       }
 
       if (value !== undefined) {
-                 // Format the value based on the format type
-         switch (format) {
-           case "tokenAmount":
-             const rawValue = value.toString();
-             
-             // If field has tokenPath, find matching metadata with token info
-             if (field.params?.tokenPath) {
-               const tokenAddress = field.params.tokenPath;
-               
-               const tokenMetadata = metadataEntries.find(entry => 
-                 entry.metadata.context?.contract?.deployments?.some(dep => 
-                   dep.address === tokenAddress
-                 )
-               );
-               
-               if (tokenMetadata?.metadata?.metadata?.token?.decimals) {
-                 const decimals = tokenMetadata.metadata.metadata.token.decimals;
-                 const ticker = tokenMetadata.metadata.metadata.token.ticker;
-                 const formattedAmount = (parseInt(rawValue) / Math.pow(10, decimals)).toString();
-                 return `${formattedAmount} ${ticker}`;
-               }
-             }
-             
-             return rawValue;
-           case "addressName":
-             const addressValue = value.toString();
-             if (addressValue.startsWith('0x') && addressValue.length === 42) {
-               return `${addressValue.slice(0, 6)}...${addressValue.slice(-4)}`;
-             }
-             return addressValue;
-           case "amount":
-             if (value === "0") return "0";
-             // For Aave repay operations, try to get token info from addressesMeta
-             const rawAmount = value.toString();
-             if (transactionData.addressesMeta && transactionData.methodCall?.params) {
-               // Find the asset parameter to get token info
-               const assetParam = transactionData.methodCall.params.find((p: any) => p.name === 'asset');
-               if (assetParam && transactionData.addressesMeta[assetParam.value]) {
-                 const tokenMeta = transactionData.addressesMeta[assetParam.value];
-                 if (tokenMeta && tokenMeta.decimals) {
-                   const decimals = tokenMeta.decimals;
-                   const formattedAmount = (parseInt(rawAmount) / Math.pow(10, decimals)).toString();
-                   return `${formattedAmount} ${tokenMeta.tokenSymbol || ''}`;
-                 }
-               }
-             }
-             return rawAmount;
-           case "raw":
-             const rawValueStr = value.toString();
-             // For long hex strings (like signatures), show shortened format
-             if (rawValueStr.startsWith('0x') && rawValueStr.length > 42) {
-               return `${rawValueStr.slice(0, 10)}...${rawValueStr.slice(-7)}`;
-             }
-             return rawValueStr;
-           default:
-             return value.toString();
-         }
+        // Format the value based on the format type
+        switch (format) {
+          case "tokenAmount":
+            const rawValue = value.toString();
+            
+            // For ETH (0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE), format as ETH
+            if (field?.params?.tokenPath === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
+              const ethValue = (parseInt(rawValue) / Math.pow(10, 18)).toString();
+              return `${ethValue} ETH`;
+            }
+            
+            // If field has tokenPath, find matching metadata with token info
+            if (field?.params?.tokenPath) {
+              const tokenAddress = field.params.tokenPath;
+              
+              const tokenMetadata = metadataEntries.find(entry => 
+                entry.metadata.context?.contract?.deployments?.some(dep => 
+                  dep.address === tokenAddress
+                )
+              );
+              
+              if (tokenMetadata?.metadata?.metadata?.token?.decimals) {
+                const decimals = tokenMetadata.metadata.metadata.token.decimals;
+                const ticker = tokenMetadata.metadata.metadata.token.ticker;
+                const formattedAmount = (parseInt(rawValue) / Math.pow(10, decimals)).toString();
+                return `${formattedAmount} ${ticker}`;
+              }
+            }
+            
+            return rawValue;
+          case "addressName":
+            const addressValue = value.toString();
+            if (addressValue.startsWith('0x') && addressValue.length === 42) {
+              return `${addressValue.slice(0, 6)}...${addressValue.slice(-4)}`;
+            }
+            return addressValue;
+          case "amount":
+            if (value === "0") return "0";
+            // For Aave repay operations, try to get token info from addressesMeta
+            const rawAmount = value.toString();
+            if (transactionData?.addressesMeta && transactionData.methodCall?.params) {
+              // Find the asset parameter to get token info
+              const assetParam = transactionData.methodCall.params.find((p: any) => p.name === 'asset');
+              if (assetParam && transactionData.addressesMeta[assetParam.value]) {
+                const tokenMeta = transactionData.addressesMeta[assetParam.value];
+                if (tokenMeta && tokenMeta.decimals) {
+                  const decimals = tokenMeta.decimals;
+                  const formattedAmount = (parseInt(rawAmount) / Math.pow(10, decimals)).toString();
+                  return `${formattedAmount} ${tokenMeta.tokenSymbol || ''}`;
+                }
+              }
+            }
+            return rawAmount;
+          case "raw":
+            const rawValueStr = value.toString();
+            // For long hex strings (like signatures), show shortened format
+            if (rawValueStr.startsWith('0x') && rawValueStr.length > 42) {
+              return `${rawValueStr.slice(0, 10)}...${rawValueStr.slice(-7)}`;
+            }
+            return rawValueStr;
+          default:
+            return value.toString();
+        }
       }
     } catch (error) {
+      console.error('Error processing path:', path, error);
     }
 
     return `Mock ${format} value`;
@@ -1220,6 +1236,117 @@ const HardwareViewer = ({
   const renderHardwareUI = () => {
     // Get all operations for this transaction (including nested)
     const allOperations = activeTab === "advanced" && transactionData ? getAllOperationsForTransaction(transactionData) : [];
+    
+    // Show transaction operations for ANY transaction that has them
+    if (activeTab === "advanced" && transactionData?.transfers && transactionData.transfers.length > 0) {
+      // Group operations by type
+      const operationsByType = transactionData.transfers.reduce((acc, operation) => {
+        const type = operation.type || "Unknown";
+        if (!acc[type]) acc[type] = [];
+        acc[type].push(operation);
+        return acc;
+      }, {} as Record<string, typeof transactionData.transfers>);
+      
+      // Get the type with most operations (or prioritize by tokenId presence)
+      const operationTypes = Object.keys(operationsByType);
+      const primaryType = operationTypes.reduce((primary, type) => {
+        const currentTypeOps = operationsByType[type];
+        const primaryTypeOps = operationsByType[primary] || [];
+        
+        // Prioritize types with tokenId (NFTs) or larger count
+        const currentHasTokenId = currentTypeOps.some(op => op.tokenId);
+        const primaryHasTokenId = primaryTypeOps.some(op => op.tokenId);
+        
+        if (currentHasTokenId && !primaryHasTokenId) return type;
+        if (!currentHasTokenId && primaryHasTokenId) return primary;
+        
+        return currentTypeOps.length > primaryTypeOps.length ? type : primary;
+      }, operationTypes[0]);
+      
+      const primaryOperations = operationsByType[primaryType] || [];
+      const otherOperations = transactionData.transfers.filter(op => op.type !== primaryType);
+      const screens = [];
+      
+      // Add overview screen
+      screens.push([
+        { label: "Transaction", isActive: true, displayValue: operation?.intent || transactionData.methodCall?.name || "Transaction" },
+        { label: `${primaryType} Operations`, isActive: true, displayValue: primaryOperations.length.toString() },
+        { label: "Token", isActive: true, displayValue: primaryOperations[0]?.name || "Unknown" },
+        { label: "Symbol", isActive: true, displayValue: primaryOperations[0]?.symbol || "Unknown" }
+      ]);
+      
+      // Add ONE SCREEN for EACH individual operation
+      primaryOperations.forEach((op, index) => {
+        const fields = [
+          { label: "Operation", isActive: true, displayValue: `${index + 1} of ${primaryOperations.length}` }
+        ];
+        
+        // Add token ID if available
+        if (op.tokenId) {
+          fields.push({ label: "Token ID", isActive: true, displayValue: op.tokenId });
+        }
+        
+        // Add amount/price if available
+        if (op.amount) {
+          fields.push({ label: "Amount", isActive: true, displayValue: op.amount });
+        }
+        
+        // Add from/to addresses
+        fields.push(
+          { label: "From", isActive: true, displayValue: op.from.length > 20 ? `${op.from.slice(0, 6)}...${op.from.slice(-4)}` : op.from },
+          { label: "To", isActive: true, displayValue: op.to.length > 20 ? `${op.to.slice(0, 6)}...${op.to.slice(-4)}` : op.to }
+        );
+        
+        screens.push(fields);
+      });
+      
+      const operationMeta = getOperationMetadata() || {
+        operationName: `${primaryOperations.length} ${primaryType} Operations`,
+        metadata: { owner: primaryOperations[0]?.name || "Unknown" }
+      };
+      
+      const allScreens = operationScreens(screens, operationMeta);
+      
+      return (
+        <div className="mx-auto flex max-w-96 flex-col">
+          <div className="text-center text-sm text-gray-600 mb-4">
+            {primaryOperations.length} {primaryType} Operations
+            {otherOperations.length > 0 && (
+              <span className="text-xs block">(+ {otherOperations.length} other operations)</span>
+            )}
+          </div>
+          <Carousel setApi={setApi}>
+            <CarouselContent>
+              {allScreens.map((screen, index) => (
+                <CarouselItem
+                  key={index}
+                  className="flex w-full items-center justify-center"
+                >
+                  <Device.Frame>{screen}</Device.Frame>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="hidden md:flex" />
+            <CarouselNext className="hidden md:flex" />
+          </Carousel>
+          <div className="mx-auto flex flex-row items-center gap-2 p-2 max-w-full overflow-x-auto">
+            <div className="flex flex-row items-center gap-2 min-w-0">
+              {allScreens.map((_, index) => (
+                <div
+                  key={"carousel-thumbnail-" + index}
+                  className={cn("flex-shrink-0 w-fit rounded p-1 ring-primary hover:ring-2 cursor-pointer", {
+                    "ring-2": index === selected,
+                  })}
+                  onClick={() => api?.scrollTo(index)}
+                >
+                  <Device.Frame size="small">{index + 1}</Device.Frame>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    }
     
     // For Safe transactions with nested operations, show the proper flow
     if (allOperations.length > 1) {
