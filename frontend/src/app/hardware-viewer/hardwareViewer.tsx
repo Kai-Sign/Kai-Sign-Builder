@@ -68,9 +68,15 @@ interface MetadataEntry {
 
 interface HardwareViewerProps {
   initialTransactionData?: DecodedTransaction;
+  metadataBasePath?: string;
+  samplesBasePath?: string;
 }
 
-const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) => {
+const HardwareViewer = ({ 
+  initialTransactionData, 
+  metadataBasePath = '/erc7730',
+  samplesBasePath = '/samples'
+}: HardwareViewerProps = {}) => {
   const [activeTab, setActiveTab] = useState("simple");
   const [jsonInput, setJsonInput] = useState("");
   const [selectedOperation, setSelectedOperation] = useState("");
@@ -83,6 +89,9 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
   const [metadataEntries, setMetadataEntries] = useState<MetadataEntry[]>([]);
   const [transactionData, setTransactionData] = useState<DecodedTransaction | null>(null);
   const [selectedMetadataId, setSelectedMetadataId] = useState("");
+
+  // State for dynamically loaded sample sets
+  const [sampleSets, setSampleSets] = useState<any[]>([]);
 
   // Sample ERC7730 data for demonstration
   const sampleData = {
@@ -386,6 +395,87 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
     }
   };
 
+  // Dynamic loading of sample data
+  const loadSampleSetsConfig = async () => {
+    try {
+      const response = await fetch(`${samplesBasePath}/sample-sets.json`);
+      if (response.ok) {
+        const config = await response.json();
+        setSampleSets(config.sampleSets || []);
+      }
+    } catch (error) {
+    }
+  };
+
+  // Dynamic sample set loading
+  const loadSampleSet = async (sampleSetId: string) => {
+    try {
+      const sampleSet = sampleSets.find(set => set.id === sampleSetId);
+      if (!sampleSet) return;
+
+      const entries = [];
+      
+      // Load metadata files
+      for (const metadataFile of sampleSet.metadataFiles) {
+        const response = await fetch(`${metadataBasePath}/${metadataFile}`);
+        if (response.ok) {
+          const metadata = await response.json();
+          entries.push({
+            id: `metadata-${Date.now()}-${entries.length}`,
+            name: metadata.metadata?.owner || "Metadata",
+            metadata: metadata as unknown as Erc7730
+          });
+        }
+      }
+      
+      setMetadataEntries(entries);
+      
+      // Load transaction data if available
+      if (sampleSet.transactionData) {
+        const normalizedTxData = normalizeTransactionData(sampleSet.transactionData);
+        setTransactionData(normalizedTxData);
+        setActiveTab("advanced");
+        
+        if (entries.length > 0) {
+          setSelectedMetadataId(entries[0].id);
+          
+          // Auto-select matching operation
+          const firstEntry = entries[0];
+          if (firstEntry?.metadata.display?.formats) {
+            const detectedSelector = getTransactionFunctionSelector(normalizedTxData);
+            
+            const availableOperations = Object.keys(firstEntry.metadata.display.formats);
+            const exactMatch = availableOperations.find(op => op === detectedSelector);
+            
+            if (exactMatch) {
+              setSelectedOperation(exactMatch);
+            } else {
+              const firstOperation = availableOperations[0];
+              if (firstOperation) {
+                setSelectedOperation(firstOperation);
+              }
+            }
+          }
+        }
+      }
+    } catch (error) {
+      setError('Failed to load sample set');
+    }
+  };
+
+  // Function to normalize transaction data format
+  const normalizeTransactionData = (data: any): DecodedTransaction => {
+    return {
+      txHash: data.txHash,
+      methodCall: data.methodCall ? {
+        name: data.methodCall.name,
+        params: data.methodCall.params || []
+      } : undefined,
+      transfers: data.transfers || [],
+      addressesMeta: data.addressesMeta || {}
+    };
+  };
+
   // Function to get function selector from transaction data
   const getTransactionFunctionSelector = (transactionData: DecodedTransaction | null): string | null => {
     if (!transactionData?.methodCall?.name || !transactionData?.methodCall?.params) {
@@ -497,6 +587,10 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
   };
 
   useEffect(() => {
+    loadSampleSetsConfig();
+  }, [samplesBasePath]);
+
+  useEffect(() => {
     if (!api) {
       return;
     }
@@ -508,30 +602,12 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
     });
   }, [api]);
 
-
-  // Helper function to normalize transaction data for hardware viewer
-  const normalizeTransactionData = (data: any): DecodedTransaction => {
-    // If data is already in the correct format, return as-is
-    if (data.methodCall && Array.isArray(data.methodCall.params)) {
-      return data;
-    }
-
-    // Handle 1inch transaction format or other formats that need normalization
-    return {
-      txHash: data.txHash,
-      methodCall: data.methodCall ? {
-        name: data.methodCall.name,
-        params: data.methodCall.params || []
-      } : undefined,
-      transfers: data.transfers || [],
-      addressesMeta: data.addressesMeta || {}
-    };
-  };
+  // Don't load anything on mount - start empty
 
   // Load initial transaction data if provided
   useEffect(() => {
     if (initialTransactionData) {
-      setTransactionData(normalizeTransactionData(initialTransactionData));
+      setTransactionData(initialTransactionData);
     }
   }, [initialTransactionData]);
 
@@ -569,79 +645,6 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
     handleJsonChange(sampleJson);
   };
 
-  const loadSampleSet = async (metadataFile: string | string[], txData: any) => {
-    console.log('DEBUG: loadSampleSet called with:', metadataFile, txData);
-    try {
-      setMetadataEntries([]);
-      setTransactionData(null);
-      setSelectedMetadataId("");
-      setSelectedOperation("");
-      
-      const metadataFiles = Array.isArray(metadataFile) ? metadataFile : [metadataFile];
-      const entries = [];
-      
-      for (const file of metadataFiles) {
-        // Load the metadata file
-        const response = await fetch(`/erc7730/${file}`);
-        if (!response.ok) {
-          throw new Error(`Failed to load ${file}`);
-        }
-        
-        const metadata = await response.json();
-        const entry = {
-          id: `metadata-${Date.now()}-${entries.length}`,
-          name: metadata.metadata?.owner || "Metadata",
-          metadata: metadata as unknown as Erc7730
-        };
-        entries.push(entry);
-      }
-      
-      setMetadataEntries(entries);
-      setTransactionData(normalizeTransactionData(txData));
-      setActiveTab("advanced");
-      
-      // Auto-select metadata and matching operation
-      setSelectedMetadataId(entries[0].id);
-      
-      // Find matching operation based on transaction method
-      if (txData.methodCall?.signature || txData.methodCall?.name) {
-        const formats = entries[0].metadata.display?.formats || {};
-        const definitions = entries[0].metadata.definitions || [];
-        
-        console.log('DEBUG: Available format operations:', Object.keys(formats));
-        console.log('DEBUG: Available definitions:', definitions.map((d: any) => d.id));
-        console.log('DEBUG: Looking for signature:', txData.methodCall.signature);
-        console.log('DEBUG: Method name:', txData.methodCall.name);
-        
-        // Try to match by signature first (1inch style)
-        let matchingOp = Object.keys(formats).find(op => 
-          op === txData.methodCall.signature || op.startsWith(txData.methodCall.name + '(')
-        );
-        
-        // If no match, try definitions by method name (Aave style)
-        if (!matchingOp) {
-          const matchingDef = definitions.find((def: any) => 
-            def.id === txData.methodCall.name && def.isFunction
-          );
-          if (matchingDef) {
-            matchingOp = matchingDef.id;
-          }
-        }
-        
-        console.log('DEBUG: Found matching operation:', matchingOp);
-        
-        if (matchingOp) {
-          setSelectedOperation(matchingOp);
-        } else {
-          console.log('DEBUG: No matching operation found');
-        }
-      }
-      
-    } catch (error) {
-      console.error('Failed to load sample set:', error);
-      setError(`Failed to load metadata: ${metadataFile}`);
-    }
-  };
 
   const addMetadataEntry = () => {
     const newId = `metadata-${Date.now()}`;
@@ -718,24 +721,13 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
     // Use nested transaction data if available in the field, otherwise use main transaction data
     const contextData = field?.nestedTransactionData || transactionData;
     
-    console.log('DEBUG getFieldValueFromTransaction:', {
-      path,
-      format,
-      hasField: !!field,
-      hasNestedData: !!field?.nestedTransactionData,
-      contextData,
-      mainTransactionData: transactionData
-    });
-    
     if (!contextData) {
-      console.log('DEBUG: No context data, returning mock value');
       return `Mock ${format} value`;
     }
     
     // Check if this field should use nested transaction context
     const useNestedContext = field && field.useNestedContext;
     const hasNestedTransactionData = field && field.nestedTransactionData;
-    console.log('DEBUG: hasNestedTransactionData:', hasNestedTransactionData, 'field:', field);
     
     if (useNestedContext && !hasNestedTransactionData) {
       // Find the first transfer operation in nested data
@@ -761,9 +753,6 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
 
     try {
       // Debug logging
-      console.log("DEBUG: Parsing path:", path, "format:", format, "hasNestedData:", hasNestedTransactionData);
-      console.log("DEBUG: Context data:", contextData);
-      console.log("DEBUG: Field object:", field);
       // Handle ERC7730 path format: "#.fieldName" means direct parameter access
       let cleanPath = path;
       let isDirectParam = false;
@@ -778,11 +767,9 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
       
       if (contextData.methodCall && contextData.methodCall.params) {
         if (isDirectParam) {
-          // Direct parameter access for ERC7730 format (e.g., "#.to", "#.value", "#.desc.srcToken")
+          // Direct parameter access for ERC7730 format (e.g., "#.to", "#.value", "#.inputs.orders.orders[0].collection")
           const param = contextData.methodCall.params.find((p: any) => p.name === pathParts[0]);
-          console.log(`DEBUG: Looking for param "${pathParts[0]}" in:`, contextData.methodCall.params.map((p: any) => p.name));
           if (param) {
-            console.log(`DEBUG: Found param "${pathParts[0]}":`, param);
             value = param;
             
             // Navigate through the path parts
@@ -806,34 +793,22 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
               
               // For nested tuple structures, check both 'value' and 'components'
               if (value && typeof value === 'object') {
-                console.log(`Processing part "${partName}" with array index ${arrayIndex}`, {
-                  hasComponents: !!value.components,
-                  hasValue: !!value.value,
-                  valueType: typeof value.value,
-                  valueKeys: value.value ? Object.keys(value.value) : null
-                });
                 
                 if (value.components && Array.isArray(value.components)) {
                   // This is a tuple parameter, find the component by name
                   const component = value.components.find((c: any) => c.name === partName);
                   if (component) {
-                    console.log(`Found component "${partName}":`, component);
-                    // For tuple components, the value is directly in the component.value field
-                    value = component.value;
-                    console.log(`Extracted component value:`, value);
+                    value = component;
                     // If there's an array index, access that specific element
-                    if (arrayIndex !== null && Array.isArray(value)) {
-                      if (arrayIndex < value.length) {
-                        value = value[arrayIndex];
-                        console.log(`Accessed array index ${arrayIndex}:`, value);
+                    if (arrayIndex !== null && value.value && Array.isArray(value.value)) {
+                      if (arrayIndex < value.value.length) {
+                        value = { value: value.value[arrayIndex] };
                       } else {
-                        console.log(`Array index ${arrayIndex} out of bounds for array length ${value.length}`);
                         value = undefined;
                         break;
                       }
                     }
                   } else {
-                    console.log(`Component "${partName}" not found in components:`, value.components.map((c: any) => c.name));
                     value = undefined;
                     break;
                   }
@@ -841,45 +816,36 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
                   // Direct access to nested value
                   if (partName && value.value[partName] !== undefined) {
                     value = { value: value.value[partName] };
-                    console.log(`Direct value access "${partName}":`, value);
                     // If there's an array index, access that specific element
                     if (arrayIndex !== null && value.value && Array.isArray(value.value)) {
                       if (arrayIndex < value.value.length) {
                         value = { value: value.value[arrayIndex] };
-                        console.log(`Accessed nested array index ${arrayIndex}:`, value);
                       } else {
-                        console.log(`Nested array index ${arrayIndex} out of bounds`);
                         value = undefined;
                         break;
                       }
                     }
                   } else {
-                    console.log(`Property "${partName}" not found in value object:`, value.value ? Object.keys(value.value) : 'null');
                     value = undefined;
                     break;
                   }
                 } else if (partName && value[partName] !== undefined) {
                   // Direct property access
                   value = value[partName];
-                  console.log(`Direct property access "${partName}":`, value);
                   // If there's an array index, access that specific element
                   if (arrayIndex !== null && Array.isArray(value)) {
                     if (arrayIndex < value.length) {
                       value = value[arrayIndex];
-                      console.log(`Accessed property array index ${arrayIndex}:`, value);
                     } else {
-                      console.log(`Property array index ${arrayIndex} out of bounds`);
                       value = undefined;
                       break;
                     }
                   }
                 } else {
-                  console.log(`Property "${partName}" not found in object:`, Object.keys(value));
                   value = undefined;
                   break;
                 }
               } else {
-                console.log(`Value is not an object, cannot access "${partName}":`, value);
                 value = undefined;
                 break;
               }
@@ -887,13 +853,8 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
             
             // Extract the final value
             if (value && typeof value === 'object' && value.value !== undefined) {
-              // Only extract .value if we haven't already extracted a component value
-              if (typeof value.value === 'string' || typeof value.value === 'number') {
-                value = value.value;
-              }
+              value = value.value;
             }
-            
-            console.log('DEBUG: Final extracted value for path', path, ':', value);
             
           } else {
             value = undefined;
@@ -946,30 +907,15 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
         value = undefined;
       }
 
-      console.log('DEBUG: Processing value before formatting:', {
-        path,
-        format,
-        rawValue: value,
-        valueType: typeof value
-      });
-
       if (value !== undefined) {
                  // Format the value based on the format type
          switch (format) {
            case "tokenAmount":
              const rawValue = value.toString();
-             console.log('DEBUG tokenAmount:', {
-               rawValue,
-               hasField: !!field,
-               fieldParams: field?.params,
-               tokenPath: field?.params?.tokenPath,
-               metadataEntriesCount: metadataEntries.length
-             });
              
              // If field has tokenPath, find matching metadata with token info
              if (field.params?.tokenPath) {
                const tokenAddress = field.params.tokenPath;
-               console.log('DEBUG: Looking for token metadata for address:', tokenAddress);
                
                const tokenMetadata = metadataEntries.find(entry => 
                  entry.metadata.context?.contract?.deployments?.some(dep => 
@@ -977,21 +923,12 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
                  )
                );
                
-               console.log('DEBUG: tokenMetadata found:', !!tokenMetadata);
-               console.log('DEBUG: tokenMetadata.metadata keys:', Object.keys(tokenMetadata?.metadata || {}));
-               console.log('DEBUG: tokenMetadata.metadata.metadata exists:', !!tokenMetadata?.metadata?.metadata);
-               
                if (tokenMetadata?.metadata?.metadata?.token?.decimals) {
                  const decimals = tokenMetadata.metadata.metadata.token.decimals;
                  const ticker = tokenMetadata.metadata.metadata.token.ticker;
-                 console.log('DEBUG: Using token info:', { decimals, ticker });
                  const formattedAmount = (parseInt(rawValue) / Math.pow(10, decimals)).toString();
                  return `${formattedAmount} ${ticker}`;
-               } else {
-                 console.log('DEBUG: No token decimals found in metadata');
                }
-             } else {
-               console.log('DEBUG: No tokenPath in field params');
              }
              
              return rawValue;
@@ -1001,23 +938,15 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
                return `${addressValue.slice(0, 6)}...${addressValue.slice(-4)}`;
              }
              return addressValue;
-           case "tokenAmount":
            case "amount":
              if (value === "0") return "0";
-             // Try to get token info from addressesMeta for proper decimal formatting
+             // For Aave repay operations, try to get token info from addressesMeta
              const rawAmount = value.toString();
-             if (transactionData?.addressesMeta && field.params?.tokenPath) {
-               let tokenAddress;
-               // Check if tokenPath is a direct address or a field path
-               if (field.params.tokenPath.startsWith('0x')) {
-                 tokenAddress = field.params.tokenPath;
-               } else {
-                 // It's a field path, resolve it
-                 tokenAddress = getFieldValueFromTransaction(field.params.tokenPath, "raw", field);
-               }
-               
-               if (tokenAddress && transactionData.addressesMeta[tokenAddress]) {
-                 const tokenMeta = transactionData.addressesMeta[tokenAddress];
+             if (transactionData.addressesMeta && transactionData.methodCall?.params) {
+               // Find the asset parameter to get token info
+               const assetParam = transactionData.methodCall.params.find((p: any) => p.name === 'asset');
+               if (assetParam && transactionData.addressesMeta[assetParam.value]) {
+                 const tokenMeta = transactionData.addressesMeta[assetParam.value];
                  if (tokenMeta && tokenMeta.decimals) {
                    const decimals = tokenMeta.decimals;
                    const formattedAmount = (parseInt(rawAmount) / Math.pow(10, decimals)).toString();
@@ -1038,7 +967,6 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
          }
       }
     } catch (error) {
-      console.error("Error getting field value:", error);
     }
 
     return `Mock ${format} value`;
@@ -1118,41 +1046,24 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
   const getAllOperationsForTransaction = (transactionData: DecodedTransaction | null): Array<{operation: Operation, metadata: any, context: string, nestedData?: any}> => {
     if (!transactionData) return [];
     
-    console.log('DEBUG: getAllOperationsForTransaction called with:', transactionData);
-    console.log('DEBUG: Available metadata entries:', metadataEntries);
-    console.log('DEBUG: Method name:', transactionData.methodCall?.name);
-    console.log('DEBUG: Method params:', transactionData.methodCall?.params?.map(p => p.name));
     
     const operations: Array<{operation: Operation, metadata: any, context: string, nestedData?: any}> = [];
     
     // Check if current transaction has an operation that matches metadata
     const currentSelector = getTransactionFunctionSelector(transactionData);
-    console.log('🔥 AAVE DEBUG: Generated selector:', currentSelector);
-    console.log('🔥 AAVE DEBUG: Number of metadata entries:', metadataEntries.length);
-    
     if (currentSelector) {
       for (const entry of metadataEntries) {
         const formats = entry.metadata.display?.formats;
-        console.log('🔥 AAVE DEBUG: Entry name:', entry.name);
-        console.log('🔥 AAVE DEBUG: Available formats:', formats ? Object.keys(formats) : 'No formats');
-        console.log('🔥 AAVE DEBUG: Looking for selector:', currentSelector);
-        console.log('🔥 AAVE DEBUG: Selector exists:', formats ? (currentSelector in formats) : false);
-        
         if (formats && formats[currentSelector]) {
-          console.log('🔥 AAVE DEBUG: ✅ MATCH FOUND!');
           operations.push({
             operation: formats[currentSelector],
             metadata: entry.metadata.metadata,
             context: 'main'
           });
           break;
-        } else {
-          console.log('🔥 AAVE DEBUG: ❌ No match in this entry');
         }
       }
     }
-    
-    console.log('🔥 AAVE DEBUG: Final operations count:', operations.length);
     
     // Look specifically for nested operations in the transaction data
     if (transactionData.methodCall?.params) {
@@ -1163,7 +1074,6 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
           // The actual transactions are in params[0].components
           const txComponents = transactionsParam.valueDecoded.params[0]?.components;
           if (txComponents && Array.isArray(txComponents)) {
-            console.log('DEBUG: Found multiSend with transactions:', txComponents.length);
             
             // Process each transaction component
             txComponents.forEach((txComponent: any, index: number) => {
@@ -1173,15 +1083,12 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
                 // Look for the nested transfer call within the execTransaction data
                 const dataParam = execTxData.valueDecoded.params?.find((p: any) => p.name === 'data' && p.valueDecoded);
                 if (dataParam && dataParam.valueDecoded && dataParam.valueDecoded.name === 'transfer') {
-                  console.log(`DEBUG: MultiSend tx ${index} - found transfer:`, dataParam.valueDecoded);
                   const transferData = dataParam.valueDecoded;
                   const nestedSelector = `${transferData.name}(${transferData.params?.map((p: any) => p.type).join(',') || ''})`;
-                  console.log('DEBUG: Looking for multiSend nested selector:', nestedSelector);
                   
                   // Find matching metadata for this transfer
                   for (const entry of metadataEntries) {
                     if (entry.metadata.display?.formats?.[nestedSelector]) {
-                      console.log('DEBUG: Found exact match for multiSend nested operation:', nestedSelector);
                       operations.push({
                         operation: entry.metadata.display.formats[nestedSelector] as Operation,
                         metadata: entry.metadata.metadata,
@@ -1207,11 +1114,9 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
         // Check if this is a 'data' parameter with decoded value (common in Safe transactions)
         if (param.name === 'data' && param.valueDecoded) {
           const nestedTx = param.valueDecoded;
-          console.log('DEBUG: Found nested transaction in data param:', nestedTx);
           
           // Check if we have metadata for this nested operation
           const nestedSelector = (nestedTx as any).signature || nestedTx.name;
-          console.log('DEBUG: Looking for nested selector:', nestedSelector);
           
           if (nestedSelector) {
             for (const entry of metadataEntries) {
@@ -1219,7 +1124,6 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
               if (formats) {
                 // Check for exact match first
                 if (formats[nestedSelector]) {
-                  console.log('DEBUG: Found exact match for nested operation:', nestedSelector);
                   operations.push({
                     operation: formats[nestedSelector] as Operation,
                     metadata: entry.metadata.metadata,
@@ -1239,7 +1143,6 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
                     formatKey.startsWith(nestedTx.name + '(') || formatKey === nestedTx.name
                   );
                   if (matchingFormat) {
-                    console.log('DEBUG: Found function name match for nested operation:', matchingFormat);
                     operations.push({
                       operation: formats[matchingFormat] as Operation,
                       metadata: entry.metadata.metadata,
@@ -1313,28 +1216,15 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
 
   const operation = getOperationForViewing();
   const operationMetadata = getOperationMetadata();
-  
-  console.log('DEBUG: Current state:', {
-    activeTab,
-    selectedMetadataId,
-    selectedOperation,
-    metadataEntriesCount: metadataEntries.length,
-    hasTransactionData: !!transactionData,
-    operation: !!operation,
-    operationMetadata: !!operationMetadata
-  });
 
   const renderHardwareUI = () => {
     // Get all operations for this transaction (including nested)
     const allOperations = activeTab === "advanced" && transactionData ? getAllOperationsForTransaction(transactionData) : [];
-    console.log('DEBUG: activeTab:', activeTab, 'transactionData exists:', !!transactionData);
     
     // For Safe transactions with nested operations, show the proper flow
-    console.log('DEBUG: allOperations.length:', allOperations.length, 'allOperations:', allOperations);
     if (allOperations.length > 1) {
       const mainOperation = allOperations.find(op => op.context === 'main');
       const nestedOperations = allOperations.filter(op => op.context !== 'main');
-      console.log('DEBUG: mainOperation:', mainOperation, 'nestedOperations:', nestedOperations);
       
       if (mainOperation && nestedOperations.length > 0) {
         const firstNestedOp = nestedOperations[0];
@@ -1349,7 +1239,6 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
           const modifiedNestedOperation = {
             ...firstNestedOp.operation,
             fields: firstNestedOp.operation.fields.map(field => {
-              console.log('DEBUG: Creating field with nestedData:', firstNestedOp.nestedData);
               return {
                 ...field,
                 nestedTransactionData: firstNestedOp.nestedData
@@ -1448,7 +1337,6 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
     }
     
     // Fallback to single operation display
-    console.log('DEBUG: Using fallback - operation exists:', !!operation, 'operationMetadata exists:', !!operationMetadata);
     if (!operation || !operationMetadata) {
       return (
         <div className="text-center text-gray-500 py-8">
@@ -1468,7 +1356,6 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
       );
     }
 
-    console.log('DEBUG: Rendering final fallback operation:', operation);
     const screens = getScreensForOperationWithRealData(operation);
     const fullOperationScreens = operationScreens(screens, operationMetadata);
 
@@ -1575,200 +1462,23 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
                 <div className="space-y-2">
                   <Label className="text-sm font-medium">Sample Sets</Label>
                   <div className="flex gap-2 flex-wrap">
-                    <Button 
-                      onClick={() => loadSampleSet('erc7730-1inch-aggregation-router-v6.json', {
-                        "txHash": "0x8e36953374f7b71fe4c20898c8ade628cf71d5d0303ec8ad368b254629db2985",
-                        "methodCall": {
-                          "name": "swap",
-                          "signature": "swap(address,(address,address,address,address,uint256,uint256,uint256),bytes)",
-                          "params": [
-                            {
-                              "name": "executor",
-                              "type": "address",
-                              "value": "0xE37e799D5077682FA0a244D46E5649F71457BD09"
-                            },
-                            {
-                              "name": "desc",
-                              "type": "tuple",
-                              "components": [
-                                {
-                                  "name": "srcToken",
-                                  "type": "address",
-                                  "value": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
-                                },
-                                {
-                                  "name": "dstToken",
-                                  "type": "address",
-                                  "value": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
-                                },
-                                {
-                                  "name": "amount",
-                                  "type": "uint256",
-                                  "value": "9649057979"
-                                },
-                                {
-                                  "name": "minReturnAmount",
-                                  "type": "uint256",
-                                  "value": "3806705089377441405"
-                                },
-                                {
-                                  "name": "dstReceiver",
-                                  "type": "address",
-                                  "value": "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF4448"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      })} 
-                      size="sm" 
-                      variant="outline"
-                      className="flex-1"
-                    >
-                      1inch Swap
-                    </Button>
-                    <Button 
-                      onClick={() => {
-                        console.log('🔥 AAVE DEBUG: Clicking Aave button');
-                        loadSampleSet('erc7730-aave-v2-lending-pool.json', {
-                        "txHash": "0xc0bd04d7e94542e58709f51879f64946ff4a744e1c37f5f920cea3d478e115d7",
-                        "methodCall": {
-                          "name": "repay",
-                          "signature": "repay(address,uint256,uint256,address)",
-                          "params": [
-                            {
-                              "name": "asset",
-                              "type": "address",
-                              "value": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
-                            },
-                            {
-                              "name": "amount",
-                              "type": "uint256",
-                              "value": "1238350000"
-                            },
-                            {
-                              "name": "rateMode",
-                              "type": "uint256",
-                              "value": "2"
-                            },
-                            {
-                              "name": "onBehalfOf",
-                              "type": "address",
-                              "value": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A"
-                            }
-                          ]
-                        },
-                        "addressesMeta": {
-                          "0xdAC17F958D2ee523a2206206994597C13D831ec7": {
-                            "contractAddress": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
-                            "contractName": "Tether USD",
-                            "tokenSymbol": "USDT",
-                            "decimals": 6,
-                            "type": "ERC20",
-                            "chainID": 1
-                          }
-                        }
-                      });
-                      }} 
-                      size="sm" 
-                      variant="outline"
-                      className="flex-1"
-                    >
-                      Aave Repay
-                    </Button>
-                    <Button 
-                      onClick={() => loadSampleSet(['erc7730-safe-wallet-enhanced.json', 'erc7730-usdc-mainnet.json'], {
-                        "txHash": "0x8e36953374f7b71fe4c20898c8ade628cf71d5d0303ec8ad368b254629db2985",
-                        "methodCall": {
-                          "name": "execTransaction",
-                          "signature": "execTransaction(address,uint256,bytes,uint8,uint256,uint256,uint256,address,address,bytes)",
-                          "params": [
-                            {
-                              "name": "to",
-                              "type": "address",
-                              "value": "0xA0b86a33E6441D52e5d6f83b7d68a80B6d3E97C7"
-                            },
-                            {
-                              "name": "value",
-                              "type": "uint256",
-                              "value": "0"
-                            },
-                            {
-                              "name": "data",
-                              "type": "bytes",
-                              "value": "0xa9059cbb0000000000000000000000008db97c7cece249c2b98bdc0226cc4c2a57bf44480000000000000000000000000000000000000000000000000000000002faf080",
-                              "valueDecoded": {
-                                "name": "transfer",
-                                "params": [
-                                  {
-                                    "name": "to",
-                                    "type": "address",
-                                    "value": "0x8db97C7cEcE249c2b98bDC0226Cc4C2A57BF4448"
-                                  },
-                                  {
-                                    "name": "value",
-                                    "type": "uint256",
-                                    "value": "50000000"
-                                  }
-                                ]
-                              }
-                            },
-                            {
-                              "name": "operation",
-                              "type": "uint8",
-                              "value": "0"
-                            },
-                            {
-                              "name": "safeTxGas",
-                              "type": "uint256",
-                              "value": "0"
-                            },
-                            {
-                              "name": "baseGas",
-                              "type": "uint256",
-                              "value": "0"
-                            },
-                            {
-                              "name": "gasPrice",
-                              "type": "uint256",
-                              "value": "0"
-                            },
-                            {
-                              "name": "gasToken",
-                              "type": "address",
-                              "value": "0x0000000000000000000000000000000000000000"
-                            },
-                            {
-                              "name": "refundReceiver",
-                              "type": "address",
-                              "value": "0x0000000000000000000000000000000000000000"
-                            },
-                            {
-                              "name": "signatures",
-                              "type": "bytes",
-                              "value": "0x000000000000000000000000f89a3799b90593317e0a1eb74164fbc1755a297a000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001"
-                            }
-                          ]
-                        },
-                        "addressesMeta": {
-                          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
-                            "contractAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-                            "contractName": "USD Coin",
-                            "tokenSymbol": "USDC",
-                            "decimals": 6,
-                            "type": "ERC20"
-                          }
-                        }
-                      })} 
-                      size="sm" 
-                      variant="outline"
-                      className="flex-1"
-                    >
-                      Safe + USDC
-                    </Button>
-                  </div>
-                  <div className="text-xs text-gray-500 text-center">
-                    Choose a sample set to load matching metadata + transaction data
+                    {sampleSets.length > 0 ? (
+                      sampleSets.map((sampleSet) => (
+                        <Button 
+                          key={sampleSet.id}
+                          onClick={() => loadSampleSet(sampleSet.id)} 
+                          size="sm" 
+                          variant="outline"
+                          className="flex-1"
+                        >
+                          {sampleSet.name}
+                        </Button>
+                      ))
+                    ) : (
+                      <div className="text-sm text-gray-500">
+                        Loading sample sets... (Check /samples/sample-sets.json)
+                      </div>
+                    )}
                   </div>
                 </div>
                 
@@ -1826,7 +1536,7 @@ const HardwareViewer = ({ initialTransactionData }: HardwareViewerProps = {}) =>
                     onChange={(e) => {
                       try {
                         const parsed = JSON.parse(e.target.value);
-                        setTransactionData(normalizeTransactionData(parsed));
+                        setTransactionData(parsed);
                       } catch (err) {
                         if (e.target.value === "") {
                           setTransactionData(null);
