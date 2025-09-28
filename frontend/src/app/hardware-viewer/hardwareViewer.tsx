@@ -725,6 +725,7 @@ const HardwareViewer = ({
 
   // Get the actual field value from decoded transaction data
   const getFieldValueFromTransaction = (path: string, format: string, field?: any): string => {
+    console.log(`Getting field value for path: ${path}, format: ${format}`);
     // Use nested transaction data if available in the field, otherwise use main transaction data
     const contextData = field?.nestedTransactionData || transactionData;
     
@@ -773,101 +774,39 @@ const HardwareViewer = ({
       
       if (contextData.methodCall && contextData.methodCall.params) {
         if (isDirectParam) {
-          // Direct parameter access for ERC7730 format
-          const param = contextData.methodCall.params.find((p: any) => p.name === pathParts[0]);
-          if (param) {
-            value = param;
+          // SIMPLE path resolution - just traverse the object structure
+          let current = contextData.methodCall.params.find((p: any) => p.name === pathParts[0]);
+          
+          for (let i = 1; i < pathParts.length && current; i++) {
+            const part = pathParts[i];
             
-            // Navigate through the path parts
-            for (let i = 1; i < pathParts.length; i++) {
-              const part = pathParts[i];
-              
-              if (!value) break;
-              
-              // Handle numeric array access (e.g., "0" for first element)
-              if (/^\d+$/.test(part)) {
-                const arrayIndex = parseInt(part);
-                
-                // If we have a component with an array value
-                if (value.value && Array.isArray(value.value)) {
-                  if (arrayIndex < value.value.length) {
-                    value = { value: value.value[arrayIndex] };
-                  } else {
-                    value = undefined;
-                    break;
-                  }
-                }
-                // If value itself is an array
-                else if (Array.isArray(value)) {
-                  if (arrayIndex < value.length) {
-                    value = value[arrayIndex];
-                  } else {
-                    value = undefined;
-                    break;
-                  }
-                } else {
-                  value = undefined;
-                  break;
-                }
-                continue;
-              }
-              
-              // Handle property access on nested structures
-              if (typeof value === 'object') {
-                // Check if we have components (for tuple parameters)
-                if (value.components && Array.isArray(value.components)) {
-                  const component = value.components.find((c: any) => c.name === part);
-                  if (component) {
-                    value = component;
-                    continue;
-                  }
-                }
-                
-                // Check if we have a .value property (this is the main case for Blur Exchange)
-                if (value.value !== undefined) {
-                  // If value.value is an object, try to access the property directly
-                  if (typeof value.value === 'object' && value.value !== null && !Array.isArray(value.value)) {
-                    if (value.value[part] !== undefined) {
-                      // For direct property access, wrap in value object for consistency
-                      const nextValue = value.value[part];
-                      if (Array.isArray(nextValue)) {
-                        value = { value: nextValue };
-                      } else {
-                        value = nextValue;
-                      }
-                      continue;
-                    }
-                  }
-                  // If value.value is an array, keep the current structure for next iteration
-                  else if (Array.isArray(value.value)) {
-                    // Keep value as is, next part should be numeric
-                    continue;
-                  }
-                }
-                
-                // Direct property access (fallback)
-                if (value[part] !== undefined) {
-                  value = value[part];
-                  continue;
-                }
-                
-                // If nothing worked, set to undefined and break
-                value = undefined;
-                break;
+            // Numeric index - find in components array
+            if (/^\d+$/.test(part)) {
+              const idx = parseInt(part);
+              if (current.components && current.components[idx]) {
+                current = current.components[idx];
               } else {
-                value = undefined;
-                break;
+                current = null;
               }
             }
-            
-            // Extract the final value
-            if (value && typeof value === 'object' && 'value' in value) {
-              value = value.value;
+            // Property name - find in components by name
+            else {
+              if (current.components) {
+                current = current.components.find((c: any) => c.name === part);
+              } else {
+                // If no components but we have a value and this is the last part, we're done
+                if (i === pathParts.length - 1 && current.name === part && current.value !== undefined) {
+                  // We found the field we're looking for
+                  break;
+                } else {
+                  current = null;
+                }
+              }
             }
-            
-          } else {
-            value = undefined;
           }
+          
+          value = current?.value;
+          console.log(`Final value resolved for ${path}:`, value);
         } else {
           // Legacy path format - try inner decoded transaction first for token transfers
           const dataParam = contextData.methodCall.params.find((p: any) => p.name === 'data' && p.valueDecoded);
@@ -917,6 +856,7 @@ const HardwareViewer = ({
       }
 
       if (value !== undefined) {
+        console.log(`Formatting value for ${path}: ${value} with format: ${format}`);
         // Format the value based on the format type
         switch (format) {
           case "tokenAmount":
@@ -985,7 +925,9 @@ const HardwareViewer = ({
       console.error('Error processing path:', path, error);
     }
 
-    return `Mock ${format} value`;
+    const mockValue = `Mock ${format} value`;
+    console.log(`Returning mock value for ${path}: ${mockValue}`);
+    return mockValue;
   };
 
   const getOperationForViewing = (): Operation | null => {
@@ -1209,10 +1151,12 @@ const HardwareViewer = ({
       let displayValue;
       if (path === "separator") {
         displayValue = "";
-      } else if (activeTab === "advanced" && transactionData) {
+      } else if (transactionData) {
         displayValue = getFieldValueFromTransaction(path, format || "raw", displayItem);
+        console.log(`${label}: path=${path}, displayValue=${displayValue}`);
       } else {
         displayValue = hasFormat && format ? `Mock ${format} value` : "displayValue";
+        console.log(`${label}: using mock because no transactionData`);
       }
 
       screen.push({
@@ -1237,116 +1181,6 @@ const HardwareViewer = ({
     // Get all operations for this transaction (including nested)
     const allOperations = activeTab === "advanced" && transactionData ? getAllOperationsForTransaction(transactionData) : [];
     
-    // Show transaction operations for ANY transaction that has them
-    if (activeTab === "advanced" && transactionData?.transfers && transactionData.transfers.length > 0) {
-      // Group operations by type
-      const operationsByType = transactionData.transfers.reduce((acc, operation) => {
-        const type = operation.type || "Unknown";
-        if (!acc[type]) acc[type] = [];
-        acc[type].push(operation);
-        return acc;
-      }, {} as Record<string, typeof transactionData.transfers>);
-      
-      // Get the type with most operations (or prioritize by tokenId presence)
-      const operationTypes = Object.keys(operationsByType);
-      const primaryType = operationTypes.reduce((primary, type) => {
-        const currentTypeOps = operationsByType[type];
-        const primaryTypeOps = operationsByType[primary] || [];
-        
-        // Prioritize types with tokenId (NFTs) or larger count
-        const currentHasTokenId = currentTypeOps.some(op => op.tokenId);
-        const primaryHasTokenId = primaryTypeOps.some(op => op.tokenId);
-        
-        if (currentHasTokenId && !primaryHasTokenId) return type;
-        if (!currentHasTokenId && primaryHasTokenId) return primary;
-        
-        return currentTypeOps.length > primaryTypeOps.length ? type : primary;
-      }, operationTypes[0]);
-      
-      const primaryOperations = operationsByType[primaryType] || [];
-      const otherOperations = transactionData.transfers.filter(op => op.type !== primaryType);
-      const screens = [];
-      
-      // Add overview screen
-      screens.push([
-        { label: "Transaction", isActive: true, displayValue: operation?.intent || transactionData.methodCall?.name || "Transaction" },
-        { label: `${primaryType} Operations`, isActive: true, displayValue: primaryOperations.length.toString() },
-        { label: "Token", isActive: true, displayValue: primaryOperations[0]?.name || "Unknown" },
-        { label: "Symbol", isActive: true, displayValue: primaryOperations[0]?.symbol || "Unknown" }
-      ]);
-      
-      // Add ONE SCREEN for EACH individual operation
-      primaryOperations.forEach((op, index) => {
-        const fields = [
-          { label: "Operation", isActive: true, displayValue: `${index + 1} of ${primaryOperations.length}` }
-        ];
-        
-        // Add token ID if available
-        if (op.tokenId) {
-          fields.push({ label: "Token ID", isActive: true, displayValue: op.tokenId });
-        }
-        
-        // Add amount/price if available
-        if (op.amount) {
-          fields.push({ label: "Amount", isActive: true, displayValue: op.amount });
-        }
-        
-        // Add from/to addresses
-        fields.push(
-          { label: "From", isActive: true, displayValue: op.from.length > 20 ? `${op.from.slice(0, 6)}...${op.from.slice(-4)}` : op.from },
-          { label: "To", isActive: true, displayValue: op.to.length > 20 ? `${op.to.slice(0, 6)}...${op.to.slice(-4)}` : op.to }
-        );
-        
-        screens.push(fields);
-      });
-      
-      const operationMeta = getOperationMetadata() || {
-        operationName: `${primaryOperations.length} ${primaryType} Operations`,
-        metadata: { owner: primaryOperations[0]?.name || "Unknown" }
-      };
-      
-      const allScreens = operationScreens(screens, operationMeta);
-      
-      return (
-        <div className="mx-auto flex max-w-96 flex-col">
-          <div className="text-center text-sm text-gray-600 mb-4">
-            {primaryOperations.length} {primaryType} Operations
-            {otherOperations.length > 0 && (
-              <span className="text-xs block">(+ {otherOperations.length} other operations)</span>
-            )}
-          </div>
-          <Carousel setApi={setApi}>
-            <CarouselContent>
-              {allScreens.map((screen, index) => (
-                <CarouselItem
-                  key={index}
-                  className="flex w-full items-center justify-center"
-                >
-                  <Device.Frame>{screen}</Device.Frame>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="hidden md:flex" />
-            <CarouselNext className="hidden md:flex" />
-          </Carousel>
-          <div className="mx-auto flex flex-row items-center gap-2 p-2 max-w-full overflow-x-auto">
-            <div className="flex flex-row items-center gap-2 min-w-0">
-              {allScreens.map((_, index) => (
-                <div
-                  key={"carousel-thumbnail-" + index}
-                  className={cn("flex-shrink-0 w-fit rounded p-1 ring-primary hover:ring-2 cursor-pointer", {
-                    "ring-2": index === selected,
-                  })}
-                  onClick={() => api?.scrollTo(index)}
-                >
-                  <Device.Frame size="small">{index + 1}</Device.Frame>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      );
-    }
     
     // For Safe transactions with nested operations, show the proper flow
     if (allOperations.length > 1) {
@@ -1399,18 +1233,20 @@ const HardwareViewer = ({
                 <CarouselPrevious className="hidden md:flex" />
                 <CarouselNext className="hidden md:flex" />
               </Carousel>
-              <div className="mx-auto flex flex-row items-center gap-4 p-2">
-                {allScreens.map((_, index) => (
-                  <div
-                    key={"carousel-thumbnail-" + index}
-                    className={cn("w-fit rounded p-1 ring-primary hover:ring-2 cursor-pointer", {
-                      "ring-2": index === selected,
-                    })}
-                    onClick={() => api?.scrollTo(index)}
-                  >
-                    <Device.Frame size="small">{index + 1}</Device.Frame>
-                  </div>
-                ))}
+              <div className="mx-auto flex flex-row items-center gap-2 p-2 max-w-full overflow-x-auto">
+                <div className="flex flex-row items-center gap-2 min-w-0">
+                  {allScreens.map((_, index) => (
+                    <div
+                      key={"carousel-thumbnail-" + index}
+                      className={cn("flex-shrink-0 w-fit rounded p-1 ring-primary hover:ring-2 cursor-pointer", {
+                        "ring-2": index === selected,
+                      })}
+                      onClick={() => api?.scrollTo(index)}
+                    >
+                      <Device.Frame size="small">{index + 1}</Device.Frame>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           );
@@ -1445,18 +1281,20 @@ const HardwareViewer = ({
             <CarouselPrevious className="hidden md:flex" />
             <CarouselNext className="hidden md:flex" />
           </Carousel>
-          <div className="mx-auto flex flex-row items-center gap-4 p-2">
-            {fullOperationScreens.map((_, index) => (
-              <div
-                key={"carousel-thumbnail-" + index}
-                className={cn("w-fit rounded p-1 ring-primary hover:ring-2 cursor-pointer", {
-                  "ring-2": index === selected,
-                })}
-                onClick={() => api?.scrollTo(index)}
-              >
-                <Device.Frame size="small">{index + 1}</Device.Frame>
-              </div>
-            ))}
+          <div className="mx-auto flex flex-row items-center gap-2 p-2 max-w-full overflow-x-auto">
+            <div className="flex flex-row items-center gap-2 min-w-0">
+              {fullOperationScreens.map((_, index) => (
+                <div
+                  key={"carousel-thumbnail-" + index}
+                  className={cn("flex-shrink-0 w-fit rounded p-1 ring-primary hover:ring-2 cursor-pointer", {
+                    "ring-2": index === selected,
+                  })}
+                  onClick={() => api?.scrollTo(index)}
+                >
+                  <Device.Frame size="small">{index + 1}</Device.Frame>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
         );
@@ -1502,18 +1340,20 @@ const HardwareViewer = ({
           <CarouselPrevious className="hidden md:flex" />
           <CarouselNext className="hidden md:flex" />
         </Carousel>
-        <div className="mx-auto flex flex-row items-center gap-4 p-2">
-          {fullOperationScreens.map((_, index) => (
-            <div
-              key={"carousel-thumbnail-" + index}
-              className={cn("w-fit rounded p-1 ring-primary hover:ring-2 cursor-pointer", {
-                "ring-2": index === selected,
-              })}
-              onClick={() => api?.scrollTo(index)}
-            >
-              <Device.Frame size="small">{index + 1}</Device.Frame>
-            </div>
-          ))}
+        <div className="mx-auto flex flex-row items-center gap-2 p-2 max-w-full overflow-x-auto">
+          <div className="flex flex-row items-center gap-2 min-w-0">
+            {fullOperationScreens.map((_, index) => (
+              <div
+                key={"carousel-thumbnail-" + index}
+                className={cn("flex-shrink-0 w-fit rounded p-1 ring-primary hover:ring-2 cursor-pointer", {
+                  "ring-2": index === selected,
+                })}
+                onClick={() => api?.scrollTo(index)}
+              >
+                <Device.Frame size="small">{index + 1}</Device.Frame>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );

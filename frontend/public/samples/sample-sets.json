@@ -1,0 +1,208 @@
+{
+  "sampleSets": [
+    {
+      "id": "aave-repay",
+      "name": "Aave Repay",
+      "metadataFiles": ["erc7730-aave-v2-lending-pool.json"],
+      "transactionData": {
+        "txHash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+        "methodCall": {
+          "name": "repay",
+          "params": [
+            {
+              "name": "asset",
+              "type": "address",
+              "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            },
+            {
+              "name": "amount",
+              "type": "uint256",
+              "value": "1000000000"
+            },
+            {
+              "name": "rateMode",
+              "type": "uint256",
+              "value": "2"
+            },
+            {
+              "name": "onBehalfOf",
+              "type": "address",
+              "value": "0x742d35Cc6634C0532925a3b8D591D3d5F88cE442"
+            }
+          ]
+        },
+        "transfers": [],
+        "addressesMeta": {
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
+            "contractAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "contractName": "USD Coin",
+            "tokenSymbol": "USDC",
+            "decimals": 6,
+            "type": "ERC20"
+          }
+        }
+      }
+    },
+    {
+      "id": "safe-usdc",
+      "name": "Safe USDC Transfer",
+      "metadataFiles": ["erc7730-safe-wallet-enhanced.json", "erc7730-usdc-mainnet.json"],
+      "transactionData": {
+        "txHash": "0x22a244794f155ce4a5765588353cf82dfc842c33ee3ed98e95ef488f6964f4fb",
+        "methodCall": {
+          "name": "execTransaction",
+          "params": [
+            {
+              "name": "to",
+              "type": "address",
+              "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            },
+            {
+              "name": "value",
+              "type": "uint256",
+              "value": "0"
+            },
+            {
+              "name": "data",
+              "type": "bytes",
+              "value": "0xa9059cbb000000000000000000000000a1371748d65baef4509a3c067b3fe3a1b79183ae000000000000000000000000000000000000000000000000000000001f143c37",
+              "valueDecoded": {
+                "name": "transfer",
+                "params": [
+                  {
+                    "name": "to",
+                    "type": "address",
+                    "value": "0xA1371748D65baEF4509A3c067b3fe3a1b79183aE"
+                  },
+                  {
+                    "name": "value",
+                    "type": "uint256",
+                    "value": "521419831"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "operation",
+              "type": "uint8",
+              "value": "0"
+            },
+            {
+              "name": "safeTxGas",
+              "type": "uint256",
+              "value": "0"
+            },
+            {
+              "name": "baseGas",
+              "type": "uint256",
+              "value": "0"
+            },
+            {
+              "name": "gasPrice",
+              "type": "uint256",
+              "value": "0"
+            },
+            {
+              "name": "gasToken",
+              "type": "address",
+              "value": "0x0000000000000000000000000000000000000000"
+            },
+            {
+              "name": "refundReceiver",
+              "type": "address",
+              "value": "0x0000000000000000000000000000000000000000"
+            },
+            {
+              "name": "signatures",
+              "type": "bytes",
+              "value": "0x000000000000000000000000049bdd0528e2d5f2e579e1bdd133daed7c935dfc000000000000000000000000000000000000000000000000000000000000000001be6195185c0afdda36c5ccc9951d628873f0c2546d68edd266c4a6142ef05ed30be88a934eac08bb8d86705cb7a339d61c2342fdd7607806c488e0055a0232e51c"
+            }
+          ]
+        },
+        "transfers": [],
+        "addressesMeta": {}
+      }
+    },
+    {
+      "id": "oneinch",
+      "name": "1inch Swap",
+      "metadataFiles": ["erc7730-1inch-aggregation-router-v6.json"],
+      "transactionData": {
+        "txHash": "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890",
+        "methodCall": {
+          "name": "swap",
+          "params": [
+            {
+              "name": "executor",
+              "type": "address",
+              "value": "0x1111111254eeb25477b68fb85ed929f73a960582"
+            },
+            {
+              "name": "desc",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "srcToken",
+                  "type": "address",
+                  "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+                },
+                {
+                  "name": "dstToken", 
+                  "type": "address",
+                  "value": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+                },
+                {
+                  "name": "srcReceiver",
+                  "type": "address", 
+                  "value": "0x1111111254eeb25477b68fb85ed929f73a960582"
+                },
+                {
+                  "name": "dstReceiver",
+                  "type": "address",
+                  "value": "0x742d35Cc6634C0532925a3b8D591D3d5F88cE442"
+                },
+                {
+                  "name": "amount",
+                  "type": "uint256",
+                  "value": "1000000000"
+                },
+                {
+                  "name": "minReturnAmount",
+                  "type": "uint256",
+                  "value": "380000000000000000"
+                }
+              ]
+            },
+            {
+              "name": "permit",
+              "type": "bytes",
+              "value": "0x"
+            },
+            {
+              "name": "data",
+              "type": "bytes",
+              "value": "0x0000000000000000000000000000000000000000000000000000000000000000"
+            }
+          ]
+        },
+        "transfers": [],
+        "addressesMeta": {
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
+            "contractAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "contractName": "USD Coin",
+            "tokenSymbol": "USDC",
+            "decimals": 6,
+            "type": "ERC20"
+          },
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
+            "contractAddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "contractName": "Wrapped Ether",
+            "tokenSymbol": "WETH",
+            "decimals": 18,
+            "type": "ERC20"
+          }
+        }
+      }
+    }
+  ]
+}
