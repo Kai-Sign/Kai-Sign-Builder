@@ -1,0 +1,147 @@
+{
+  "txHash": "0xfe429c6acf3c372270374122fe922282311bea31e09419f7fb167c6d8912372d",
+  "txType": "contract interaction",
+  "fromAddress": "0xc88378f0d994b23d4b7770e8Ac416a2565270FFf",
+  "toAddress": "0x6131B5fae19EA4f9D964eAc0408E4408b66337b5",
+  "contractName": null,
+  "contractType": "OTHER",
+  "methodCall": {
+    "name": "swap",
+    "type": "function",
+    "signature": "swap((address,address,bytes,(address,address,address[],uint256[],address[],uint256[],address,uint256,uint256,uint256,bytes),bytes))",
+    "params": [
+      {
+        "name": "execution",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "callTarget",
+            "type": "address",
+            "value": "0xf081470f5C6FBCCF48cC4e5B82Dd926409DcdD67"
+          },
+          {
+            "name": "approveTarget",
+            "type": "address",
+            "value": "0x0000000000000000000000000000000000000000"
+          },
+          {
+            "name": "targetData",
+            "type": "bytes",
+            "value": "0x000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000c0000000000000000000000000c71b5f631354be6853efe9c3ab6b9590f8302e81000000000000000000000000eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee000000000000000000000000c88378f0d994b23d4b7770e8ac416a2565270fff0000000000000000000000000000000000000000000000000000000066d5c85d00000000000000000000000000000000000000000000000000000000000002800000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000004063407a490000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000e0000000000000000000000000f081470f5c6fbccf48cc4e5b82dd926409dcdd67000000000000000000000000a3c61c2f81519953112b78a603353f4360a33a72000000000000000000000000c71b5f631354be6853efe9c3ab6b9590f8302e81000000000000000000000000c02aaa39b223fe8d0a0e5c4f27ead9083c756cc200000000000000000000000000000000000000000000000e18398e760190000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000002000000000000000000000001bb383c85e000000000000000001a6afed982813e2"
+          },
+          {
+            "name": "desc",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "srcToken",
+                "type": "address",
+                "value": "0xC71B5F631354BE6853eFe9C3Ab6b9590F8302e81"
+              },
+              {
+                "name": "dstToken",
+                "type": "address",
+                "value": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+              },
+              {
+                "name": "srcReceivers",
+                "type": "address[]",
+                "value": [
+                  "0xf081470f5C6FBCCF48cC4e5B82Dd926409DcdD67"
+                ]
+              },
+              {
+                "name": "srcAmounts",
+                "type": "uint256[]",
+                "value": [
+                  "260000000000000000000"
+                ]
+              },
+              {
+                "name": "feeReceivers",
+                "type": "address[]",
+                "value": []
+              },
+              {
+                "name": "feeAmounts",
+                "type": "uint256[]",
+                "value": []
+              },
+              {
+                "name": "dstReceiver",
+                "type": "address",
+                "value": "0xc88378f0d994b23d4b7770e8Ac416a2565270FFf"
+              },
+              {
+                "name": "amount",
+                "type": "uint256",
+                "value": "260000000000000000000"
+              },
+              {
+                "name": "minReturnAmount",
+                "type": "uint256",
+                "value": "118380995790936295"
+              },
+              {
+                "name": "flags",
+                "type": "uint256",
+                "value": "0"
+              },
+              {
+                "name": "permit",
+                "type": "bytes",
+                "value": "0x"
+              }
+            ]
+          },
+          {
+            "name": "clientData",
+            "type": "bytes",
+            "value": "0x7b22536f75726365223a226b7962657273776170222c22416d6f756e74496e555344223a223239382e333530363730323830313432222c22416d6f756e744f7574555344223a223239382e3437383235383931303236383935222c22526566657272616c223a22222c22466c616773223a302c22416d6f756e744f7574223a22313138393735383735313636373730313436222c2254696d657374616d70223a313732353238353239342c22496e74656772697479496e666f223a7b224b65794944223a2231222c225369676e6174757265223a226471623579624b55457733564535536c5a376d4c705959386231346741526233502b6a4b4e7a496474434e4361795258452f592f614d534d6d77317147413875664a6143336c412f7432346b537952506b6e314c337473555272707a724d54563256475a5a6d39464266455a3461673030752f6464554d5051356671394865394e2f6b6c356665357859615937365165576543377638462f6b3249465455667663374d4341715a304d366d714c3879625941386e4b597a397035694f6d7466316e6b315741654f7a4d5275794942667a776551334759706b7946464f474b6a657173375059554c514e7836327549424b462f56776d45334275657343463362336236725a72354f4b4f303941445179586b73487555366844645576736e3476686e4c366f4449676867486452596d53354d68643655514d52306c3275744f6262465357614a506c396e32506e31456c465747655545673d3d227d7d"
+          }
+        ]
+      }
+    ]
+  },
+  "transfers": [
+    {
+      "type": "ERC20",
+      "name": "Polyhedra Network",
+      "symbol": "ZK",
+      "address": "0xC71B5F631354BE6853eFe9C3Ab6b9590F8302e81",
+      "amount": "260",
+      "to": "0xf081470f5C6FBCCF48cC4e5B82Dd926409DcdD67",
+      "from": "0xc88378f0d994b23d4b7770e8Ac416a2565270FFf"
+    },
+    {
+      "from": "0xf081470f5C6FBCCF48cC4e5B82Dd926409DcdD67",
+      "to": "0xc88378f0d994b23d4b7770e8Ac416a2565270FFf",
+      "type": "native",
+      "amount": "0.11897587516677015",
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+    }
+  ],
+  "addressesMeta": {
+    "0xC71B5F631354BE6853eFe9C3Ab6b9590F8302e81": {
+      "contractAddress": "0xC71B5F631354BE6853eFe9C3Ab6b9590F8302e81",
+      "contractName": "Polyhedra Network",
+      "tokenSymbol": "ZK",
+      "decimals": 18,
+      "type": "ERC20"
+    },
+    "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
+      "contractAddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      "contractName": "Wrapped Ether",
+      "tokenSymbol": "WETH",
+      "decimals": 18,
+      "type": "ERC20"
+    },
+    "0xc88378f0d994b23d4b7770e8Ac416a2565270FFf": {
+      "contractAddress": "0xc88378f0d994b23d4b7770e8Ac416a2565270FFf",
+      "contractName": "User Wallet",
+      "type": "EOA"
+    }
+  }
+}

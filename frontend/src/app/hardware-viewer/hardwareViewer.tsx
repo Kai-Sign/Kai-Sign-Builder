@@ -725,7 +725,6 @@ const HardwareViewer = ({
 
   // Get the actual field value from decoded transaction data
   const getFieldValueFromTransaction = (path: string, format: string, field?: any): string => {
-    console.log(`Getting field value for path: ${path}, format: ${format}`);
     // Use nested transaction data if available in the field, otherwise use main transaction data
     const contextData = field?.nestedTransactionData || transactionData;
     
@@ -774,39 +773,50 @@ const HardwareViewer = ({
       
       if (contextData.methodCall && contextData.methodCall.params) {
         if (isDirectParam) {
-          // SIMPLE path resolution - just traverse the object structure
+          // WORKING CLI ALGORITHM
           let current = contextData.methodCall.params.find((p: any) => p.name === pathParts[0]);
           
           for (let i = 1; i < pathParts.length && current; i++) {
             const part = pathParts[i];
             
-            // Numeric index - find in components array
+            // Numeric index - find in components array or value array
             if (/^\d+$/.test(part)) {
               const idx = parseInt(part);
-              if (current.components && current.components[idx]) {
+              // Try value array first (for tuple[] types)
+              if (current.value && Array.isArray(current.value) && idx < current.value.length) {
+                current = { value: current.value[idx] };
+              }
+              // Fall back to components array
+              else if (current.components && current.components[idx]) {
                 current = current.components[idx];
               } else {
                 current = null;
               }
             }
-            // Property name - find in components by name
+            // Property name - find in components by name or value object by property
             else {
               if (current.components) {
-                current = current.components.find((c: any) => c.name === part);
-              } else {
-                // If no components but we have a value and this is the last part, we're done
-                if (i === pathParts.length - 1 && current.name === part && current.value !== undefined) {
-                  // We found the field we're looking for
-                  break;
+                const found = current.components.find((c: any) => c.name === part);
+                if (found) {
+                  current = found;
                 } else {
                   current = null;
                 }
+              }
+              // Try to access property in value object
+              else if (current.value && typeof current.value === 'object' && current.value[part] !== undefined) {
+                current = { value: current.value[part] };
+              }
+              // If no components but we have a value and this is the last part, we're done
+              else if (i === pathParts.length - 1 && current.name === part && current.value !== undefined) {
+                break;
+              } else {
+                current = null;
               }
             }
           }
           
           value = current?.value;
-          console.log(`Final value resolved for ${path}:`, value);
         } else {
           // Legacy path format - try inner decoded transaction first for token transfers
           const dataParam = contextData.methodCall.params.find((p: any) => p.name === 'data' && p.valueDecoded);
@@ -856,7 +866,6 @@ const HardwareViewer = ({
       }
 
       if (value !== undefined) {
-        console.log(`Formatting value for ${path}: ${value} with format: ${format}`);
         // Format the value based on the format type
         switch (format) {
           case "tokenAmount":
@@ -890,6 +899,11 @@ const HardwareViewer = ({
           case "addressName":
             const addressValue = value.toString();
             if (addressValue.startsWith('0x') && addressValue.length === 42) {
+              // Check if we have metadata for this address
+              if (transactionData?.addressesMeta && transactionData.addressesMeta[addressValue]) {
+                const addressMeta = transactionData.addressesMeta[addressValue];
+                return addressMeta.contractName || `${addressValue.slice(0, 6)}...${addressValue.slice(-4)}`;
+              }
               return `${addressValue.slice(0, 6)}...${addressValue.slice(-4)}`;
             }
             return addressValue;
@@ -925,9 +939,7 @@ const HardwareViewer = ({
       console.error('Error processing path:', path, error);
     }
 
-    const mockValue = `Mock ${format} value`;
-    console.log(`Returning mock value for ${path}: ${mockValue}`);
-    return mockValue;
+    return `Mock ${format} value`;
   };
 
   const getOperationForViewing = (): Operation | null => {
