@@ -1,0 +1,136 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x6131B5fae19EA4f9D964eAc0408E4408b66337b5"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "swap",
+          "inputs": [
+            {
+              "name": "execution",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "callTarget",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTarget",
+                  "type": "address"
+                },
+                {
+                  "name": "targetData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "desc",
+                  "type": "tuple",
+                  "components": [
+                    {
+                      "name": "srcToken",
+                      "type": "address"
+                    },
+                    {
+                      "name": "dstToken",
+                      "type": "address"
+                    },
+                    {
+                      "name": "srcReceivers",
+                      "type": "address[]"
+                    },
+                    {
+                      "name": "srcAmounts",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "name": "feeReceivers",
+                      "type": "address[]"
+                    },
+                    {
+                      "name": "feeAmounts",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "name": "dstReceiver",
+                      "type": "address"
+                    },
+                    {
+                      "name": "amount",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "minReturnAmount",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "flags",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "permit",
+                      "type": "bytes"
+                    }
+                  ]
+                },
+                {
+                  "name": "clientData",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "KyberSwap",
+    "info": {
+      "legalName": "KyberSwap Meta Aggregation Router v2",
+      "url": "https://kyberswap.com"
+    }
+  },
+  "display": {
+    "formats": {
+      "swap": {
+        "intent": "Swap Tokens",
+        "fields": [
+          {
+            "label": "From Token",
+            "format": "addressName",
+            "path": "#.execution.desc.srcToken"
+          },
+          {
+            "label": "To Token",
+            "format": "addressName",
+            "path": "#.execution.desc.dstToken"
+          },
+          {
+            "label": "Amount",
+            "format": "amount",
+            "path": "#.execution.desc.amount"
+          },
+          {
+            "label": "Min Return",
+            "format": "amount",
+            "path": "#.execution.desc.minReturnAmount"
+          },
+          {
+            "label": "Receiver",
+            "format": "addressName",
+            "path": "#.execution.desc.dstReceiver"
+          }
+        ]
+      }
+    }
+  }
+}
