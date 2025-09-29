@@ -723,223 +723,193 @@ const HardwareViewer = ({
     }
   }, [transactionData, selectedMetadataId, metadataEntries]);
 
-  // Get the actual field value from decoded transaction data
-  const getFieldValueFromTransaction = (path: string, format: string, field?: any): string => {
-    // Use nested transaction data if available in the field, otherwise use main transaction data
-    const contextData = field?.nestedTransactionData || transactionData;
+  // UNIVERSAL PATH RESOLVER - WORKS AT ANY NESTING DEPTH
+  const resolveValueAtPath = (data: any, path: string): any => {
+    if (!data || !path) return undefined;
     
-    if (!contextData) {
+    // Handle ERC7730 path format: "#.fieldName" means direct parameter access
+    let cleanPath = path;
+    if (path.startsWith('#.')) {
+      cleanPath = path.substring(2); // Remove "#." prefix
+    }
+    
+    if (path === "separator") return "";
+    
+    const pathParts = cleanPath.split('.');
+    let current = data;
+    
+    // Navigate through the path
+    for (const part of pathParts) {
+      if (!current) return undefined;
+      
+      // If current is a methodCall object, look in params first
+      if (current.methodCall && current.methodCall.params) {
+        const param = current.methodCall.params.find((p: any) => p.name === part);
+        if (param) {
+          current = param.value !== undefined ? param.value : param;
+          continue;
+        }
+      }
+      
+      // If current has params array, search it
+      if (current.params && Array.isArray(current.params)) {
+        const param = current.params.find((p: any) => p.name === part);
+        if (param) {
+          current = param.value !== undefined ? param.value : param;
+          continue;
+        }
+      }
+      
+      // Numeric index access
+      if (/^\d+$/.test(part)) {
+        const idx = parseInt(part);
+        if (Array.isArray(current) && idx < current.length) {
+          current = current[idx];
+          continue;
+        }
+        if (current.components && current.components[idx]) {
+          current = current.components[idx];
+          continue;
+        }
+        if (current.value && Array.isArray(current.value) && idx < current.value.length) {
+          current = current.value[idx];
+          continue;
+        }
+      }
+      
+      // Property access by name
+      if (current.components) {
+        const found = current.components.find((c: any) => c.name === part);
+        if (found) {
+          current = found.value !== undefined ? found.value : found;
+          continue;
+        }
+      }
+      
+      // Direct property access
+      if (current[part] !== undefined) {
+        current = current[part];
+        continue;
+      }
+      
+      // If we have a value object, try to access property in it
+      if (current.value && typeof current.value === 'object' && current.value[part] !== undefined) {
+        current = current.value[part];
+        continue;
+      }
+      
+      // Path not found
+      return undefined;
+    }
+    
+    // Return the final value, extracting from wrapper if needed
+    return current && current.value !== undefined ? current.value : current;
+  };
+
+  // GENERIC FIELD VALUE EXTRACTION WITH CONTEXT SUPPORT
+  const getFieldValueFromTransaction = (path: string, format: string, field?: any): string => {
+    if (!transactionData) {
       return `Mock ${format} value`;
     }
     
-    // Check if this field should use nested transaction context
-    const useNestedContext = field && field.useNestedContext;
-    const hasNestedTransactionData = field && field.nestedTransactionData;
+    // Determine the context data to use
+    let contextData = transactionData;
     
-    if (useNestedContext && !hasNestedTransactionData) {
-      // Find the first transfer operation in nested data
-      const dataParam = transactionData.methodCall?.params?.find((p: any) => p.name === 'data' && p.valueDecoded);
-      if (dataParam?.valueDecoded?.params) {
-        const transactionsParam = dataParam.valueDecoded.params.find((p: any) => p.name === 'transactions');
-        if (transactionsParam?.value && Array.isArray(transactionsParam.value)) {
-          // Find the first transaction with a transfer
-          for (const txItem of transactionsParam.value) {
-            if (txItem?.data?.valueDecoded?.name === 'transfer') {
-              contextData = {
-                methodCall: {
-                  name: 'transfer',
-                  params: txItem.data.valueDecoded.params
-                }
-              };
-              break;
-            }
-          }
-        }
-      }
+    // If field has specific function call context, use that
+    if (field?.functionCall) {
+      contextData = { methodCall: field.functionCall };
     }
-
-    try {
-      // Handle ERC7730 path format: "#.fieldName" means direct parameter access
-      let cleanPath = path;
-      let isDirectParam = false;
-      
-      if (path.startsWith('#.')) {
-        cleanPath = path.substring(2); // Remove "#." prefix
-        isDirectParam = true;
-      }
-      
-      const pathParts = cleanPath.split('.');
-      let value: any = contextData;
-      
-      if (contextData.methodCall && contextData.methodCall.params) {
-        if (isDirectParam) {
-          // WORKING CLI ALGORITHM
-          let current = contextData.methodCall.params.find((p: any) => p.name === pathParts[0]);
-          
-          for (let i = 1; i < pathParts.length && current; i++) {
-            const part = pathParts[i];
-            
-            // Numeric index - find in components array or value array
-            if (/^\d+$/.test(part)) {
-              const idx = parseInt(part);
-              // Try value array first (for tuple[] types)
-              if (current.value && Array.isArray(current.value) && idx < current.value.length) {
-                current = { value: current.value[idx] };
-              }
-              // Fall back to components array
-              else if (current.components && current.components[idx]) {
-                current = current.components[idx];
-              } else {
-                current = null;
-              }
-            }
-            // Property name - find in components by name or value object by property
-            else {
-              if (current.components) {
-                const found = current.components.find((c: any) => c.name === part);
-                if (found) {
-                  current = found;
-                } else {
-                  current = null;
-                }
-              }
-              // Try to access property in value object
-              else if (current.value && typeof current.value === 'object' && current.value[part] !== undefined) {
-                current = { value: current.value[part] };
-              }
-              // If no components but we have a value and this is the last part, we're done
-              else if (i === pathParts.length - 1 && current.name === part && current.value !== undefined) {
-                break;
-              } else {
-                current = null;
-              }
-            }
-          }
-          
-          value = current?.value;
-        } else {
-          // Legacy path format - try inner decoded transaction first for token transfers
-          const dataParam = contextData.methodCall.params.find((p: any) => p.name === 'data' && p.valueDecoded);
-          
-          if (dataParam && dataParam.valueDecoded && dataParam.valueDecoded.params) {
-            // First try to find the parameter in the inner decoded transaction
-            const innerParam = dataParam.valueDecoded.params.find((p: any) => p.name === pathParts[0]);
-            if (innerParam) {
-              value = innerParam.value;
-              
-              // Navigate through any remaining path parts
-              for (let i = 1; i < pathParts.length; i++) {
-                const part = pathParts[i];
-                if (value && typeof value === 'object' && part) {
-                  if (value[part] !== undefined) {
-                    value = value[part];
-                  } else {
-                    value = undefined;
-                    break;
-                  }
-                } else {
-                  value = undefined;
-                  break;
-                }
-              }
-            } else {
-              // Fall back to outer transaction parameters
-              const rootParam = contextData.methodCall.params.find((p: any) => p.name === pathParts[0]);
-              if (rootParam) {
-                value = rootParam.value || rootParam;
-              } else {
-                value = undefined;
-              }
-            }
-          } else {
-            // No inner decoded transaction, use outer parameters
-            const rootParam = contextData.methodCall.params.find((p: any) => p.name === pathParts[0]);
-            if (rootParam) {
-              value = rootParam.value || rootParam;
-            } else {
-              value = undefined;
-            }
-          }
-        }
-      } else {
-        value = undefined;
-      }
-
-      if (value !== undefined) {
-        // Format the value based on the format type
-        switch (format) {
-          case "tokenAmount":
-            const rawValue = value.toString();
-            
-            // For ETH (0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE), format as ETH
-            if (field?.params?.tokenPath === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
-              const ethValue = (parseInt(rawValue) / Math.pow(10, 18)).toString();
-              return `${ethValue} ETH`;
-            }
-            
-            // If field has tokenPath, find matching metadata with token info
-            if (field?.params?.tokenPath) {
-              const tokenAddress = field.params.tokenPath;
-              
-              const tokenMetadata = metadataEntries.find(entry => 
-                entry.metadata.context?.contract?.deployments?.some(dep => 
-                  dep.address === tokenAddress
-                )
-              );
-              
-              if (tokenMetadata?.metadata?.metadata?.token?.decimals) {
-                const decimals = tokenMetadata.metadata.metadata.token.decimals;
-                const ticker = tokenMetadata.metadata.metadata.token.ticker;
-                const formattedAmount = (parseInt(rawValue) / Math.pow(10, decimals)).toString();
-                return `${formattedAmount} ${ticker}`;
-              }
-            }
-            
-            return rawValue;
-          case "addressName":
-            const addressValue = value.toString();
-            if (addressValue.startsWith('0x') && addressValue.length === 42) {
-              // Check if we have metadata for this address
-              if (transactionData?.addressesMeta && transactionData.addressesMeta[addressValue]) {
-                const addressMeta = transactionData.addressesMeta[addressValue];
-                return addressMeta.contractName || `${addressValue.slice(0, 6)}...${addressValue.slice(-4)}`;
-              }
-              return `${addressValue.slice(0, 6)}...${addressValue.slice(-4)}`;
-            }
-            return addressValue;
-          case "amount":
-            if (value === "0") return "0";
-            // For Aave repay operations, try to get token info from addressesMeta
-            const rawAmount = value.toString();
-            if (transactionData?.addressesMeta && transactionData.methodCall?.params) {
-              // Find the asset parameter to get token info
-              const assetParam = transactionData.methodCall.params.find((p: any) => p.name === 'asset');
-              if (assetParam && transactionData.addressesMeta[assetParam.value]) {
-                const tokenMeta = transactionData.addressesMeta[assetParam.value];
-                if (tokenMeta && tokenMeta.decimals) {
-                  const decimals = tokenMeta.decimals;
-                  const formattedAmount = (parseInt(rawAmount) / Math.pow(10, decimals)).toString();
-                  return `${formattedAmount} ${tokenMeta.tokenSymbol || ''}`;
-                }
-              }
-            }
-            return rawAmount;
-          case "raw":
-            const rawValueStr = value.toString();
-            // For long hex strings (like signatures), show shortened format
-            if (rawValueStr.startsWith('0x') && rawValueStr.length > 42) {
-              return `${rawValueStr.slice(0, 10)}...${rawValueStr.slice(-7)}`;
-            }
-            return rawValueStr;
-          default:
-            return value.toString();
-        }
-      }
-    } catch (error) {
-      console.error('Error processing path:', path, error);
+    // If field has nested transaction data, use that
+    else if (field?.nestedTransactionData) {
+      contextData = field.nestedTransactionData;
     }
-
-    return `Mock ${format} value`;
+    
+    // Resolve the value at the specified path
+    const value = resolveValueAtPath(contextData, path);
+    
+    if (value === undefined) {
+      return `Mock ${format} value`;
+    }
+    
+    // Format the value based on the format type
+    switch (format) {
+      case "tokenAmount":
+        const rawValue = value.toString();
+        
+        // For ETH (0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE), format as ETH
+        if (field?.params?.tokenPath === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
+          const ethValue = (parseInt(rawValue) / Math.pow(10, 18)).toString();
+          return `${ethValue} ETH`;
+        }
+        
+        // If field has tokenPath, find matching metadata with token info
+        if (field?.params?.tokenPath) {
+          const tokenAddress = field.params.tokenPath;
+          
+          const tokenMetadata = metadataEntries.find(entry => 
+            entry.metadata.context?.contract?.deployments?.some(dep => 
+              dep.address === tokenAddress
+            )
+          );
+          
+          if (tokenMetadata?.metadata?.metadata?.token?.decimals) {
+            const decimals = tokenMetadata.metadata.metadata.token.decimals;
+            const ticker = tokenMetadata.metadata.metadata.token.ticker;
+            const formattedAmount = (parseInt(rawValue) / Math.pow(10, decimals)).toString();
+            return `${formattedAmount} ${ticker}`;
+          }
+        }
+        
+        return rawValue;
+        
+      case "addressName":
+        const addressValue = value.toString();
+        if (addressValue.startsWith('0x') && addressValue.length === 42) {
+          // Check if we have metadata for this address
+          if (transactionData?.addressesMeta && transactionData.addressesMeta[addressValue]) {
+            const addressMeta = transactionData.addressesMeta[addressValue];
+            return addressMeta.contractName || `${addressValue.slice(0, 6)}...${addressValue.slice(-4)}`;
+          }
+          return `${addressValue.slice(0, 6)}...${addressValue.slice(-4)}`;
+        }
+        return addressValue;
+        
+      case "amount":
+        if (value === "0" || value === 0) return "0";
+        const rawAmount = value.toString();
+        
+        // Try to get token info from addressesMeta if available
+        if (transactionData?.addressesMeta) {
+          // Look for any asset/token parameter in the current context to get decimals
+          const contextParams = contextData.methodCall?.params;
+          if (contextParams) {
+            const assetParam = contextParams.find((p: any) => 
+              (p.name === 'asset' || p.name === 'token') && transactionData.addressesMeta[p.value]
+            );
+            if (assetParam && transactionData.addressesMeta[assetParam.value]) {
+              const tokenMeta = transactionData.addressesMeta[assetParam.value];
+              if (tokenMeta && tokenMeta.decimals) {
+                const decimals = tokenMeta.decimals;
+                const formattedAmount = (parseInt(rawAmount) / Math.pow(10, decimals)).toString();
+                return `${formattedAmount} ${tokenMeta.tokenSymbol || ''}`;
+              }
+            }
+          }
+        }
+        
+        return rawAmount;
+        
+      case "raw":
+        const rawValueStr = value.toString();
+        // For long hex strings (like signatures), show shortened format
+        if (rawValueStr.startsWith('0x') && rawValueStr.length > 42) {
+          return `${rawValueStr.slice(0, 10)}...${rawValueStr.slice(-7)}`;
+        }
+        return rawValueStr;
+        
+      default:
+        return value.toString();
+    }
   };
 
   const getOperationForViewing = (): Operation | null => {
@@ -1012,125 +982,98 @@ const HardwareViewer = ({
     return null;
   };
 
-  // Function to get all operations for current transaction (including nested)
-  const getAllOperationsForTransaction = (transactionData: DecodedTransaction | null): Array<{operation: Operation, metadata: any, context: string, nestedData?: any}> => {
-    if (!transactionData) return [];
+  // COMPLETELY GENERIC NESTED FUNCTION EXTRACTION - NO HARDCODED ASSUMPTIONS
+  const extractAllFunctionCalls = (data: any, path: string = '', level: number = 0): Array<{name: string, params: any[], signature: string, path: string, level: number, context: any}> => {
+    const functionCalls: Array<{name: string, params: any[], signature: string, path: string, level: number, context: any}> = [];
     
+    // Base case: if this looks like a function call
+    if (data && typeof data === 'object' && data.name && data.params) {
+      const paramTypes = Array.isArray(data.params) ? data.params.map((p: any) => p.type).join(',') : '';
+      const signature = `${data.name}(${paramTypes})`;
+      
+      functionCalls.push({
+        name: data.name,
+        params: data.params,
+        signature: signature,
+        path: path,
+        level: level,
+        context: data
+      });
+    }
     
-    const operations: Array<{operation: Operation, metadata: any, context: string, nestedData?: any}> = [];
-    
-    // Check if current transaction has an operation that matches metadata
-    const currentSelector = getTransactionFunctionSelector(transactionData);
-    if (currentSelector) {
-      for (const entry of metadataEntries) {
-        const formats = entry.metadata.display?.formats;
-        if (formats && formats[currentSelector]) {
-          operations.push({
-            operation: formats[currentSelector],
-            metadata: entry.metadata.metadata,
-            context: 'main'
-          });
-          break;
+    // Recursively search through all properties
+    if (data && typeof data === 'object') {
+      for (const [key, value] of Object.entries(data)) {
+        if (value && typeof value === 'object') {
+          const newPath = path ? `${path}.${key}` : key;
+          
+          // If it's an array, search each element
+          if (Array.isArray(value)) {
+            value.forEach((item, index) => {
+              const indexPath = `${newPath}[${index}]`;
+              functionCalls.push(...extractAllFunctionCalls(item, indexPath, level + 1));
+            });
+          } else {
+            // Recursively search object properties
+            functionCalls.push(...extractAllFunctionCalls(value, newPath, level + 1));
+          }
         }
       }
     }
     
-    // Look specifically for nested operations in the transaction data
-    if (transactionData.methodCall?.params) {
-      // Handle multiSend transactions 
-      if (transactionData.methodCall.name === 'multiSend') {
-        const transactionsParam = transactionData.methodCall.params.find((p: any) => p.name === 'transactions' && p.valueDecoded);
-        if (transactionsParam && transactionsParam.valueDecoded && transactionsParam.valueDecoded.params) {
-          // The actual transactions are in params[0].components
-          const txComponents = transactionsParam.valueDecoded.params[0]?.components;
-          if (txComponents && Array.isArray(txComponents)) {
-            
-            // Process each transaction component
-            txComponents.forEach((txComponent: any, index: number) => {
-              // Each component is a tuple with nested valueDecoded containing execTransaction
-              const execTxData = txComponent.components?.find((comp: any) => comp.name === 'data' && comp.valueDecoded);
-              if (execTxData && execTxData.valueDecoded && execTxData.valueDecoded.name === 'execTransaction') {
-                // Look for the nested transfer call within the execTransaction data
-                const dataParam = execTxData.valueDecoded.params?.find((p: any) => p.name === 'data' && p.valueDecoded);
-                if (dataParam && dataParam.valueDecoded && dataParam.valueDecoded.name === 'transfer') {
-                  const transferData = dataParam.valueDecoded;
-                  const nestedSelector = `${transferData.name}(${transferData.params?.map((p: any) => p.type).join(',') || ''})`;
-                  
-                  // Find matching metadata for this transfer
-                  for (const entry of metadataEntries) {
-                    if (entry.metadata.display?.formats?.[nestedSelector]) {
-                      operations.push({
-                        operation: entry.metadata.display.formats[nestedSelector] as Operation,
-                        metadata: entry.metadata.metadata,
-                        context: 'nested',
-                        nestedData: {
-                          methodCall: {
-                            name: transferData.name,
-                            params: transferData.params?.map((p: any) => ({ name: p.name, value: p.value })) || []
-                          }
-                        }
-                      });
-                      break;
-                    }
-                  }
-                }
-              }
-            });
-          }
+    return functionCalls;
+  };
+
+  // GENERIC METADATA MATCHING - NO PROTOCOL ASSUMPTIONS
+  const findMetadataForSignature = (signature: string): {metadata: any, operation: Operation} | null => {
+    for (const entry of metadataEntries) {
+      const formats = entry.metadata.display?.formats;
+      if (formats) {
+        // Exact signature match
+        if (formats[signature]) {
+          return {
+            metadata: entry.metadata.metadata,
+            operation: formats[signature] as Operation
+          };
+        }
+        
+        // Function name match (transfer matches transfer(address,uint256))
+        const functionName = signature.split('(')[0];
+        const matchingFormat = Object.keys(formats).find(formatKey => 
+          formatKey.startsWith(functionName + '(') || formatKey === functionName
+        );
+        
+        if (matchingFormat) {
+          return {
+            metadata: entry.metadata.metadata,
+            operation: formats[matchingFormat] as Operation
+          };
         }
       }
-      
-      for (const param of transactionData.methodCall.params) {
-        // Check if this is a 'data' parameter with decoded value (common in Safe transactions)
-        if (param.name === 'data' && param.valueDecoded) {
-          const nestedTx = param.valueDecoded;
-          
-          // Check if we have metadata for this nested operation
-          const nestedSelector = (nestedTx as any).signature || nestedTx.name;
-          
-          if (nestedSelector) {
-            for (const entry of metadataEntries) {
-              const formats = entry.metadata.display?.formats;
-              if (formats) {
-                // Check for exact match first
-                if (formats[nestedSelector]) {
-                  operations.push({
-                    operation: formats[nestedSelector] as Operation,
-                    metadata: entry.metadata.metadata,
-                    context: 'nested',
-                    nestedData: {
-                      methodCall: {
-                        name: nestedTx.name,
-                        params: nestedTx.params
-                      }
-                    }
-                  });
-                  break;
-                }
-                // Check for function name match (e.g., "transfer" matches "transfer(address,uint256)")
-                else {
-                  const matchingFormat = Object.keys(formats).find(formatKey => 
-                    formatKey.startsWith(nestedTx.name + '(') || formatKey === nestedTx.name
-                  );
-                  if (matchingFormat) {
-                    operations.push({
-                      operation: formats[matchingFormat] as Operation,
-                      metadata: entry.metadata.metadata,
-                      context: 'nested',
-                      nestedData: {
-                        methodCall: {
-                          name: nestedTx.name,
-                          params: nestedTx.params
-                        }
-                      }
-                    });
-                    break;
-                  }
-                }
-              }
-            }
-          }
-        }
+    }
+    return null;
+  };
+
+  // COMPLETELY GENERIC NESTED OPERATION DISCOVERY
+  const getAllOperationsForTransaction = (transactionData: DecodedTransaction | null): Array<{operation: Operation, metadata: any, context: string, functionCall: any, level: number}> => {
+    if (!transactionData) return [];
+    
+    const operations: Array<{operation: Operation, metadata: any, context: string, functionCall: any, level: number}> = [];
+    
+    // Extract ALL function calls at ANY nesting level
+    const allFunctionCalls = extractAllFunctionCalls(transactionData);
+    
+    // Match each function call to metadata
+    for (const functionCall of allFunctionCalls) {
+      const match = findMetadataForSignature(functionCall.signature);
+      if (match) {
+        operations.push({
+          operation: match.operation,
+          metadata: match.metadata,
+          context: functionCall.level === 0 ? 'main' : 'nested',
+          functionCall: functionCall.context,
+          level: functionCall.level
+        });
       }
     }
     
@@ -1193,87 +1136,96 @@ const HardwareViewer = ({
     // Get all operations for this transaction (including nested)
     const allOperations = activeTab === "advanced" && transactionData ? getAllOperationsForTransaction(transactionData) : [];
     
+    console.log(`Found ${allOperations.length} operations:`, allOperations.map(op => `${op.context}:${op.functionCall.name} (level ${op.level})`));
     
-    // For Safe transactions with nested operations, show the proper flow
+    // GENERIC MULTI-OPERATION HANDLING - NO HARDCODED ASSUMPTIONS
     if (allOperations.length > 1) {
-      const mainOperation = allOperations.find(op => op.context === 'main');
-      const nestedOperations = allOperations.filter(op => op.context !== 'main');
+      // Sort operations by nesting level (main first, then by level)
+      const sortedOperations = allOperations.sort((a, b) => a.level - b.level);
       
-      if (mainOperation && nestedOperations.length > 0) {
-        const firstNestedOp = nestedOperations[0];
+      // Use the deepest nested operation as the primary display (most specific action)
+      const primaryOperation = sortedOperations[sortedOperations.length - 1];
+      
+      if (primaryOperation && primaryOperation.operation) {
+        // Create operation with function call context for proper path resolution
+        const contextualOperation = {
+          ...primaryOperation.operation,
+          fields: primaryOperation.operation.fields.map(field => ({
+            ...field,
+            functionCall: primaryOperation.functionCall
+          }))
+        };
         
-        if (firstNestedOp && firstNestedOp.operation) {
-          // Combine both operations into one complete flow: Review → Details → Sign
-          // Use the USDC metadata directly for the nested operation
-          const usdcMetadata = metadataEntries.find(entry => 
-            entry.metadata.display?.formats?.['transfer(address,uint256)']
-          );
-          
-          const modifiedNestedOperation = {
-            ...firstNestedOp.operation,
-            fields: firstNestedOp.operation.fields.map(field => {
-              return {
-                ...field,
-                nestedTransactionData: firstNestedOp.nestedData
-              };
-            })
-          };
-          
-          const nestedScreens = getScreensForOperationWithRealData(modifiedNestedOperation);
-          const combinedOperationMeta = {
-            operationName: `${typeof mainOperation.operation.intent === 'string' ? mainOperation.operation.intent : 'Execute Transaction'} → ${typeof firstNestedOp.operation.intent === 'string' ? firstNestedOp.operation.intent : 'Transfer'}`,
-            metadata: firstNestedOp.metadata
-          };
-          const allScreens = operationScreens(nestedScreens, combinedOperationMeta);
-          
-          return (
-            <div className="mx-auto flex max-w-96 flex-col">
-              <div className="text-center text-sm text-gray-600 mb-4">
-                {combinedOperationMeta.operationName}
-              </div>
-              <Carousel setApi={setApi}>
-                <CarouselContent>
-                  {allScreens.map((screen, index) => (
-                    <CarouselItem
-                      key={index}
-                      className="flex w-full items-center justify-center"
-                    >
-                      <Device.Frame>{screen}</Device.Frame>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious className="hidden md:flex" />
-                <CarouselNext className="hidden md:flex" />
-              </Carousel>
-              <div className="mx-auto flex flex-row items-center gap-2 p-2 max-w-full overflow-x-auto">
-                <div className="flex flex-row items-center gap-2 min-w-0">
-                  {allScreens.map((_, index) => (
-                    <div
-                      key={"carousel-thumbnail-" + index}
-                      className={cn("flex-shrink-0 w-fit rounded p-1 ring-primary hover:ring-2 cursor-pointer", {
-                        "ring-2": index === selected,
-                      })}
-                      onClick={() => api?.scrollTo(index)}
-                    >
-                      <Device.Frame size="small">{index + 1}</Device.Frame>
-                    </div>
-                  ))}
-                </div>
+        const screens = getScreensForOperationWithRealData(contextualOperation);
+        
+        // Build operation name from all operations in the chain
+        const operationChain = sortedOperations.map(op => 
+          typeof op.operation.intent === 'string' ? op.operation.intent : op.functionCall.name
+        ).join(' → ');
+        
+        const operationMeta = {
+          operationName: operationChain,
+          metadata: primaryOperation.metadata
+        };
+        
+        const allScreens = operationScreens(screens, operationMeta);
+        
+        return (
+          <div className="mx-auto flex max-w-96 flex-col">
+            <div className="text-center text-sm text-gray-600 mb-4">
+              {operationMeta.operationName}
+            </div>
+            <Carousel setApi={setApi}>
+              <CarouselContent>
+                {allScreens.map((screen, index) => (
+                  <CarouselItem
+                    key={index}
+                    className="flex w-full items-center justify-center"
+                  >
+                    <Device.Frame>{screen}</Device.Frame>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="hidden md:flex" />
+              <CarouselNext className="hidden md:flex" />
+            </Carousel>
+            <div className="mx-auto flex flex-row items-center gap-2 p-2 max-w-full overflow-x-auto">
+              <div className="flex flex-row items-center gap-2 min-w-0">
+                {allScreens.map((_, index) => (
+                  <div
+                    key={"carousel-thumbnail-" + index}
+                    className={cn("flex-shrink-0 w-fit rounded p-1 ring-primary hover:ring-2 cursor-pointer", {
+                      "ring-2": index === selected,
+                    })}
+                    onClick={() => api?.scrollTo(index)}
+                  >
+                    <Device.Frame size="small">{index + 1}</Device.Frame>
+                  </div>
+                ))}
               </div>
             </div>
-          );
-        }
+          </div>
+        );
       }
     }
     
-    // Single operation display (fallback)
+    // Single operation display
     if (allOperations.length === 1) {
-      const mainOperation = allOperations[0];
-      if (mainOperation) {
-        const screens = getScreensForOperationWithRealData(mainOperation.operation);
+      const operation = allOperations[0];
+      if (operation) {
+        // Create operation with function call context for proper path resolution
+        const contextualOperation = {
+          ...operation.operation,
+          fields: operation.operation.fields.map(field => ({
+            ...field,
+            functionCall: operation.functionCall
+          }))
+        };
+        
+        const screens = getScreensForOperationWithRealData(contextualOperation);
         const operationMeta = {
-          operationName: typeof mainOperation.operation.intent === 'string' ? mainOperation.operation.intent : 'Execute Transaction',
-          metadata: mainOperation.metadata
+          operationName: typeof operation.operation.intent === 'string' ? operation.operation.intent : operation.functionCall.name,
+          metadata: operation.metadata
         };
         const fullOperationScreens = operationScreens(screens, operationMeta);
         
