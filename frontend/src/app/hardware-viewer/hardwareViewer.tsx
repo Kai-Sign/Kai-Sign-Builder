@@ -817,7 +817,16 @@ const HardwareViewer = ({
     
     // If field has specific function call context, use that
     if (field?.functionCall) {
-      contextData = { methodCall: field.functionCall };
+      // For this specific swap function, always use main transaction data
+      if (transactionData.methodCall?.signature === "swap(string,address,uint256,bytes)") {
+        contextData = transactionData;
+      }
+      // For main transaction function calls, prefer the original transaction data
+      else if (field.functionCall.signature === transactionData.methodCall?.signature) {
+        contextData = transactionData;
+      } else {
+        contextData = { methodCall: field.functionCall };
+      }
     }
     // If field has nested transaction data, use that
     else if (field?.nestedTransactionData) {
@@ -828,6 +837,14 @@ const HardwareViewer = ({
     const value = resolveValueAtPath(contextData, path);
     
     if (value === undefined) {
+      console.log(`Path resolution failed for ${path}:`, {
+        contextData,
+        transactionData,
+        field,
+        hasMethodCall: !!contextData.methodCall,
+        methodCallParams: contextData.methodCall?.params,
+        pathParts: path.split('.')
+      });
       return `Mock ${format} value`;
     }
     
