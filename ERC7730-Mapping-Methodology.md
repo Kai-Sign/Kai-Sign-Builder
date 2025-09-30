@@ -4,6 +4,20 @@
 
 This document explains the technical methodology for mapping ERC7730 metadata to Ethereum transaction bytecode, ensuring 1:1 correspondence between metadata field definitions and actual transaction data without hardcoded assumptions.
 
+## References and Citations
+
+### Official Specifications
+- **ERC-7730 Standard**: [Ethereum Improvement Proposal](https://eips.ethereum.org/EIPS/eip-7730)
+- **Ledger ERC-7730 Documentation**: [Developer Portal](https://developers.ledger.com/docs/clear-signing/references/erc7730-standard)
+- **ERC-7730 Registry**: [GitHub Repository](https://github.com/LedgerHQ/clear-signing-erc7730-registry)
+- **Solidity ABI Specification**: [Official Documentation](https://docs.soliditylang.org/en/latest/abi-spec.html)
+- **Ethereum Yellow Paper**: [Formal Specification](https://ethereum.github.io/yellowpaper/paper.pdf)
+
+### Technical Standards
+- **Function Selectors**: [Ethereum Stack Exchange](https://ethereum.stackexchange.com/questions/72363/what-is-a-function-selector)
+- **4-Byte Directory**: [Signature Database](https://www.4byte.directory/)
+- **Method ID Specification**: [Etherscan Documentation](https://info.etherscan.com/what-is-method-id/)
+
 ## Ethereum Transaction Bytecode Structure
 
 ### Function Selector (First 4 Bytes)
@@ -18,11 +32,15 @@ The first 4 bytes (`0xa9059cbb`) are the **function selector**, derived from:
 2. Keccak-256 hash: `keccak256("transfer(address,uint256)")`
 3. First 4 bytes: `0xa9059cbb`
 
+**Source**: [Solidity ABI Specification](https://docs.soliditylang.org/en/latest/abi-spec.html) - "The first four bytes of the call data for a function call specifies the function to be called. It is the first (left, high-order in big-endian) four bytes of the Keccak-256 hash of the signature of the function."
+
 ### ABI Encoding Structure
 After the function selector, parameters are encoded according to Ethereum's ABI specification:
 - **Static types** (uint256, address, bool): 32-byte aligned
 - **Dynamic types** (bytes, string, arrays): Offset pointer + length + data
 - **Struct types**: Sequential encoding of components
+
+**Source**: [Solidity ABI Specification](https://docs.soliditylang.org/en/latest/abi-spec.html) - "The Contract Application Binary Interface (ABI) is the standard way to interact with contracts in the Ethereum ecosystem, both from outside the blockchain and for contract-to-contract interaction."
 
 ## ERC7730 Clear Signing Standard
 
@@ -31,6 +49,8 @@ ERC7730 provides metadata to transform raw bytecode into human-readable informat
 - **Function identification**: Match selectors to human-readable operation names
 - **Parameter mapping**: Map bytecode positions to semantic field labels
 - **Value formatting**: Apply proper formatting (token amounts, addresses, etc.)
+
+**Source**: [ERC-7730 Standard](https://eips.ethereum.org/EIPS/eip-7730) - "The ERC-7730 specification enriches type data contained in the ABIs and schemas of structured messages with additional formatting information, so that wallets can construct a better UI when displaying the data before signature."
 
 ### Metadata Structure
 ```json
@@ -60,58 +80,84 @@ ERC7730 provides metadata to transform raw bytecode into human-readable informat
 ## Path Resolution Methodology
 
 ### ERC7730 Path Format
-- `#.fieldName`: Direct parameter access by name
-- `methodCall.params[0].value`: Array index access
-- `nested.params[1].components[0].value`: Struct component access
+ERC-7730 uses a sophisticated path notation with three root node types:
+- `#.fieldName`: References structured data schema (ABI parameters)
+- `$.metadata.constants`: References metadata constants within the file
+- `@.from`: References container structure values (transaction metadata)
 
-### Universal Path Resolver Algorithm
+Additional path features:
+- Array slicing: `#.params.path[:20]` (first 20 bytes), `#.params.path[-20:]` (last 20 bytes)
+- Index access: `#.params[0]`, `#.params[1]` (position-based ABI access)
+- Full arrays: `#.details.[]` (entire array)
+
+**Source**: [ERC-7730 Registry Specification](https://github.com/LedgerHQ/clear-signing-erc7730-registry/blob/master/specs/erc-7730.md) - "Root Node Identifiers: # refers to structured data schema, $ refers to current file's metadata, @ refers to container structure values."
+
+### ERC-7730 Compliant Path Resolver Algorithm
 ```typescript
-function resolveValueAtPath(data: any, path: string): any {
-  // 1. Clean path format (remove "#." prefix)
-  let cleanPath = path.startsWith('#.') ? path.substring(2) : path;
+function resolveValueAtPath(data: any, metadata: any, path: string): any {
+  // 1. Parse root node and path
+  const rootNode = path.charAt(0); // #, $, or @
+  if (!["#", "$", "@"].includes(rootNode)) {
+    throw new Error(`Invalid root node: ${rootNode}`);
+  }
   
-  // 2. Split path into segments
-  const pathParts = cleanPath.split('.');
-  let current = data;
+  const pathWithoutRoot = path.substring(2); // Remove root + dot
   
-  // 3. Navigate through each path segment
+  // 2. Resolve based on root node type
+  let current: any;
+  switch (rootNode) {
+    case '#': // Structured data (ABI)
+      current = data;
+      break;
+    case '$': // Metadata constants
+      current = metadata;
+      break;
+    case '@': // Container values (transaction metadata)
+      current = data.container || data;
+      break;
+  }
+  
+  // 3. Handle array slice notation
+  const pathParts = pathWithoutRoot.split('.');
+  
   for (const part of pathParts) {
-    // 4. Handle different data structures:
+    if (!current) return undefined;
     
-    // a) Method call parameter lookup by name
-    if (current.methodCall?.params) {
-      const param = current.methodCall.params.find(p => p.name === part);
-      if (param) {
-        current = param.value !== undefined ? param.value : param;
+    // a) Handle array slicing: path[:20], path[-20:], path[1:5]
+    const sliceMatch = part.match(/^(.+)\[(-?\d*):(-?\d*)\]$/);
+    if (sliceMatch) {
+      const [, arrayName, startStr, endStr] = sliceMatch;
+      const array = current[arrayName];
+      if (Array.isArray(array) || typeof array === 'string') {
+        const start = startStr === '' ? 0 : parseInt(startStr);
+        const end = endStr === '' ? array.length : parseInt(endStr);
+        current = array.slice(start, end);
         continue;
       }
     }
     
-    // b) Array index access [0], [1], etc.
-    if (/^\d+$/.test(part)) {
-      const idx = parseInt(part);
-      if (Array.isArray(current) && idx < current.length) {
-        current = current[idx];
+    // b) Handle array index access: params[0], params[1]
+    const indexMatch = part.match(/^(.+)\[(\d+)\]$/);
+    if (indexMatch) {
+      const [, arrayName, indexStr] = indexMatch;
+      const idx = parseInt(indexStr);
+      if (current[arrayName] && Array.isArray(current[arrayName])) {
+        current = current[arrayName][idx];
         continue;
       }
     }
     
-    // c) Struct component access
-    if (current.components) {
-      const found = current.components.find(c => c.name === part);
-      if (found) {
-        current = found.value !== undefined ? found.value : found;
-        continue;
-      }
+    // c) Handle full array access: details.[]
+    if (part.endsWith('.[]')) {
+      const arrayName = part.slice(0, -3);
+      current = current[arrayName];
+      continue;
     }
     
-    // d) Nested function calls (valueDecoded)
-    if (current.valueDecoded?.params) {
-      const param = current.valueDecoded.params.find(p => p.name === part);
-      if (param) {
-        current = param.value !== undefined ? param.value : param;
-        continue;
-      }
+    // d) Position-based ABI parameter access (ERC-7730 requirement)
+    if (part === 'params' && current.methodCall?.params) {
+      current = current.methodCall.params;
+      continue;
     }
     
     // e) Direct property access
@@ -120,37 +166,41 @@ function resolveValueAtPath(data: any, path: string): any {
       continue;
     }
     
-    // 5. Path not found - return undefined
+    // 5. Path not found
     return undefined;
   }
   
-  // 6. Return final resolved value
+  // 6. Extract final value
   return current?.value !== undefined ? current.value : current;
-}
 ```
 
 ## Mapping Process Flow
 
 ### 1. Function Signature Matching
 ```typescript
-// Extract function selector from transaction
-const selector = transactionData.methodCall.name; // "transfer"
+// Extract function signature from transaction
+const functionName = transactionData.methodCall.name; // "transfer"
 const params = transactionData.methodCall.params.map(p => p.type); // ["address", "uint256"]
-const signature = `${selector}(${params.join(',')})`;  // "transfer(address,uint256)"
+const signature = `${functionName}(${params.join(',')})`;  // "transfer(address,uint256)"
 
-// Match against metadata operations
-const operation = metadata.display.formats[signature];
+// Compute ERC-7730 compliant function selector (4-byte Keccak-256 hash)
+import { keccak256 } from 'ethers';
+const selectorHash = keccak256(Buffer.from(signature));
+const selector = selectorHash.slice(0, 10); // "0xa9059cbb"
+
+// Match against metadata operations (can use signature or selector)
+const operation = metadata.display.formats[signature] || metadata.display.formats[selector];
 ```
 
 ### 2. Field Mapping
 ```typescript
 // For each field defined in metadata
 operation.fields.forEach(field => {
-  // Resolve the value using the path
-  const value = resolveValueAtPath(transactionData, field.path);
+  // Resolve the value using ERC-7730 compliant path resolution
+  const value = resolveValueAtPath(transactionData, metadata, field.path);
   
-  // Apply formatting
-  const displayValue = formatValue(value, field.format);
+  // Apply formatting based on ERC-7730 format types
+  const displayValue = formatValue(value, field.format, field.params);
   
   // Display with label
   display(field.label, displayValue);
@@ -175,20 +225,24 @@ operations.forEach(op => displayOperation(op));
 
 ## Critical Principles
 
-### 1. Zero Hardcoding
-❌ **Forbidden**: Custom logic for specific protocols
+### 1. ERC-7730 Compliance
+❌ **Forbidden**: Non-compliant path resolution
 ```typescript
-// WRONG - Protocol-specific hardcoding
-if (operationName === 'repay') {
-  // Custom Aave logic
+// WRONG - Stripping root nodes
+if (path.startsWith('#.')) {
+  cleanPath = path.substring(2);
 }
 ```
 
-✅ **Correct**: Generic metadata-driven approach
+✅ **Correct**: ERC-7730 compliant root node handling
 ```typescript
-// RIGHT - Pure metadata resolution
-const value = resolveValueAtPath(data, field.path);
-const formatted = formatValue(value, field.format);
+// RIGHT - Preserve and process root nodes
+const rootNode = path.charAt(0); // #, $, or @
+switch (rootNode) {
+  case '#': resolveFromStructuredData(data, pathWithoutRoot);
+  case '$': resolveFromMetadata(metadata, pathWithoutRoot);
+  case '@': resolveFromContainer(container, pathWithoutRoot);
+}
 ```
 
 ### 2. Complete Argument Translation
@@ -206,29 +260,25 @@ if (value === undefined) {
 
 This ensures users understand when data exists but lacks metadata definition.
 
-### 4. Exact Path Matching
-Paths must resolve to actual transaction structure:
+### 4. ERC-7730 Path Resolution
+Paths must follow ERC-7730 specification exactly:
 ```json
-// Transaction structure
+// Transaction structure (ABI-encoded)
 {
   "methodCall": {
     "name": "execTransaction",
     "params": [
-      {"name": "to", "type": "address", "value": "0x123..."},
-      {"name": "data", "type": "bytes", "value": "0xabc...", 
-       "valueDecoded": {
-         "name": "transfer", 
-         "params": [
-           {"name": "recipient", "type": "address", "value": "0x456..."}
-         ]
-       }}
+      {"type": "address", "value": "0x123..."}, // params[0]
+      {"type": "bytes", "value": "0xabc..."}     // params[1]
     ]
   }
 }
 
-// Valid paths
-"#.to" → "0x123..." (main function parameter)
-"#.data.valueDecoded.recipient" → "0x456..." (nested function parameter)
+// Valid ERC-7730 paths
+"#.params[0]" → "0x123..." (position-based access)
+"#.params[1][:4]" → "0xabc9" (slice first 4 bytes)
+"$.metadata.constants.tokenAddress" → metadata constant
+"@.from" → transaction sender address
 ```
 
 ## Security Implications
@@ -248,13 +298,17 @@ Paths must resolve to actual transaction structure:
 - Ensures 1:1 correspondence between metadata and actual data
 - No custom protocol logic that could be exploited
 
+**Source**: [Ledger Clear Signing Documentation](https://developers.ledger.com/docs/clear-signing/erc7730) - "The main security concern introduced by ERC-7730 is to avoid attacks that would use the ERC-7730 formatting mechanism to trick users into signing something wrong."
+
 ## Implementation Verification
 
 ### Testing Methodology
-1. **Function Signature Tests**: Verify exact matching
-2. **Path Resolution Tests**: Test all nesting levels
-3. **Unmapped Data Tests**: Ensure proper bytecode display
-4. **Cross-Protocol Tests**: Verify no hardcoded assumptions
+1. **Function Selector Tests**: Verify Keccak-256 hash computation
+2. **Root Node Tests**: Test `#`, `$`, `@` path resolution
+3. **Array Slice Tests**: Verify `[:20]`, `[-20:]`, `[1:5]` notation
+4. **Position-Based Access**: Test `#.params[0]`, `#.params[1]` resolution
+5. **Metadata Constants**: Test `$.metadata.constants` access
+6. **Container Values**: Test `@.from`, `@.to` resolution
 
 ### Example Test Cases
 ```bash
@@ -279,3 +333,18 @@ Each test verifies:
 The ERC7730 mapping methodology provides a secure, generic framework for translating Ethereum transaction bytecode into human-readable information. By following strict path resolution, avoiding hardcoded logic, and maintaining 1:1 metadata-to-data correspondence, it enables safe clear signing across all Ethereum protocols without protocol-specific customizations.
 
 The system's strength lies in its simplicity: metadata defines paths, paths resolve to data, data gets formatted for display. No exceptions, no special cases, no hardcoded assumptions.
+
+**Implementation Validation**: This corrected methodology now properly aligns with the official ERC-7730 specification, including:
+- Correct root node resolution (`#`, `$`, `@`)
+- Position-based ABI parameter access
+- Array slice selector support
+- Keccak-256 function selector computation
+- Metadata constant resolution
+
+The previous implementation had critical compliance violations that have been addressed in this specification.
+
+## Additional Reading
+
+- [Ledger Generic Parser Blog Post](https://www.ledger.com/blog-generic-parser-erc7730)
+- [ERC-7730 Developer Tools](https://github.com/LedgerHQ/clear-signing-erc7730-developer-tools)
+- [Ethereum Magicians ERC-7730 Discussion](https://ethereum-magicians.org/t/eip-7730-proposal-for-a-clear-signing-standard-format-for-wallets/20403)
