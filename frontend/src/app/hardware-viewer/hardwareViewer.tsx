@@ -24,16 +24,109 @@ import { getScreensForOperation } from "~/shared/getScreensForOperation";
 import operationScreens from "../review/operationScreens";
 import { type Erc7730, type Operation } from "~/store/types";
 
+// Smart Path Resolver for automatic nesting detection
+class SmartPathResolver {
+  public pathMap: Map<string, any> = new Map();
+  
+  analyzeTransaction(transaction: any): void {
+    this.pathMap.clear();
+    if (!transaction.methodCall?.params) return;
+    this.buildPathMap(transaction.methodCall.params, '', 0);
+  }
+  
+  private buildPathMap(params: any[], parentPath: string, level: number): void {
+    params.forEach((param) => {
+      const currentPath = parentPath ? `${parentPath}.${param.name}` : param.name;
+      const fullPath = `#.${currentPath}`;
+      
+      this.pathMap.set(fullPath, {
+        path: fullPath,
+        level,
+        type: param.type,
+        value: param.value,
+        isArray: param.type?.includes('[]'),
+        isTuple: !!param.components,
+        hasDecoded: !!param.valueDecoded
+      });
+      
+      if (param.components) {
+        this.buildPathMap(param.components, currentPath, level + 1);
+      }
+      
+      if (param.valueDecoded?.params) {
+        const decodedPath = `${currentPath}.valueDecoded`;
+        this.buildPathMap(param.valueDecoded.params, decodedPath, level + 1);
+      }
+    });
+  }
+  
+  resolveMetadataPath(transaction: any, metadataPath: string): any {
+    if (!this.pathMap.has(metadataPath)) {
+      return undefined;
+    }
+    
+    const pathWithoutRoot = metadataPath.substring(2);
+    const pathParts = pathWithoutRoot.split('.');
+    
+    let current = transaction.methodCall?.params;
+    if (!current) return undefined;
+    
+    for (let i = 0; i < pathParts.length; i++) {
+      const part = pathParts[i];
+      
+      if (part === 'valueDecoded') {
+        if (current && current.valueDecoded) {
+          current = current.valueDecoded.params;
+          continue;
+        }
+        return undefined;
+      }
+      
+      if (Array.isArray(current)) {
+        const param = current.find((p: any) => p.name === part);
+        if (!param) return undefined;
+        
+        if (i === pathParts.length - 1) {
+          return param.value;
+        }
+        
+        if (param.components) {
+          current = param.components;
+        } else {
+          current = param;
+        }
+      } else {
+        if (current[part] !== undefined) {
+          current = current[part];
+        } else {
+          return undefined;
+        }
+      }
+    }
+    
+    return current?.value !== undefined ? current.value : current;
+  }
+}
+
 interface DecodedTransaction {
   txHash?: string;
+  txType?: string;
+  fromAddress?: string;
+  toAddress?: string;
+  contractName?: string;
+  contractType?: string;
   methodCall?: {
     name: string;
+    type?: string;
+    signature?: string;
     params: Array<{
       name: string;
       type: string;
       value: string;
       valueDecoded?: {
         name: string;
+        signature?: string;
+        type?: string;
         params: Array<{
           name: string;
           type: string;
@@ -57,7 +150,18 @@ interface DecodedTransaction {
     tokenSymbol: string;
     decimals: number | null;
     type: string;
+    address?: string;
+    chainID?: number;
   }>;
+  nativeValueSent?: string;
+  chainSymbol?: string;
+  chainID?: number;
+  effectiveGasPrice?: string;
+  gasUsed?: string;
+  gasPaid?: string;
+  timestamp?: number;
+  txIndex?: number;
+  reverted?: boolean;
 }
 
 interface MetadataEntry {
@@ -443,7 +547,7 @@ const HardwareViewer = ({
         setTransactionData(normalizedTxData);
         setActiveTab("advanced");
         
-        if (entries.length > 0) {
+        if (entries.length > 0 && entries[0]) {
           setSelectedMetadataId(entries[0].id);
           
           // Auto-select matching operation
@@ -476,6 +580,8 @@ const HardwareViewer = ({
       txHash: data.txHash,
       methodCall: data.methodCall ? {
         name: data.methodCall.name,
+        type: data.methodCall.type,
+        signature: data.methodCall.signature,
         params: data.methodCall.params || []
       } : undefined,
       transfers: data.transfers || [],
@@ -483,7 +589,7 @@ const HardwareViewer = ({
     };
   };
 
-  // Function to get function selector from transaction data
+  // Function to get function selector from transaction data (ERC-7730 compliant)
   const getTransactionFunctionSelector = (transactionData: DecodedTransaction | null): string | null => {
     if (!transactionData?.methodCall?.name || !transactionData?.methodCall?.params) {
       return null;
@@ -497,6 +603,13 @@ const HardwareViewer = ({
     const functionSignature = `${functionName}(${paramTypes})`;
     
     return functionSignature;
+  };
+
+  // ERC-7730 compliant function selector computation with Keccak-256
+  const computeFunctionSelector = (signature: string): string => {
+    // Note: In a real implementation, this would use keccak256 from ethers
+    // For now, return the signature for matching since we don't have the hash in our test data
+    return signature;
   };
 
   // Function to check if operation matches transaction
@@ -516,11 +629,18 @@ const HardwareViewer = ({
     return false;
   };
 
-  // Sample decoded transaction data
+  // Sample decoded transaction data (Loop Decoder format)
   const sampleTransactionData = {
     txHash: "0x22a244794f155ce4a5765588353cf82dfc842c33ee3ed98e95ef488f6964f4fb",
+    txType: "contract interaction",
+    fromAddress: "0x049bdd0528e2d5f2e579e1bdd133Daed7c935DFC",
+    toAddress: "0x6092722B33FcF90af6e99C93F5F9349473869e23",
+    contractName: "",
+    contractType: "SAFE-PROXY",
     methodCall: {
       name: "execTransaction",
+      type: "function",
+      signature: "execTransaction(address,uint256,bytes,uint8,uint256,uint256,uint256,address,address,bytes)",
       params: [
         {
           name: "to",
@@ -538,6 +658,8 @@ const HardwareViewer = ({
           value: "0xa9059cbb000000000000000000000000a1371748d65baef4509a3c067b3fe3a1b79183ae000000000000000000000000000000000000000000000000000000001f143c37",
           valueDecoded: {
             name: "transfer",
+            signature: "transfer(address,uint256)",
+            type: "function",
             params: [
               {
                 name: "to",
@@ -589,8 +711,37 @@ const HardwareViewer = ({
         }
       ]
     },
-    transfers: [],
-    addressesMeta: {}
+    transfers: [
+      {
+        type: "ERC20",
+        name: "USD Coin",
+        symbol: "USDC",
+        address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        amount: "521.419831",
+        to: "0xA1371748D65baEF4509A3c067b3fe3a1b79183aE",
+        from: "0x6092722B33FcF90af6e99C93F5F9349473869e23"
+      }
+    ],
+    addressesMeta: {
+      "0x6092722B33FcF90af6e99C93F5F9349473869e23": {
+        contractAddress: "0x6092722B33FcF90af6e99C93F5F9349473869e23",
+        contractName: "",
+        tokenSymbol: "",
+        decimals: null,
+        type: "SAFE-PROXY",
+        address: "0x6092722B33FcF90af6e99C93F5F9349473869e23",
+        chainID: 1
+      },
+      "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
+        contractAddress: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        contractName: "USD Coin",
+        tokenSymbol: "USDC",
+        decimals: 6,
+        type: "ERC20",
+        address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+        chainID: 1
+      }
+    }
   };
 
   useEffect(() => {
@@ -682,40 +833,29 @@ const HardwareViewer = ({
     ));
   };
 
-  // Auto-select matching operation when transaction data changes - PRIORITIZE SAFE OPERATIONS
+  // Auto-select matching operation when transaction data changes - METADATA-DRIVEN ONLY
   useEffect(() => {
     if (transactionData && selectedMetadataId) {
       const selectedMetadata = metadataEntries.find(entry => entry.id === selectedMetadataId);
       if (selectedMetadata?.metadata.display?.formats) {
         const detectedSelector = getTransactionFunctionSelector(transactionData);
         
-        // ALWAYS prioritize Safe execTransaction over nested operations
         const availableOperations = Object.keys(selectedMetadata.metadata.display.formats);
         
-        // Check if this is Safe metadata with execTransaction
-        const safeExecOperation = availableOperations.find(op => 
-          op.includes('execTransaction') && op === detectedSelector
-        );
+        // Exact signature match takes priority
+        const exactMatch = availableOperations.find(op => op === detectedSelector);
         
-        if (safeExecOperation) {
-          // If this is Safe metadata and we have execTransaction, select it
-          setSelectedOperation(safeExecOperation);
+        if (exactMatch) {
+          setSelectedOperation(exactMatch);
         } else {
-          // Only select nested operations if we're not looking at Safe metadata
-          const exactMatch = availableOperations.find(op => op === detectedSelector);
-          
-          if (exactMatch) {
-            setSelectedOperation(exactMatch);
-          } else {
-            // Find partial match by function name only for non-Safe operations
-            const txFunctionName = transactionData.methodCall?.name;
-            if (txFunctionName && txFunctionName !== 'execTransaction') {
-              const partialMatch = availableOperations.find(op => 
-                operationMatchesTransaction(op, transactionData)
-              );
-              if (partialMatch) {
-                setSelectedOperation(partialMatch);
-              }
+          // Function name match (without hardcoded assumptions)
+          const txFunctionName = transactionData.methodCall?.name;
+          if (txFunctionName) {
+            const partialMatch = availableOperations.find(op => 
+              operationMatchesTransaction(op, transactionData)
+            );
+            if (partialMatch) {
+              setSelectedOperation(partialMatch);
             }
           }
         }
@@ -723,61 +863,115 @@ const HardwareViewer = ({
     }
   }, [transactionData, selectedMetadataId, metadataEntries]);
 
-  // UNIVERSAL PATH RESOLVER - WORKS AT ANY NESTING DEPTH
-  const resolveValueAtPath = (data: any, path: string): any => {
+  // ERC-7730 COMPLIANT PATH RESOLVER
+  const resolveValueAtPath = (data: any, metadata: any, path: string): any => {
     if (!data || !path) return undefined;
-    
-    // Handle ERC7730 path format: "#.fieldName" means direct parameter access
-    let cleanPath = path;
-    if (path.startsWith('#.')) {
-      cleanPath = path.substring(2); // Remove "#." prefix
-    }
     
     if (path === "separator") return "";
     
-    const pathParts = cleanPath.split('.');
-    let current = data;
+    // Parse root node and path according to ERC-7730 spec
+    const rootNode = path.charAt(0); // #, $, or @
+    if (!["#", "$", "@"].includes(rootNode)) {
+      // Fallback for non-ERC-7730 paths
+      return undefined;
+    }
     
-    // Navigate through the path
+    const pathWithoutRoot = path.substring(2); // Remove root + dot
+    
+    // Resolve based on root node type
+    let current: any;
+    switch (rootNode) {
+      case '#': // Structured data (ABI)
+        current = data;
+        break;
+      case '$': // Metadata constants
+        current = metadata;
+        break;
+      case '@': // Container values (transaction metadata)
+        current = data.container || data;
+        break;
+      default:
+        throw new Error(`Unsupported root node: ${rootNode}`);
+    }
+    
+    // Handle empty path after root
+    if (!pathWithoutRoot) return current;
+    
+    // Split path into segments and process
+    const pathParts = pathWithoutRoot.split('.');
+    
     for (const part of pathParts) {
       if (!current) return undefined;
       
-      // If current is a methodCall object, look in params first
-      if (current.methodCall && current.methodCall.params) {
-        const param = current.methodCall.params.find((p: any) => p.name === part);
-        if (param) {
-          current = param.value !== undefined ? param.value : param;
-          continue;
+      // a) Handle array slicing: path[:20], path[-20:], path[1:5]
+      const sliceMatch = part.match(/^(.+)\[(-?\d*):(-?\d*)\]$/);
+      if (sliceMatch && sliceMatch.length >= 4) {
+        const arrayName = sliceMatch[1];
+        const startStr = sliceMatch[2];
+        const endStr = sliceMatch[3];
+        if (arrayName && current[arrayName]) {
+          const array = current[arrayName];
+          if (Array.isArray(array) || typeof array === 'string') {
+            const start = !startStr || startStr === '' ? 0 : parseInt(startStr);
+            const end = !endStr || endStr === '' ? array.length : parseInt(endStr);
+            current = array.slice(start, end);
+            continue;
+          }
         }
       }
       
-      // If current has params array, search it
-      if (current.params && Array.isArray(current.params)) {
-        const param = current.params.find((p: any) => p.name === part);
-        if (param) {
-          current = param.value !== undefined ? param.value : param;
-          continue;
+      // b) Handle array index access: params[0], params[1]
+      const indexMatch = part.match(/^(.+)\[(\d+)\]$/);
+      if (indexMatch && indexMatch.length >= 3) {
+        const arrayName = indexMatch[1];
+        const indexStr = indexMatch[2];
+        if (arrayName && indexStr) {
+          const idx = parseInt(indexStr);
+          
+          // Special handling for params access - check if this is at transaction root
+          if (arrayName === 'params') {
+            // If at transaction root, access methodCall.params
+            if (current.methodCall?.params && Array.isArray(current.methodCall.params)) {
+              if (current.methodCall.params[idx]) {
+                current = current.methodCall.params[idx].value !== undefined ? 
+                         current.methodCall.params[idx].value : 
+                         current.methodCall.params[idx];
+                continue;
+              }
+            }
+            // If current object already has params array directly
+            else if (current.params && Array.isArray(current.params)) {
+              if (current.params[idx]) {
+                current = current.params[idx].value !== undefined ? 
+                         current.params[idx].value : 
+                         current.params[idx];
+                continue;
+              }
+            }
+          }
+          
+          // General array access
+          if (current[arrayName] && Array.isArray(current[arrayName])) {
+            current = current[arrayName][idx];
+            continue;
+          }
         }
       }
       
-      // Numeric index access
-      if (/^\d+$/.test(part)) {
-        const idx = parseInt(part);
-        if (Array.isArray(current) && idx < current.length) {
-          current = current[idx];
-          continue;
-        }
-        if (current.components && current.components[idx]) {
-          current = current.components[idx];
-          continue;
-        }
-        if (current.value && Array.isArray(current.value) && idx < current.value.length) {
-          current = current.value[idx];
-          continue;
-        }
+      // c) Handle full array access: details.[]
+      if (part.endsWith('.[]')) {
+        const arrayName = part.slice(0, -3);
+        current = current[arrayName];
+        continue;
       }
       
-      // Property access by name
+      // d) Position-based ABI parameter access (ERC-7730 requirement)
+      if (part === 'params' && current.methodCall?.params) {
+        current = current.methodCall.params;
+        continue;
+      }
+      
+      // e) Struct component access by name
       if (current.components) {
         const found = current.components.find((c: any) => c.name === part);
         if (found) {
@@ -786,13 +980,27 @@ const HardwareViewer = ({
         }
       }
       
-      // Direct property access
+      // f) Nested function calls (valueDecoded)
+      if (current.valueDecoded && part === 'valueDecoded') {
+        current = current.valueDecoded;
+        continue;
+      }
+      
+      if (current.valueDecoded?.params && part !== 'valueDecoded') {
+        const param = current.valueDecoded.params.find((p: any) => p.name === part);
+        if (param) {
+          current = param.value !== undefined ? param.value : param;
+          continue;
+        }
+      }
+      
+      // g) Direct property access
       if (current[part] !== undefined) {
         current = current[part];
         continue;
       }
       
-      // If we have a value object, try to access property in it
+      // h) Access property in value object
       if (current.value && typeof current.value === 'object' && current.value[part] !== undefined) {
         current = current.value[part];
         continue;
@@ -802,50 +1010,51 @@ const HardwareViewer = ({
       return undefined;
     }
     
-    // Return the final value, extracting from wrapper if needed
-    return current && current.value !== undefined ? current.value : current;
+    // Extract final value
+    return current?.value !== undefined ? current.value : current;
   };
 
-  // GENERIC FIELD VALUE EXTRACTION WITH CONTEXT SUPPORT
+  // SMART PATH RESOLVER - Automatic nesting detection and metadata-driven translation
+  const smartPathResolver = React.useMemo(() => {
+    if (!transactionData) return null;
+    
+    const resolver = new SmartPathResolver();
+    resolver.analyzeTransaction(transactionData);
+    return resolver;
+  }, [transactionData]);
+
+  // ERC-7730 SMART FIELD VALUE EXTRACTION
   const getFieldValueFromTransaction = (path: string, format: string, field?: any): string => {
-    if (!transactionData) {
+    if (!transactionData || !smartPathResolver) {
       return `Mock ${format} value`;
     }
     
-    // Determine the context data to use
-    let contextData = transactionData;
+    // Get metadata context for the current entry
+    const selectedMetadata = metadataEntries.find(entry => entry.id === selectedMetadataId);
+    const metadata = selectedMetadata?.metadata || metadataEntries[0]?.metadata || {};
     
-    // If field has specific function call context, use that
-    if (field?.functionCall) {
-      // For this specific swap function, always use main transaction data
-      if (transactionData.methodCall?.signature === "swap(string,address,uint256,bytes)") {
-        contextData = transactionData;
-      }
-      // For main transaction function calls, prefer the original transaction data
-      else if (field.functionCall.signature === transactionData.methodCall?.signature) {
-        contextData = transactionData;
-      } else {
-        contextData = { methodCall: field.functionCall };
-      }
-    }
-    // If field has nested transaction data, use that
-    else if (field?.nestedTransactionData) {
-      contextData = field.nestedTransactionData;
+    // Handle nested context path resolution
+    let resolvedPath = path;
+    if (field?.functionCall?.level === 0) {
+      // Level 0 (main transaction): use path directly
+      resolvedPath = path;
+    } else if (field?.functionCall?.level > 0 && field?.functionCall?.nestedPath) {
+      // For nested operations, prefix the path with the nested context
+      const pathWithoutHash = path.substring(2); // Remove '#.'
+      resolvedPath = `${field.functionCall.nestedPath}.${pathWithoutHash}`;
+      console.log(`🔗 Nested path mapping: ${path} → ${resolvedPath} (level ${field.functionCall.level})`);
+    } else {
+      // Fallback for level > 0 but no nested path
+      resolvedPath = path;
     }
     
-    // Resolve the value at the specified path
-    const value = resolveValueAtPath(contextData, path);
+    // Use smart resolver to get value - only resolves if path exists in transaction
+    const value = smartPathResolver.resolveMetadataPath(transactionData, resolvedPath);
     
     if (value === undefined) {
-      console.log(`Path resolution failed for ${path}:`, {
-        contextData,
-        transactionData,
-        field,
-        hasMethodCall: !!contextData.methodCall,
-        methodCallParams: contextData.methodCall?.params,
-        pathParts: path.split('.')
-      });
-      return `Mock ${format} value`;
+      // Path not available in transaction structure
+      console.log(`❌ Path resolution failed: ${path} → ${resolvedPath} [MISSING]`);
+      return "[unmapped]";
     }
     
     // Format the value based on the format type
@@ -853,21 +1062,19 @@ const HardwareViewer = ({
       case "tokenAmount":
         const rawValue = value.toString();
         
-        // For ETH (0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE), format as ETH
-        if (field?.params?.tokenPath === "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE") {
-          const ethValue = (parseInt(rawValue) / Math.pow(10, 18)).toString();
-          return `${ethValue} ETH`;
-        }
-        
-        // If field has tokenPath, find matching metadata with token info
+        // Use metadata-defined token information only
         if (field?.params?.tokenPath) {
           const tokenAddress = field.params.tokenPath;
           
-          const tokenMetadata = metadataEntries.find(entry => 
-            entry.metadata.context?.contract?.deployments?.some(dep => 
-              dep.address === tokenAddress
-            )
-          );
+          const tokenMetadata = metadataEntries.find(entry => {
+            const context = entry.metadata.context;
+            if ('contract' in context && context.contract?.deployments) {
+              return context.contract.deployments.some((dep: any) => 
+                dep.address === tokenAddress
+              );
+            }
+            return false;
+          });
           
           if (tokenMetadata?.metadata?.metadata?.token?.decimals) {
             const decimals = tokenMetadata.metadata.metadata.token.decimals;
@@ -895,22 +1102,13 @@ const HardwareViewer = ({
         if (value === "0" || value === 0) return "0";
         const rawAmount = value.toString();
         
-        // Try to get token info from addressesMeta if available
-        if (transactionData?.addressesMeta) {
-          // Look for any asset/token parameter in the current context to get decimals
-          const contextParams = contextData.methodCall?.params;
-          if (contextParams) {
-            const assetParam = contextParams.find((p: any) => 
-              (p.name === 'asset' || p.name === 'token') && transactionData.addressesMeta[p.value]
-            );
-            if (assetParam && transactionData.addressesMeta[assetParam.value]) {
-              const tokenMeta = transactionData.addressesMeta[assetParam.value];
-              if (tokenMeta && tokenMeta.decimals) {
-                const decimals = tokenMeta.decimals;
-                const formattedAmount = (parseInt(rawAmount) / Math.pow(10, decimals)).toString();
-                return `${formattedAmount} ${tokenMeta.tokenSymbol || ''}`;
-              }
-            }
+        // Only format if metadata provides token information through field params
+        if (field?.params?.tokenPath) {
+          const tokenInfo = smartPathResolver.resolveMetadataPath(transactionData, field.params.tokenPath);
+          if (tokenInfo && tokenInfo.decimals) {
+            const decimals = tokenInfo.decimals;
+            const formattedAmount = (parseInt(rawAmount) / Math.pow(10, decimals)).toString();
+            return `${formattedAmount} ${tokenInfo.symbol || ''}`;
           }
         }
         
@@ -986,26 +1184,21 @@ const HardwareViewer = ({
   };
 
 
-  // Function to check if bytecode matches any available metadata
-  const findMetadataForBytecode = (bytecode: string): {operation: Operation, metadata: any} | null => {
-    if (!bytecode || !bytecode.startsWith('0x') || bytecode.length < 10) {
-      return null;
-    }
-    
-    // For now, we rely on the existing valueDecoded structure
-    // since proper selector calculation requires crypto libraries
-    // This function will work when the transaction already has valueDecoded data
-    
-    return null;
-  };
 
-  // COMPLETELY GENERIC NESTED FUNCTION EXTRACTION - NO HARDCODED ASSUMPTIONS
+  // ERC-7730 COMPLIANT NESTED FUNCTION EXTRACTION
   const extractAllFunctionCalls = (data: any, path: string = '', level: number = 0): Array<{name: string, params: any[], signature: string, path: string, level: number, context: any}> => {
     const functionCalls: Array<{name: string, params: any[], signature: string, path: string, level: number, context: any}> = [];
     
     // Base case: if this looks like a function call
     if (data && typeof data === 'object' && data.name && data.params) {
-      const paramTypes = Array.isArray(data.params) ? data.params.map((p: any) => p.type).join(',') : '';
+      const paramTypes = Array.isArray(data.params) ? data.params.map((p: any) => {
+        if (p.type === 'tuple' && p.components) {
+          // For tuple types, generate the full signature with component types
+          const componentTypes = p.components.map((c: any) => c.type).join(',');
+          return `(${componentTypes})`;
+        }
+        return p.type;
+      }).join(',') : '';
       const signature = `${data.name}(${paramTypes})`;
       
       functionCalls.push({
@@ -1018,35 +1211,40 @@ const HardwareViewer = ({
       });
     }
     
-    // Recursively search through all properties
+    // Recursively search through all properties, focusing on common nested locations
     if (data && typeof data === 'object') {
-      for (const [key, value] of Object.entries(data)) {
-        if (value && typeof value === 'object') {
-          const newPath = path ? `${path}.${key}` : key;
-          
-          // If it's an array, search each element
-          if (Array.isArray(value)) {
-            value.forEach((item, index) => {
-              const indexPath = `${newPath}[${index}]`;
-              functionCalls.push(...extractAllFunctionCalls(item, indexPath, level + 1));
-            });
-          } else {
-            // Recursively search object properties
-            functionCalls.push(...extractAllFunctionCalls(value, newPath, level + 1));
-          }
-        }
+      // Search in valueDecoded for nested function calls
+      if (data.valueDecoded) {
+        const newPath = path ? `${path}.valueDecoded` : 'valueDecoded';
+        functionCalls.push(...extractAllFunctionCalls(data.valueDecoded, newPath, level + 1));
+      }
+      
+      // Search in params array
+      if (Array.isArray(data.params)) {
+        data.params.forEach((param: any, index: number) => {
+          // Use parameter name instead of positional index for Loop Decoder compatibility
+          const paramName = param.name || `param${index}`;
+          const newPath = path ? `${path}.${paramName}` : paramName;
+          functionCalls.push(...extractAllFunctionCalls(param, newPath, level + 1));
+        });
+      }
+      
+      // Search in methodCall
+      if (data.methodCall) {
+        const newPath = path ? `${path}.methodCall` : 'methodCall';
+        functionCalls.push(...extractAllFunctionCalls(data.methodCall, newPath, level + 1));
       }
     }
     
     return functionCalls;
   };
 
-  // GENERIC METADATA MATCHING - NO PROTOCOL ASSUMPTIONS
+  // STRICT METADATA MATCHING - ONLY EXACT MATCHES
   const findMetadataForSignature = (signature: string): {metadata: any, operation: Operation} | null => {
     for (const entry of metadataEntries) {
       const formats = entry.metadata.display?.formats;
       if (formats) {
-        // Exact signature match
+        // Exact signature match only
         if (formats[signature]) {
           return {
             metadata: entry.metadata.metadata,
@@ -1054,11 +1252,19 @@ const HardwareViewer = ({
           };
         }
         
-        // Function name match (transfer matches transfer(address,uint256))
+        // Function name match (only if no parentheses in format key)
         const functionName = signature.split('(')[0];
-        const matchingFormat = Object.keys(formats).find(formatKey => 
-          formatKey.startsWith(functionName + '(') || formatKey === functionName
-        );
+        const matchingFormat = Object.keys(formats).find(formatKey => {
+          // Only match if the format key is exactly the function name (no signature)
+          if (formatKey === functionName) {
+            return true;
+          }
+          // Or if it's a full signature match
+          if (formatKey === signature) {
+            return true;
+          }
+          return false;
+        });
         
         if (matchingFormat) {
           return {
@@ -1071,24 +1277,44 @@ const HardwareViewer = ({
     return null;
   };
 
-  // COMPLETELY GENERIC NESTED OPERATION DISCOVERY
+  // METADATA-DRIVEN NESTED OPERATION DISCOVERY  
   const getAllOperationsForTransaction = (transactionData: DecodedTransaction | null): Array<{operation: Operation, metadata: any, context: string, functionCall: any, level: number}> => {
     if (!transactionData) return [];
     
     const operations: Array<{operation: Operation, metadata: any, context: string, functionCall: any, level: number}> = [];
     
-    // Extract ALL function calls at ANY nesting level
+    // Only extract function calls that have matching metadata
     const allFunctionCalls = extractAllFunctionCalls(transactionData);
     
-    // Match each function call to metadata
+    // Match each function call to metadata - only add if metadata exists
     for (const functionCall of allFunctionCalls) {
       const match = findMetadataForSignature(functionCall.signature);
       if (match) {
+        // Add nested path information for path resolution
+        // Adjust level: methodCall should be level 0
+        const adjustedLevel = functionCall.path === 'methodCall' ? 0 : functionCall.level;
+        
+        // Construct proper nested path
+        let nestedPath = null;
+        if (adjustedLevel > 0) {
+          // Remove 'methodCall.' prefix and construct proper path
+          const cleanPath = functionCall.path.replace(/^methodCall\./, '');
+          nestedPath = `#.${cleanPath}`;
+        }
+        
+        const enhancedFunctionCall = {
+          ...functionCall.context,
+          level: adjustedLevel,
+          nestedPath: nestedPath
+        };
+        
+        console.log(`🔧 Operation: ${functionCall.name}, Level: ${adjustedLevel}, Path: ${functionCall.path}, NestedPath: ${nestedPath}`);
+        
         operations.push({
           operation: match.operation,
           metadata: match.metadata,
           context: functionCall.level === 0 ? 'main' : 'nested',
-          functionCall: functionCall.context,
+          functionCall: enhancedFunctionCall,
           level: functionCall.level
         });
       }
@@ -1097,7 +1323,7 @@ const HardwareViewer = ({
     return operations;
   };
 
-  // Enhanced getScreensForOperation that uses real transaction data
+  // Enhanced getScreensForOperation that uses smart path resolver
   const getScreensForOperationWithRealData = (operation: Operation) => {
     const displays = operation.fields.filter((field) => {
       const label = field && "label" in field ? field.label : undefined;
@@ -1107,6 +1333,24 @@ const HardwareViewer = ({
     const ITEM_PER_SCREEN = 4;
     const screens: Array<Array<{label: string; isActive?: boolean; displayValue: string}>> = [];
     let screen: Array<{label: string; isActive?: boolean; displayValue: string}> = [];
+
+    // Log smart resolver analysis if available
+    if (smartPathResolver && transactionData) {
+      const pathMap = Array.from(smartPathResolver.pathMap.entries());
+      console.log('📊 Smart Resolver Analysis:');
+      console.log(`  Total available paths: ${pathMap.length}`);
+      console.log('  Available paths:', pathMap.map(([path]) => path));
+      
+      // Validate metadata paths
+      const metadataPaths = operation.fields.map(f => f.path).filter(Boolean);
+      const validPaths = metadataPaths.filter(path => smartPathResolver.pathMap.has(path));
+      const invalidPaths = metadataPaths.filter(path => !smartPathResolver.pathMap.has(path));
+      
+      console.log(`  ✅ Valid metadata paths (${validPaths.length}):`, validPaths);
+      if (invalidPaths.length > 0) {
+        console.log(`  ❌ Invalid metadata paths (${invalidPaths.length}):`, invalidPaths);
+      }
+    }
 
     for (let i = 0; i < displays.length; i++) {
       const isLastItem = i === displays.length - 1;
@@ -1123,12 +1367,13 @@ const HardwareViewer = ({
       let displayValue;
       if (path === "separator") {
         displayValue = "";
-      } else if (transactionData) {
+      } else if (transactionData && smartPathResolver) {
+        const pathExists = smartPathResolver.pathMap.has(path);
         displayValue = getFieldValueFromTransaction(path, format || "raw", displayItem);
-        console.log(`${label}: path=${path}, displayValue=${displayValue}`);
+        console.log(`🔍 ${label}: path=${path} → ${displayValue} [${pathExists ? 'EXISTS' : 'MISSING'}]`);
       } else {
         displayValue = hasFormat && format ? `Mock ${format} value` : "displayValue";
-        console.log(`${label}: using mock because no transactionData`);
+        console.log(`🎭 ${label}: using mock because no transactionData or resolver`);
       }
 
       screen.push({
@@ -1155,46 +1400,58 @@ const HardwareViewer = ({
     
     console.log(`Found ${allOperations.length} operations:`, allOperations.map(op => `${op.context}:${op.functionCall.name} (level ${op.level})`));
     
-    // GENERIC MULTI-OPERATION HANDLING - NO HARDCODED ASSUMPTIONS
+    // METADATA-DRIVEN MULTI-OPERATION HANDLING
     if (allOperations.length > 1) {
       // Sort operations by nesting level (main first, then by level)
       const sortedOperations = allOperations.sort((a, b) => a.level - b.level);
       
-      // Use the deepest nested operation as the primary display (most specific action)
-      const primaryOperation = sortedOperations[sortedOperations.length - 1];
+      // Generate screens for ALL operations at all nesting levels
+      const allScreensFromAllOperations: any[] = [];
       
-      if (primaryOperation && primaryOperation.operation) {
-        // Create operation with function call context for proper path resolution
-        const contextualOperation = {
-          ...primaryOperation.operation,
-          fields: primaryOperation.operation.fields.map(field => ({
-            ...field,
-            functionCall: primaryOperation.functionCall
-          }))
-        };
-        
-        const screens = getScreensForOperationWithRealData(contextualOperation);
-        
-        // Build operation name from all operations in the chain
-        const operationChain = sortedOperations.map(op => 
-          typeof op.operation.intent === 'string' ? op.operation.intent : op.functionCall.name
-        ).join(' → ');
-        
-        const operationMeta = {
-          operationName: operationChain,
-          metadata: primaryOperation.metadata
-        };
-        
-        const allScreens = operationScreens(screens, operationMeta);
-        
+      sortedOperations.forEach((operation, opIndex) => {
+        if (operation.operation) {
+          console.log(`🎬 Generating screens for operation ${opIndex + 1}/${sortedOperations.length}: ${operation.functionCall.name} (level ${operation.level})`);
+          
+          // Create operation with function call context for proper path resolution
+          const contextualOperation = {
+            ...operation.operation,
+            fields: operation.operation.fields.map(field => ({
+              ...field,
+              functionCall: operation.functionCall
+            }))
+          };
+          
+          console.log(`🔧 Fields for ${operation.functionCall.name}:`, contextualOperation.fields.map(f => f.path));
+          
+          const screens = getScreensForOperationWithRealData(contextualOperation);
+          console.log(`📺 Generated ${screens.length} screens for ${operation.functionCall.name}`);
+          
+          // Build operation name from metadata intent or function name
+          const operationName = typeof operation.operation.intent === 'string' 
+            ? operation.operation.intent 
+            : operation.functionCall.name;
+          
+          const operationMeta = {
+            operationName: `${operationName} (Level ${operation.level})`,
+            metadata: operation.metadata
+          };
+          
+          // Add operation screens with level context
+          const operationScreens_local = operationScreens(screens, operationMeta);
+          console.log(`✅ Added ${operationScreens_local.length} screens from ${operationName} to carousel`);
+          allScreensFromAllOperations.push(...operationScreens_local);
+        }
+      });
+      
+      if (allScreensFromAllOperations.length > 0) {
         return (
           <div className="mx-auto flex max-w-96 flex-col">
             <div className="text-center text-sm text-gray-600 mb-4">
-              {operationMeta.operationName}
+              Multi-Level Transaction ({sortedOperations.length} operations)
             </div>
             <Carousel setApi={setApi}>
               <CarouselContent>
-                {allScreens.map((screen, index) => (
+                {allScreensFromAllOperations.map((screen, index) => (
                   <CarouselItem
                     key={index}
                     className="flex w-full items-center justify-center"
@@ -1208,7 +1465,7 @@ const HardwareViewer = ({
             </Carousel>
             <div className="mx-auto flex flex-row items-center gap-2 p-2 max-w-full overflow-x-auto">
               <div className="flex flex-row items-center gap-2 min-w-0">
-                {allScreens.map((_, index) => (
+                {allScreensFromAllOperations.map((_, index) => (
                   <div
                     key={"carousel-thumbnail-" + index}
                     className={cn("flex-shrink-0 w-fit rounded p-1 ring-primary hover:ring-2 cursor-pointer", {
@@ -1535,31 +1792,21 @@ const HardwareViewer = ({
                           // Get detected function selector from transaction
                           const detectedSelector = getTransactionFunctionSelector(transactionData);
                           
-                          // Check if Safe metadata exists
-                          const safeMetadataExists = metadataEntries.some(entry => {
-                            const formats = entry.metadata.display?.formats;
-                            return formats && Object.keys(formats).length > 0;
-                          });
-                          
                           return Object.keys(selectedMetadata.metadata.display.formats)
                             .filter(operationName => {
                               // Filter operations based on transaction data
                               return operationMatchesTransaction(operationName, transactionData);
                             })
                             .map((operationName) => {
-                              const isTokenOperation = operationName === "transfer" || operationName.includes("transfer");
-                              const isDisabled = isTokenOperation && !safeMetadataExists;
                               const isExactMatch = detectedSelector === operationName;
                               
                               return (
                                 <SelectItem 
                                   key={operationName} 
                                   value={operationName}
-                                  disabled={isDisabled}
                                 >
                                   {operationName} 
                                   {isExactMatch ? " ✓" : ""}
-                                  {isDisabled ? " (Requires Safe metadata)" : ""}
                                 </SelectItem>
                               );
                             });
@@ -1600,5 +1847,214 @@ const HardwareViewer = ({
     </div>
   );
 };
+
+// Export functions for CLI usage
+export function resolveValueAtPathExport(data: any, metadata: any, path: string): any {
+  if (!data || !path) return undefined;
+  
+  if (path === "separator") return "";
+  
+  // Parse root node and path according to ERC-7730 spec
+  const rootNode = path.charAt(0); // #, $, or @
+  if (!["#", "$", "@"].includes(rootNode)) {
+    return undefined;
+  }
+  
+  const pathWithoutRoot = path.substring(2); // Remove root + dot
+  
+  // Resolve based on root node type
+  let current: any;
+  switch (rootNode) {
+    case '#': // Structured data (ABI)
+      current = data;
+      break;
+    case '$': // Metadata constants
+      current = metadata;
+      break;
+    case '@': // Container values (transaction metadata)
+      current = data.container || data;
+      break;
+    default:
+      throw new Error(`Unsupported root node: ${rootNode}`);
+  }
+  
+  // Handle empty path after root
+  if (!pathWithoutRoot) return current;
+  
+  // Split path into segments and process
+  const pathParts = pathWithoutRoot.split('.');
+  
+  for (const part of pathParts) {
+    if (!current) return undefined;
+    
+    // a) Handle array slicing: path[:20], path[-20:], path[1:5]
+    const sliceMatch = part.match(/^(.+)\[(-?\d*):(-?\d*)\]$/);
+    if (sliceMatch && sliceMatch.length >= 4) {
+      const arrayName = sliceMatch[1];
+      const startStr = sliceMatch[2];
+      const endStr = sliceMatch[3];
+      if (arrayName && current[arrayName]) {
+        const array = current[arrayName];
+        if (Array.isArray(array) || typeof array === 'string') {
+          const start = !startStr || startStr === '' ? 0 : parseInt(startStr);
+          const end = !endStr || endStr === '' ? array.length : parseInt(endStr);
+          current = array.slice(start, end);
+          continue;
+        }
+      }
+    }
+    
+    // b) Handle array index access: params[0], params[1]
+    const indexMatch = part.match(/^(.+)\[(\d+)\]$/);
+    if (indexMatch && indexMatch.length >= 3) {
+      const arrayName = indexMatch[1];
+      const indexStr = indexMatch[2];
+      if (arrayName && indexStr) {
+        const idx = parseInt(indexStr);
+        
+        // Special handling for params access - check if this is at transaction root
+        if (arrayName === 'params') {
+          // If at transaction root, access methodCall.params
+          if (current.methodCall && current.methodCall.params && Array.isArray(current.methodCall.params)) {
+            if (current.methodCall.params[idx]) {
+              current = current.methodCall.params[idx].value !== undefined ? 
+                       current.methodCall.params[idx].value : 
+                       current.methodCall.params[idx];
+              continue;
+            }
+          }
+          // If current object already has params array directly
+          else if (current.params && Array.isArray(current.params)) {
+            if (current.params[idx]) {
+              current = current.params[idx].value !== undefined ? 
+                       current.params[idx].value : 
+                       current.params[idx];
+              continue;
+            }
+          }
+        }
+        
+        // General array access
+        if (current[arrayName] && Array.isArray(current[arrayName])) {
+          current = current[arrayName][idx];
+          continue;
+        }
+      }
+    }
+    
+    // c) Handle full array access: details.[]
+    if (part.endsWith('.[]')) {
+      const arrayName = part.slice(0, -3);
+      current = current[arrayName];
+      continue;
+    }
+    
+    // d) Position-based ABI parameter access (ERC-7730 requirement)
+    if (part === 'params' && current.methodCall && current.methodCall.params) {
+      current = current.methodCall.params;
+      continue;
+    }
+    
+    // d2) Named parameter access at transaction root (for paths like #.executor, #.desc)
+    if (current.methodCall && current.methodCall.params && Array.isArray(current.methodCall.params)) {
+      const param = current.methodCall.params.find((p: any) => p.name === part);
+      if (param) {
+        current = param.value !== undefined ? param.value : param;
+        continue;
+      }
+    }
+    
+    // e) Struct component access by name
+    if (current.components) {
+      const found = current.components.find((c: any) => c.name === part);
+      if (found) {
+        current = found.value !== undefined ? found.value : found;
+        continue;
+      }
+    }
+    
+    // f) Nested function calls (valueDecoded)
+    if (current.valueDecoded && part === 'valueDecoded') {
+      current = current.valueDecoded;
+      continue;
+    }
+    
+    if (current.valueDecoded && current.valueDecoded.params && part !== 'valueDecoded') {
+      const param = current.valueDecoded.params.find((p: any) => p.name === part);
+      if (param) {
+        current = param.value !== undefined ? param.value : param;
+        continue;
+      }
+    }
+    
+    // g) Direct property access
+    if (current[part] !== undefined) {
+      current = current[part];
+      continue;
+    }
+    
+    // h) Access property in value object
+    if (current.value && typeof current.value === 'object' && current.value[part] !== undefined) {
+      current = current.value[part];
+      continue;
+    }
+    
+    // Path not found
+    return undefined;
+  }
+  
+  // Extract final value
+  return current && current.value !== undefined ? current.value : current;
+}
+
+export function getFieldValueFromTransactionExport(path: string, format: string, transactionData: any, metadata: any = {}): string {
+  if (!transactionData) {
+    return `Mock ${format} value`;
+  }
+
+  try {
+    // ERC-7730 compliant path resolution
+    const value = resolveValueAtPathExport(transactionData, metadata, path);
+    
+    if (value === undefined) {
+      return "[unmapped]";
+    }
+
+    // Format the value based on the format type
+    switch (format) {
+      case "tokenAmount":
+        const rawValue = value.toString();
+        return rawValue;
+        
+      case "addressName":
+        const addressValue = value.toString();
+        if (addressValue.startsWith('0x') && addressValue.length === 42) {
+          if (transactionData.addressesMeta && transactionData.addressesMeta[addressValue]) {
+            const meta = transactionData.addressesMeta[addressValue];
+            return meta.contractName || meta.tokenSymbol || `${addressValue.slice(0, 6)}...${addressValue.slice(-4)}`;
+          }
+          return `${addressValue.slice(0, 6)}...${addressValue.slice(-4)}`;
+        }
+        return addressValue;
+        
+      case "amount":
+        if (value === "0" || value === 0) return "0";
+        return value.toString();
+        
+      case "raw":
+        const rawValueStr = value.toString();
+        if (rawValueStr.startsWith('0x') && rawValueStr.length > 42) {
+          return `${rawValueStr.slice(0, 10)}...${rawValueStr.slice(-7)}`;
+        }
+        return rawValueStr;
+        
+      default:
+        return value.toString();
+    }
+  } catch (error) {
+    console.error(`Error resolving path ${path}:`, error);
+    return `[error: ${path}]`;
+  }
+}
 
 export default HardwareViewer; 

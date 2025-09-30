@@ -101,7 +101,7 @@
   },
   "display": {
     "formats": {
-      "swap": {
+      "swap((address,address,bytes,(address,address,address[],uint256[],address[],uint256[],address,uint256,uint256,uint256,bytes),bytes))": {
         "intent": "Swap Tokens",
         "fields": [
           {

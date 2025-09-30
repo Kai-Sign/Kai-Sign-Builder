@@ -53,14 +53,44 @@
             "path": "#.value"
           },
           {
+            "label": "Transaction Data",
+            "format": "raw",
+            "path": "#.data"
+          },
+          {
             "label": "Operation Type",
             "format": "raw",
             "path": "#.operation"
           },
           {
-            "label": "Gas Limit",
+            "label": "Safe Tx Gas",
             "format": "raw",
             "path": "#.safeTxGas"
+          },
+          {
+            "label": "Base Gas",
+            "format": "raw",
+            "path": "#.baseGas"
+          },
+          {
+            "label": "Gas Price",
+            "format": "amount",
+            "path": "#.gasPrice"
+          },
+          {
+            "label": "Gas Token",
+            "format": "addressName",
+            "path": "#.gasToken"
+          },
+          {
+            "label": "Refund Receiver",
+            "format": "addressName",
+            "path": "#.refundReceiver"
+          },
+          {
+            "label": "Signatures",
+            "format": "raw",
+            "path": "#.signatures"
           }
         ]
       }

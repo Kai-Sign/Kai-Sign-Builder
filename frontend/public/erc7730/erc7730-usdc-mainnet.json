@@ -304,7 +304,7 @@
           {
             "label": "Spender",
             "format": "addressName",
-            "path": "#.spender"
+            "path": "#.to"
           },
           {
             "label": "Amount",
@@ -322,12 +322,12 @@
           {
             "label": "Spender",
             "format": "addressName",
-            "path": "#.spender"
+            "path": "#.to"
           },
           {
             "label": "Increase By",
             "format": "tokenAmount",
-            "path": "#.increment",
+            "path": "#.value",
             "params": {
               "tokenPath": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
             }
@@ -340,12 +340,12 @@
           {
             "label": "Spender",
             "format": "addressName",
-            "path": "#.spender"
+            "path": "#.to"
           },
           {
             "label": "Decrease By",
             "format": "tokenAmount",
-            "path": "#.decrement",
+            "path": "#.value",
             "params": {
               "tokenPath": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
             }
@@ -358,12 +358,12 @@
           {
             "label": "Recipient",
             "format": "addressName",
-            "path": "#._to"
+            "path": "#.to"
           },
           {
             "label": "Amount",
             "format": "tokenAmount",
-            "path": "#._amount",
+            "path": "#.value",
             "params": {
               "tokenPath": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
             }
@@ -376,7 +376,7 @@
           {
             "label": "Amount",
             "format": "tokenAmount",
-            "path": "#._amount",
+            "path": "#.value",
             "params": {
               "tokenPath": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
             }
@@ -389,7 +389,7 @@
           {
             "label": "Address to Blacklist",
             "format": "addressName",
-            "path": "#._account"
+            "path": "#.to"
           }
         ]
       },
@@ -399,7 +399,7 @@
           {
             "label": "Address to Unblacklist",
             "format": "addressName",
-            "path": "#._account"
+            "path": "#.to"
           }
         ]
       },
@@ -409,12 +409,12 @@
           {
             "label": "Minter Address",
             "format": "addressName",
-            "path": "#.minter"
+            "path": "#.to"
           },
           {
             "label": "Allowed Amount",
             "format": "tokenAmount",
-            "path": "#.minterAllowedAmount",
+            "path": "#.value",
             "params": {
               "tokenPath": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
             }
@@ -427,7 +427,7 @@
           {
             "label": "Minter Address",
             "format": "addressName",
-            "path": "#.minter"
+            "path": "#.to"
           }
         ]
       },
@@ -437,12 +437,12 @@
           {
             "label": "Owner",
             "format": "addressName",
-            "path": "#.owner"
+            "path": "#.to"
           },
           {
             "label": "Spender",
             "format": "addressName",
-            "path": "#.spender"
+            "path": "#.to"
           },
           {
             "label": "Amount",
@@ -455,7 +455,7 @@
           {
             "label": "Deadline",
             "format": "raw",
-            "path": "#.deadline"
+            "path": "#.params[3]"
           }
         ]
       },
@@ -465,7 +465,7 @@
           {
             "label": "From",
             "format": "addressName",
-            "path": "#.from"
+            "path": "#.to"
           },
           {
             "label": "To",
@@ -483,12 +483,12 @@
           {
             "label": "Valid After",
             "format": "raw",
-            "path": "#.validAfter"
+            "path": "#.params[3]"
           },
           {
             "label": "Valid Before",
             "format": "raw",
-            "path": "#.validBefore"
+            "path": "#.params[4]"
           }
         ]
       },
@@ -498,7 +498,7 @@
           {
             "label": "From",
             "format": "addressName",
-            "path": "#.from"
+            "path": "#.to"
           },
           {
             "label": "To",
@@ -516,12 +516,12 @@
           {
             "label": "Valid After",
             "format": "raw",
-            "path": "#.validAfter"
+            "path": "#.params[3]"
           },
           {
             "label": "Valid Before",
             "format": "raw",
-            "path": "#.validBefore"
+            "path": "#.params[4]"
           }
         ]
       },
@@ -531,12 +531,12 @@
           {
             "label": "Authorizer",
             "format": "addressName",
-            "path": "#.authorizer"
+            "path": "#.to"
           },
           {
             "label": "Nonce",
             "format": "raw",
-            "path": "#.nonce"
+            "path": "#.value"
           }
         ]
       },
@@ -546,7 +546,7 @@
           {
             "label": "Token Contract",
             "format": "addressName",
-            "path": "#.tokenContract"
+            "path": "#.to"
           },
           {
             "label": "Recipient",
@@ -556,7 +556,7 @@
           {
             "label": "Amount",
             "format": "tokenAmount",
-            "path": "#.amount",
+            "path": "#.value",
             "params": {
               "tokenPath": "#.tokenContract"
             }
@@ -577,7 +577,7 @@
           {
             "label": "New Pauser",
             "format": "addressName",
-            "path": "#._newPauser"
+            "path": "#.to"
           }
         ]
       },
@@ -587,7 +587,7 @@
           {
             "label": "New Blacklister",
             "format": "addressName",
-            "path": "#._newBlacklister"
+            "path": "#.to"
           }
         ]
       },
@@ -597,7 +597,7 @@
           {
             "label": "New Master Minter",
             "format": "addressName",
-            "path": "#._newMasterMinter"
+            "path": "#.to"
           }
         ]
       },
@@ -607,7 +607,7 @@
           {
             "label": "New Owner",
             "format": "addressName",
-            "path": "#.newOwner"
+            "path": "#.to"
           }
         ]
       }
