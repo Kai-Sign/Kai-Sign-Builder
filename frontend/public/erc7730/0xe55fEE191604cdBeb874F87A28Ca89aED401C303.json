@@ -1,0 +1,87 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 8453,
+          "address": "0xe55fEE191604cdBeb874F87A28Ca89aED401C303"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "checkIn",
+          "inputs": [],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "inputs": [
+            {"name": "to", "type": "address"},
+            {"name": "amount", "type": "uint256"}
+          ],
+          "outputs": [{"name": "", "type": "bool"}],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Towns Points",
+    "info": {
+      "legalName": "Towns Points Protocol",
+      "url": "https://towns.com"
+    },
+    "token": {
+      "ticker": "TWP",
+      "decimals": 18
+    }
+  },
+  "display": {
+    "formats": {
+      "checkIn()": {
+        "intent": "Check In - Claim Towns Points",
+        "fields": [
+          {
+            "label": "Action",
+            "format": "raw",
+            "value": "Daily Check-In"
+          },
+          {
+            "label": "Reward Amount",
+            "format": "tokenAmount",
+            "path": "@.transfers[0].amount"
+          },
+          {
+            "label": "Token",
+            "format": "raw",
+            "path": "@.transfers[0].symbol"
+          },
+          {
+            "label": "Recipient",
+            "format": "addressName", 
+            "path": "@.transfers[0].to"
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer Towns Points",
+        "fields": [
+          {
+            "label": "Recipient",
+            "format": "addressName",
+            "path": "#.to"
+          },
+          {
+            "label": "Amount",
+            "format": "tokenAmount",
+            "path": "#.amount"
+          }
+        ]
+      }
+    }
+  }
+}

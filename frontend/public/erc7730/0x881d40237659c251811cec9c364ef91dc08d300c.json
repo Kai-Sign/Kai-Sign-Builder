@@ -1,0 +1,63 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x881D40237659C251811CEC9c364ef91dC08D300C"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "swap",
+          "inputs": [
+            {"name": "aggregatorId", "type": "string"},
+            {"name": "tokenFrom", "type": "address"},
+            {"name": "amount", "type": "uint256"},
+            {"name": "data", "type": "bytes"}
+          ],
+          "outputs": [],
+          "stateMutability": "payable"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "MetaMask Institutional",
+    "info": {
+      "url": "https://institutional.metamask.io",
+      "legalName": "MetaMask Institutional Swap Contract"
+    }
+  },
+  "display": {
+    "formats": {
+      "swap(string,address,uint256,bytes)": {
+        "intent": "Swap tokens using aggregator",
+        "fields": [
+          {
+            "label": "Aggregator",
+            "format": "raw",
+            "path": "#.aggregatorId"
+          },
+          {
+            "label": "From Token",
+            "format": "addressName",
+            "path": "#.tokenFrom"
+          },
+          {
+            "label": "Amount",
+            "format": "amount",
+            "path": "#.amount"
+          },
+          {
+            "label": "Swap Data",
+            "format": "raw",
+            "path": "#.data"
+          }
+        ]
+      }
+    }
+  }
+}

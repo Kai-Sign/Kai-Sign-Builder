@@ -1,0 +1,122 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 8453,
+          "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "transfer",
+          "inputs": [
+            {"name": "to", "type": "address"},
+            {"name": "value", "type": "uint256"}
+          ],
+          "outputs": [{"name": "", "type": "bool"}],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "inputs": [
+            {"name": "from", "type": "address"},
+            {"name": "to", "type": "address"},
+            {"name": "value", "type": "uint256"}
+          ],
+          "outputs": [{"name": "", "type": "bool"}],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "inputs": [
+            {"name": "spender", "type": "address"},
+            {"name": "value", "type": "uint256"}
+          ],
+          "outputs": [{"name": "", "type": "bool"}],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Coinbase",
+    "info": {
+      "legalName": "Coinbase",
+      "url": "https://coinbase.com",
+      "contractName": "USD Coin"
+    },
+    "token": {
+      "ticker": "USDC",
+      "name": "USD Coin",
+      "decimals": 6
+    }
+  },
+  "display": {
+    "formats": {
+      "transfer(address,uint256)": {
+        "intent": "Transfer USDC",
+        "fields": [
+          {
+            "label": "Recipient",
+            "format": "addressName",
+            "path": "#.to"
+          },
+          {
+            "label": "Amount",
+            "format": "tokenAmount",
+            "path": "#.value",
+            "params": {
+              "tokenPath": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+            }
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Transfer USDC From",
+        "fields": [
+          {
+            "label": "From",
+            "format": "addressName",
+            "path": "#.from"
+          },
+          {
+            "label": "To",
+            "format": "addressName",
+            "path": "#.to"
+          },
+          {
+            "label": "Amount",
+            "format": "tokenAmount",
+            "path": "#.value",
+            "params": {
+              "tokenPath": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+            }
+          }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Approve USDC Spending",
+        "fields": [
+          {
+            "label": "Spender",
+            "format": "addressName",
+            "path": "#.spender"
+          },
+          {
+            "label": "Amount",
+            "format": "tokenAmount",
+            "path": "#.value",
+            "params": {
+              "tokenPath": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
