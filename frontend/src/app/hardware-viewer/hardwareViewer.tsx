@@ -910,16 +910,22 @@ const HardwareViewer = ({
     
     // METADATA-DRIVEN MULTI-OPERATION HANDLING
     if (allOperations.length > 1) {
+      // Filter to only show the lowest (deepest) level operations
+      const maxLevel = Math.max(...allOperations.map(op => op.level));
+      const lowestLevelOperations = allOperations.filter(op => op.level === maxLevel);
+      
+      console.log(`Filtering to lowest level ${maxLevel}: ${lowestLevelOperations.length} operations`);
+      
       // Sort operations by nesting level (main first, then by level)
-      const sortedOperations = allOperations.sort((a, b) => a.level - b.level);
+      const sortedOperations = lowestLevelOperations.sort((a, b) => a.level - b.level);
       
-      // Generate screens for ALL operations at all nesting levels
-      const allScreensFromAllOperations: any[] = [];
+      // Consolidate transfer operations into single review/sign screens
+      const consolidatedScreens: any[] = [];
+      const allTransferData: any[] = [];
       
+      // Collect all transfer operation data
       sortedOperations.forEach((operation) => {
         if (operation.operation) {
-          // Processing operation ${opIndex + 1}/${sortedOperations.length}
-          
           // Create operation with function call context for proper path resolution
           const contextualOperation = {
             ...operation.operation,
@@ -929,10 +935,7 @@ const HardwareViewer = ({
             }))
           };
           
-          // Using level-based field resolution
-          
           const screens = getScreensForOperationWithRealData(contextualOperation);
-          // Generated screens for operation
           
           // Build operation name from metadata intent or function name
           const operationName = typeof operation.operation.intent === 'string' 
@@ -943,19 +946,45 @@ const HardwareViewer = ({
           const batchInfo = operation.batchIndex !== undefined ? ` [${operation.batchIndex + 1}]` : '';
           const levelInfo = operation.level > 0 ? ` (L${operation.level})` : '';
           
-          const operationMeta = {
+          allTransferData.push({
             operationName: `${operationName}${batchInfo}${levelInfo}`,
+            screens,
             metadata: operation.metadata
-          };
-          
-          // Add operation screens with level context
-          const operationScreens_local = operationScreens(screens, operationMeta);
-          // Added screens to carousel
-          allScreensFromAllOperations.push(...operationScreens_local);
+          });
         }
       });
       
-      if (allScreensFromAllOperations.length > 0) {
+      // Create consolidated screens using the operationScreens function
+      if (allTransferData.length > 0) {
+        // Consolidate all field data into a single operation display
+        const consolidatedFieldData: Array<{label: string; isActive?: boolean; displayValue: string}> = [];
+        
+        allTransferData.forEach((transfer, index) => {
+          // Add transfer header
+          consolidatedFieldData.push({
+            label: `Transfer ${index + 1}`,
+            displayValue: transfer.operationName,
+            isActive: true
+          });
+          
+          // Add all fields from this transfer
+          transfer.screens.forEach((screen: Array<{label: string; isActive?: boolean; displayValue: string}>) => {
+            consolidatedFieldData.push(...screen);
+          });
+        });
+        
+        // Create consolidated operation metadata
+        const consolidatedMeta = {
+          operationName: `Batch Transfer (${allTransferData.length} operations)`,
+          metadata: allTransferData[0]?.metadata
+        };
+        
+        // Use operationScreens to create proper screens with review and sign
+        const consolidatedOperationScreens = operationScreens([consolidatedFieldData], consolidatedMeta);
+        consolidatedScreens.push(...consolidatedOperationScreens);
+      }
+      
+      if (consolidatedScreens.length > 0) {
         const batchInfo = allOperations.some(op => op.batchIndex !== undefined);
         const batchCount = batchInfo ? new Set(allOperations.map(op => op.batchIndex)).size : 0;
         const levelCount = new Set(allOperations.map(op => op.level)).size;
@@ -976,7 +1005,7 @@ const HardwareViewer = ({
             </div>
             <Carousel setApi={setApi}>
               <CarouselContent>
-                {allScreensFromAllOperations.map((screen, index) => (
+                {consolidatedScreens.map((screen, index) => (
                   <CarouselItem
                     key={index}
                     className="flex w-full items-center justify-center"
@@ -990,7 +1019,7 @@ const HardwareViewer = ({
             </Carousel>
             <div className="mx-auto flex flex-row items-center gap-2 p-2 max-w-full overflow-x-auto">
               <div className="flex flex-row items-center gap-2 min-w-0">
-                {allScreensFromAllOperations.map((_, index) => (
+                {consolidatedScreens.map((_, index) => (
                   <div
                     key={"carousel-thumbnail-" + index}
                     className={cn("flex-shrink-0 w-fit rounded p-1 ring-primary hover:ring-2 cursor-pointer", {
