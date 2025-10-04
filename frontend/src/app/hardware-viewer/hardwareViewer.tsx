@@ -982,10 +982,12 @@ const HardwareViewer = ({
           paginatedScreens.push(screenFields);
         }
         
-        // Create consolidated operation metadata
+        // Create consolidated operation metadata using the actual operation intent from metadata
+        const firstOperation = allTransferData[0];
+        const baseOperationName = firstOperation?.operationName?.split(' [')[0]?.split(' (L')[0] || 'Operation';
         const consolidatedMeta = {
-          operationName: `Batch Transfer (${allTransferData.length} operations)`,
-          metadata: allTransferData[0]?.metadata
+          operationName: `${baseOperationName} (${allTransferData.length} operations)`,
+          metadata: firstOperation?.metadata
         };
         
         // Use operationScreens to create proper screens with review and sign
