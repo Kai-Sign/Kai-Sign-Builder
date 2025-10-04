@@ -956,12 +956,12 @@ const HardwareViewer = ({
       
       // Create consolidated screens using the operationScreens function
       if (allTransferData.length > 0) {
-        // Consolidate all field data into a single operation display
-        const consolidatedFieldData: Array<{label: string; isActive?: boolean; displayValue: string}> = [];
+        // Consolidate all field data with proper screen pagination
+        const allFields: Array<{label: string; isActive?: boolean; displayValue: string}> = [];
         
         allTransferData.forEach((transfer, index) => {
           // Add transfer header
-          consolidatedFieldData.push({
+          allFields.push({
             label: `Transfer ${index + 1}`,
             displayValue: transfer.operationName,
             isActive: true
@@ -969,9 +969,18 @@ const HardwareViewer = ({
           
           // Add all fields from this transfer
           transfer.screens.forEach((screen: Array<{label: string; isActive?: boolean; displayValue: string}>) => {
-            consolidatedFieldData.push(...screen);
+            allFields.push(...screen);
           });
         });
+        
+        // Break into multiple screens with proper pagination (4 items per screen)
+        const ITEMS_PER_SCREEN = 4;
+        const paginatedScreens: Array<Array<{label: string; isActive?: boolean; displayValue: string}>> = [];
+        
+        for (let i = 0; i < allFields.length; i += ITEMS_PER_SCREEN) {
+          const screenFields = allFields.slice(i, i + ITEMS_PER_SCREEN);
+          paginatedScreens.push(screenFields);
+        }
         
         // Create consolidated operation metadata
         const consolidatedMeta = {
@@ -980,7 +989,7 @@ const HardwareViewer = ({
         };
         
         // Use operationScreens to create proper screens with review and sign
-        const consolidatedOperationScreens = operationScreens([consolidatedFieldData], consolidatedMeta);
+        const consolidatedOperationScreens = operationScreens(paginatedScreens, consolidatedMeta);
         consolidatedScreens.push(...consolidatedOperationScreens);
       }
       
