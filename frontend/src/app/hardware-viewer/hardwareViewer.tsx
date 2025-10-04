@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Textarea } from "~/components/ui/textarea";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
@@ -61,6 +61,43 @@ class SmartPathResolver {
   }
   
   resolveMetadataPath(transaction: any, metadataPath: string): any {
+    // Handle @ paths (transaction metadata) directly
+    if (metadataPath.startsWith('@')) {
+      const pathWithoutRoot = metadataPath.substring(2); // Remove '@.'
+      const pathParts = pathWithoutRoot.split('.');
+      
+      let current = transaction;
+      
+      for (const part of pathParts) {
+        if (!current) return undefined;
+        
+        // Handle array index access: transfers[0], addressesMeta[address]
+        const indexMatch = part.match(/^(.+)\[(\d+)\]$/);
+        if (indexMatch && indexMatch.length >= 3) {
+          const arrayName = indexMatch[1];
+          const indexStr = indexMatch[2];
+          const idx = parseInt(indexStr);
+          
+          if (current[arrayName] && Array.isArray(current[arrayName])) {
+            current = current[arrayName][idx];
+            continue;
+          } else {
+            return undefined;
+          }
+        }
+        
+        // Regular property access
+        if (current[part] !== undefined) {
+          current = current[part];
+        } else {
+          return undefined;
+        }
+      }
+      
+      return current;
+    }
+    
+    // Handle # paths (methodCall parameters) - existing logic
     if (!this.pathMap.has(metadataPath)) {
       return undefined;
     }
@@ -123,6 +160,11 @@ interface DecodedTransaction {
       name: string;
       type: string;
       value: string;
+      components?: Array<{
+        name: string;
+        type: string;
+        value: string;
+      }>;
       valueDecoded?: {
         name: string;
         signature?: string;
@@ -598,19 +640,18 @@ const HardwareViewer = ({
     const functionName = transactionData.methodCall.name;
     const params = transactionData.methodCall.params;
     
-    // Build function signature
+    // Use the actual signature from transaction if available, otherwise build it
+    if (transactionData.methodCall.signature) {
+      return transactionData.methodCall.signature;
+    }
+    
+    // Fallback: build function signature from parameter types
     const paramTypes = params.map(param => param.type).join(',');
     const functionSignature = `${functionName}(${paramTypes})`;
     
     return functionSignature;
   };
 
-  // ERC-7730 compliant function selector computation with Keccak-256
-  const computeFunctionSelector = (signature: string): string => {
-    // Note: In a real implementation, this would use keccak256 from ethers
-    // For now, return the signature for matching since we don't have the hash in our test data
-    return signature;
-  };
 
   // Function to check if operation matches transaction
   const operationMatchesTransaction = (operationKey: string, transactionData: DecodedTransaction | null): boolean => {
@@ -629,120 +670,6 @@ const HardwareViewer = ({
     return false;
   };
 
-  // Sample decoded transaction data (Loop Decoder format)
-  const sampleTransactionData = {
-    txHash: "0x22a244794f155ce4a5765588353cf82dfc842c33ee3ed98e95ef488f6964f4fb",
-    txType: "contract interaction",
-    fromAddress: "0x049bdd0528e2d5f2e579e1bdd133Daed7c935DFC",
-    toAddress: "0x6092722B33FcF90af6e99C93F5F9349473869e23",
-    contractName: "",
-    contractType: "SAFE-PROXY",
-    methodCall: {
-      name: "execTransaction",
-      type: "function",
-      signature: "execTransaction(address,uint256,bytes,uint8,uint256,uint256,uint256,address,address,bytes)",
-      params: [
-        {
-          name: "to",
-          type: "address",
-          value: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
-        },
-        {
-          name: "value",
-          type: "uint256",
-          value: "0"
-        },
-        {
-          name: "data",
-          type: "bytes",
-          value: "0xa9059cbb000000000000000000000000a1371748d65baef4509a3c067b3fe3a1b79183ae000000000000000000000000000000000000000000000000000000001f143c37",
-          valueDecoded: {
-            name: "transfer",
-            signature: "transfer(address,uint256)",
-            type: "function",
-            params: [
-              {
-                name: "to",
-                type: "address",
-                value: "0xA1371748D65baEF4509A3c067b3fe3a1b79183aE"
-              },
-              {
-                name: "value",
-                type: "uint256",
-                value: "521419831"
-              }
-            ]
-          }
-        },
-        {
-          name: "operation",
-          type: "uint8",
-          value: "0"
-        },
-        {
-          name: "safeTxGas",
-          type: "uint256",
-          value: "0"
-        },
-        {
-          name: "baseGas",
-          type: "uint256",
-          value: "0"
-        },
-        {
-          name: "gasPrice",
-          type: "uint256",
-          value: "0"
-        },
-        {
-          name: "gasToken",
-          type: "address",
-          value: "0x0000000000000000000000000000000000000000"
-        },
-        {
-          name: "refundReceiver",
-          type: "address",
-          value: "0x0000000000000000000000000000000000000000"
-        },
-        {
-          name: "signatures",
-          type: "bytes",
-          value: "0x000000000000000000000000049bdd0528e2d5f2e579e1bdd133daed7c935dfc000000000000000000000000000000000000000000000000000000000000000001be6195185c0afdda36c5ccc9951d628873f0c2546d68edd266c4a6142ef05ed30be88a934eac08bb8d86705cb7a339d61c2342fdd7607806c488e0055a0232e51c"
-        }
-      ]
-    },
-    transfers: [
-      {
-        type: "ERC20",
-        name: "USD Coin",
-        symbol: "USDC",
-        address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-        amount: "521.419831",
-        to: "0xA1371748D65baEF4509A3c067b3fe3a1b79183aE",
-        from: "0x6092722B33FcF90af6e99C93F5F9349473869e23"
-      }
-    ],
-    addressesMeta: {
-      "0x6092722B33FcF90af6e99C93F5F9349473869e23": {
-        contractAddress: "0x6092722B33FcF90af6e99C93F5F9349473869e23",
-        contractName: "",
-        tokenSymbol: "",
-        decimals: null,
-        type: "SAFE-PROXY",
-        address: "0x6092722B33FcF90af6e99C93F5F9349473869e23",
-        chainID: 1
-      },
-      "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
-        contractAddress: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-        contractName: "USD Coin",
-        tokenSymbol: "USDC",
-        decimals: 6,
-        type: "ERC20",
-        address: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-        chainID: 1
-      }
-    }
-  };
 
   useEffect(() => {
     loadSampleSetsConfig();
@@ -862,6 +789,76 @@ const HardwareViewer = ({
       }
     }
   }, [transactionData, selectedMetadataId, metadataEntries]);
+
+  // Dynamic metadata loading based on contract addresses
+  useEffect(() => {
+    if (!transactionData) return;
+    
+    // Extract contract addresses from transaction
+    const extractContractAddresses = (data: any): string[] => {
+      const addresses: string[] = [];
+      
+      const traverse = (obj: any, depth: number = 0) => {
+        if (obj && typeof obj === 'object' && depth < 20) {
+          // Look for direct target property
+          if (obj.target && typeof obj.target === 'string' && obj.target.startsWith('0x')) {
+            addresses.push(obj.target.toLowerCase());
+          }
+          
+          // Look for target parameters (the real pattern in batch transactions)
+          if (obj.name === 'target' && obj.value && typeof obj.value === 'string' && obj.value.startsWith('0x')) {
+            console.log(`   📍 Found target param: ${obj.value}`);
+            addresses.push(obj.value.toLowerCase());
+          }
+          
+          if (Array.isArray(obj)) {
+            obj.forEach(item => traverse(item, depth + 1));
+          } else {
+            Object.values(obj).forEach(value => traverse(value, depth + 1));
+          }
+        }
+      };
+      
+      traverse(data);
+      return [...new Set(addresses)];
+    };
+
+    const contractAddresses = extractContractAddresses(transactionData);
+    
+    // Load metadata for addresses not already loaded
+    contractAddresses.forEach(address => {
+      const isAlreadyLoaded = metadataEntries.some(entry => 
+        (entry.metadata.context as any)?.contract?.deployments?.some(
+          (deployment: any) => deployment.address?.toLowerCase() === address.toLowerCase()
+        )
+      );
+      
+      if (!isAlreadyLoaded) {
+        console.log(`📥 Loading metadata for contract: ${address}`);
+        fetch(`/erc7730/${address.toLowerCase()}.json`)
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error(`No metadata found for ${address}`);
+          })
+          .then(contractMetadata => {
+            console.log(`✅ Loaded metadata for ${address}`);
+            
+            const newMetadataEntry = {
+              id: `contract-${address.toLowerCase()}`,
+              name: `Contract ${address.slice(0, 6)}...${address.slice(-4)}`,
+              metadata: contractMetadata as unknown as Erc7730
+            };
+            
+            setMetadataEntries(prev => [...prev, newMetadataEntry]);
+          })
+          .catch(error => {
+            console.log(`❌ Error loading metadata for ${address}:`, error.message);
+          });
+      }
+    });
+  }, [transactionData, metadataEntries]);
 
   // ERC-7730 COMPLIANT PATH RESOLVER
   const resolveValueAtPath = (data: any, metadata: any, path: string): any => {
@@ -1029,22 +1026,32 @@ const HardwareViewer = ({
       return `Mock ${format} value`;
     }
     
+    // Handle static values (when field has 'value' instead of 'path')
+    if (field && 'value' in field && field.value !== undefined) {
+      return field.value.toString();
+    }
+    
     // Get metadata context for the current entry
     const selectedMetadata = metadataEntries.find(entry => entry.id === selectedMetadataId);
     const metadata = selectedMetadata?.metadata || metadataEntries[0]?.metadata || {};
     
     // Handle nested context path resolution
     let resolvedPath = path;
-    if (field?.functionCall?.level === 0) {
+    
+    // CRITICAL: @ paths (transaction metadata) should NEVER be nested
+    if (path.startsWith('@')) {
+      // @ paths always reference transaction root, regardless of nesting level
+      resolvedPath = path;
+    } else if (field?.functionCall?.level === 0) {
       // Level 0 (main transaction): use path directly
       resolvedPath = path;
-    } else if (field?.functionCall?.level > 0 && field?.functionCall?.nestedPath) {
-      // For nested operations, prefix the path with the nested context
+    } else if (field?.functionCall?.level > 0 && field?.functionCall?.nestedPath && path.startsWith('#')) {
+      // For nested operations with # paths, prefix with the nested context
       const pathWithoutHash = path.substring(2); // Remove '#.'
       resolvedPath = `${field.functionCall.nestedPath}.${pathWithoutHash}`;
       console.log(`🔗 Nested path mapping: ${path} → ${resolvedPath} (level ${field.functionCall.level})`);
     } else {
-      // Fallback for level > 0 but no nested path
+      // Fallback - use path directly
       resolvedPath = path;
     }
     
@@ -1089,11 +1096,7 @@ const HardwareViewer = ({
       case "addressName":
         const addressValue = value.toString();
         if (addressValue.startsWith('0x') && addressValue.length === 42) {
-          // Check if we have metadata for this address
-          if (transactionData?.addressesMeta && transactionData.addressesMeta[addressValue]) {
-            const addressMeta = transactionData.addressesMeta[addressValue];
-            return addressMeta.contractName || `${addressValue.slice(0, 6)}...${addressValue.slice(-4)}`;
-          }
+          // Always format addresses as shortened form, regardless of metadata
           return `${addressValue.slice(0, 6)}...${addressValue.slice(-4)}`;
         }
         return addressValue;
@@ -1185,142 +1188,349 @@ const HardwareViewer = ({
 
 
 
-  // ERC-7730 COMPLIANT NESTED FUNCTION EXTRACTION
-  const extractAllFunctionCalls = (data: any, path: string = '', level: number = 0): Array<{name: string, params: any[], signature: string, path: string, level: number, context: any}> => {
-    const functionCalls: Array<{name: string, params: any[], signature: string, path: string, level: number, context: any}> = [];
-    
-    // Base case: if this looks like a function call
-    if (data && typeof data === 'object' && data.name && data.params) {
-      const paramTypes = Array.isArray(data.params) ? data.params.map((p: any) => {
-        if (p.type === 'tuple' && p.components) {
-          // For tuple types, generate the full signature with component types
-          const componentTypes = p.components.map((c: any) => c.type).join(',');
-          return `(${componentTypes})`;
-        }
-        return p.type;
-      }).join(',') : '';
-      const signature = `${data.name}(${paramTypes})`;
-      
-      functionCalls.push({
-        name: data.name,
-        params: data.params,
-        signature: signature,
-        path: path,
-        level: level,
-        context: data
-      });
-    }
-    
-    // Recursively search through all properties, focusing on common nested locations
-    if (data && typeof data === 'object') {
-      // Search in valueDecoded for nested function calls
-      if (data.valueDecoded) {
-        const newPath = path ? `${path}.valueDecoded` : 'valueDecoded';
-        functionCalls.push(...extractAllFunctionCalls(data.valueDecoded, newPath, level + 1));
-      }
-      
-      // Search in params array
-      if (Array.isArray(data.params)) {
-        data.params.forEach((param: any, index: number) => {
-          // Use parameter name instead of positional index for Loop Decoder compatibility
-          const paramName = param.name || `param${index}`;
-          const newPath = path ? `${path}.${paramName}` : paramName;
-          functionCalls.push(...extractAllFunctionCalls(param, newPath, level + 1));
-        });
-      }
-      
-      // Search in methodCall
-      if (data.methodCall) {
-        const newPath = path ? `${path}.methodCall` : 'methodCall';
-        functionCalls.push(...extractAllFunctionCalls(data.methodCall, newPath, level + 1));
-      }
-    }
-    
-    return functionCalls;
-  };
 
-  // STRICT METADATA MATCHING - ONLY EXACT MATCHES
-  const findMetadataForSignature = (signature: string): {metadata: any, operation: Operation} | null => {
-    for (const entry of metadataEntries) {
-      const formats = entry.metadata.display?.formats;
-      if (formats) {
-        // Exact signature match only
-        if (formats[signature]) {
-          return {
-            metadata: entry.metadata.metadata,
-            operation: formats[signature] as Operation
-          };
-        }
-        
-        // Function name match (only if no parentheses in format key)
-        const functionName = signature.split('(')[0];
-        const matchingFormat = Object.keys(formats).find(formatKey => {
-          // Only match if the format key is exactly the function name (no signature)
-          if (formatKey === functionName) {
-            return true;
-          }
-          // Or if it's a full signature match
-          if (formatKey === signature) {
-            return true;
-          }
-          return false;
-        });
-        
-        if (matchingFormat) {
-          return {
-            metadata: entry.metadata.metadata,
-            operation: formats[matchingFormat] as Operation
-          };
-        }
-      }
-    }
-    return null;
-  };
-
-  // METADATA-DRIVEN NESTED OPERATION DISCOVERY  
+  // LEVEL-BASED METADATA MAPPING - NO HARDCODED NESTING
   const getAllOperationsForTransaction = (transactionData: DecodedTransaction | null): Array<{operation: Operation, metadata: any, context: string, functionCall: any, level: number}> => {
     if (!transactionData) return [];
     
+    console.log('🎯 LEVEL-BASED METADATA MAPPING');
+    
     const operations: Array<{operation: Operation, metadata: any, context: string, functionCall: any, level: number}> = [];
     
-    // Only extract function calls that have matching metadata
-    const allFunctionCalls = extractAllFunctionCalls(transactionData);
-    
-    // Match each function call to metadata - only add if metadata exists
-    for (const functionCall of allFunctionCalls) {
-      const match = findMetadataForSignature(functionCall.signature);
-      if (match) {
-        // Add nested path information for path resolution
-        // Adjust level: methodCall should be level 0
-        const adjustedLevel = functionCall.path === 'methodCall' ? 0 : functionCall.level;
+    // Extract ALL function calls from ANYWHERE in the transaction structure
+    const extractFunctionCallsWithLevels = (data: any, level: number = 0, path: string = ''): Array<{name: string, signature: string, level: number, data: any, params: any[]}> => {
+      const calls: Array<{name: string, signature: string, level: number, data: any, params: any[]}> = [];
+      
+      // Recursively find ALL function calls in the transaction
+      const findAllFunctionCalls = (obj: any, currentLevel: number = 0, currentPath: string = '') => {
+        if (!obj || typeof obj !== 'object') return;
         
-        // Construct proper nested path
-        let nestedPath = null;
-        if (adjustedLevel > 0) {
-          // Remove 'methodCall.' prefix and construct proper path
-          const cleanPath = functionCall.path.replace(/^methodCall\./, '');
-          nestedPath = `#.${cleanPath}`;
+        // Check if this object represents a function call
+        if (obj.name && obj.signature && obj.params) {
+          console.log(`   🔍 Found function call: ${obj.name} at level ${currentLevel} (${currentPath})`);
+          
+          calls.push({
+            name: obj.name,
+            signature: obj.signature,
+            level: currentLevel,
+            data: obj,
+            params: obj.params || []
+          });
         }
         
-        const enhancedFunctionCall = {
-          ...functionCall.context,
-          level: adjustedLevel,
-          nestedPath: nestedPath
-        };
+        // Special handling for top-level methodCall
+        if (obj.methodCall?.name && obj.methodCall?.params) {
+          const methodCall = obj.methodCall;
+          let signature;
+          if (methodCall.signature) {
+            signature = methodCall.signature;
+          } else {
+            const paramTypes = methodCall.params.map((p: any) => p.type).join(',');
+            signature = `${methodCall.name}(${paramTypes})`;
+          }
+          
+          console.log(`   🔍 Found top-level method call: ${methodCall.name} at level ${currentLevel}`);
+          
+          calls.push({
+            name: methodCall.name,
+            signature: signature,
+            level: currentLevel,
+            data: methodCall,
+            params: methodCall.params || []
+          });
+        }
         
-        console.log(`🔧 Operation: ${functionCall.name}, Level: ${adjustedLevel}, Path: ${functionCall.path}, NestedPath: ${nestedPath}`);
+        // Recursively traverse all properties
+        if (Array.isArray(obj)) {
+          obj.forEach((item, index) => findAllFunctionCalls(item, currentLevel + 1, `${currentPath}[${index}]`));
+        } else {
+          Object.entries(obj).forEach(([key, value]) => {
+            // Increase level when we go into valueDecoded (nested function calls)
+            const nextLevel = key === 'valueDecoded' ? currentLevel + 1 : currentLevel;
+            findAllFunctionCalls(value, nextLevel, `${currentPath}.${key}`);
+          });
+        }
+      };
+      
+      findAllFunctionCalls(data, level, path);
+      return calls;
+    };
+    
+    const allFunctionCalls = extractFunctionCallsWithLevels(transactionData);
+    console.log(`   Found ${allFunctionCalls.length} functions at levels: ${[...new Set(allFunctionCalls.map(f => f.level))].join(', ')}`);
+    
+    // Find metadata for each function call based on level
+    allFunctionCalls.forEach((functionCall) => {
+      // Find metadata for this level - allow reuse across levels
+      let levelMetadata = metadataEntries.filter(entry => {
+        // Primary assignment: metadata index matches level
+        const metadataLevel = metadataEntries.indexOf(entry);
+        return metadataLevel === functionCall.level;
+      });
+      
+      // If no metadata at this level, allow reusing any available metadata
+      if (levelMetadata.length === 0) {
+        console.log(`   🔄 No metadata at level ${functionCall.level}, checking all available metadata for reuse`);
+        levelMetadata = metadataEntries;
+      }
+      
+      let matchedMetadata = null;
+      let matchedOperation = null;
+      
+      for (const metadataEntry of levelMetadata) {
+        const formats = metadataEntry.metadata.display?.formats;
+        if (!formats) continue;
+        
+        // Exact signature match
+        if (formats[functionCall.signature]) {
+          matchedMetadata = metadataEntry.metadata;
+          matchedOperation = formats[functionCall.signature];
+          break;
+        }
+        
+        // Function name match
+        if (formats[functionCall.name]) {
+          matchedMetadata = metadataEntry.metadata;
+          matchedOperation = formats[functionCall.name];
+          break;
+        }
+      }
+      
+      if (matchedMetadata && matchedOperation) {
+        console.log(`   ✅ L${functionCall.level}: ${functionCall.signature} → ${matchedOperation.intent || functionCall.name}`);
+        
+        // Resolve field values for this specific function context
+        const resolvedFields = matchedOperation.fields.map((field: any) => {
+          let resolvedValue = undefined;
+          
+          console.log(`🔍 Resolving field: ${field.label} → ${field.path}`);
+          
+          if (field.value !== undefined) {
+            resolvedValue = field.value;
+            console.log(`   ✅ Static value: ${resolvedValue}`);
+          } else if (field.path) {
+            if (field.path.startsWith('#.')) {
+              // Resolve path in function context
+              const pathParts = field.path.substring(2).split('.');
+              let current = functionCall.params;
+              
+              console.log(`   🎯 Path parts: ${pathParts.join(' → ')}`);
+              console.log(`   📊 Function params:`, functionCall.params?.map((p: any) => `${p.name}:${p.type}`));
+              
+              for (let i = 0; i < pathParts.length; i++) {
+                const part = pathParts[i];
+                const nextPart = pathParts[i + 1];
+                
+                if (!current) break;
+                
+                // LEVEL BOUNDARY CHECK: Check if we can navigate to valueDecoded
+                if (part === 'valueDecoded') {
+                  // Extract all operation names from the transaction data dynamically
+                  const findOperationNames = (data: any): string[] => {
+                    const operations: string[] = [];
+                    
+                    const traverse = (obj: any) => {
+                      if (obj && typeof obj === 'object') {
+                        if (obj.valueDecoded?.name) {
+                          operations.push(obj.valueDecoded.name);
+                        }
+                        if (obj.methodCall?.name) {
+                          operations.push(obj.methodCall.name);
+                        }
+                        
+                        // Recursively traverse
+                        if (Array.isArray(obj)) {
+                          obj.forEach(traverse);
+                        } else {
+                          Object.values(obj).forEach(traverse);
+                        }
+                      }
+                    };
+                    
+                    traverse(data);
+                    return [...new Set(operations)]; // Remove duplicates
+                  };
+                  
+                  const transactionOperations = findOperationNames(transactionData);
+                  console.log(`   🔍 Found operations in transaction: ${transactionOperations.join(', ')}`);
+                  
+                  // Extract contract addresses from nested calls
+                  const extractContractAddresses = (data: any): string[] => {
+                    const addresses: string[] = [];
+                    
+                    const traverse = (obj: any, depth: number = 0) => {
+                      if (obj && typeof obj === 'object' && depth < 20) { // Prevent infinite recursion
+                        // Look for direct target property
+                        if (obj.target && typeof obj.target === 'string' && obj.target.startsWith('0x')) {
+                          console.log(`   📍 Found contract address: ${obj.target}`);
+                          addresses.push(obj.target.toLowerCase());
+                        }
+                        
+                        // Look for target parameters (the real pattern in batch transactions)
+                        if (obj.name === 'target' && obj.value && typeof obj.value === 'string' && obj.value.startsWith('0x')) {
+                          console.log(`   📍 Found target param: ${obj.value}`);
+                          addresses.push(obj.value.toLowerCase());
+                        }
+                        
+                        // Recursively traverse all properties
+                        if (Array.isArray(obj)) {
+                          obj.forEach(item => traverse(item, depth + 1));
+                        } else {
+                          Object.values(obj).forEach(value => traverse(value, depth + 1));
+                        }
+                      }
+                    };
+                    
+                    traverse(data);
+                    const uniqueAddresses = [...new Set(addresses)]; // Remove duplicates
+                    console.log(`   🎯 Extracted ${uniqueAddresses.length} unique contract addresses: ${uniqueAddresses.join(', ')}`);
+                    return uniqueAddresses;
+                  };
+                  
+                  const contractAddresses = extractContractAddresses(transactionData);
+                  console.log(`   🔍 Found contract addresses: ${contractAddresses.join(', ')}`);
+                  
+                  // Note: Metadata loading moved to separate useEffect to prevent infinite loops
+                  
+                  // Check if any metadata has formats for the detected operations
+                  const hasNestedMetadata = metadataEntries.some(entry => {
+                    const formats = entry.metadata.display?.formats;
+                    if (!formats) return false;
+                    
+                    // Check if any format key contains the detected operations
+                    return Object.keys(formats).some(formatKey => 
+                      transactionOperations.some(operation => 
+                        formatKey.includes(operation)
+                      )
+                    );
+                  }) || contractAddresses.length > 0; // Allow if we have contract addresses to load
+                  
+                  if (!hasNestedMetadata) {
+                    console.log(`   🚫 Level boundary: valueDecoded requires metadata for operations [${transactionOperations.join(', ')}] or contract addresses [${contractAddresses.join(', ')}] (not available) - keeping hex value`);
+                    // Keep current value (the hex) instead of setting to undefined
+                    break;
+                  } else {
+                    console.log(`   ✅ Level boundary: Found reusable metadata for operations [${transactionOperations.join(', ')}] or can load for contracts [${contractAddresses.join(', ')}]`);
+                    // Continue processing valueDecoded
+                  }
+                }
+                
+                if (Array.isArray(current)) {
+                  const param = current.find((p: any) => p?.name === part);
+                  if (param) {
+                    // Special handling for ERC-4337 nested tuples (ops.ops pattern)
+                    if (param.name === 'ops' && param.type === 'tuple' && param.components && param.components.length === 1 && param.components[0]?.name === 'ops') {
+                      // This is the outer 'ops' parameter, navigate to the inner 'ops' in components
+                      current = param.components;
+                      console.log(`   ✅ Found nested tuple param ${part}, navigating to components → ${current?.length} items`);
+                    } else if (param.components && param.type === 'tuple') {
+                      // Regular tuple - use components
+                      current = param.components;
+                      console.log(`   ✅ Found tuple param ${part}, using components → ${current?.length} items`);
+                    } else {
+                      // Check if next part is valueDecoded - if so, keep param object, otherwise use value
+                      if (nextPart === 'valueDecoded') {
+                        current = param;
+                        console.log(`   ✅ Found param ${part} → keeping param object for valueDecoded access`);
+                      } else {
+                        current = param.value !== undefined ? param.value : param;
+                        console.log(`   ✅ Found param ${part} → ${current}`);
+                      }
+                    }
+                  } else {
+                    console.log(`   ❌ Param ${part} not found in:`, Array.isArray(current) ? current.map((p: any) => p?.name) : 'not an array');
+                    current = null;
+                    break;
+                  }
+                } else if (current && typeof current === 'object' && current[part] !== undefined) {
+                  current = current[part];
+                  console.log(`   ✅ Found property ${part} → ${current}`);
+                } else {
+                  console.log(`   ❌ Property ${part} not found in:`, current && typeof current === 'object' ? Object.keys(current) : 'not an object');
+                  current = null;
+                  break;
+                }
+              }
+              
+              resolvedValue = current;
+            } else if (field.path.startsWith('@.')) {
+              // Transaction metadata paths
+              console.log(`   🎯 Transaction metadata path: ${field.path}`);
+              const pathParts = field.path.substring(2).split('.');
+              let current = transactionData;
+              
+              for (const part of pathParts) {
+                if (!current || (typeof current !== 'object')) break;
+                current = (current as any)[part];
+              }
+              
+              resolvedValue = current;
+              console.log(`   ✅ Transaction metadata resolved: ${resolvedValue}`);
+            }
+          }
+          
+          // Apply formatting
+          let displayValue = '[unmapped]';
+          if (resolvedValue !== undefined) {
+            switch (field.format) {
+              case 'addressName':
+                if (typeof resolvedValue === 'string' && resolvedValue.startsWith('0x') && resolvedValue.length === 42) {
+                  displayValue = `${resolvedValue.slice(0, 6)}...${resolvedValue.slice(-4)}`;
+                } else {
+                  displayValue = String(resolvedValue);
+                }
+                break;
+              case 'amount':
+              case 'tokenAmount':
+                displayValue = String(resolvedValue);
+                break;
+              case 'raw':
+                const rawStr = String(resolvedValue);
+                if (rawStr.startsWith('0x') && rawStr.length > 42) {
+                  displayValue = `${rawStr.slice(0, 10)}...${rawStr.slice(-7)}`;
+                } else {
+                  displayValue = rawStr;
+                }
+                break;
+              default:
+                displayValue = String(resolvedValue);
+            }
+          }
+          
+          return { ...field, displayValue };
+        });
         
         operations.push({
-          operation: match.operation,
-          metadata: match.metadata,
+          operation: { ...matchedOperation, fields: resolvedFields },
+          metadata: matchedMetadata.metadata,
           context: functionCall.level === 0 ? 'main' : 'nested',
-          functionCall: enhancedFunctionCall,
+          functionCall: {
+            ...functionCall.data,
+            level: functionCall.level,
+            signature: functionCall.signature
+          },
           level: functionCall.level
         });
+      } else {
+        console.log(`   ❌ L${functionCall.level}: ${functionCall.signature} → No metadata at level ${functionCall.level}`);
       }
-    }
+    });
     
+    console.log(`✅ LEVEL-BASED MAPPING: ${operations.length} operations created`);
     return operations;
+  };
+
+  // GENERIC BATCH PROCESSING - METADATA-DRIVEN ONLY
+  const processBatchTransaction = (transactionData: DecodedTransaction | null): Array<{operation: Operation, metadata: any, context: string, functionCall: any, level: number, batchIndex?: number}> => {
+    if (!transactionData) return [];
+    
+    console.log(`🔄 PROCESSING TRANSACTION WITH LEVEL-BASED MAPPING`);
+    
+    // Use the existing level-based mapping which already handles all nested operations
+    const allOperations = getAllOperationsForTransaction(transactionData);
+    
+    console.log(`   ✅ Found ${allOperations.length} operations through level-based mapping`);
+    return allOperations;
   };
 
   // Enhanced getScreensForOperation that uses smart path resolver
@@ -1334,23 +1544,7 @@ const HardwareViewer = ({
     const screens: Array<Array<{label: string; isActive?: boolean; displayValue: string}>> = [];
     let screen: Array<{label: string; isActive?: boolean; displayValue: string}> = [];
 
-    // Log smart resolver analysis if available
-    if (smartPathResolver && transactionData) {
-      const pathMap = Array.from(smartPathResolver.pathMap.entries());
-      console.log('📊 Smart Resolver Analysis:');
-      console.log(`  Total available paths: ${pathMap.length}`);
-      console.log('  Available paths:', pathMap.map(([path]) => path));
-      
-      // Validate metadata paths
-      const metadataPaths = operation.fields.map(f => f.path).filter(Boolean);
-      const validPaths = metadataPaths.filter(path => smartPathResolver.pathMap.has(path));
-      const invalidPaths = metadataPaths.filter(path => !smartPathResolver.pathMap.has(path));
-      
-      console.log(`  ✅ Valid metadata paths (${validPaths.length}):`, validPaths);
-      if (invalidPaths.length > 0) {
-        console.log(`  ❌ Invalid metadata paths (${invalidPaths.length}):`, invalidPaths);
-      }
-    }
+    // LEVEL-BASED PATH RESOLUTION - NO OLD SMARTPATHRESOLVER VALIDATION
 
     for (let i = 0; i < displays.length; i++) {
       const isLastItem = i === displays.length - 1;
@@ -1367,19 +1561,20 @@ const HardwareViewer = ({
       let displayValue;
       if (path === "separator") {
         displayValue = "";
-      } else if (transactionData && smartPathResolver) {
-        const pathExists = smartPathResolver.pathMap.has(path);
-        displayValue = getFieldValueFromTransaction(path, format || "raw", displayItem);
-        console.log(`🔍 ${label}: path=${path} → ${displayValue} [${pathExists ? 'EXISTS' : 'MISSING'}]`);
+      } else if ('displayValue' in displayItem && displayItem.displayValue !== undefined) {
+        // USE LEVEL-BASED CALCULATED VALUE - ALREADY RESOLVED!
+        displayValue = displayItem.displayValue;
+        if (displayValue === "[unmapped]") {
+          console.log(`   ❌ ${label}: ${path} → [unmapped]`);
+        }
       } else {
         displayValue = hasFormat && format ? `Mock ${format} value` : "displayValue";
-        console.log(`🎭 ${label}: using mock because no transactionData or resolver`);
       }
 
       screen.push({
         label,
         isActive: true,
-        displayValue
+        displayValue: String(displayValue || '[undefined]')
       });
 
       if (screen.length === ITEM_PER_SCREEN || isLastItem) {
@@ -1394,9 +1589,13 @@ const HardwareViewer = ({
   const operation = getOperationForViewing();
   const operationMetadata = getOperationMetadata();
 
+  // Memoize batch operation processing to prevent infinite loops
+  const allOperations = useMemo(() => {
+    return activeTab === "advanced" && transactionData ? processBatchTransaction(transactionData) : [];
+  }, [activeTab, transactionData, metadataEntries]);
+
   const renderHardwareUI = () => {
-    // Get all operations for this transaction (including nested)
-    const allOperations = activeTab === "advanced" && transactionData ? getAllOperationsForTransaction(transactionData) : [];
+    // Get all operations for this transaction (including batched and nested)
     
     console.log(`Found ${allOperations.length} operations:`, allOperations.map(op => `${op.context}:${op.functionCall.name} (level ${op.level})`));
     
@@ -1408,9 +1607,9 @@ const HardwareViewer = ({
       // Generate screens for ALL operations at all nesting levels
       const allScreensFromAllOperations: any[] = [];
       
-      sortedOperations.forEach((operation, opIndex) => {
+      sortedOperations.forEach((operation) => {
         if (operation.operation) {
-          console.log(`🎬 Generating screens for operation ${opIndex + 1}/${sortedOperations.length}: ${operation.functionCall.name} (level ${operation.level})`);
+          // Processing operation ${opIndex + 1}/${sortedOperations.length}
           
           // Create operation with function call context for proper path resolution
           const contextualOperation = {
@@ -1421,33 +1620,50 @@ const HardwareViewer = ({
             }))
           };
           
-          console.log(`🔧 Fields for ${operation.functionCall.name}:`, contextualOperation.fields.map(f => f.path));
+          // Using level-based field resolution
           
           const screens = getScreensForOperationWithRealData(contextualOperation);
-          console.log(`📺 Generated ${screens.length} screens for ${operation.functionCall.name}`);
+          // Generated screens for operation
           
           // Build operation name from metadata intent or function name
           const operationName = typeof operation.operation.intent === 'string' 
             ? operation.operation.intent 
             : operation.functionCall.name;
           
+          // Add batch info if this is a batch operation
+          const batchInfo = operation.batchIndex !== undefined ? ` [${operation.batchIndex + 1}]` : '';
+          const levelInfo = operation.level > 0 ? ` (L${operation.level})` : '';
+          
           const operationMeta = {
-            operationName: `${operationName} (Level ${operation.level})`,
+            operationName: `${operationName}${batchInfo}${levelInfo}`,
             metadata: operation.metadata
           };
           
           // Add operation screens with level context
           const operationScreens_local = operationScreens(screens, operationMeta);
-          console.log(`✅ Added ${operationScreens_local.length} screens from ${operationName} to carousel`);
+          // Added screens to carousel
           allScreensFromAllOperations.push(...operationScreens_local);
         }
       });
       
       if (allScreensFromAllOperations.length > 0) {
+        const batchInfo = allOperations.some(op => op.batchIndex !== undefined);
+        const batchCount = batchInfo ? new Set(allOperations.map(op => op.batchIndex)).size : 0;
+        const levelCount = new Set(allOperations.map(op => op.level)).size;
+        
+        let description = '';
+        if (batchInfo && batchCount > 1) {
+          description = `Batch Transaction (${batchCount} items, ${levelCount} levels, ${sortedOperations.length} operations)`;
+        } else if (levelCount > 1) {
+          description = `Multi-Level Transaction (${levelCount} levels, ${sortedOperations.length} operations)`;
+        } else {
+          description = `Transaction (${sortedOperations.length} operations)`;
+        }
+        
         return (
           <div className="mx-auto flex max-w-96 flex-col">
             <div className="text-center text-sm text-gray-600 mb-4">
-              Multi-Level Transaction ({sortedOperations.length} operations)
+              {description}
             </div>
             <Carousel setApi={setApi}>
               <CarouselContent>
@@ -1497,8 +1713,13 @@ const HardwareViewer = ({
         };
         
         const screens = getScreensForOperationWithRealData(contextualOperation);
+        
+        const operationName = typeof operation.operation.intent === 'string' ? operation.operation.intent : operation.functionCall.name;
+        const batchInfo = operation.batchIndex !== undefined ? ` [${operation.batchIndex + 1}]` : '';
+        const levelInfo = operation.level > 0 ? ` (L${operation.level})` : '';
+        
         const operationMeta = {
-          operationName: typeof operation.operation.intent === 'string' ? operation.operation.intent : operation.functionCall.name,
+          operationName: `${operationName}${batchInfo}${levelInfo}`,
           metadata: operation.metadata
         };
         const fullOperationScreens = operationScreens(screens, operationMeta);
@@ -2029,10 +2250,7 @@ export function getFieldValueFromTransactionExport(path: string, format: string,
       case "addressName":
         const addressValue = value.toString();
         if (addressValue.startsWith('0x') && addressValue.length === 42) {
-          if (transactionData.addressesMeta && transactionData.addressesMeta[addressValue]) {
-            const meta = transactionData.addressesMeta[addressValue];
-            return meta.contractName || meta.tokenSymbol || `${addressValue.slice(0, 6)}...${addressValue.slice(-4)}`;
-          }
+          // Always format addresses as shortened form, regardless of metadata
           return `${addressValue.slice(0, 6)}...${addressValue.slice(-4)}`;
         }
         return addressValue;

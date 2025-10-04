@@ -1,0 +1,190 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 8453,
+          "address": "0x0000000071727De22E5E9d8BAf0edAc6f37da032"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "handleOps",
+          "inputs": [
+            {
+              "name": "ops",
+              "type": "tuple[]",
+              "components": [
+                {"name": "sender", "type": "address"},
+                {"name": "nonce", "type": "uint256"},
+                {"name": "initCode", "type": "bytes"},
+                {"name": "callData", "type": "bytes"},
+                {"name": "accountGasLimits", "type": "bytes32"},
+                {"name": "preVerificationGas", "type": "uint256"},
+                {"name": "gasFees", "type": "bytes32"},
+                {"name": "paymasterAndData", "type": "bytes"},
+                {"name": "signature", "type": "bytes"}
+              ]
+            },
+            {"name": "beneficiary", "type": "address"}
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Ethereum Foundation",
+    "info": {
+      "legalName": "Ethereum Foundation",
+      "url": "https://ethereum.org"
+    }
+  },
+  "display": {
+    "formats": {
+      "handleOps((address,uint256,bytes,bytes,bytes32,uint256,bytes32,bytes,bytes)[],address)": {
+        "intent": "Execute User Operations",
+        "fields": [
+          {
+            "label": "Smart Account",
+            "format": "addressName",
+            "path": "#.ops.ops.sender"
+          },
+          {
+            "label": "Function Call",
+            "format": "raw",
+            "path": "#.ops.ops.callData.valueDecoded.name"
+          },
+          {
+            "label": "Number of Operations",
+            "format": "raw",
+            "value": "Multiple"
+          },
+          {
+            "label": "Gas Fee Recipient",
+            "format": "addressName",
+            "path": "#.beneficiary"
+          }
+        ]
+      },
+      "executeBatch((tuple))": {
+        "intent": "Execute Batch Operations",
+        "fields": [
+          {
+            "label": "Batch Type", 
+            "format": "raw",
+            "value": "Single Operation"
+          },
+          {
+            "label": "Target",
+            "format": "addressName",
+            "path": "#.calls.calls.target"
+          },
+          {
+            "label": "Operation",
+            "format": "raw",
+            "value": "Token Operation"
+          },
+          {
+            "label": "Amount",
+            "format": "raw",
+            "path": "#.calls.calls.data.valueDecoded.value"
+          }
+        ]
+      },
+      "executeBatch((tuple,tuple))": {
+        "intent": "Execute Batch Operations",
+        "fields": [
+          {
+            "label": "Batch Type",
+            "format": "raw", 
+            "value": "Multiple Operations"
+          },
+          {
+            "label": "First Target",
+            "format": "addressName",
+            "path": "#.calls.calls.target"
+          },
+          {
+            "label": "First Operation",
+            "format": "raw",
+            "value": "Token Operation"
+          },
+          {
+            "label": "First Amount",
+            "format": "raw",
+            "path": "#.calls.calls.data.valueDecoded.value"
+          },
+          {
+            "label": "First Recipient",
+            "format": "addressName",
+            "path": "#.calls.calls.data.valueDecoded.to"
+          },
+          {
+            "label": "Total Operations",
+            "format": "raw",
+            "value": "2"
+          }
+        ]
+      },
+      "executeBatch((tuple,tuple,tuple))": {
+        "intent": "Execute Batch Operations",
+        "fields": [
+          {
+            "label": "Batch Type",
+            "format": "raw",
+            "value": "Multiple Operations"  
+          },
+          {
+            "label": "First Target", 
+            "format": "addressName",
+            "path": "#.calls.calls.target"
+          },
+          {
+            "label": "First Operation",
+            "format": "raw",
+            "value": "Token Operation"
+          },
+          {
+            "label": "First Amount",
+            "format": "raw", 
+            "path": "#.calls.calls.data.valueDecoded.value"
+          },
+          {
+            "label": "Total Operations",
+            "format": "raw",
+            "value": "3"
+          }
+        ]
+      },
+      "executeBatch((address,uint256,bytes)[])": {
+        "intent": "Execute Batch Operations",
+        "fields": [
+          {
+            "label": "Batch Type",
+            "format": "raw",
+            "value": "Dynamic Operations"
+          },
+          {
+            "label": "First Target",
+            "format": "addressName", 
+            "path": "#.calls.calls.target"
+          },
+          {
+            "label": "First Operation",
+            "format": "raw",
+            "value": "Token Operation"
+          },
+          {
+            "label": "First Amount",
+            "format": "raw",
+            "path": "#.calls.calls.data.valueDecoded.value"
+          }
+        ]
+      }
+    }
+  }
+}
