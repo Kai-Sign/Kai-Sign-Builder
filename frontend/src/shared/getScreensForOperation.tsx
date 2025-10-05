@@ -41,7 +41,9 @@ export const getScreensForOperation = (
       isActive:
         activeFieldPath === displayItem.path || activeFieldPath === undefined,
       displayValue:
-        "format" in displayItem
+        "displayValue" in displayItem && displayItem.displayValue
+          ? displayItem.displayValue
+          : "format" in displayItem
           ? matchFieldFormatToMockData(
               displayItem?.format ?? "",
               displayItem.params,

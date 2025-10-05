@@ -10,21 +10,169 @@
       ],
       "abi": [
         {
-          "type": "function",
-          "name": "execute4337Ops",
+          "inputs": [
+            {"internalType": "contract BizGuard", "name": "_bizGuard", "type": "address"}
+          ],
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "stateMutability": "payable",
+          "type": "fallback"
+        },
+        {
+          "stateMutability": "payable",
+          "type": "receive"
+        },
+        {
+          "inputs": [],
+          "name": "accountId",
+          "outputs": [{"internalType": "string", "name": "", "type": "string"}],
+          "stateMutability": "pure",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "accountStorageBases",
+          "outputs": [{"internalType": "bytes32[]", "name": "", "type": "bytes32[]"}],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "bizGuard",
+          "outputs": [{"internalType": "contract BizGuard", "name": "", "type": "address"}],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "entryPoint",
+          "outputs": [{"internalType": "address", "name": "", "type": "address"}],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {"internalType": "address", "name": "target", "type": "address"},
+            {"internalType": "uint256", "name": "value", "type": "uint256"},
+            {"internalType": "bytes", "name": "data", "type": "bytes"}
+          ],
+          "name": "execute",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {"internalType": "address", "name": "target", "type": "address"},
+            {"internalType": "uint256", "name": "value", "type": "uint256"},
+            {"internalType": "bytes", "name": "data", "type": "bytes"}
+          ],
+          "name": "execute4337Op",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function"
+        },
+        {
           "inputs": [
             {
-              "name": "calls",
-              "type": "tuple[]",
               "components": [
-                {"name": "target", "type": "address"},
-                {"name": "value", "type": "uint256"},
-                {"name": "data", "type": "bytes"}
-              ]
+                {"internalType": "address", "name": "target", "type": "address"},
+                {"internalType": "uint256", "name": "value", "type": "uint256"},
+                {"internalType": "bytes", "name": "data", "type": "bytes"}
+              ],
+              "internalType": "struct Biz.Call[]",
+              "name": "calls",
+              "type": "tuple[]"
             }
           ],
+          "name": "execute4337Ops",
           "outputs": [],
-          "stateMutability": "nonpayable"
+          "stateMutability": "payable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "components": [
+                {"internalType": "address", "name": "target", "type": "address"},
+                {"internalType": "uint256", "name": "value", "type": "uint256"},
+                {"internalType": "bytes", "name": "data", "type": "bytes"}
+              ],
+              "internalType": "struct Biz.Call[]",
+              "name": "calls",
+              "type": "tuple[]"
+            }
+          ],
+          "name": "executeBatch",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "components": [
+                {"internalType": "address", "name": "target", "type": "address"},
+                {"internalType": "uint256", "name": "value", "type": "uint256"},
+                {"internalType": "bytes", "name": "data", "type": "bytes"}
+              ],
+              "internalType": "struct Biz.Call[]",
+              "name": "calls",
+              "type": "tuple[]"
+            },
+            {"internalType": "bytes", "name": "signature", "type": "bytes"}
+          ],
+          "name": "executeWithSignature",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {"internalType": "bytes32", "name": "hash", "type": "bytes32"},
+            {"internalType": "bytes", "name": "signature", "type": "bytes"}
+          ],
+          "name": "isValidSignature",
+          "outputs": [{"internalType": "bytes4", "name": "isValid", "type": "bytes4"}],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {"internalType": "bytes4", "name": "interfaceId", "type": "bytes4"}
+          ],
+          "name": "supportsInterface",
+          "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "components": [
+                {"internalType": "address", "name": "sender", "type": "address"},
+                {"internalType": "uint256", "name": "nonce", "type": "uint256"},
+                {"internalType": "bytes", "name": "initCode", "type": "bytes"},
+                {"internalType": "bytes", "name": "callData", "type": "bytes"},
+                {"internalType": "bytes32", "name": "accountGasLimits", "type": "bytes32"},
+                {"internalType": "uint256", "name": "preVerificationGas", "type": "uint256"},
+                {"internalType": "bytes32", "name": "gasFees", "type": "bytes32"},
+                {"internalType": "bytes", "name": "paymasterAndData", "type": "bytes"},
+                {"internalType": "bytes", "name": "signature", "type": "bytes"}
+              ],
+              "internalType": "struct Biz.PackedUserOperation",
+              "name": "userOp",
+              "type": "tuple"
+            },
+            {"internalType": "bytes32", "name": "userOpHash", "type": "bytes32"},
+            {"internalType": "uint256", "name": "missingAccountFunds", "type": "uint256"}
+          ],
+          "name": "validateUserOp",
+          "outputs": [{"internalType": "uint256", "name": "validationData", "type": "uint256"}],
+          "stateMutability": "nonpayable",
+          "type": "function"
         }
       ]
     }
@@ -39,8 +187,48 @@
   },
   "display": {
     "formats": {
+      "execute(address,uint256,bytes)": {
+        "intent": "Execute Single Operation",
+        "fields": [
+          {
+            "label": "Target Contract",
+            "format": "addressName",
+            "path": "#.target"
+          },
+          {
+            "label": "Value",
+            "format": "amount",
+            "path": "#.value"
+          },
+          {
+            "label": "Operation",
+            "format": "raw",
+            "path": "#.data.valueDecoded.name"
+          }
+        ]
+      },
+      "execute4337Op(address,uint256,bytes)": {
+        "intent": "Execute 4337 Operation",
+        "fields": [
+          {
+            "label": "Target Contract",
+            "format": "addressName",
+            "path": "#.target"
+          },
+          {
+            "label": "Value",
+            "format": "amount",
+            "path": "#.value"
+          },
+          {
+            "label": "Operation",
+            "format": "raw",
+            "path": "#.data.valueDecoded.name"
+          }
+        ]
+      },
       "execute4337Ops((address,uint256,bytes)[])": {
-        "intent": "Execute EIP-7702 Batch Operations",
+        "intent": "Execute 4337 Batch Operations",
         "fields": [
           {
             "label": "Operation Type",
@@ -70,6 +258,71 @@
             "label": "First Operation",
             "format": "raw",
             "path": "#.calls.calls.data.valueDecoded.name"
+          }
+        ]
+      },
+      "executeBatch((address,uint256,bytes)[])": {
+        "intent": "Execute Batch Operations",
+        "fields": [
+          {
+            "label": "Number of Operations",
+            "format": "raw",
+            "path": "#.calls.length"
+          },
+          {
+            "label": "First Target",
+            "format": "addressName",
+            "path": "#.calls.calls.target"
+          },
+          {
+            "label": "First Operation",
+            "format": "raw",
+            "path": "#.calls.calls.data.valueDecoded.name"
+          }
+        ]
+      },
+      "executeWithSignature((address,uint256,bytes)[],bytes)": {
+        "intent": "Execute with Signature",
+        "fields": [
+          {
+            "label": "Number of Operations",
+            "format": "raw",
+            "path": "#.calls.length"
+          },
+          {
+            "label": "First Target",
+            "format": "addressName",
+            "path": "#.calls.calls.target"
+          },
+          {
+            "label": "Signature Length",
+            "format": "raw",
+            "path": "#.signature.length"
+          }
+        ]
+      },
+      "validateUserOp((address,uint256,bytes,bytes,bytes32,uint256,bytes32,bytes,bytes),bytes32,uint256)": {
+        "intent": "Validate User Operation",
+        "fields": [
+          {
+            "label": "Sender",
+            "format": "addressName",
+            "path": "#.userOp.sender"
+          },
+          {
+            "label": "Nonce",
+            "format": "raw",
+            "path": "#.userOp.nonce"
+          },
+          {
+            "label": "Pre-verification Gas",
+            "format": "raw",
+            "path": "#.userOp.preVerificationGas"
+          },
+          {
+            "label": "Missing Funds",
+            "format": "amount",
+            "path": "#.missingAccountFunds"
           }
         ]
       }

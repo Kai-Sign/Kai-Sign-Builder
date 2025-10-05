@@ -4,93 +4,150 @@
   "fromAddress": "0x6Cab48AB9945f0Cb10b20d1181BaE37A56D8E3D2",
   "toAddress": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
   "contractName": "Entry Point 0.7.0",
-  "contractType": "EIP4337",
+  "contractType": "EIP4337_ENTRYPOINT",
   "methodCall": {
-    "name": "execute4337Ops",
+    "name": "handleOps",
     "type": "function",
-    "signature": "execute4337Ops((address,uint256,bytes)[])",
+    "signature": "handleOps((address,uint256,bytes,bytes,bytes32,uint256,bytes32,bytes,bytes)[],address)",
     "params": [
       {
-        "name": "calls",
-        "type": "tuple",
+        "name": "ops",
+        "type": "tuple[]",
         "components": [
           {
-            "name": "calls",
-            "type": "tuple",
-            "components": [
-              {
-                "name": "target",
-                "type": "address",
-                "value": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
-              },
-              {
-                "name": "value",
-                "type": "uint256",
-                "value": "0"
-              },
-              {
-                "name": "data",
-                "type": "bytes",
-                "value": "0x095ea7b30000000000000000000000007d3201fa7a85c0a5f9fa1c0c6b9d0b784368d2ac000000000000000000000000000000000000000000000000000000000005ce9b",
-                "valueDecoded": {
-                  "name": "approve",
-                  "signature": "approve(address,uint256)",
-                  "type": "function",
-                  "params": [
-                    {
-                      "name": "spender",
-                      "type": "address",
-                      "value": "0x7D3201fa7a85c0A5f9fA1c0C6b9D0B784368d2ac"
-                    },
-                    {
-                      "name": "value",
-                      "type": "uint256",
-                      "value": "380571"
-                    }
-                  ]
-                }
-              }
-            ]
+            "name": "sender",
+            "type": "address",
+            "value": "0x050A54aD72D58C940479a705b4F4A0183da3Ce41"
           },
           {
-            "name": "calls",
-            "type": "tuple",
-            "components": [
-              {
-                "name": "target",
-                "type": "address",
-                "value": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
-              },
-              {
-                "name": "value",
-                "type": "uint256",
-                "value": "0"
-              },
-              {
-                "name": "data",
-                "type": "bytes",
-                "value": "0xa9059cbb000000000000000000000000e4fc6e3b1e0885f2edcc17c45d1ffe4f160455640000000000000000000000000000000000000000000000000000000002160ec0",
-                "valueDecoded": {
-                  "name": "transfer",
-                  "signature": "transfer(address,uint256)",
-                  "type": "function",
-                  "params": [
+            "name": "nonce",
+            "type": "uint256",
+            "value": "0"
+          },
+          {
+            "name": "initCode",
+            "type": "bytes",
+            "value": "0x"
+          },
+          {
+            "name": "callData",
+            "type": "bytes",
+            "value": "0x26da7d88000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000040000000000000000000000000000000000000000000000000000000000000012000000000000000000000000000000000dac17f958d2ee523a2206206994597c13d831ec7000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000044095ea7b30000000000000000000000007d3201fa7a85c0a5f9fa1c0c6b9d0b784368d2ac00000000000000000000000000000000000000000000000000000000000005ce9b0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000dac17f958d2ee523a2206206994597c13d831ec7000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000044a9059cbb000000000000000000000000e4fc6e3b1e0885f2edcc17c45d1ffe4f1604556400000000000000000000000000000000000000000000000000000000000002160ec000000000000000000000000000000000000000000000000000000000000",
+            "valueDecoded": {
+              "name": "execute4337Ops",
+              "signature": "execute4337Ops((address,uint256,bytes)[])",
+              "type": "function",
+              "params": [
+                {
+                  "name": "calls",
+                  "type": "tuple[]",
+                  "components": [
                     {
-                      "name": "to",
+                      "name": "target",
                       "type": "address",
-                      "value": "0xE4Fc6e3B1E0885f2eDCC17C45d1FFE4f16045564"
+                      "value": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
                     },
                     {
                       "name": "value",
                       "type": "uint256",
-                      "value": "35000000"
+                      "value": "0"
+                    },
+                    {
+                      "name": "data",
+                      "type": "bytes",
+                      "value": "0x095ea7b30000000000000000000000007d3201fa7a85c0a5f9fa1c0c6b9d0b784368d2ac000000000000000000000000000000000000000000000000000000000005ce9b",
+                      "valueDecoded": {
+                        "name": "approve",
+                        "signature": "approve(address,uint256)",
+                        "type": "function",
+                        "params": [
+                          {
+                            "name": "spender",
+                            "type": "address",
+                            "value": "0x7D3201fa7a85c0A5f9fA1c0C6b9D0B784368d2ac"
+                          },
+                          {
+                            "name": "value",
+                            "type": "uint256",
+                            "value": "380571"
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                },
+                {
+                  "name": "calls",
+                  "type": "tuple[]",
+                  "components": [
+                    {
+                      "name": "target",
+                      "type": "address",
+                      "value": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+                    },
+                    {
+                      "name": "value",
+                      "type": "uint256",
+                      "value": "0"
+                    },
+                    {
+                      "name": "data",
+                      "type": "bytes",
+                      "value": "0xa9059cbb000000000000000000000000e4fc6e3b1e0885f2edcc17c45d1ffe4f160455640000000000000000000000000000000000000000000000000000000002160ec0",
+                      "valueDecoded": {
+                        "name": "transfer",
+                        "signature": "transfer(address,uint256)",
+                        "type": "function",
+                        "params": [
+                          {
+                            "name": "to",
+                            "type": "address",
+                            "value": "0xE4Fc6e3B1E0885f2eDCC17C45d1FFE4f16045564"
+                          },
+                          {
+                            "name": "value",
+                            "type": "uint256",
+                            "value": "35000000"
+                          }
+                        ]
+                      }
                     }
                   ]
                 }
-              }
-            ]
+              ]
+            }
+          },
+          {
+            "name": "accountGasLimits",
+            "type": "bytes32",
+            "value": "0x000000000000000000000000000104600000000000000000000000000001249f"
+          },
+          {
+            "name": "preVerificationGas",
+            "type": "uint256",
+            "value": "98236"
+          },
+          {
+            "name": "gasFees",
+            "type": "bytes32",
+            "value": "0x000000000000000000000000000d05b7e3000000000000000000000000000003c"
+          },
+          {
+            "name": "paymasterAndData",
+            "type": "bytes",
+            "value": "0x7d3201fa7a85c0a5f9fa1c0c6b9d0b784368d2ac000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006828d542ba76ce6f66f2d67ba96731debaf5bb9439de13155afee707477dbdcf13b2fdca5695f1a562fb198eaff7d01872888f120cae9d18acaa41785979a2044eccb1ed1b"
+          },
+          {
+            "name": "signature",
+            "type": "bytes",
+            "value": "0x21b7a8d8b04f3b551e8cbc7912a7d581d3ee36c098830f0bca733768d62effff27fff9c7e84261030b638fa4a1454e856da97297a1682ea09e3d75e524747cda1b"
           }
         ]
+      },
+      {
+        "name": "beneficiary",
+        "type": "address",
+        "value": "0x6Cab48AB9945f0Cb10b20d1181BaE37A56D8E3D2"
       }
     ]
   },
@@ -114,7 +171,7 @@
       "from": "0x050A54aD72D58C940479a705b4F4A0183da3Ce41"
     },
     {
-      "from": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+      "from": "0x050A54aD72D58C940479a705b4F4A0183da3Ce41",
       "to": "0x6Cab48AB9945f0Cb10b20d1181BaE37A56D8E3D2",
       "type": "native",
       "amount": "0.000039841946124554",
@@ -147,12 +204,20 @@
     "delegateContractName": "Trust Wallet: EIP-7702 Delegator 1"
   },
   "nativeValueSent": "0",
-  "chainSymbol": "mainnet",
+  "chainSymbol": "mainnet", 
   "chainID": 1,
-  "effectiveGasPrice": "160930186",
-  "gasUsed": "208834",
-  "gasPaid": "0.000033607694463124",
-  "timestamp": 1759644191,
-  "txIndex": 87,
-  "reverted": false
+  "effectiveGasPrice": "170930186",
+  "gasUsed": "233089",
+  "gasPaid": "0.000039841946124554",
+  "timestamp": 1728108191,
+  "txIndex": 1,
+  "reverted": false,
+  "eip7702": {
+    "delegatedAccount": "0x050A54aD72D58C940479a705b4F4A0183da3Ce41",
+    "delegateContract": "0xd2e28229f6f2c235e57de2ebc727025a1d0530fb",
+    "delegateContractName": "Trust Wallet: EIP-7702 Delegator 1",
+    "bundler": "0x6Cab48AB9945f0Cb10b20d1181BaE37A56D8E3D2",
+    "paymaster": "0x7D3201fa7a85c0A5f9fA1c0C6b9D0B784368d2ac",
+    "entryPoint": "0x0000000071727De22E5E9d8BAf0edAc6f37da032"
+  }
 }
