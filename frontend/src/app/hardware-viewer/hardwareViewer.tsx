@@ -9,7 +9,6 @@ import { Alert, AlertDescription } from "~/components/ui/alert";
 import { Label } from "~/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
 import { Eye, Upload, AlertCircle, Plus, Trash2 } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import {
   type CarouselApi,
   Carousel,
@@ -103,7 +102,7 @@ const HardwareViewer = ({
   metadataBasePath = '/erc7730',
   samplesBasePath = '/samples'
 }: HardwareViewerProps = {}) => {
-  const [activeTab, setActiveTab] = useState("simple");
+  const [activeTab] = useState("advanced");
   const [jsonInput, setJsonInput] = useState("");
   const [selectedOperation, setSelectedOperation] = useState("");
   const [parsedData, setParsedData] = useState<Erc7730 | null>(null);
@@ -124,13 +123,10 @@ const HardwareViewer = ({
 
   // Dynamic loading of sample data
   const loadSampleSetsConfig = async () => {
-    console.log("loadSampleSetsConfig called, samplesBasePath:", samplesBasePath);
     try {
       const response = await fetch(`${samplesBasePath}/sample-sets.json`);
-      console.log("sample-sets.json response:", response);
       if (response.ok) {
         const config = await response.json();
-        console.log("sample-sets.json config:", config);
         setSampleSets(config.sampleSets || []);
       }
     } catch (error) {
@@ -140,11 +136,8 @@ const HardwareViewer = ({
 
   // Dynamic sample set loading
   const loadSampleSet = async (sampleSetId: string) => {
-    console.log("loadSampleSet called with:", sampleSetId);
-    console.log("Available sampleSets:", sampleSets);
     try {
       const sampleSet = sampleSets.find(set => set.id === sampleSetId);
-      console.log("Found sampleSet:", sampleSet);
       if (!sampleSet) return;
 
       const entries = [];
@@ -164,21 +157,48 @@ const HardwareViewer = ({
       
       setMetadataEntries(entries);
       
+      // Auto-select metadata entry that matches the transaction (if transaction data exists)
+      if (entries.length > 0) {
+        // Default to first entry
+        let selectedEntry = entries[0];
+        
+        // If we have transaction data, try to find matching metadata
+        if (sampleSet.transactionData || sampleSet.transactionFile) {
+          const txFunctionName = sampleSet.transactionData?.methodCall?.name;
+          if (txFunctionName) {
+            const matchingEntry = entries.find(entry => {
+              const formats = entry.metadata.display?.formats;
+              if (!formats) return false;
+              return Object.keys(formats).some(formatKey => 
+                formatKey.includes(txFunctionName)
+              );
+            });
+            if (matchingEntry) {
+              selectedEntry = matchingEntry;
+            } else {
+            }
+          } else {
+          }
+        } else {
+        }
+        
+        setSelectedMetadataId(selectedEntry.id);
+      }
+      
+      // Clear transaction data first, then load if available
+      setTransactionData(null);
+      
       // Load transaction data if available
       if (sampleSet.transactionData) {
         const normalizedTxData = normalizeTransactionData(sampleSet.transactionData);
         setTransactionData(normalizedTxData);
-        setActiveTab("advanced");
       } else if (sampleSet.transactionFile) {
         // Load external transaction file
-        console.log("Loading transaction file:", sampleSet.transactionFile);
         const response = await fetch(`${samplesBasePath}/${sampleSet.transactionFile}`);
         if (response.ok) {
           const txData = await response.json();
-          console.log("Loaded transaction data:", txData);
           const normalizedTxData = normalizeTransactionData(txData);
           setTransactionData(normalizedTxData);
-          setActiveTab("advanced");
         } else {
           console.error("Failed to load transaction file:", sampleSet.transactionFile);
         }
@@ -186,21 +206,13 @@ const HardwareViewer = ({
         if (entries.length > 0 && entries[0]) {
           setSelectedMetadataId(entries[0].id);
           
-          // Auto-select matching operation
+          // Auto-select first operation from metadata
           const firstEntry = entries[0];
           if (firstEntry?.metadata.display?.formats) {
-            const detectedSelector = getTransactionFunctionSelector(normalizedTxData);
-            
             const availableOperations = Object.keys(firstEntry.metadata.display.formats);
-            const exactMatch = availableOperations.find(op => op === detectedSelector);
-            
-            if (exactMatch) {
-              setSelectedOperation(exactMatch);
-            } else {
-              const firstOperation = availableOperations[0];
-              if (firstOperation) {
-                setSelectedOperation(firstOperation);
-              }
+            const firstOperation = availableOperations[0];
+            if (firstOperation) {
+              setSelectedOperation(firstOperation);
             }
           }
         }
@@ -242,7 +254,6 @@ const HardwareViewer = ({
     // Fallback: build function signature from parameter types with tuple expansion
     const expandTupleType = (param: any): string => {
       if (param.type === 'tuple' && param.components) {
-        console.log(`   🔍 Expanding tuple with ${param.components.length} components:`, param.components.map((c: any) => c.type));
         const componentTypes = param.components.map(expandTupleType).join(',');
         return `(${componentTypes})`;
       }
@@ -251,7 +262,6 @@ const HardwareViewer = ({
     
     const paramTypes = params.map(expandTupleType).join(',');
     const functionSignature = `${functionName}(${paramTypes})`;
-    console.log(`   🎯 Built signature: ${functionSignature}`);
     
     return functionSignature;
   };
@@ -359,35 +369,65 @@ const HardwareViewer = ({
     ));
   };
 
-  // Auto-select matching operation when transaction data changes - METADATA-DRIVEN ONLY
+  // Auto-select operation when metadata is selected OR when transaction data changes
   useEffect(() => {
-    if (transactionData && selectedMetadataId) {
-      const selectedMetadata = metadataEntries.find(entry => entry.id === selectedMetadataId);
-      if (selectedMetadata?.metadata.display?.formats) {
-        const detectedSelector = getTransactionFunctionSelector(transactionData);
+    
+    // When transaction data is loaded, try to find the correct metadata
+    if (transactionData && metadataEntries.length > 0) {
+      const txFunctionName = transactionData.methodCall?.name;
+      if (txFunctionName) {
+        const matchingEntry = metadataEntries.find(entry => {
+          const formats = entry.metadata.display?.formats;
+          if (!formats) return false;
+          return Object.keys(formats).some(formatKey => 
+            formatKey.includes(txFunctionName)
+          );
+        });
         
-        const availableOperations = Object.keys(selectedMetadata.metadata.display.formats);
-        
-        // Exact signature match takes priority
-        const exactMatch = availableOperations.find(op => op === detectedSelector);
-        
-        if (exactMatch) {
-          setSelectedOperation(exactMatch);
-        } else {
-          // Function name match (without hardcoded assumptions)
-          const txFunctionName = transactionData.methodCall?.name;
-          if (txFunctionName) {
-            const partialMatch = availableOperations.find(op => 
-              operationMatchesTransaction(op, transactionData)
-            );
-            if (partialMatch) {
-              setSelectedOperation(partialMatch);
-            }
-          }
+        if (matchingEntry && matchingEntry.id !== selectedMetadataId) {
+          setSelectedMetadataId(matchingEntry.id);
+          return; // This will trigger the useEffect again with the new metadata
         }
       }
     }
-  }, [transactionData, selectedMetadataId, metadataEntries]);
+    
+    if (selectedMetadataId) {
+      const selectedMetadata = metadataEntries.find(entry => entry.id === selectedMetadataId);
+      
+      if (selectedMetadata?.metadata.display?.formats) {
+        const availableOperations = Object.keys(selectedMetadata.metadata.display.formats);
+        
+        if (transactionData) {
+          // If transaction data exists, try to match operation to transaction
+          const detectedSelector = getTransactionFunctionSelector(transactionData);
+          const exactMatch = availableOperations.find(op => op === detectedSelector);
+          
+          if (exactMatch) {
+            setSelectedOperation(exactMatch);
+          } else {
+            // Function name match
+            const txFunctionName = transactionData.methodCall?.name;
+            if (txFunctionName) {
+              const partialMatch = availableOperations.find(op => 
+                operationMatchesTransaction(op, transactionData)
+              );
+              if (partialMatch) {
+                setSelectedOperation(partialMatch);
+              } else {
+                // Default to first operation if no match
+                setSelectedOperation(availableOperations[0] || "");
+              }
+            } else {
+              setSelectedOperation(availableOperations[0] || "");
+            }
+          }
+        } else {
+          // No transaction data, just select first operation
+          setSelectedOperation(availableOperations[0] || "");
+        }
+      }
+    }
+  }, [selectedMetadataId, metadataEntries, transactionData]);
 
   // Dynamic metadata loading based on contract addresses
   useEffect(() => {
@@ -406,7 +446,6 @@ const HardwareViewer = ({
           
           // Look for target parameters (the real pattern in batch transactions)
           if (obj.name === 'target' && obj.value && typeof obj.value === 'string' && obj.value.startsWith('0x')) {
-            console.log(`   📍 Found target param: ${obj.value}`);
             addresses.push(obj.value.toLowerCase());
           }
           
@@ -433,7 +472,6 @@ const HardwareViewer = ({
       );
       
       if (!isAlreadyLoaded) {
-        console.log(`📥 Loading metadata for contract: ${address}`);
         fetch(`/erc7730/${address.toLowerCase()}.json`)
           .then(response => {
             if (response.ok) {
@@ -442,7 +480,6 @@ const HardwareViewer = ({
             throw new Error(`No metadata found for ${address}`);
           })
           .then(contractMetadata => {
-            console.log(`✅ Loaded metadata for ${address}`);
             
             const newMetadataEntry = {
               id: `contract-${address.toLowerCase()}`,
@@ -453,7 +490,6 @@ const HardwareViewer = ({
             setMetadataEntries(prev => [...prev, newMetadataEntry]);
           })
           .catch(error => {
-            console.log(`❌ Error loading metadata for ${address}:`, error.message);
           });
       }
     });
@@ -525,11 +561,6 @@ const HardwareViewer = ({
   const getAllOperationsForTransaction = (transactionData: DecodedTransaction | null): Array<{operation: Operation, metadata: any, context: string, functionCall: any, level: number}> => {
     if (!transactionData) return [];
     
-    console.log('🎯 LEVEL-BASED METADATA MAPPING');
-    console.log(`📋 Available metadata entries: ${metadataEntries.length}`);
-    metadataEntries.forEach(entry => {
-      console.log(`   - ${entry.name}: ${Object.keys(entry.metadata.display?.formats || {}).length} formats`);
-    });
     
     const operations: Array<{operation: Operation, metadata: any, context: string, functionCall: any, level: number}> = [];
     
@@ -560,7 +591,6 @@ const HardwareViewer = ({
             signature = `${obj.name}(${paramTypes})`;
           }
           
-          console.log(`   🔍 Found function call: ${obj.name} at level ${currentLevel} (${currentPath})`);
           
           calls.push({
             name: obj.name,
@@ -578,15 +608,11 @@ const HardwareViewer = ({
           Object.entries(obj).forEach(([key, value]) => {
             // Skip traceCalls to avoid duplicates with methodCall
             if (key === 'traceCalls') {
-              console.log(`   🚫 Skipping traceCalls to avoid duplicates`);
               return;
             }
             
             // Increase level when we go into valueDecoded (nested function calls)
             const nextLevel = key === 'valueDecoded' ? currentLevel + 1 : currentLevel;
-            if (key === 'valueDecoded') {
-              console.log(`   🔄 Entering valueDecoded at level ${currentLevel} → ${nextLevel} (${currentPath}.${key})`);
-            }
             findAllFunctionCalls(value, nextLevel, `${currentPath}.${key}`);
           });
         }
@@ -601,13 +627,10 @@ const HardwareViewer = ({
     // Keep all function calls including batch duplicates - DO NOT deduplicate
     const uniqueFunctionCalls = allFunctionCalls;
     
-    console.log(`   Found ${allFunctionCalls.length} functions at levels: ${[...new Set(uniqueFunctionCalls.map(f => f.level))].join(', ')}`);
-    
     // Find metadata for each function call - check ALL metadata entries
     uniqueFunctionCalls.forEach((functionCall) => {
       // Always check all available metadata entries for each function signature
       const levelMetadata = metadataEntries;
-      console.log(`   🔍 Checking ALL ${metadataEntries.length} metadata entries for level ${functionCall.level} signature: ${functionCall.signature}`);
       
       let matchedMetadata = null;
       let matchedOperation = null;
@@ -615,15 +638,12 @@ const HardwareViewer = ({
       for (const metadataEntry of levelMetadata) {
         const formats = metadataEntry.metadata.display?.formats;
         if (!formats) {
-          console.log(`   ❌ No formats in metadata: ${metadataEntry.name || 'unnamed'}`);
           continue;
         }
         
-        console.log(`   🔍 Checking metadata "${metadataEntry.name}" with formats:`, Object.keys(formats));
         
         // Exact signature match
         if (formats[functionCall.signature]) {
-          console.log(`   ✅ Exact signature match found!`);
           matchedMetadata = metadataEntry.metadata;
           matchedOperation = formats[functionCall.signature];
           break;
@@ -631,35 +651,28 @@ const HardwareViewer = ({
         
         // Function name match
         if (formats[functionCall.name]) {
-          console.log(`   ✅ Function name match found!`);
           matchedMetadata = metadataEntry.metadata;
           matchedOperation = formats[functionCall.name];
           break;
         }
         
-        console.log(`   ❌ No match in this metadata`);
       }
       
       if (matchedMetadata && matchedOperation) {
-        console.log(`   ✅ L${functionCall.level}: ${functionCall.signature} → ${matchedOperation.intent || functionCall.name}`);
         
         // Resolve field values for this specific function context
         const resolvedFields = matchedOperation.fields.map((field: any) => {
           let resolvedValue = undefined;
           
-          console.log(`🔍 Resolving field: ${field.label} → ${field.path}`);
           
           if (field.value !== undefined) {
             resolvedValue = field.value;
-            console.log(`   ✅ Static value: ${resolvedValue}`);
           } else if (field.path) {
             if (field.path.startsWith('#.')) {
               // Resolve path in function context
               const pathParts = field.path.substring(2).split('.');
               let current = functionCall.params;
               
-              console.log(`   🎯 Path parts: ${pathParts.join(' → ')}`);
-              console.log(`   📊 Function params:`, functionCall.params?.map((p: any) => `${p.name}:${p.type}`));
               
               for (let i = 0; i < pathParts.length; i++) {
                 const part = pathParts[i];
@@ -696,7 +709,6 @@ const HardwareViewer = ({
                   };
                   
                   const transactionOperations = findOperationNames(transactionData);
-                  console.log(`   🔍 Found operations in transaction: ${transactionOperations.join(', ')}`);
                   
                   // Extract contract addresses from nested calls
                   const extractContractAddresses = (data: any): string[] => {
@@ -706,13 +718,11 @@ const HardwareViewer = ({
                       if (obj && typeof obj === 'object' && depth < 20) { // Prevent infinite recursion
                         // Look for direct target property
                         if (obj.target && typeof obj.target === 'string' && obj.target.startsWith('0x')) {
-                          console.log(`   📍 Found contract address: ${obj.target}`);
                           addresses.push(obj.target.toLowerCase());
                         }
                         
                         // Look for target parameters (the real pattern in batch transactions)
                         if (obj.name === 'target' && obj.value && typeof obj.value === 'string' && obj.value.startsWith('0x')) {
-                          console.log(`   📍 Found target param: ${obj.value}`);
                           addresses.push(obj.value.toLowerCase());
                         }
                         
@@ -727,12 +737,10 @@ const HardwareViewer = ({
                     
                     traverse(data);
                     const uniqueAddresses = [...new Set(addresses)]; // Remove duplicates
-                    console.log(`   🎯 Extracted ${uniqueAddresses.length} unique contract addresses: ${uniqueAddresses.join(', ')}`);
                     return uniqueAddresses;
                   };
                   
                   const contractAddresses = extractContractAddresses(transactionData);
-                  console.log(`   🔍 Found contract addresses: ${contractAddresses.join(', ')}`);
                   
                   // Note: Metadata loading moved to separate useEffect to prevent infinite loops
                   
@@ -750,11 +758,9 @@ const HardwareViewer = ({
                   }) || contractAddresses.length > 0; // Allow if we have contract addresses to load
                   
                   if (!hasNestedMetadata) {
-                    console.log(`   🚫 Level boundary: valueDecoded requires metadata for operations [${transactionOperations.join(', ')}] or contract addresses [${contractAddresses.join(', ')}] (not available) - keeping hex value`);
                     // Keep current value (the hex) instead of setting to undefined
                     break;
                   } else {
-                    console.log(`   ✅ Level boundary: Found reusable metadata for operations [${transactionOperations.join(', ')}] or can load for contracts [${contractAddresses.join(', ')}]`);
                     // Continue processing valueDecoded
                   }
                 }
@@ -766,31 +772,24 @@ const HardwareViewer = ({
                     if (param.name === 'ops' && param.type === 'tuple' && param.components && param.components.length === 1 && param.components[0]?.name === 'ops') {
                       // This is the outer 'ops' parameter, navigate to the inner 'ops' in components
                       current = param.components;
-                      console.log(`   ✅ Found nested tuple param ${part}, navigating to components → ${current?.length} items`);
                     } else if (param.components && param.type === 'tuple') {
                       // Regular tuple - use components
                       current = param.components;
-                      console.log(`   ✅ Found tuple param ${part}, using components → ${current?.length} items`);
                     } else {
                       // Check if next part is valueDecoded - if so, keep param object, otherwise use value
                       if (nextPart === 'valueDecoded') {
                         current = param;
-                        console.log(`   ✅ Found param ${part} → keeping param object for valueDecoded access`);
                       } else {
                         current = param.value !== undefined ? param.value : param;
-                        console.log(`   ✅ Found param ${part} → ${current}`);
                       }
                     }
                   } else {
-                    console.log(`   ❌ Param ${part} not found in:`, Array.isArray(current) ? current.map((p: any) => p?.name) : 'not an array');
                     current = null as any;
                     break;
                   }
                 } else if (current && typeof current === 'object' && current[part] !== undefined) {
                   current = current[part];
-                  console.log(`   ✅ Found property ${part} → ${current}`);
                 } else {
-                  console.log(`   ❌ Property ${part} not found in:`, current && typeof current === 'object' ? Object.keys(current) : 'not an object');
                   current = null as any;
                   break;
                 }
@@ -799,7 +798,6 @@ const HardwareViewer = ({
               resolvedValue = current;
             } else if (field.path.startsWith('@.')) {
               // Transaction metadata paths
-              console.log(`   🎯 Transaction metadata path: ${field.path}`);
               const pathParts = field.path.substring(2).split('.');
               let current = transactionData;
               
@@ -823,7 +821,6 @@ const HardwareViewer = ({
               }
               
               resolvedValue = current;
-              console.log(`   ✅ Transaction metadata resolved: ${resolvedValue}`);
             }
           }
           
@@ -842,7 +839,6 @@ const HardwareViewer = ({
                       if (deployments?.some((d: any) => d.address?.toLowerCase() === resolvedValue.toLowerCase())) {
                         tokenName = metadataEntry.metadata?.metadata?.token?.ticker || metadataEntry.metadata?.metadata?.token?.name;
                         if (tokenName) {
-                          console.log(`   🪙 Found token name for ${resolvedValue}: ${tokenName}`);
                           break;
                         }
                       }
@@ -863,13 +859,11 @@ const HardwareViewer = ({
                 // First check the matched metadata
                 if (matchedMetadata?.metadata?.token?.decimals && typeof matchedMetadata.metadata.token.decimals === 'number') {
                   tokenDecimals = matchedMetadata.metadata.token.decimals;
-                  console.log(`   💰 Using decimals from matched metadata: ${tokenDecimals}`);
                 } else {
                   // If no decimals in matched metadata, check all available metadata entries for token info
                   for (const metadataEntry of metadataEntries) {
                     if (metadataEntry.metadata?.metadata?.token?.decimals && typeof metadataEntry.metadata.metadata.token.decimals === 'number') {
                       tokenDecimals = metadataEntry.metadata.metadata.token.decimals;
-                      console.log(`   💰 Using decimals from ${metadataEntry.name}: ${tokenDecimals}`);
                       break;
                     }
                   }
@@ -919,11 +913,9 @@ const HardwareViewer = ({
           level: functionCall.level
         });
       } else {
-        console.log(`   ❌ L${functionCall.level}: ${functionCall.signature} → No metadata at level ${functionCall.level}`);
       }
     });
     
-    console.log(`✅ LEVEL-BASED MAPPING: ${operations.length} operations created`);
     return operations;
   };
 
@@ -931,70 +923,15 @@ const HardwareViewer = ({
   const processBatchTransaction = (transactionData: DecodedTransaction | null): Array<{operation: Operation, metadata: any, context: string, functionCall: any, level: number, batchIndex?: number}> => {
     if (!transactionData) return [];
     
-    console.log(`🔄 PROCESSING TRANSACTION WITH LEVEL-BASED MAPPING`);
     
     // Use the existing level-based mapping which already handles all nested operations
     const allOperations = getAllOperationsForTransaction(transactionData);
     
-    console.log(`   ✅ Found ${allOperations.length} operations through level-based mapping`);
     return allOperations;
   };
 
-  // Enhanced getScreensForOperation that uses smart path resolver
-  const getScreensForOperationWithRealData = (operation: Operation) => {
-    const displays = operation.fields.filter((field) => {
-      const label = field && "label" in field ? field.label : undefined;
-      return !(label === undefined || label === null || label === "");
-    });
 
-    const ITEM_PER_SCREEN = 4;
-    const screens: Array<Array<{label: string; isActive?: boolean; displayValue: string}>> = [];
-    let screen: Array<{label: string; isActive?: boolean; displayValue: string}> = [];
-
-    // LEVEL-BASED PATH RESOLUTION - NO OLD SMARTPATHRESOLVER VALIDATION
-
-    for (let i = 0; i < displays.length; i++) {
-      const isLastItem = i === displays.length - 1;
-      const displayItem = displays[i];
-      const label = displayItem && "label" in displayItem ? displayItem.label : undefined;
-
-      if (label === undefined || label === null || label === "") continue;
-      if (!displayItem) continue;
-
-      const hasFormat = "format" in displayItem;
-      const format = hasFormat ? displayItem.format : "raw";
-      const path = displayItem.path || "";
-      
-      let displayValue;
-      if (path === "separator") {
-        displayValue = "";
-      } else if ('displayValue' in displayItem && displayItem.displayValue !== undefined) {
-        // USE LEVEL-BASED CALCULATED VALUE - ALREADY RESOLVED!
-        displayValue = displayItem.displayValue;
-        if (displayValue === "[unmapped]") {
-          console.log(`   ❌ ${label}: ${path} → [unmapped]`);
-        }
-      } else {
-        displayValue = hasFormat && format ? `Mock ${format} value` : "displayValue";
-      }
-
-      screen.push({
-        label,
-        isActive: true,
-        displayValue: String(displayValue || '[undefined]')
-      });
-
-      if (screen.length === ITEM_PER_SCREEN || isLastItem) {
-        screens.push(screen);
-        screen = [];
-      }
-    }
-
-    return screens;
-  };
-
-  const operation = getOperationForViewing();
-  const operationMetadata = getOperationMetadata();
+  // Removed operation and operationMetadata since functions don't exist
 
   // Memoize batch operation processing to prevent infinite loops
   const allOperations = useMemo(() => {
@@ -1004,7 +941,6 @@ const HardwareViewer = ({
   const renderHardwareUI = () => {
     // Get all operations for this transaction (including batched and nested)
     
-    console.log(`Found ${allOperations.length} operations:`, allOperations.map(op => `${op.context}:${op.functionCall.name} (level ${op.level})`));
     
     // METADATA-DRIVEN MULTI-OPERATION HANDLING
     if (allOperations.length > 1) {
@@ -1012,7 +948,6 @@ const HardwareViewer = ({
       const maxLevel = Math.max(...allOperations.map(op => op.level));
       const lowestLevelOperations = allOperations.filter(op => op.level === maxLevel);
       
-      console.log(`Filtering to lowest level ${maxLevel}: ${lowestLevelOperations.length} operations`);
       
       // Sort operations by nesting level (main first, then by level)
       const sortedOperations = lowestLevelOperations.sort((a, b) => a.level - b.level);
@@ -1033,7 +968,7 @@ const HardwareViewer = ({
             }))
           };
           
-          const screens = getScreensForOperationWithRealData(contextualOperation);
+          const screens = getScreensForOperation(contextualOperation);
           
           // Build operation name from metadata intent or function name
           const operationName = typeof operation.operation.intent === 'string' 
@@ -1159,7 +1094,7 @@ const HardwareViewer = ({
           }))
         };
         
-        const screens = getScreensForOperationWithRealData(contextualOperation);
+        const screens = getScreensForOperation(contextualOperation);
         
         const operationName = typeof operation.operation.intent === 'string' ? operation.operation.intent : operation.functionCall.name;
         const batchInfo = operation.batchIndex !== undefined ? ` [${operation.batchIndex + 1}]` : '';
@@ -1207,60 +1142,124 @@ const HardwareViewer = ({
       }
     }
     
-    // Fallback to single operation display
-    if (!operation || !operationMetadata) {
-      return (
-        <div className="text-center text-gray-500 py-8">
-          {activeTab === "simple" 
-            ? "Please provide valid ERC7730 metadata and select an operation to preview"
-            : "Please add metadata files, select a metadata file, and choose an operation to preview"
-          }
-        </div>
-      );
-    }
-
-    if (!operation.intent || operation.intent === "") {
-      return (
-        <div className="text-center text-gray-500 py-8">
-          Transaction is not clear sign
-        </div>
-      );
-    }
-
-    const screens = getScreensForOperationWithRealData(operation);
-    const fullOperationScreens = operationScreens(screens, operationMetadata);
-
-    return (
-      <div className="mx-auto flex max-w-96 flex-col">
-        <Carousel setApi={setApi}>
-          <CarouselContent>
-            {fullOperationScreens.map((screen, index) => (
-              <CarouselItem
-                key={index}
-                className="flex w-full items-center justify-center"
-              >
-                <Device.Frame>{screen}</Device.Frame>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="hidden md:flex" />
-          <CarouselNext className="hidden md:flex" />
-        </Carousel>
-        <div className="mx-auto flex flex-row items-center gap-2 p-2 max-w-full overflow-x-auto">
-          <div className="flex flex-row items-center gap-2 min-w-0">
-            {fullOperationScreens.map((_, index) => (
-              <div
-                key={"carousel-thumbnail-" + index}
-                className={cn("flex-shrink-0 w-fit rounded p-1 ring-primary hover:ring-2 cursor-pointer", {
-                  "ring-2": index === selected,
-                })}
-                onClick={() => api?.scrollTo(index)}
-              >
-                <Device.Frame size="small">{index + 1}</Device.Frame>
+    // Show selected operation with transaction data if available
+    if (metadataEntries.length > 0 && selectedMetadataId && selectedOperation) {
+      const selectedMetadata = metadataEntries.find(entry => entry.id === selectedMetadataId);
+      if (selectedMetadata?.metadata.display?.formats?.[selectedOperation]) {
+        const operation = selectedMetadata.metadata.display.formats[selectedOperation];
+        const operationMetadata = {
+          operationName: typeof operation.intent === "string" ? operation.intent : selectedOperation,
+          metadata: selectedMetadata.metadata.metadata || null,
+        };
+        
+        if (transactionData) {
+          // Use the existing level-based mapping to get proper field resolution
+          const operationsFromMapping = getAllOperationsForTransaction(transactionData);
+          const matchingOperation = operationsFromMapping.find(op => 
+            op.functionCall.name === transactionData.methodCall?.name ||
+            (op.operation.intent && typeof op.operation.intent === 'string' && op.operation.intent === operationMetadata.operationName)
+          );
+          
+          if (matchingOperation) {
+            // Use the properly resolved operation with real transaction data
+            const screens = getScreensForOperation(matchingOperation.operation);
+            const fullOperationScreens = operationScreens(screens, operationMetadata);
+            
+            return (
+              <div className="mx-auto flex max-w-96 flex-col">
+                <Carousel setApi={setApi}>
+                  <CarouselContent>
+                    {fullOperationScreens.map((screen, index) => (
+                      <CarouselItem
+                        key={index}
+                        className="flex w-full items-center justify-center"
+                      >
+                        <Device.Frame>{screen}</Device.Frame>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="hidden md:flex" />
+                  <CarouselNext className="hidden md:flex" />
+                </Carousel>
+                <div className="mx-auto flex flex-row items-center gap-2 p-2 max-w-full overflow-x-auto">
+                  <div className="flex flex-row items-center gap-2 min-w-0">
+                    {fullOperationScreens.map((_, index) => (
+                      <div
+                        key={"carousel-thumbnail-" + index}
+                        className={cn("flex-shrink-0 w-fit rounded p-1 ring-primary hover:ring-2 cursor-pointer", {
+                          "ring-2": index === selected,
+                        })}
+                        onClick={() => api?.scrollTo(index)}
+                      >
+                        <Device.Frame size="small">{index + 1}</Device.Frame>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-            ))}
+            );
+          }
+        }
+        
+        // Show actual fields from metadata even without transaction data
+        const metadataFields = operation.fields.map(field => ({
+          label: field.label || "Field",
+          displayValue: "[No transaction data]",
+          isActive: true
+        }));
+        
+        // Paginate fields into screens (4 per screen)
+        const ITEMS_PER_SCREEN = 4;
+        const fieldScreens = [];
+        for (let i = 0; i < metadataFields.length; i += ITEMS_PER_SCREEN) {
+          fieldScreens.push(metadataFields.slice(i, i + ITEMS_PER_SCREEN));
+        }
+        
+        const fullOperationScreens = operationScreens(fieldScreens, operationMetadata);
+        
+        return (
+          <div className="mx-auto flex max-w-96 flex-col">
+            <div className="text-center text-sm text-gray-600 mb-4">
+              Metadata loaded - Add transaction data to see full preview
+            </div>
+            <Carousel setApi={setApi}>
+              <CarouselContent>
+                {fullOperationScreens.map((screen, index) => (
+                  <CarouselItem
+                    key={index}
+                    className="flex w-full items-center justify-center"
+                  >
+                    <Device.Frame>{screen}</Device.Frame>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="hidden md:flex" />
+              <CarouselNext className="hidden md:flex" />
+            </Carousel>
+            <div className="mx-auto flex flex-row items-center gap-2 p-2 max-w-full overflow-x-auto">
+              <div className="flex flex-row items-center gap-2 min-w-0">
+                {fullOperationScreens.map((_, index) => (
+                  <div
+                    key={"carousel-thumbnail-" + index}
+                    className={cn("flex-shrink-0 w-fit rounded p-1 ring-primary hover:ring-2 cursor-pointer", {
+                      "ring-2": index === selected,
+                    })}
+                    onClick={() => api?.scrollTo(index)}
+                  >
+                    <Device.Frame size="small">{index + 1}</Device.Frame>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        </div>
+        );
+      }
+    }
+    
+    // Final fallback
+    return (
+      <div className="text-center text-gray-500 py-8">
+        Please add metadata files, select a metadata file, and choose an operation to preview
       </div>
     );
   };
@@ -1276,45 +1275,7 @@ const HardwareViewer = ({
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="simple">Simple Mode</TabsTrigger>
-              <TabsTrigger value="advanced">Advanced Mode</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="simple" className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="json-input">Paste your ERC7730 JSON metadata</Label>
-                <Textarea
-                  id="json-input"
-                  placeholder="Paste your ERC7730 JSON here..."
-                  value={jsonInput}
-                  onChange={(e) => handleJsonChange(e.target.value)}
-                  className="min-h-[300px] font-mono text-sm"
-                />
-              </div>
-              
-
-              {parsedData && parsedData.display?.formats && (
-                <div className="space-y-2">
-                  <Label htmlFor="operation-select">Select Operation</Label>
-                  <Select value={selectedOperation} onValueChange={setSelectedOperation}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Choose an operation to view" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {Object.keys(parsedData.display.formats).map((operationName) => (
-                        <SelectItem key={operationName} value={operationName}>
-                          {operationName}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
-            </TabsContent>
-
-            <TabsContent value="advanced" className="space-y-4">
+          <div className="space-y-4">
               <div className="space-y-4">
                 <div className="text-sm text-gray-600 mb-4">
                   Multi-Metadata + Real Data mode: Input multiple ERC7730 metadata files and decoded transaction data
@@ -1399,6 +1360,16 @@ const HardwareViewer = ({
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <Label>Transaction Data (Decoded)</Label>
+                    {transactionData && (
+                      <Button 
+                        onClick={() => setTransactionData(null)} 
+                        size="sm" 
+                        variant="outline"
+                        className="text-xs"
+                      >
+                        Clear
+                      </Button>
+                    )}
                   </div>
                   <Textarea
                     placeholder="Paste decoded transaction data JSON..."
@@ -1439,11 +1410,6 @@ const HardwareViewer = ({
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <Label>Select Operation</Label>
-                      {transactionData && (
-                        <div className="text-xs text-gray-500 break-all">
-                          Detected: {getTransactionFunctionSelector(transactionData) || "Unknown"}
-                        </div>
-                      )}
                     </div>
                     <Select value={selectedOperation} onValueChange={setSelectedOperation}>
                       <SelectTrigger>
@@ -1463,15 +1429,16 @@ const HardwareViewer = ({
                               return operationMatchesTransaction(operationName, transactionData);
                             })
                             .map((operationName) => {
-                              const isExactMatch = detectedSelector === operationName;
+                              // Get the operation intent from metadata for a better display name
+                              const operation = selectedMetadata.metadata.display.formats[operationName];
+                              const displayName = typeof operation?.intent === 'string' ? operation.intent : operationName;
                               
                               return (
                                 <SelectItem 
                                   key={operationName} 
                                   value={operationName}
                                 >
-                                  {operationName} 
-                                  {isExactMatch ? " ✓" : ""}
+                                  {displayName}
                                 </SelectItem>
                               );
                             });
@@ -1480,9 +1447,9 @@ const HardwareViewer = ({
                     </Select>
                   </div>
                 )}
+
               </div>
-            </TabsContent>
-          </Tabs>
+          </div>
 
           {error && (
             <Alert variant="destructive">
