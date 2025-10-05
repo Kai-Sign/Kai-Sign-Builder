@@ -4,8 +4,8 @@
     "contract": {
       "deployments": [
         {
-          "chainId": 8453,
-          "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+          "chainId": 1,
+          "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
         }
       ],
       "abi": [
@@ -44,22 +44,22 @@
     }
   },
   "metadata": {
-    "owner": "Circle",
+    "owner": "Tether",
     "info": {
-      "legalName": "Circle",
-      "url": "https://circle.com",
-      "contractName": "USD Coin"
+      "legalName": "Tether Limited",
+      "url": "https://tether.to",
+      "contractName": "Tether USD"
     },
     "token": {
-      "ticker": "USDC",
-      "name": "USD Coin",
+      "ticker": "USDT",
+      "name": "Tether USD",
       "decimals": 6
     }
   },
   "display": {
     "formats": {
       "transfer(address,uint256)": {
-        "intent": "Transfer USDC",
+        "intent": "Transfer USDT",
         "fields": [
           {
             "label": "Recipient",
@@ -71,13 +71,13 @@
             "format": "tokenAmount",
             "path": "#.value",
             "params": {
-              "tokenPath": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+              "tokenPath": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
             }
           }
         ]
       },
       "transferFrom(address,address,uint256)": {
-        "intent": "Transfer USDC From",
+        "intent": "Transfer USDT From",
         "fields": [
           {
             "label": "From",
@@ -94,13 +94,13 @@
             "format": "tokenAmount",
             "path": "#.value",
             "params": {
-              "tokenPath": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+              "tokenPath": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
             }
           }
         ]
       },
       "approve(address,uint256)": {
-        "intent": "Approve USDC Spending",
+        "intent": "Approve USDT Spending",
         "fields": [
           {
             "label": "Spender",
@@ -112,7 +112,7 @@
             "format": "tokenAmount",
             "path": "#.value",
             "params": {
-              "tokenPath": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+              "tokenPath": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
             }
           }
         ]

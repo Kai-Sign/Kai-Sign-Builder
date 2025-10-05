@@ -37,6 +37,7 @@
     },
     "token": {
       "ticker": "TWP",
+      "name": "Towns Points",
       "decimals": 18
     }
   },

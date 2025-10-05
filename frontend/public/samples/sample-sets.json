@@ -3,21 +3,56 @@
     {
       "id": "aave-repay",
       "name": "Aave Repay",
-      "metadataFiles": ["erc7730-aave-v2-lending-pool.json"],
+      "metadataFiles": ["erc7730-aave-v2-lending-pool.json", "0xdac17f958d2ee523a2206206994597c13d831ec7.json"],
       "transactionData": {
-        "txHash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
-        "methodCall": {
+      "txHash": "0xc0bd04d7e94542e58709f51879f64946ff4a744e1c37f5f920cea3d478e115d7",
+      "txType": "contract interaction",
+      "fromAddress": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A",
+      "toAddress": "0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9",
+      "contractName": null,
+      "contractType": "OTHER",
+      "methodCall": {
+        "name": "repay",
+        "type": "function",
+        "signature": "repay(address,uint256,uint256,address)",
+        "params": [
+          {
+            "name": "asset",
+            "type": "address",
+            "value": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+          },
+          {
+            "name": "amount",
+            "type": "uint256",
+            "value": "1238350000"
+          },
+          {
+            "name": "rateMode",
+            "type": "uint256",
+            "value": "2"
+          },
+          {
+            "name": "onBehalfOf",
+            "type": "address",
+            "value": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A"
+          }
+        ]
+      },
+      "traceCalls": [
+        {
           "name": "repay",
+          "signature": "repay(address,uint256,uint256,address)",
+          "type": "function",
           "params": [
             {
               "name": "asset",
               "type": "address",
-              "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+              "value": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
             },
             {
               "name": "amount",
               "type": "uint256",
-              "value": "1000000000"
+              "value": "1238350000"
             },
             {
               "name": "rateMode",
@@ -27,21 +62,223 @@
             {
               "name": "onBehalfOf",
               "type": "address",
-              "value": "0x742d35Cc6634C0532925a3b8D591D3d5F88cE442"
+              "value": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A"
             }
-          ]
+          ],
+          "from": "0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9",
+          "to": "0xc6845a5c768bf8d7681249f8927877efda425baf"
+        }
+      ],
+      "nativeValueSent": "0",
+      "chainSymbol": "mainnet",
+      "chainID": 1,
+      "interactions": [
+        {
+          "contractName": "Aave interest bearing USDT",
+          "contractSymbol": "aUSDT",
+          "contractAddress": "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
+          "decimals": 6,
+          "chainID": 1,
+          "contractType": "ERC20",
+          "signature": "Transfer(address,address,uint256)",
+          "event": {
+            "eventName": "Transfer",
+            "logIndex": 249,
+            "params": {
+              "from": "0x0000000000000000000000000000000000000000",
+              "to": "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c",
+              "value": "10910459"
+            }
+          }
         },
-        "transfers": [],
-        "addressesMeta": {
-          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
-            "contractAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-            "contractName": "USD Coin",
-            "tokenSymbol": "USDC",
-            "decimals": 6,
-            "type": "ERC20"
+        {
+          "contractName": "Aave interest bearing USDT",
+          "contractSymbol": "aUSDT",
+          "contractAddress": "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
+          "decimals": 6,
+          "chainID": 1,
+          "contractType": "ERC20",
+          "signature": "Mint(address,uint256,uint256)",
+          "event": {
+            "eventName": "Mint",
+            "logIndex": 250,
+            "params": {
+              "from": "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c",
+              "value": "10910459",
+              "index": "1126166959792739023046767156"
+            }
+          }
+        },
+        {
+          "contractName": "Aave variable debt bearing USDT",
+          "contractSymbol": "variableDebtUSDT",
+          "contractAddress": "0x531842cEbbdD378f8ee36D171d6cC9C4fcf475Ec",
+          "decimals": 6,
+          "chainID": 1,
+          "contractType": "ERC20",
+          "signature": "Transfer(address,address,uint256)",
+          "event": {
+            "eventName": "Transfer",
+            "logIndex": 251,
+            "params": {
+              "from": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A",
+              "to": "0x0000000000000000000000000000000000000000",
+              "value": "1238350000"
+            }
+          }
+        },
+        {
+          "contractName": "Aave variable debt bearing USDT",
+          "contractSymbol": "variableDebtUSDT",
+          "contractAddress": "0x531842cEbbdD378f8ee36D171d6cC9C4fcf475Ec",
+          "decimals": 6,
+          "chainID": 1,
+          "contractType": "ERC20",
+          "signature": "Burn(address,uint256,uint256)",
+          "event": {
+            "eventName": "Burn",
+            "logIndex": 252,
+            "params": {
+              "user": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A",
+              "amount": "1238350000",
+              "index": "1190033843917774700128682086"
+            }
+          }
+        },
+        {
+          "contractName": null,
+          "contractSymbol": null,
+          "contractAddress": "0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9",
+          "decimals": null,
+          "chainID": 1,
+          "contractType": "OTHER",
+          "signature": "ReserveDataUpdated(address,uint256,uint256,uint256,uint256,uint256)",
+          "event": {
+            "eventName": "ReserveDataUpdated",
+            "logIndex": 253,
+            "params": {
+              "reserve": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+              "liquidityRate": "27459641943768497419965472",
+              "stableBorrowRate": "119899890301881767020360132",
+              "variableBorrowRate": "39799780603763534040720265",
+              "liquidityIndex": "1126166959792739023046767156",
+              "variableBorrowIndex": "1190033843917774700128682086"
+            }
+          }
+        },
+        {
+          "contractName": "Tether USD",
+          "contractSymbol": "USDT",
+          "contractAddress": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+          "decimals": 6,
+          "chainID": 1,
+          "contractType": "ERC20",
+          "signature": "Transfer(address,address,uint256)",
+          "event": {
+            "eventName": "Transfer",
+            "logIndex": 254,
+            "params": {
+              "from": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A",
+              "to": "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
+              "value": "1238350000"
+            }
+          }
+        },
+        {
+          "contractName": null,
+          "contractSymbol": null,
+          "contractAddress": "0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9",
+          "decimals": null,
+          "chainID": 1,
+          "contractType": "OTHER",
+          "signature": "Repay(address,address,address,uint256)",
+          "event": {
+            "eventName": "Repay",
+            "logIndex": 255,
+            "params": {
+              "reserve": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+              "user": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A",
+              "repayer": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A",
+              "amount": "1238350000"
+            }
           }
         }
-      }
+      ],
+      "effectiveGasPrice": "12899873749",
+      "gasUsed": "233967",
+      "gasPaid": "0.003018144761432283",
+      "timestamp": 1693823699,
+      "txIndex": 108,
+      "reverted": false,
+      "transfers": [
+        {
+          "type": "ERC20",
+          "name": "Aave interest bearing USDT",
+          "symbol": "aUSDT",
+          "address": "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
+          "amount": "10.910459",
+          "to": "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c",
+          "from": "0x0000000000000000000000000000000000000000"
+        },
+        {
+          "type": "ERC20",
+          "name": "Aave variable debt bearing USDT",
+          "symbol": "variableDebtUSDT",
+          "address": "0x531842cEbbdD378f8ee36D171d6cC9C4fcf475Ec",
+          "amount": "1238.35",
+          "to": "0x0000000000000000000000000000000000000000",
+          "from": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A"
+        },
+        {
+          "type": "ERC20",
+          "name": "Tether USD",
+          "symbol": "USDT",
+          "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+          "amount": "1238.35",
+          "to": "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
+          "from": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A"
+        }
+      ],
+      "interactedAddresses": [
+        "0xf89a3799b90593317E0a1Eb74164fbc1755A297A",
+        "0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9",
+        "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
+        "0x0000000000000000000000000000000000000000",
+        "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c",
+        "0x531842cEbbdD378f8ee36D171d6cC9C4fcf475Ec",
+        "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+      ],
+      "addressesMeta": {
+        "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811": {
+          "contractAddress": "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
+          "contractName": "Aave interest bearing USDT",
+          "tokenSymbol": "aUSDT",
+          "decimals": 6,
+          "type": "ERC20",
+          "address": "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
+          "chainID": 1
+        },
+        "0x531842cEbbdD378f8ee36D171d6cC9C4fcf475Ec": {
+          "contractAddress": "0x531842cEbbdD378f8ee36D171d6cC9C4fcf475Ec",
+          "contractName": "Aave variable debt bearing USDT",
+          "tokenSymbol": "variableDebtUSDT",
+          "decimals": 6,
+          "type": "ERC20",
+          "address": "0x531842cEbbdD378f8ee36D171d6cC9C4fcf475Ec",
+          "chainID": 1
+        },
+        "0xdAC17F958D2ee523a2206206994597C13D831ec7": {
+          "contractAddress": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+          "contractName": "Tether USD",
+          "tokenSymbol": "USDT",
+          "decimals": 6,
+          "type": "ERC20",
+          "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+          "chainID": 1
+        }
+      },
+      "errors": null
+    }
     },
     {
       "id": "safe-usdc",
@@ -176,13 +413,13 @@
                   "name": "minReturnAmount",
                   "type": "uint256",
                   "value": "380000000000000000"
+                },
+                {
+                  "name": "flags",
+                  "type": "uint256",
+                  "value": "0"
                 }
               ]
-            },
-            {
-              "name": "permit",
-              "type": "bytes",
-              "value": "0x"
             },
             {
               "name": "data",
@@ -212,7 +449,7 @@
     },
     {
       "id": "entrypoint-checkin",
-      "name": "ERC-4337 EntryPoint Check-In",
+      "name": "ERC-4337 Points Claim",
       "metadataFiles": ["0x0000000071727de22e5e9d8baf0edac6f37da032.json", "0xe55fEE191604cdBeb874F87A28Ca89aED401C303.json"],
       "transactionData": {
         "txHash": "0xc78ddb79bd7b9b1994b2680fbe51a33cc5e46a89edae6e3476ed1356277a1ad0",
@@ -344,8 +581,8 @@
     },
     {
       "id": "real-batch-usdc-transfer",
-      "name": "Real Batch USDC Transfer",
-      "metadataFiles": ["0x0000000071727de22e5e9d8baf0edac6f37da032.json", "erc7730-usdc-mainnet.json"],
+      "name": "ERC-4337 Batch USDC Transfer",
+      "metadataFiles": ["0x0000000071727de22e5e9d8baf0edac6f37da032.json", "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913.json"],
       "transactionData": {
         "txHash": "0xe3fe2af860750fff01d1cc3a88e03daecd9fbb56b6894a9a2bdcb4d6f81cf0a3",
         "txType": "contract interaction",
