@@ -533,11 +533,11 @@ const HardwareViewer = ({
     
     const operations: Array<{operation: Operation, metadata: any, context: string, functionCall: any, level: number}> = [];
     
-    // Extract ALL function calls from ANYWHERE in the transaction structure
+    // Extract ALL function calls from transaction structure, but skip traceCalls to avoid duplicates
     const extractFunctionCallsWithLevels = (data: any, level: number = 0, path: string = ''): Array<{name: string, signature: string, level: number, data: any, params: any[]}> => {
       const calls: Array<{name: string, signature: string, level: number, data: any, params: any[]}> = [];
       
-      // Recursively find ALL function calls in the transaction
+      // Recursively find ALL function calls in the transaction, but skip traceCalls
       const findAllFunctionCalls = (obj: any, currentLevel: number = 0, currentPath: string = '') => {
         if (!obj || typeof obj !== 'object') return;
         
@@ -571,11 +571,17 @@ const HardwareViewer = ({
           });
         }
         
-        // Recursively traverse all properties
+        // Recursively traverse all properties EXCEPT traceCalls
         if (Array.isArray(obj)) {
           obj.forEach((item, index) => findAllFunctionCalls(item, currentLevel, `${currentPath}[${index}]`));
         } else {
           Object.entries(obj).forEach(([key, value]) => {
+            // Skip traceCalls to avoid duplicates with methodCall
+            if (key === 'traceCalls') {
+              console.log(`   🚫 Skipping traceCalls to avoid duplicates`);
+              return;
+            }
+            
             // Increase level when we go into valueDecoded (nested function calls)
             const nextLevel = key === 'valueDecoded' ? currentLevel + 1 : currentLevel;
             if (key === 'valueDecoded') {
@@ -838,25 +844,58 @@ const HardwareViewer = ({
             switch (field.format) {
               case 'addressName':
                 if (typeof resolvedValue === 'string' && resolvedValue.startsWith('0x') && resolvedValue.length === 42) {
-                  displayValue = `${resolvedValue.slice(0, 6)}...${resolvedValue.slice(-4)}`;
+                  // Check if field has token type parameter and look for token name in metadata
+                  if (field.params?.types?.includes('token')) {
+                    // Look for token name in all available metadata entries
+                    let tokenName = null;
+                    for (const metadataEntry of metadataEntries) {
+                      const deployments = (metadataEntry.metadata?.context as any)?.contract?.deployments;
+                      if (deployments?.some((d: any) => d.address?.toLowerCase() === resolvedValue.toLowerCase())) {
+                        tokenName = metadataEntry.metadata?.metadata?.token?.ticker || metadataEntry.metadata?.metadata?.token?.name;
+                        if (tokenName) {
+                          console.log(`   🪙 Found token name for ${resolvedValue}: ${tokenName}`);
+                          break;
+                        }
+                      }
+                    }
+                    displayValue = tokenName || `${resolvedValue.slice(0, 6)}...${resolvedValue.slice(-4)}`;
+                  } else {
+                    displayValue = `${resolvedValue.slice(0, 6)}...${resolvedValue.slice(-4)}`;
+                  }
                 } else {
                   displayValue = String(resolvedValue);
                 }
                 break;
               case 'amount':
               case 'tokenAmount':
-                // Apply decimal formatting if metadata is available
+                // Apply decimal formatting - check matched metadata first, then all available metadata
+                let tokenDecimals = null;
+                
+                // First check the matched metadata
                 if (matchedMetadata?.metadata?.token?.decimals && typeof matchedMetadata.metadata.token.decimals === 'number') {
-                  const decimals = matchedMetadata.metadata.token.decimals;
+                  tokenDecimals = matchedMetadata.metadata.token.decimals;
+                  console.log(`   💰 Using decimals from matched metadata: ${tokenDecimals}`);
+                } else {
+                  // If no decimals in matched metadata, check all available metadata entries for token info
+                  for (const metadataEntry of metadataEntries) {
+                    if (metadataEntry.metadata?.metadata?.token?.decimals && typeof metadataEntry.metadata.metadata.token.decimals === 'number') {
+                      tokenDecimals = metadataEntry.metadata.metadata.token.decimals;
+                      console.log(`   💰 Using decimals from ${metadataEntry.name}: ${tokenDecimals}`);
+                      break;
+                    }
+                  }
+                }
+                
+                if (tokenDecimals !== null) {
                   const numValue = BigInt(String(resolvedValue));
-                  const divisor = BigInt(10 ** decimals);
+                  const divisor = BigInt(10 ** tokenDecimals);
                   const wholePart = numValue / divisor;
                   const fractionalPart = numValue % divisor;
                   
                   if (fractionalPart === 0n) {
                     displayValue = wholePart.toString();
                   } else {
-                    const fractionalStr = fractionalPart.toString().padStart(decimals, '0').replace(/0+$/, '');
+                    const fractionalStr = fractionalPart.toString().padStart(tokenDecimals, '0').replace(/0+$/, '');
                     displayValue = `${wholePart}.${fractionalStr}`;
                   }
                 } else {
