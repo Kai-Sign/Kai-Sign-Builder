@@ -169,6 +169,19 @@ const HardwareViewer = ({
         const normalizedTxData = normalizeTransactionData(sampleSet.transactionData);
         setTransactionData(normalizedTxData);
         setActiveTab("advanced");
+      } else if (sampleSet.transactionFile) {
+        // Load external transaction file
+        console.log("Loading transaction file:", sampleSet.transactionFile);
+        const response = await fetch(`${samplesBasePath}/${sampleSet.transactionFile}`);
+        if (response.ok) {
+          const txData = await response.json();
+          console.log("Loaded transaction data:", txData);
+          const normalizedTxData = normalizeTransactionData(txData);
+          setTransactionData(normalizedTxData);
+          setActiveTab("advanced");
+        } else {
+          console.error("Failed to load transaction file:", sampleSet.transactionFile);
+        }
         
         if (entries.length > 0 && entries[0]) {
           setSelectedMetadataId(entries[0].id);
@@ -226,9 +239,19 @@ const HardwareViewer = ({
       return transactionData.methodCall.signature;
     }
     
-    // Fallback: build function signature from parameter types
-    const paramTypes = params.map(param => param.type).join(',');
+    // Fallback: build function signature from parameter types with tuple expansion
+    const expandTupleType = (param: any): string => {
+      if (param.type === 'tuple' && param.components) {
+        console.log(`   🔍 Expanding tuple with ${param.components.length} components:`, param.components.map((c: any) => c.type));
+        const componentTypes = param.components.map(expandTupleType).join(',');
+        return `(${componentTypes})`;
+      }
+      return param.type;
+    };
+    
+    const paramTypes = params.map(expandTupleType).join(',');
     const functionSignature = `${functionName}(${paramTypes})`;
+    console.log(`   🎯 Built signature: ${functionSignature}`);
     
     return functionSignature;
   };
@@ -503,6 +526,10 @@ const HardwareViewer = ({
     if (!transactionData) return [];
     
     console.log('🎯 LEVEL-BASED METADATA MAPPING');
+    console.log(`📋 Available metadata entries: ${metadataEntries.length}`);
+    metadataEntries.forEach(entry => {
+      console.log(`   - ${entry.name}: ${Object.keys(entry.metadata.display?.formats || {}).length} formats`);
+    });
     
     const operations: Array<{operation: Operation, metadata: any, context: string, functionCall: any, level: number}> = [];
     
@@ -515,47 +542,45 @@ const HardwareViewer = ({
         if (!obj || typeof obj !== 'object') return;
         
         // Check if this object represents a function call
-        if (obj.name && obj.signature && obj.params) {
+        if (obj.name && obj.params) {
+          let signature;
+          if (obj.signature) {
+            signature = obj.signature;
+          } else {
+            // Build signature from name and params
+            const expandTupleType = (param: any): string => {
+              if (param.type === 'tuple' && param.components) {
+                const componentTypes = param.components.map(expandTupleType).join(',');
+                return `(${componentTypes})`;
+              }
+              return param.type;
+            };
+            
+            const paramTypes = obj.params.map(expandTupleType).join(',');
+            signature = `${obj.name}(${paramTypes})`;
+          }
+          
           console.log(`   🔍 Found function call: ${obj.name} at level ${currentLevel} (${currentPath})`);
           
           calls.push({
             name: obj.name,
-            signature: obj.signature,
+            signature: signature,
             level: currentLevel,
             data: obj,
             params: obj.params || []
           });
         }
         
-        // Special handling for top-level methodCall
-        if (obj.methodCall?.name && obj.methodCall?.params) {
-          const methodCall = obj.methodCall;
-          let signature;
-          if (methodCall.signature) {
-            signature = methodCall.signature;
-          } else {
-            const paramTypes = methodCall.params.map((p: any) => p.type).join(',');
-            signature = `${methodCall.name}(${paramTypes})`;
-          }
-          
-          console.log(`   🔍 Found top-level method call: ${methodCall.name} at level ${currentLevel}`);
-          
-          calls.push({
-            name: methodCall.name,
-            signature: signature,
-            level: currentLevel,
-            data: methodCall,
-            params: methodCall.params || []
-          });
-        }
-        
         // Recursively traverse all properties
         if (Array.isArray(obj)) {
-          obj.forEach((item, index) => findAllFunctionCalls(item, currentLevel + 1, `${currentPath}[${index}]`));
+          obj.forEach((item, index) => findAllFunctionCalls(item, currentLevel, `${currentPath}[${index}]`));
         } else {
           Object.entries(obj).forEach(([key, value]) => {
             // Increase level when we go into valueDecoded (nested function calls)
             const nextLevel = key === 'valueDecoded' ? currentLevel + 1 : currentLevel;
+            if (key === 'valueDecoded') {
+              console.log(`   🔄 Entering valueDecoded at level ${currentLevel} → ${nextLevel} (${currentPath}.${key})`);
+            }
             findAllFunctionCalls(value, nextLevel, `${currentPath}.${key}`);
           });
         }
@@ -566,10 +591,14 @@ const HardwareViewer = ({
     };
     
     const allFunctionCalls = extractFunctionCallsWithLevels(transactionData);
-    console.log(`   Found ${allFunctionCalls.length} functions at levels: ${[...new Set(allFunctionCalls.map(f => f.level))].join(', ')}`);
+    
+    // Keep all function calls including batch duplicates - DO NOT deduplicate
+    const uniqueFunctionCalls = allFunctionCalls;
+    
+    console.log(`   Found ${allFunctionCalls.length} functions at levels: ${[...new Set(uniqueFunctionCalls.map(f => f.level))].join(', ')}`);
     
     // Find metadata for each function call based on level
-    allFunctionCalls.forEach((functionCall) => {
+    uniqueFunctionCalls.forEach((functionCall) => {
       // Find metadata for this level - allow reuse across levels
       let levelMetadata = metadataEntries.filter(entry => {
         // Primary assignment: metadata index matches level
@@ -586,12 +615,20 @@ const HardwareViewer = ({
       let matchedMetadata = null;
       let matchedOperation = null;
       
+      console.log(`   🔍 Checking ${levelMetadata.length} metadata entries for signature: ${functionCall.signature}`);
+      
       for (const metadataEntry of levelMetadata) {
         const formats = metadataEntry.metadata.display?.formats;
-        if (!formats) continue;
+        if (!formats) {
+          console.log(`   ❌ No formats in metadata: ${metadataEntry.name || 'unnamed'}`);
+          continue;
+        }
+        
+        console.log(`   🔍 Checking metadata "${metadataEntry.name}" with formats:`, Object.keys(formats));
         
         // Exact signature match
         if (formats[functionCall.signature]) {
+          console.log(`   ✅ Exact signature match found!`);
           matchedMetadata = metadataEntry.metadata;
           matchedOperation = formats[functionCall.signature];
           break;
@@ -599,10 +636,13 @@ const HardwareViewer = ({
         
         // Function name match
         if (formats[functionCall.name]) {
+          console.log(`   ✅ Function name match found!`);
           matchedMetadata = metadataEntry.metadata;
           matchedOperation = formats[functionCall.name];
           break;
         }
+        
+        console.log(`   ❌ No match in this metadata`);
       }
       
       if (matchedMetadata && matchedOperation) {
@@ -748,7 +788,7 @@ const HardwareViewer = ({
                     }
                   } else {
                     console.log(`   ❌ Param ${part} not found in:`, Array.isArray(current) ? current.map((p: any) => p?.name) : 'not an array');
-                    current = undefined;
+                    current = null as any;
                     break;
                   }
                 } else if (current && typeof current === 'object' && current[part] !== undefined) {
@@ -756,7 +796,7 @@ const HardwareViewer = ({
                   console.log(`   ✅ Found property ${part} → ${current}`);
                 } else {
                   console.log(`   ❌ Property ${part} not found in:`, current && typeof current === 'object' ? Object.keys(current) : 'not an object');
-                  current = undefined;
+                  current = null as any;
                   break;
                 }
               }
@@ -770,7 +810,21 @@ const HardwareViewer = ({
               
               for (const part of pathParts) {
                 if (!current || (typeof current !== 'object')) break;
-                current = (current as any)[part];
+                
+                // Handle array access like transfers[0]
+                if (part.includes('[') && part.includes(']')) {
+                  const [arrayName, indexPart] = part.split('[');
+                  const index = parseInt(indexPart.replace(']', ''));
+                  const arrayData = (current as any)[arrayName];
+                  if (Array.isArray(arrayData) && index >= 0 && index < arrayData.length) {
+                    current = arrayData[index];
+                  } else {
+                    current = null as any;
+                    break;
+                  }
+                } else {
+                  current = (current as any)[part];
+                }
               }
               
               resolvedValue = current;
