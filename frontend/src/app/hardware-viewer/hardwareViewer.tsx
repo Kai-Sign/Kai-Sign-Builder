@@ -603,25 +603,14 @@ const HardwareViewer = ({
     
     console.log(`   Found ${allFunctionCalls.length} functions at levels: ${[...new Set(uniqueFunctionCalls.map(f => f.level))].join(', ')}`);
     
-    // Find metadata for each function call based on level
+    // Find metadata for each function call - check ALL metadata entries
     uniqueFunctionCalls.forEach((functionCall) => {
-      // Find metadata for this level - allow reuse across levels
-      let levelMetadata = metadataEntries.filter(entry => {
-        // Primary assignment: metadata index matches level
-        const metadataLevel = metadataEntries.indexOf(entry);
-        return metadataLevel === functionCall.level;
-      });
-      
-      // If no metadata at this level, allow reusing any available metadata
-      if (levelMetadata.length === 0) {
-        console.log(`   🔄 No metadata at level ${functionCall.level}, checking all available metadata for reuse`);
-        levelMetadata = metadataEntries;
-      }
+      // Always check all available metadata entries for each function signature
+      const levelMetadata = metadataEntries;
+      console.log(`   🔍 Checking ALL ${metadataEntries.length} metadata entries for level ${functionCall.level} signature: ${functionCall.signature}`);
       
       let matchedMetadata = null;
       let matchedOperation = null;
-      
-      console.log(`   🔍 Checking ${levelMetadata.length} metadata entries for signature: ${functionCall.signature}`);
       
       for (const metadataEntry of levelMetadata) {
         const formats = metadataEntry.metadata.display?.formats;
