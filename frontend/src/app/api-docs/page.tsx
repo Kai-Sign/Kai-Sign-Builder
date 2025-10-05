@@ -34,7 +34,8 @@ const useBlobTester = () => {
           headers: {
             'Accept': 'application/json, text/plain, */*',
             'User-Agent': 'KaiSign-API-Docs/1.0'
-          }
+          },
+          mode: 'cors'
         });
 
         const contentType = response.headers.get('content-type') || '';
@@ -53,13 +54,20 @@ const useBlobTester = () => {
         const isJson = contentType.includes('application/json');
         const isSuccess = response.status === 200;
         const requiresAuth = response.status === 401 && data.includes('UNAUTHORIZED');
+        const isServerDown = response.status === 503;
+        
+        let statusText = response.status.toString();
+        if (isServerDown) {
+          statusText = 'API Server Down (503)';
+        }
         
         results.push({
           endpoint,
           fullUrl,
-          status: response.status,
+          status: statusText,
           success: isSuccess,
           authRequired: requiresAuth,
+          serverDown: isServerDown,
           isJson: isJson,
           data: isJson ? data.substring(0, 1000) + (data.length > 1000 ? '...' : '') : data,
           contentType
@@ -69,13 +77,29 @@ const useBlobTester = () => {
         await new Promise(resolve => setTimeout(resolve, 100));
         
       } catch (error: any) {
+        let errorDetails = error.message;
+        let errorType = 'API Server Down';
+        
+        // "Failed to fetch" usually means the server is unreachable/down, not CORS
+        if (error.message.includes('Failed to fetch')) {
+          errorType = 'API Server Unavailable';
+          errorDetails = 'Blobscan API server is down or unreachable. This is a server-side issue, not your browser.';
+        } else if (error.message.includes('CORS')) {
+          errorType = 'CORS Policy Block';
+          errorDetails = 'Browser blocked cross-origin request due to CORS policy';
+        } else if (error.message.includes('NetworkError')) {
+          errorType = 'Network Error';
+          errorDetails = 'Network connection problem';
+        }
+        
         results.push({
           endpoint,
           fullUrl,
-          status: 'Error',
+          status: errorType,
           success: false,
           authRequired: false,
-          error: error.message,
+          error: errorDetails,
+          originalError: error.message,
           contentType: ''
         });
       }
@@ -87,7 +111,8 @@ const useBlobTester = () => {
       tested: new Date().toISOString(),
       workingEndpoints: results.filter(r => r.success),
       authEndpoints: results.filter(r => r.authRequired),
-      failedEndpoints: results.filter(r => !r.success && !r.authRequired),
+      serverDownEndpoints: results.filter(r => r.serverDown),
+      failedEndpoints: results.filter(r => !r.success && !r.authRequired && !r.serverDown),
       allResults: results
     };
 
@@ -484,7 +509,7 @@ export default function ApiDocsPage() {
   const BlobTestResults = ({ results }: { results: any }) => {
     if (!results) return null;
 
-    const { workingEndpoints, authEndpoints, failedEndpoints, network, blobHash } = results;
+    const { workingEndpoints, authEndpoints, serverDownEndpoints, failedEndpoints, network, blobHash } = results;
 
     return (
       <div className="mt-4 bg-gray-800 border border-gray-600 rounded-lg p-4 overflow-hidden">
@@ -525,6 +550,24 @@ export default function ApiDocsPage() {
             </div>
           )}
 
+          {serverDownEndpoints.length > 0 && (
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <XCircle size={14} className="text-red-400" />
+                <span className="font-medium text-red-400">Server Down ({serverDownEndpoints.length})</span>
+              </div>
+              {serverDownEndpoints.map((endpoint: any, idx: number) => (
+                <div key={idx} className="ml-5 bg-red-900/20 border border-red-500/30 rounded p-2">
+                  <div className="font-mono text-xs text-red-300 break-all">{endpoint.fullUrl}</div>
+                  <div className="text-xs text-gray-300">Status: {endpoint.status}</div>
+                  <div className="text-xs text-red-300 mt-1">
+                    🔴 Blobscan API server is currently down (503 Service Unavailable)
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
           {authEndpoints.length > 0 && (
             <div>
               <div className="flex items-center gap-2 mb-2">
@@ -549,10 +592,28 @@ export default function ApiDocsPage() {
               <div className="ml-5 text-xs text-gray-400">
                 {failedEndpoints.length} endpoints returned errors or 404s
               </div>
+              {failedEndpoints.slice(0, 2).map((endpoint: any, idx: number) => (
+                <div key={idx} className="ml-5 mt-2 bg-red-900/20 border border-red-500/30 rounded p-2">
+                  <div className="font-mono text-xs text-red-300 mb-1 break-all">{endpoint.fullUrl}</div>
+                  <div className="text-xs text-gray-300">
+                    Error Type: {endpoint.status}
+                  </div>
+                  {endpoint.error && (
+                    <div className="text-xs text-red-400 mt-1 font-mono bg-gray-800 p-1 rounded break-all">
+                      {endpoint.error}
+                    </div>
+                  )}
+                  {endpoint.originalError && endpoint.originalError !== endpoint.error && (
+                    <div className="text-xs text-gray-500 mt-1 font-mono text-xs">
+                      Original: {endpoint.originalError}
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           )}
 
-          {workingEndpoints.length === 0 && authEndpoints.length === 0 && (
+          {workingEndpoints.length === 0 && authEndpoints.length === 0 && serverDownEndpoints.length === 0 && (
             <div className="text-center py-4 text-gray-400">
               <XCircle size={20} className="mx-auto mb-2 text-red-400" />
               <p>No working endpoints found for this blob hash on {network.toUpperCase()}</p>
@@ -560,6 +621,23 @@ export default function ApiDocsPage() {
                 This blob hash may not exist on {network} network. 
                 {network === 'mainnet' ? ' Try switching to Sepolia testnet.' : ' Try switching to mainnet.'}
               </p>
+              {failedEndpoints.some((e: any) => e.status === 503 || e.error?.includes('503') || e.status === 'API Server Unavailable') && (
+                <div className="mt-3 p-3 bg-red-900/20 border border-red-500/30 rounded text-red-300">
+                  <p className="text-sm font-medium">🔴 Blobscan API Server Down</p>
+                  <p className="text-xs mt-1">
+                    The Blobscan API server is currently down or unreachable. This is a server-side issue with their infrastructure.
+                    Try again later or check their status page.
+                  </p>
+                </div>
+              )}
+              {failedEndpoints.some((e: any) => e.status === 'CORS Policy Block') && (
+                <div className="mt-3 p-3 bg-blue-900/20 border border-blue-500/30 rounded text-blue-300">
+                  <p className="text-sm font-medium">🔒 CORS Policy Restriction</p>
+                  <p className="text-xs mt-1">
+                    Browser security prevents direct API calls. Use the direct links below to access blob data in new tabs.
+                  </p>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -664,10 +742,20 @@ export default function ApiDocsPage() {
               <XCircle size={14} className="text-red-400" />
               <span className="font-medium text-red-400">Failed to Retrieve Data</span>
             </div>
-            <div className="text-xs text-red-300">{results.error}</div>
+            <div className="text-xs text-red-300 font-mono bg-gray-800 p-2 rounded mt-2 break-all">{results.error}</div>
             {results.error.includes('404') && (
               <div className="mt-2 text-xs text-yellow-300">
                 💡 This blob hash doesn't exist on {results.network}. Try switching networks.
+              </div>
+            )}
+            {(results.error.includes('503') || results.error.includes('Failed to fetch')) && (
+              <div className="mt-2 text-xs text-red-300">
+                🔴 Blobscan API server is down or unreachable. This is a server infrastructure issue, not your request. Try again later.
+              </div>
+            )}
+            {(results.error.includes('CORS') || results.error.includes('blocked')) && (
+              <div className="mt-2 text-xs text-blue-300">
+                🔒 Browser CORS policy blocks direct API calls. This is normal browser security behavior.
               </div>
             )}
           </div>
@@ -1164,13 +1252,11 @@ chmod +x query.sh
               // Card-specific state keys
               const isExecuting = exampleLoading[index];
               const isTestingCard = exampleLoading[`card-${index}`];
-              const isFetchingBlob = exampleLoading[`card-${index}-blob`];
               
               // Card-specific results - only show results for THIS card
               const executeResult = exampleResults[index];
               const testResult = exampleResults[`card-${index}`];
               const blobResult = exampleResults[`card-${index}-blob`];
-              const showDataButton = blobHash && blobHash.length === 66; // Valid blob hash
 
               const handleExecute = async () => {
                 if (executeType === 'graphql') {
