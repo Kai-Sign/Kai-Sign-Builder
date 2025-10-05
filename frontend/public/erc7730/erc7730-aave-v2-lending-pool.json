@@ -33,12 +33,16 @@
           {
             "path": "#.asset",
             "label": "Asset",
-            "format": "addressName"
+            "format": "addressName",
+            "params": {
+              "types": ["token"],
+              "sources": ["local"]
+            }
           },
           {
             "path": "#.amount",
             "label": "Amount",
-            "format": "amount"
+            "format": "tokenAmount"
           },
           {
             "path": "#.rateMode",

@@ -243,10 +243,10 @@
     }
   },
   "metadata": {
-    "owner": "Centre Consortium",
+    "owner": "Circle",
     "info": {
-      "legalName": "Centre Consortium",
-      "url": "https://centre.io",
+      "legalName": "Circle",
+      "url": "https://circle.com",
       "contractName": "USD Coin"
     },
     "token": {
