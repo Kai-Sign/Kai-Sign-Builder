@@ -48,6 +48,11 @@
             "value": "EIP-7702 Delegated Execution"
           },
           {
+            "label": "Entry Point",
+            "format": "addressName",
+            "path": "@.toAddress"
+          },
+          {
             "label": "Number of Operations",
             "format": "raw",
             "path": "#.calls.length"
