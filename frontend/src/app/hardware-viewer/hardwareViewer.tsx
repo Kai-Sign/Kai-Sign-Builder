@@ -845,7 +845,23 @@ const HardwareViewer = ({
                 break;
               case 'amount':
               case 'tokenAmount':
-                displayValue = String(resolvedValue);
+                // Apply decimal formatting if metadata is available
+                if (matchedMetadata?.metadata?.token?.decimals && typeof matchedMetadata.metadata.token.decimals === 'number') {
+                  const decimals = matchedMetadata.metadata.token.decimals;
+                  const numValue = BigInt(String(resolvedValue));
+                  const divisor = BigInt(10 ** decimals);
+                  const wholePart = numValue / divisor;
+                  const fractionalPart = numValue % divisor;
+                  
+                  if (fractionalPart === 0n) {
+                    displayValue = wholePart.toString();
+                  } else {
+                    const fractionalStr = fractionalPart.toString().padStart(decimals, '0').replace(/0+$/, '');
+                    displayValue = `${wholePart}.${fractionalStr}`;
+                  }
+                } else {
+                  displayValue = String(resolvedValue);
+                }
                 break;
               case 'raw':
                 const rawStr = String(resolvedValue);
@@ -1645,6 +1661,21 @@ export function getFieldValueFromTransactionExport(path: string, format: string,
     switch (format) {
       case "tokenAmount":
         const rawValue = value.toString();
+        // Apply decimal formatting if metadata is available
+        if (metadata?.token?.decimals && typeof metadata.token.decimals === 'number') {
+          const decimals = metadata.token.decimals;
+          const numValue = BigInt(rawValue);
+          const divisor = BigInt(10 ** decimals);
+          const wholePart = numValue / divisor;
+          const fractionalPart = numValue % divisor;
+          
+          if (fractionalPart === 0n) {
+            return wholePart.toString();
+          } else {
+            const fractionalStr = fractionalPart.toString().padStart(decimals, '0').replace(/0+$/, '');
+            return `${wholePart}.${fractionalStr}`;
+          }
+        }
         return rawValue;
         
       case "addressName":
