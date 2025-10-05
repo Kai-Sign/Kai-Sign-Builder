@@ -789,6 +789,12 @@
           }
         }
       }
+    },
+    {
+      "id": "eip7702-delegate-batch",
+      "name": "EIP-7702 Delegate Batch",
+      "metadataFiles": ["0x0000000071727de22e5e9d8baf0edac6f37da032.json", "0xd2e28229f6f2c235e57de2ebc727025a1d0530fb.json", "0xdac17f958d2ee523a2206206994597c13d831ec7.json"],
+      "transactionFile": "eip7702-delegate-batch-sample.json"
     }
   ]
 }

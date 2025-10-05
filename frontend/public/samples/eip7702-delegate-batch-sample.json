@@ -1,0 +1,158 @@
+{
+  "txHash": "0x8f5eb66642746e1d7c2f53f356b0d9bcf4bba610a34d79e369499201f291a8a6",
+  "txType": "EIP-7702",
+  "fromAddress": "0x6Cab48AB9945f0Cb10b20d1181BaE37A56D8E3D2",
+  "toAddress": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+  "contractName": "Entry Point 0.7.0",
+  "contractType": "EIP4337",
+  "methodCall": {
+    "name": "execute4337Ops",
+    "type": "function",
+    "signature": "execute4337Ops((address,uint256,bytes)[])",
+    "params": [
+      {
+        "name": "calls",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "calls",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "target",
+                "type": "address",
+                "value": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+              },
+              {
+                "name": "value",
+                "type": "uint256",
+                "value": "0"
+              },
+              {
+                "name": "data",
+                "type": "bytes",
+                "value": "0x095ea7b30000000000000000000000007d3201fa7a85c0a5f9fa1c0c6b9d0b784368d2ac000000000000000000000000000000000000000000000000000000000005ce9b",
+                "valueDecoded": {
+                  "name": "approve",
+                  "signature": "approve(address,uint256)",
+                  "type": "function",
+                  "params": [
+                    {
+                      "name": "spender",
+                      "type": "address",
+                      "value": "0x7D3201fa7a85c0A5f9fA1c0C6b9D0B784368d2ac"
+                    },
+                    {
+                      "name": "value",
+                      "type": "uint256",
+                      "value": "380571"
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "name": "calls",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "target",
+                "type": "address",
+                "value": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+              },
+              {
+                "name": "value",
+                "type": "uint256",
+                "value": "0"
+              },
+              {
+                "name": "data",
+                "type": "bytes",
+                "value": "0xa9059cbb000000000000000000000000e4fc6e3b1e0885f2edcc17c45d1ffe4f160455640000000000000000000000000000000000000000000000000000000002160ec0",
+                "valueDecoded": {
+                  "name": "transfer",
+                  "signature": "transfer(address,uint256)",
+                  "type": "function",
+                  "params": [
+                    {
+                      "name": "to",
+                      "type": "address",
+                      "value": "0xE4Fc6e3B1E0885f2eDCC17C45d1FFE4f16045564"
+                    },
+                    {
+                      "name": "value",
+                      "type": "uint256",
+                      "value": "35000000"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "transfers": [
+    {
+      "type": "ERC20",
+      "name": "Tether USD",
+      "symbol": "USDT",
+      "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+      "amount": "35",
+      "to": "0xE4Fc6e3B1E0885f2eDCC17C45d1FFE4f16045564",
+      "from": "0x050A54aD72D58C940479a705b4F4A0183da3Ce41"
+    },
+    {
+      "type": "ERC20",
+      "name": "Tether USD",
+      "symbol": "USDT",
+      "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+      "amount": "0.230489",
+      "to": "0x480a825beD6cDBA9Da81CC01FaACD12166761deC",
+      "from": "0x050A54aD72D58C940479a705b4F4A0183da3Ce41"
+    },
+    {
+      "from": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+      "to": "0x6Cab48AB9945f0Cb10b20d1181BaE37A56D8E3D2",
+      "type": "native",
+      "amount": "0.000039841946124554",
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+    }
+  ],
+  "addressesMeta": {
+    "0xdAC17F958D2ee523a2206206994597C13D831ec7": {
+      "contractAddress": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+      "contractName": "Tether USD",
+      "tokenSymbol": "USDT",
+      "decimals": 6,
+      "type": "ERC20",
+      "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+      "chainID": 1
+    },
+    "0x050A54aD72D58C940479a705b4F4A0183da3Ce41": {
+      "contractAddress": "0x050A54aD72D58C940479a705b4F4A0183da3Ce41",
+      "contractName": "EIP-7702 Delegated Account",
+      "type": "EOA_DELEGATED",
+      "delegateContract": "0xd2e28229f6f2c235e57de2ebc727025a1d0530fb",
+      "chainID": 1
+    }
+  },
+  "eip7702": {
+    "delegatedAccount": "0x050A54aD72D58C940479a705b4F4A0183da3Ce41",
+    "delegateContract": "0xd2e28229f6f2c235e57de2ebc727025a1d0530fb",
+    "delegateContractName": "Trust Wallet: EIP-7702 Delegator 1"
+  },
+  "nativeValueSent": "0",
+  "chainSymbol": "mainnet",
+  "chainID": 1,
+  "effectiveGasPrice": "160930186",
+  "gasUsed": "208834",
+  "gasPaid": "0.000033607694463124",
+  "timestamp": 1759644191,
+  "txIndex": 87,
+  "reverted": false
+}

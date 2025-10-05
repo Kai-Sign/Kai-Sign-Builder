@@ -1,0 +1,73 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0xd2e28229f6f2c235e57de2ebc727025a1d0530fb"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "execute4337Ops",
+          "inputs": [
+            {
+              "name": "calls",
+              "type": "tuple[]",
+              "components": [
+                {"name": "target", "type": "address"},
+                {"name": "value", "type": "uint256"},
+                {"name": "data", "type": "bytes"}
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Trust Wallet",
+    "info": {
+      "legalName": "Trust Wallet",
+      "url": "https://trustwallet.com",
+      "contractName": "EIP-7702 Delegator 1"
+    }
+  },
+  "display": {
+    "formats": {
+      "execute4337Ops((address,uint256,bytes)[])": {
+        "intent": "Execute EIP-7702 Batch Operations",
+        "fields": [
+          {
+            "label": "Operation Type",
+            "format": "raw",
+            "value": "EIP-7702 Delegated Execution"
+          },
+          {
+            "label": "Number of Operations",
+            "format": "raw",
+            "path": "#.calls.length"
+          },
+          {
+            "label": "First Target",
+            "format": "addressName",
+            "path": "#.calls.calls.target",
+            "params": {
+              "types": ["token"],
+              "sources": ["local"]
+            }
+          },
+          {
+            "label": "First Operation",
+            "format": "raw",
+            "path": "#.calls.calls.data.valueDecoded.name"
+          }
+        ]
+      }
+    }
+  }
+}
