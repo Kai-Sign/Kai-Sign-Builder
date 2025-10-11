@@ -8,7 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Alert, AlertDescription } from "~/components/ui/alert";
 import { Label } from "~/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
-import { Eye, Upload, AlertCircle, Plus, Trash2 } from "lucide-react";
+import { Input } from "~/components/ui/input";
+import { Eye, Upload, AlertCircle, Plus, Trash2, Hash, Loader2 } from "lucide-react";
 import {
   type CarouselApi,
   Carousel,
@@ -22,6 +23,7 @@ import { Device } from "~/components/devices/device";
 import { getScreensForOperation } from "~/shared/getScreensForOperation";
 import operationScreens from "../review/operationScreens";
 import { type Erc7730, type Operation } from "~/store/types";
+import { transactionDecoderService } from "~/lib/transactionDecoderService";
 
 
 interface DecodedTransaction {
@@ -117,6 +119,59 @@ const HardwareViewer = ({
 
   // State for dynamically loaded sample sets
   const [sampleSets, setSampleSets] = useState<any[]>([]);
+
+  // Transaction hash decoding state
+  const [txHashInput, setTxHashInput] = useState("");
+  const [isDecodingTx, setIsDecodingTx] = useState(false);
+  const [decodingError, setDecodingError] = useState("");
+  const [selectedChainId, setSelectedChainId] = useState<number>(1); // Default to Ethereum Mainnet
+
+  // Network information state
+  const [supportedNetworks, setSupportedNetworks] = useState<Array<{ chainId: number; name: string }>>([]);
+
+  // Function to decode transaction hash using selected network
+  const handleDecodeTransactionHash = async () => {
+    if (!txHashInput.trim()) {
+      setDecodingError("Please enter a transaction hash.");
+      return;
+    }
+
+    if (!selectedChainId) {
+      setDecodingError("Please select a network.");
+      return;
+    }
+
+    setIsDecodingTx(true);
+    setDecodingError("");
+
+    try {
+      const result = await transactionDecoderService.decodeTransactionHashForChain(txHashInput.trim(), selectedChainId);
+      
+      if (result.success && result.decodedData) {
+        // Convert the decoded data to our format
+        const normalizedData = normalizeTransactionData(result.decodedData);
+        setTransactionData(normalizedData);
+        setError(""); // Clear any previous errors
+        
+        // Show success message
+        console.log(`Transaction decoded successfully from ${result.chainName}`);
+      } else {
+        setDecodingError(result.error || "Failed to decode transaction");
+      }
+    } catch (error: any) {
+      console.error("Transaction decoding error:", error);
+      setDecodingError(error.message || "Failed to decode transaction");
+    } finally {
+      setIsDecodingTx(false);
+    }
+  };
+
+  // Function to clear transaction hash input
+  const handleClearTransactionHash = () => {
+    setTxHashInput("");
+    setDecodingError("");
+  };
+
 
 
 
@@ -288,6 +343,20 @@ const HardwareViewer = ({
   useEffect(() => {
     loadSampleSetsConfig();
   }, [samplesBasePath]);
+
+  // Load supported networks
+  useEffect(() => {
+    // Load list of supported networks
+    const loadNetworks = async () => {
+      try {
+        const networks = await transactionDecoderService.getSupportedNetworks();
+        setSupportedNetworks(networks);
+      } catch (error) {
+        console.error('Failed to load supported networks:', error);
+      }
+    };
+    loadNetworks();
+  }, []);
 
   useEffect(() => {
     if (!api) {
@@ -869,7 +938,7 @@ const HardwareViewer = ({
                   }
                 }
                 
-                if (tokenDecimals !== null) {
+                if (tokenDecimals !== null && resolvedValue !== null && resolvedValue !== undefined) {
                   const numValue = BigInt(String(resolvedValue));
                   const divisor = BigInt(10 ** tokenDecimals);
                   const wholePart = numValue / divisor;
@@ -1311,6 +1380,84 @@ const HardwareViewer = ({
                       </div>
                     )}
                   </div>
+                </div>
+
+                {/* Transaction Hash Decoder Section */}
+                <div className="space-y-3 border rounded-lg p-4 bg-gray-50">
+                  <div className="flex items-center justify-between">
+                    <Label className="text-sm font-medium flex items-center gap-2">
+                      <Hash className="h-4 w-4" />
+                      Decode Transaction Hash
+                    </Label>
+                    <div className="text-xs text-gray-600">
+                      {supportedNetworks.length} networks supported
+                    </div>
+                  </div>
+
+                  {/* Network Selection */}
+                  <div className="space-y-2">
+                    <Label className="text-sm">Select Network</Label>
+                    <Select value={selectedChainId.toString()} onValueChange={(value) => setSelectedChainId(Number(value))}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Choose network" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {supportedNetworks.map((network) => (
+                          <SelectItem key={network.chainId} value={network.chainId.toString()}>
+                            {network.name} ({network.chainId})
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <Input
+                      placeholder="Enter transaction hash (0x...)"
+                      value={txHashInput}
+                      onChange={(e) => setTxHashInput(e.target.value)}
+                      className="font-mono text-xs"
+                      disabled={isDecodingTx}
+                    />
+                    <Button 
+                      onClick={handleDecodeTransactionHash}
+                      disabled={isDecodingTx || !txHashInput.trim() || !selectedChainId}
+                      size="sm"
+                    >
+                      {isDecodingTx ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-1 animate-spin" />
+                          Decoding
+                        </>
+                      ) : (
+                        'Decode'
+                      )}
+                    </Button>
+                    {txHashInput && (
+                      <Button 
+                        onClick={handleClearTransactionHash}
+                        size="sm"
+                        variant="outline"
+                      >
+                        Clear
+                      </Button>
+                    )}
+                  </div>
+                  
+                  {decodingError && (
+                    <Alert variant="destructive">
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertDescription>{decodingError}</AlertDescription>
+                    </Alert>
+                  )}
+                  
+                  <Alert>
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>
+                      Enter a transaction hash and select the network where it was executed. 
+                      Requires ALCHEMY_API environment variable for Alchemy networks.
+                    </AlertDescription>
+                  </Alert>
                 </div>
                 
                 <div className="text-center">
