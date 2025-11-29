@@ -1,0 +1,800 @@
+{
+  "sampleSets": [
+    {
+      "id": "aave-repay",
+      "name": "Aave Repay",
+      "metadataFiles": ["erc7730-aave-v2-lending-pool.json", "0xdac17f958d2ee523a2206206994597c13d831ec7.json"],
+      "transactionData": {
+      "txHash": "0xc0bd04d7e94542e58709f51879f64946ff4a744e1c37f5f920cea3d478e115d7",
+      "txType": "contract interaction",
+      "fromAddress": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A",
+      "toAddress": "0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9",
+      "contractName": null,
+      "contractType": "OTHER",
+      "methodCall": {
+        "name": "repay",
+        "type": "function",
+        "signature": "repay(address,uint256,uint256,address)",
+        "params": [
+          {
+            "name": "asset",
+            "type": "address",
+            "value": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+          },
+          {
+            "name": "amount",
+            "type": "uint256",
+            "value": "1238350000"
+          },
+          {
+            "name": "rateMode",
+            "type": "uint256",
+            "value": "2"
+          },
+          {
+            "name": "onBehalfOf",
+            "type": "address",
+            "value": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A"
+          }
+        ]
+      },
+      "traceCalls": [
+        {
+          "name": "repay",
+          "signature": "repay(address,uint256,uint256,address)",
+          "type": "function",
+          "params": [
+            {
+              "name": "asset",
+              "type": "address",
+              "value": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+            },
+            {
+              "name": "amount",
+              "type": "uint256",
+              "value": "1238350000"
+            },
+            {
+              "name": "rateMode",
+              "type": "uint256",
+              "value": "2"
+            },
+            {
+              "name": "onBehalfOf",
+              "type": "address",
+              "value": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A"
+            }
+          ],
+          "from": "0x7d2768de32b0b80b7a3454c06bdac94a69ddc7a9",
+          "to": "0xc6845a5c768bf8d7681249f8927877efda425baf"
+        }
+      ],
+      "nativeValueSent": "0",
+      "chainSymbol": "mainnet",
+      "chainID": 1,
+      "interactions": [
+        {
+          "contractName": "Aave interest bearing USDT",
+          "contractSymbol": "aUSDT",
+          "contractAddress": "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
+          "decimals": 6,
+          "chainID": 1,
+          "contractType": "ERC20",
+          "signature": "Transfer(address,address,uint256)",
+          "event": {
+            "eventName": "Transfer",
+            "logIndex": 249,
+            "params": {
+              "from": "0x0000000000000000000000000000000000000000",
+              "to": "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c",
+              "value": "10910459"
+            }
+          }
+        },
+        {
+          "contractName": "Aave interest bearing USDT",
+          "contractSymbol": "aUSDT",
+          "contractAddress": "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
+          "decimals": 6,
+          "chainID": 1,
+          "contractType": "ERC20",
+          "signature": "Mint(address,uint256,uint256)",
+          "event": {
+            "eventName": "Mint",
+            "logIndex": 250,
+            "params": {
+              "from": "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c",
+              "value": "10910459",
+              "index": "1126166959792739023046767156"
+            }
+          }
+        },
+        {
+          "contractName": "Aave variable debt bearing USDT",
+          "contractSymbol": "variableDebtUSDT",
+          "contractAddress": "0x531842cEbbdD378f8ee36D171d6cC9C4fcf475Ec",
+          "decimals": 6,
+          "chainID": 1,
+          "contractType": "ERC20",
+          "signature": "Transfer(address,address,uint256)",
+          "event": {
+            "eventName": "Transfer",
+            "logIndex": 251,
+            "params": {
+              "from": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A",
+              "to": "0x0000000000000000000000000000000000000000",
+              "value": "1238350000"
+            }
+          }
+        },
+        {
+          "contractName": "Aave variable debt bearing USDT",
+          "contractSymbol": "variableDebtUSDT",
+          "contractAddress": "0x531842cEbbdD378f8ee36D171d6cC9C4fcf475Ec",
+          "decimals": 6,
+          "chainID": 1,
+          "contractType": "ERC20",
+          "signature": "Burn(address,uint256,uint256)",
+          "event": {
+            "eventName": "Burn",
+            "logIndex": 252,
+            "params": {
+              "user": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A",
+              "amount": "1238350000",
+              "index": "1190033843917774700128682086"
+            }
+          }
+        },
+        {
+          "contractName": null,
+          "contractSymbol": null,
+          "contractAddress": "0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9",
+          "decimals": null,
+          "chainID": 1,
+          "contractType": "OTHER",
+          "signature": "ReserveDataUpdated(address,uint256,uint256,uint256,uint256,uint256)",
+          "event": {
+            "eventName": "ReserveDataUpdated",
+            "logIndex": 253,
+            "params": {
+              "reserve": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+              "liquidityRate": "27459641943768497419965472",
+              "stableBorrowRate": "119899890301881767020360132",
+              "variableBorrowRate": "39799780603763534040720265",
+              "liquidityIndex": "1126166959792739023046767156",
+              "variableBorrowIndex": "1190033843917774700128682086"
+            }
+          }
+        },
+        {
+          "contractName": "Tether USD",
+          "contractSymbol": "USDT",
+          "contractAddress": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+          "decimals": 6,
+          "chainID": 1,
+          "contractType": "ERC20",
+          "signature": "Transfer(address,address,uint256)",
+          "event": {
+            "eventName": "Transfer",
+            "logIndex": 254,
+            "params": {
+              "from": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A",
+              "to": "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
+              "value": "1238350000"
+            }
+          }
+        },
+        {
+          "contractName": null,
+          "contractSymbol": null,
+          "contractAddress": "0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9",
+          "decimals": null,
+          "chainID": 1,
+          "contractType": "OTHER",
+          "signature": "Repay(address,address,address,uint256)",
+          "event": {
+            "eventName": "Repay",
+            "logIndex": 255,
+            "params": {
+              "reserve": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+              "user": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A",
+              "repayer": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A",
+              "amount": "1238350000"
+            }
+          }
+        }
+      ],
+      "effectiveGasPrice": "12899873749",
+      "gasUsed": "233967",
+      "gasPaid": "0.003018144761432283",
+      "timestamp": 1693823699,
+      "txIndex": 108,
+      "reverted": false,
+      "transfers": [
+        {
+          "type": "ERC20",
+          "name": "Aave interest bearing USDT",
+          "symbol": "aUSDT",
+          "address": "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
+          "amount": "10.910459",
+          "to": "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c",
+          "from": "0x0000000000000000000000000000000000000000"
+        },
+        {
+          "type": "ERC20",
+          "name": "Aave variable debt bearing USDT",
+          "symbol": "variableDebtUSDT",
+          "address": "0x531842cEbbdD378f8ee36D171d6cC9C4fcf475Ec",
+          "amount": "1238.35",
+          "to": "0x0000000000000000000000000000000000000000",
+          "from": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A"
+        },
+        {
+          "type": "ERC20",
+          "name": "Tether USD",
+          "symbol": "USDT",
+          "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+          "amount": "1238.35",
+          "to": "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
+          "from": "0xf89a3799b90593317E0a1Eb74164fbc1755A297A"
+        }
+      ],
+      "interactedAddresses": [
+        "0xf89a3799b90593317E0a1Eb74164fbc1755A297A",
+        "0x7d2768dE32b0b80b7a3454c06BdAc94A69DDc7A9",
+        "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
+        "0x0000000000000000000000000000000000000000",
+        "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c",
+        "0x531842cEbbdD378f8ee36D171d6cC9C4fcf475Ec",
+        "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+      ],
+      "addressesMeta": {
+        "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811": {
+          "contractAddress": "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
+          "contractName": "Aave interest bearing USDT",
+          "tokenSymbol": "aUSDT",
+          "decimals": 6,
+          "type": "ERC20",
+          "address": "0x3Ed3B47Dd13EC9a98b44e6204A523E766B225811",
+          "chainID": 1
+        },
+        "0x531842cEbbdD378f8ee36D171d6cC9C4fcf475Ec": {
+          "contractAddress": "0x531842cEbbdD378f8ee36D171d6cC9C4fcf475Ec",
+          "contractName": "Aave variable debt bearing USDT",
+          "tokenSymbol": "variableDebtUSDT",
+          "decimals": 6,
+          "type": "ERC20",
+          "address": "0x531842cEbbdD378f8ee36D171d6cC9C4fcf475Ec",
+          "chainID": 1
+        },
+        "0xdAC17F958D2ee523a2206206994597C13D831ec7": {
+          "contractAddress": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+          "contractName": "Tether USD",
+          "tokenSymbol": "USDT",
+          "decimals": 6,
+          "type": "ERC20",
+          "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7",
+          "chainID": 1
+        }
+      },
+      "errors": null
+    }
+    },
+    {
+      "id": "safe-usdc",
+      "name": "Safe USDC Transfer",
+      "metadataFiles": ["erc7730-safe-wallet-enhanced.json", "erc7730-usdc-mainnet.json"],
+      "transactionData": {
+        "txHash": "0x22a244794f155ce4a5765588353cf82dfc842c33ee3ed98e95ef488f6964f4fb",
+        "methodCall": {
+          "name": "execTransaction",
+          "params": [
+            {
+              "name": "to",
+              "type": "address",
+              "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+            },
+            {
+              "name": "value",
+              "type": "uint256",
+              "value": "0"
+            },
+            {
+              "name": "data",
+              "type": "bytes",
+              "value": "0xa9059cbb000000000000000000000000a1371748d65baef4509a3c067b3fe3a1b79183ae000000000000000000000000000000000000000000000000000000001f143c37",
+              "valueDecoded": {
+                "name": "transfer",
+                "params": [
+                  {
+                    "name": "to",
+                    "type": "address",
+                    "value": "0xA1371748D65baEF4509A3c067b3fe3a1b79183aE"
+                  },
+                  {
+                    "name": "value",
+                    "type": "uint256",
+                    "value": "521419831"
+                  }
+                ]
+              }
+            },
+            {
+              "name": "operation",
+              "type": "uint8",
+              "value": "0"
+            },
+            {
+              "name": "safeTxGas",
+              "type": "uint256",
+              "value": "0"
+            },
+            {
+              "name": "baseGas",
+              "type": "uint256",
+              "value": "0"
+            },
+            {
+              "name": "gasPrice",
+              "type": "uint256",
+              "value": "0"
+            },
+            {
+              "name": "gasToken",
+              "type": "address",
+              "value": "0x0000000000000000000000000000000000000000"
+            },
+            {
+              "name": "refundReceiver",
+              "type": "address",
+              "value": "0x0000000000000000000000000000000000000000"
+            },
+            {
+              "name": "signatures",
+              "type": "bytes",
+              "value": "0x000000000000000000000000049bdd0528e2d5f2e579e1bdd133daed7c935dfc000000000000000000000000000000000000000000000000000000000000000001be6195185c0afdda36c5ccc9951d628873f0c2546d68edd266c4a6142ef05ed30be88a934eac08bb8d86705cb7a339d61c2342fdd7607806c488e0055a0232e51c"
+            }
+          ]
+        },
+        "transfers": [],
+        "addressesMeta": {}
+      }
+    },
+    {
+      "id": "kyberswap-swap", 
+      "name": "KyberSwap Swap",
+      "metadataFiles": ["erc7730-kyberswap-meta-aggregation-router-v2.json"],
+      "transactionFile": "kyberswap-swap-sample.json"
+    },
+    {
+      "id": "oneinch",
+      "name": "1inch Swap",
+      "metadataFiles": ["erc7730-1inch-aggregation-router-v6.json"],
+      "transactionData": {
+        "txHash": "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890",
+        "methodCall": {
+          "name": "swap",
+          "params": [
+            {
+              "name": "executor",
+              "type": "address",
+              "value": "0x1111111254eeb25477b68fb85ed929f73a960582"
+            },
+            {
+              "name": "desc",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "srcToken",
+                  "type": "address",
+                  "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+                },
+                {
+                  "name": "dstToken", 
+                  "type": "address",
+                  "value": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+                },
+                {
+                  "name": "srcReceiver",
+                  "type": "address", 
+                  "value": "0x1111111254eeb25477b68fb85ed929f73a960582"
+                },
+                {
+                  "name": "dstReceiver",
+                  "type": "address",
+                  "value": "0x742d35Cc6634C0532925a3b8D591D3d5F88cE442"
+                },
+                {
+                  "name": "amount",
+                  "type": "uint256",
+                  "value": "1000000000"
+                },
+                {
+                  "name": "minReturnAmount",
+                  "type": "uint256",
+                  "value": "380000000000000000"
+                },
+                {
+                  "name": "flags",
+                  "type": "uint256",
+                  "value": "0"
+                }
+              ]
+            },
+            {
+              "name": "data",
+              "type": "bytes",
+              "value": "0x0000000000000000000000000000000000000000000000000000000000000000"
+            }
+          ]
+        },
+        "transfers": [],
+        "addressesMeta": {
+          "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
+            "contractAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+            "contractName": "USD Coin",
+            "tokenSymbol": "USDC",
+            "decimals": 6,
+            "type": "ERC20"
+          },
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2": {
+            "contractAddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+            "contractName": "Wrapped Ether",
+            "tokenSymbol": "WETH",
+            "decimals": 18,
+            "type": "ERC20"
+          }
+        }
+      }
+    },
+    {
+      "id": "entrypoint-checkin",
+      "name": "ERC-4337 Points Claim",
+      "metadataFiles": ["0x0000000071727de22e5e9d8baf0edac6f37da032.json", "0xe55fEE191604cdBeb874F87A28Ca89aED401C303.json"],
+      "transactionData": {
+        "txHash": "0xc78ddb79bd7b9b1994b2680fbe51a33cc5e46a89edae6e3476ed1356277a1ad0",
+        "txType": "contract interaction",
+        "fromAddress": "0x3749dd5D2820dC16f8128c81b14a3eBa5826e04F",
+        "toAddress": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+        "contractName": null,
+        "contractType": "OTHER",
+        "methodCall": {
+          "name": "handleOps",
+          "type": "function",
+          "signature": "handleOps((address,uint256,bytes,bytes,bytes32,uint256,bytes32,bytes,bytes)[],address)",
+          "params": [
+            {
+              "name": "ops",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "ops",
+                  "type": "tuple",
+                  "components": [
+                    {
+                      "name": "sender",
+                      "type": "address",
+                      "value": "0x1516372A9161b89e2eb8D4F23d20e6B874cC306b"
+                    },
+                    {
+                      "name": "nonce",
+                      "type": "uint256",
+                      "value": "18446744073709551620"
+                    },
+                    {
+                      "name": "initCode",
+                      "type": "bytes",
+                      "value": "0x"
+                    },
+                    {
+                      "name": "callData",
+                      "type": "bytes",
+                      "value": "0xb61d27f6000000000000000000000000e55fee191604cdbeb874f87a28ca89aed401c303000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000004183ff08500000000000000000000000000000000000000000000000000000000",
+                      "valueDecoded": {
+                        "name": "execute",
+                        "signature": "execute(address,uint256,bytes)",
+                        "type": "function",
+                        "params": [
+                          {
+                            "name": "target",
+                            "type": "address",
+                            "value": "0xe55fEE191604cdBeb874F87A28Ca89aED401C303"
+                          },
+                          {
+                            "name": "value",
+                            "type": "uint256",
+                            "value": "0"
+                          },
+                          {
+                            "name": "data",
+                            "type": "bytes",
+                            "value": "0x183ff085",
+                            "valueDecoded": {
+                              "name": "checkIn",
+                              "signature": "checkIn()",
+                              "type": "function",
+                              "params": []
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "accountGasLimits",
+                      "type": "bytes32",
+                      "value": "0x00000000000000000000000000010e8e0000000000000000000000000000abb8"
+                    },
+                    {
+                      "name": "preVerificationGas",
+                      "type": "uint256",
+                      "value": "56009"
+                    },
+                    {
+                      "name": "gasFees",
+                      "type": "bytes32",
+                      "value": "0x000000000000000000000000001312d000000000000000000000000000332bd2"
+                    },
+                    {
+                      "name": "paymasterAndData",
+                      "type": "bytes",
+                      "value": "0x"
+                    },
+                    {
+                      "name": "signature",
+                      "type": "bytes",
+                      "value": "0xff00728dd8c695b606b64999498e024351ebd90b585987da974b2979b05e292bbd5314a2994504d4b3ece1ac38349e69bc7a7714c7973e1ec1831b9e12dbc79993e31c"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "beneficiary",
+              "type": "address",
+              "value": "0x3749dd5D2820dC16f8128c81b14a3eBa5826e04F"
+            }
+          ]
+        },
+        "transfers": [
+          {
+            "type": "ERC20",
+            "name": "Towns Points",
+            "symbol": "TWP",
+            "address": "0xe55fEE191604cdBeb874F87A28Ca89aED401C303",
+            "amount": "5",
+            "to": "0x1516372A9161b89e2eb8D4F23d20e6B874cC306b",
+            "from": "0x0000000000000000000000000000000000000000"
+          }
+        ],
+        "addressesMeta": {
+          "0xe55fEE191604cdBeb874F87A28Ca89aED401C303": {
+            "contractAddress": "0xe55fEE191604cdBeb874F87A28Ca89aED401C303",
+            "contractName": "Towns Points",
+            "tokenSymbol": "TWP",
+            "decimals": 18,
+            "type": "ERC20",
+            "address": "0xe55fEE191604cdBeb874F87A28Ca89aED401C303",
+            "chainID": 8453
+          }
+        }
+      }
+    },
+    {
+      "id": "real-batch-usdc-transfer",
+      "name": "ERC-4337 Batch USDC Transfer",
+      "metadataFiles": ["0x0000000071727de22e5e9d8baf0edac6f37da032.json", "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913.json"],
+      "transactionData": {
+        "txHash": "0xe3fe2af860750fff01d1cc3a88e03daecd9fbb56b6894a9a2bdcb4d6f81cf0a3",
+        "txType": "contract interaction",
+        "fromAddress": "0x3749dd5D2820dC16f8128c81b14a3eBa5826e04F",
+        "toAddress": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+        "contractName": null,
+        "contractType": "OTHER",
+        "methodCall": {
+          "name": "handleOps",
+          "type": "function",
+          "signature": "handleOps((address,uint256,bytes,bytes,bytes32,uint256,bytes32,bytes,bytes)[],address)",
+          "params": [
+            {
+              "name": "ops",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "ops",
+                  "type": "tuple",
+                  "components": [
+                    {
+                      "name": "sender",
+                      "type": "address",
+                      "value": "0x1A63fA4bD70B160F8Bb299A9d4dF943AE6C78723"
+                    },
+                    {
+                      "name": "nonce",
+                      "type": "uint256",
+                      "value": "18446744073709570192"
+                    },
+                    {
+                      "name": "initCode",
+                      "type": "bytes",
+                      "value": "0x"
+                    },
+                    {
+                      "name": "callData",
+                      "type": "bytes",
+                      "value": "0x34fcd5be0000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000120000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda02913000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000044a9059cbb000000000000000000000000b0e6531042fc9fbf72b063dd29a388c62ff1437b00000000000000000000000000000000000000000000000000000000027d832000000000000000000000000000000000000000000000000000000000000000000000000000000000833589fcd6edb6e08f4c7c32d4f71b54bda02913000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000044a9059cbb0000000000000000000000003a4e195d590482f8b12cca4481e9e4aedad3c06b0000000000000000000000000000000000000000000000000000000002424ee000000000000000000000000000000000000000000000000000000000",
+                      "valueDecoded": {
+                        "name": "executeBatch",
+                        "signature": "executeBatch((address,uint256,bytes)[])",
+                        "type": "function",
+                        "params": [
+                          {
+                            "name": "calls",
+                            "type": "tuple",
+                            "components": [
+                              {
+                                "name": "calls",
+                                "type": "tuple",
+                                "components": [
+                                  {
+                                    "name": "target",
+                                    "type": "address",
+                                    "value": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+                                  },
+                                  {
+                                    "name": "value",
+                                    "type": "uint256",
+                                    "value": "0"
+                                  },
+                                  {
+                                    "name": "data",
+                                    "type": "bytes",
+                                    "value": "0xa9059cbb000000000000000000000000b0e6531042fc9fbf72b063dd29a388c62ff1437b00000000000000000000000000000000000000000000000000000000027d8320",
+                                    "valueDecoded": {
+                                      "name": "transfer",
+                                      "signature": "transfer(address,uint256)",
+                                      "type": "function",
+                                      "params": [
+                                        {
+                                          "name": "to",
+                                          "type": "address",
+                                          "value": "0xb0E6531042FC9fbf72b063dD29a388C62fF1437b"
+                                        },
+                                        {
+                                          "name": "value",
+                                          "type": "uint256",
+                                          "value": "41780000"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "calls",
+                                "type": "tuple",
+                                "components": [
+                                  {
+                                    "name": "target",
+                                    "type": "address",
+                                    "value": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+                                  },
+                                  {
+                                    "name": "value",
+                                    "type": "uint256",
+                                    "value": "0"
+                                  },
+                                  {
+                                    "name": "data",
+                                    "type": "bytes",
+                                    "value": "0xa9059cbb0000000000000000000000003a4e195d590482f8b12cca4481e9e4aedad3c06b0000000000000000000000000000000000000000000000000000000002424ee0",
+                                    "valueDecoded": {
+                                      "name": "transfer",
+                                      "signature": "transfer(address,uint256)",
+                                      "type": "function",
+                                      "params": [
+                                        {
+                                          "name": "to",
+                                          "type": "address",
+                                          "value": "0x3A4E195d590482F8b12CcA4481E9E4AEdAD3c06b"
+                                        },
+                                        {
+                                          "name": "value",
+                                          "type": "uint256",
+                                          "value": "37900000"
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "accountGasLimits",
+                      "type": "bytes32",
+                      "value": "0x00000000000000000000000000008df10000000000000000000000000000bbb8"
+                    },
+                    {
+                      "name": "preVerificationGas",
+                      "type": "uint256",
+                      "value": "59140"
+                    },
+                    {
+                      "name": "gasFees",
+                      "type": "bytes32",
+                      "value": "0x0000000000000000000000000010c8e0000000000000000000000000002daed8"
+                    },
+                    {
+                      "name": "paymasterAndData",
+                      "type": "bytes",
+                      "value": "0x2cc0c7981d846b9f2a16276556f6e8cb52bfb633000000000000000000000000000070100000000000000000000000000000000000000000000000006828d542ba76ce6f66f2d67ba96731debaf5bb9439de13155afee707477dbdcf13b2fdca5695f1a562fb198eaff7d01872888f120cae9d18acaa41785979a2044eccb1ed1b"
+                    },
+                    {
+                      "name": "signature",
+                      "type": "bytes",
+                      "value": "0xff0018d001e7005dca62e902ecc01967344eb4cd58b815a119f51f4db978d9ed0c800602dd2c7612774b6a08192e3a37b747eb230c45a6f2600a7cb098874c6083af1c"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "beneficiary",
+              "type": "address",
+              "value": "0x3749dd5D2820dC16f8128c81b14a3eBa5826e04F"
+            }
+          ]
+        },
+        "transfers": [
+          {
+            "type": "ERC20",
+            "name": "USD Coin",
+            "symbol": "USDC",
+            "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+            "amount": "41.78",
+            "to": "0xb0E6531042FC9fbf72b063dD29a388C62fF1437b",
+            "from": "0x1A63fA4bD70B160F8Bb299A9d4dF943AE6C78723"
+          },
+          {
+            "type": "ERC20",
+            "name": "USD Coin",
+            "symbol": "USDC",
+            "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+            "amount": "37.9",
+            "to": "0x3A4E195d590482F8b12CcA4481E9E4AEdAD3c06b",
+            "from": "0x1A63fA4bD70B160F8Bb299A9d4dF943AE6C78723"
+          },
+          {
+            "from": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+            "to": "0x3749dd5D2820dC16f8128c81b14a3eBa5826e04F",
+            "type": "native",
+            "amount": "3.44148277954e-7",
+            "name": "Ethereum",
+            "symbol": "ETH",
+            "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+          }
+        ],
+        "addressesMeta": {
+          "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913": {
+            "contractAddress": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+            "contractName": "USD Coin",
+            "tokenSymbol": "USDC",
+            "decimals": 6,
+            "type": "ERC20",
+            "address": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+            "chainID": 8453
+          }
+        }
+      }
+    },
+    {
+      "id": "eip7702-delegate-batch",
+      "name": "EIP-7702 Delegate Batch",
+      "metadataFiles": ["0x0000000071727de22e5e9d8baf0edac6f37da032.json", "0xd2e28229f6f2c235e57de2ebc727025a1d0530fb.json", "0xdac17f958d2ee523a2206206994597c13d831ec7.json"],
+      "transactionFile": "eip7702-delegate-batch-sample.json"
+    }
+  ]
+}

@@ -13,12 +13,12 @@ import Script from "next/script";
 import { ClientKeepAlive } from "~/components/ClientKeepAlive";
 
 export const metadata: Metadata = {
-  title: "Create Erc7730 Json",
+  title: "KaiSign ERC7730 Builder",
   description: "Clear sign all the things",
   icons: [{ rel: "icon", url: "/ledger-logo-short-black.svg" }],
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://kaisign.cipherlogic.xyz'),
   openGraph: {
-    title: "Create Erc7730 Json",
+    title: "KaiSign ERC7730 Builder",
     description: "Clear sign all the things",
     images: [
       {

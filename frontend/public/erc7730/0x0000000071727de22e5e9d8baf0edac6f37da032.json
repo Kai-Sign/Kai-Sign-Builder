@@ -1,0 +1,216 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 8453,
+          "address": "0x0000000071727De22E5E9d8BAf0edAc6f37da032"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "handleOps",
+          "inputs": [
+            {
+              "name": "ops",
+              "type": "tuple[]",
+              "components": [
+                {"name": "sender", "type": "address"},
+                {"name": "nonce", "type": "uint256"},
+                {"name": "initCode", "type": "bytes"},
+                {"name": "callData", "type": "bytes"},
+                {"name": "accountGasLimits", "type": "bytes32"},
+                {"name": "preVerificationGas", "type": "uint256"},
+                {"name": "gasFees", "type": "bytes32"},
+                {"name": "paymasterAndData", "type": "bytes"},
+                {"name": "signature", "type": "bytes"}
+              ]
+            },
+            {"name": "beneficiary", "type": "address"}
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "handleAggregatedOps",
+          "inputs": [
+            {
+              "name": "opsPerAggregator",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "userOps",
+                  "type": "tuple[]",
+                  "components": [
+                    {"name": "sender", "type": "address"},
+                    {"name": "nonce", "type": "uint256"},
+                    {"name": "initCode", "type": "bytes"},
+                    {"name": "callData", "type": "bytes"},
+                    {"name": "accountGasLimits", "type": "bytes32"},
+                    {"name": "preVerificationGas", "type": "uint256"},
+                    {"name": "gasFees", "type": "bytes32"},
+                    {"name": "paymasterAndData", "type": "bytes"},
+                    {"name": "signature", "type": "bytes"}
+                  ]
+                },
+                {"name": "aggregator", "type": "address"},
+                {"name": "signature", "type": "bytes"}
+              ]
+            },
+            {"name": "beneficiary", "type": "address"}
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "depositTo",
+          "inputs": [
+            {"name": "account", "type": "address"}
+          ],
+          "outputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawTo",
+          "inputs": [
+            {"name": "withdrawAddress", "type": "address"},
+            {"name": "withdrawAmount", "type": "uint256"}
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addStake",
+          "inputs": [
+            {"name": "unstakeDelaySec", "type": "uint32"}
+          ],
+          "outputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "unlockStake",
+          "inputs": [],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawStake",
+          "inputs": [
+            {"name": "withdrawAddress", "type": "address"}
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Ethereum Foundation",
+    "info": {
+      "legalName": "Ethereum Foundation",
+      "url": "https://ethereum.org"
+    }
+  },
+  "display": {
+    "formats": {
+      "handleOps((address,uint256,bytes,bytes,bytes32,uint256,bytes32,bytes,bytes)[],address)": {
+        "intent": "Execute User Operations",
+        "fields": [
+          {
+            "label": "Smart Account",
+            "format": "addressName",
+            "path": "#.ops[0].sender"
+          },
+          {
+            "label": "Number of Operations",
+            "format": "raw",
+            "path": "#.ops.length"
+          },
+          {
+            "label": "Gas Fee Recipient",
+            "format": "addressName",
+            "path": "#.beneficiary"
+          }
+        ]
+      },
+      "handleAggregatedOps(((address,uint256,bytes,bytes,bytes32,uint256,bytes32,bytes,bytes)[],address,bytes)[],address)": {
+        "intent": "Execute Aggregated User Operations",
+        "fields": [
+          {
+            "label": "Number of Aggregators",
+            "format": "raw",
+            "path": "#.opsPerAggregator.length"
+          },
+          {
+            "label": "Gas Fee Recipient",
+            "format": "addressName",
+            "path": "#.beneficiary"
+          }
+        ]
+      },
+      "depositTo(address)": {
+        "intent": "Deposit Funds",
+        "fields": [
+          {
+            "label": "Account",
+            "format": "addressName",
+            "path": "#.account"
+          }
+        ]
+      },
+      "withdrawTo(address,uint256)": {
+        "intent": "Withdraw Funds",
+        "fields": [
+          {
+            "label": "Withdraw Address",
+            "format": "addressName",
+            "path": "#.withdrawAddress"
+          },
+          {
+            "label": "Amount",
+            "format": "amount",
+            "path": "#.withdrawAmount"
+          }
+        ]
+      },
+      "addStake(uint32)": {
+        "intent": "Add Stake",
+        "fields": [
+          {
+            "label": "Unstake Delay (seconds)",
+            "format": "raw",
+            "path": "#.unstakeDelaySec"
+          }
+        ]
+      },
+      "unlockStake()": {
+        "intent": "Unlock Stake",
+        "fields": [
+          {
+            "label": "Action",
+            "format": "raw",
+            "value": "Unlock staked funds"
+          }
+        ]
+      },
+      "withdrawStake(address)": {
+        "intent": "Withdraw Stake",
+        "fields": [
+          {
+            "label": "Withdraw Address",
+            "format": "addressName",
+            "path": "#.withdrawAddress"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,3 +1,41 @@
-<?xml version="1.0" encoding="utf-8"?><svg width="148" height="128" viewBox="0 0 148 128" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M0 91.6548V128H55.3076V119.94H8.05844V91.6548H0ZM138.98 91.6548V119.94H91.7313V127.998H147.039V91.6548H138.98ZM55.388 36.3452V91.6529H91.7313V84.3842H63.4464V36.3452H55.388ZM0 0V36.3452H8.05844V8.05844H55.3076V0H0ZM91.7313 0V8.05844H138.98V36.3452H147.039V0H91.7313Z" fill="black"/>
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1E2B5C;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#2D4A87;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1A1F3A;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="logo-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4ECDC4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#44A08D;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="128" height="128" rx="24" ry="24" fill="url(#bg-gradient)"/>
+  
+  <!-- Outer rounded rectangle -->
+  <rect x="16" y="16" width="96" height="96" rx="16" ry="16" 
+        fill="none" 
+        stroke="url(#logo-gradient)" 
+        stroke-width="4"/>
+  
+  <!-- Two wider P letters with small square in middle -->
+  <g transform="translate(32, 32)" fill="url(#logo-gradient)">
+    <!-- Left P (wider) -->
+    <rect x="4" y="12" width="4" height="40" rx="1"/>
+    <rect x="4" y="12" width="24" height="4" rx="1"/>
+    <rect x="4" y="30" width="24" height="4" rx="1"/>
+    <rect x="24" y="16" width="4" height="14" rx="1"/>
+    
+    <!-- Right P (flipped, wider) -->
+    <rect x="56" y="12" width="4" height="40" rx="1"/>
+    <rect x="36" y="12" width="24" height="4" rx="1"/>
+    <rect x="36" y="30" width="24" height="4" rx="1"/>
+    <rect x="36" y="16" width="4" height="14" rx="1"/>
+    
+    <!-- Rectangle outline only between Ps with 1px gap -->
+    <rect x="13" y="35" width="38" height="16" rx="1" fill="none" stroke="url(#logo-gradient)" stroke-width="2"/>
+  </g>
 </svg>

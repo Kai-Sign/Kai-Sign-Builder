@@ -41,7 +41,7 @@ export function BlobHashInput({
 
     const timeoutId = setTimeout(async () => {
       // Only validate if it looks like a complete blob hash
-      if (value.length === 68 && value.startsWith('0x01')) {
+      if (value.length === 66 && value.startsWith('0x01')) {
         setIsValidating(true);
         try {
           const result = await validateBlobHash(value);
@@ -83,15 +83,15 @@ export function BlobHashInput({
       };
     }
     
-    if (input.length < 68) {
+    if (input.length < 66) {
       return {
         isValid: false,
         exists: false,
-        error: `Incomplete blob hash (${input.length}/68 characters)`
+        error: `Incomplete blob hash (${input.length}/66 characters)`
       };
     }
     
-    if (input.length > 68) {
+    if (input.length > 66) {
       return {
         isValid: false,
         exists: false,
@@ -99,7 +99,7 @@ export function BlobHashInput({
       };
     }
     
-    // If we get here, it's exactly 68 characters and starts with 0x01
+    // If we get here, it's exactly 66 characters and starts with 0x01
     // Let the full validation handle the rest
     return {
       isValid: false,
