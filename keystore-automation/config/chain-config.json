@@ -1,0 +1,11 @@
+{
+  "enabledChains": [
+    11155111
+  ],
+  "defaultChain": 11155111,
+  "preferences": {
+    "prioritizeMainnet": false,
+    "preferL2": true,
+    "avoidTestnets": false
+  }
+}

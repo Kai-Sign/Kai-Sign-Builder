@@ -1,0 +1,112 @@
+[
+  {
+    "id": "submitter-1764251796945-lq2hi2d21",
+    "address": "0xB1aa02e262488e762377562D18444E0e7359ab20",
+    "role": "submitter",
+    "chainIds": [
+      11155111
+    ],
+    "maxBondEth": "0.1",
+    "enabled": true,
+    "created": "2025-11-27T13:56:36.945Z"
+  },
+  {
+    "id": "submitter-1764251796955-2pbshztv1",
+    "address": "0x74953E3F66DF4e7Ca2815197Bfb60aFB3b7A64b1",
+    "role": "submitter",
+    "chainIds": [
+      11155111
+    ],
+    "maxBondEth": "0.1",
+    "enabled": true,
+    "created": "2025-11-27T13:56:36.955Z"
+  },
+  {
+    "id": "submitter-1764251796962-45j2ad0pb",
+    "address": "0xee30faC5E2E3Dd348b3C960C8F84b69aFDcC62b4",
+    "role": "submitter",
+    "chainIds": [
+      11155111
+    ],
+    "maxBondEth": "0.1",
+    "enabled": true,
+    "created": "2025-11-27T13:56:36.962Z"
+  },
+  {
+    "id": "verifier-1764251796969-fgp2ezlp6",
+    "address": "0xD61df70EAb380B8B105FABa1fa451d9e1710AD6b",
+    "role": "verifier",
+    "chainIds": [
+      11155111
+    ],
+    "maxBondEth": "0.05",
+    "enabled": true,
+    "created": "2025-11-27T13:56:36.969Z"
+  },
+  {
+    "id": "verifier-1764251796977-pf62a4ngx",
+    "address": "0x75d4e2085f5d9766DdA10D2D389C2bc4B51f5b9f",
+    "role": "verifier",
+    "chainIds": [
+      11155111
+    ],
+    "maxBondEth": "0.05",
+    "enabled": true,
+    "created": "2025-11-27T13:56:36.977Z"
+  },
+  {
+    "id": "verifier-1764251796984-hmwil1h8c",
+    "address": "0xD4cF5315ce9fF89C5958cd733fE81550C18bbBd1",
+    "role": "verifier",
+    "chainIds": [
+      11155111
+    ],
+    "maxBondEth": "0.05",
+    "enabled": true,
+    "created": "2025-11-27T13:56:36.984Z"
+  },
+  {
+    "id": "verifier-1764251796990-1tzo7pvsj",
+    "address": "0xd379D34139D90c5b849c60CFde39fCC7f76CdaF8",
+    "role": "verifier",
+    "chainIds": [
+      11155111
+    ],
+    "maxBondEth": "0.05",
+    "enabled": true,
+    "created": "2025-11-27T13:56:36.990Z"
+  },
+  {
+    "id": "verifier-1764251796997-las7lyira",
+    "address": "0x17cF9B75Cd592891c15Cbf86402CBC978B672d03",
+    "role": "verifier",
+    "chainIds": [
+      11155111
+    ],
+    "maxBondEth": "0.05",
+    "enabled": true,
+    "created": "2025-11-27T13:56:36.997Z"
+  },
+  {
+    "id": "challenger-1764251797003-zx7repxlh",
+    "address": "0xbb150aa026bC3950D4bD510f2d590ca848F92aFA",
+    "role": "challenger",
+    "chainIds": [
+      11155111
+    ],
+    "maxBondEth": "0.03",
+    "enabled": true,
+    "created": "2025-11-27T13:56:37.003Z"
+  },
+  {
+    "id": "challenger-1764251797010-nzfdnbugs",
+    "address": "0x2F2228aC4D52243E67E0fEB71bCC3293aD374306",
+    "role": "challenger",
+    "chainIds": [
+      11155111
+    ],
+    "maxBondEth": "0.03",
+    "enabled": true,
+    "created": "2025-11-27T13:56:37.010Z"
+  }
+]

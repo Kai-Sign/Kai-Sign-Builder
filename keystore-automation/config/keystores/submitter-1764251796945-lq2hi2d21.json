@@ -1,0 +1,14 @@
+{
+  "id": "submitter-1764251796945-lq2hi2d21",
+  "address": "0xB1aa02e262488e762377562D18444E0e7359ab20",
+  "role": "submitter",
+  "encrypted": "ce46ca45cbd0e82b180aae4df733fea00a2aedb4c799114d3d1fb5ccbb8af4fc75b3751b5cc4af9101f2a2450ef3edd86767084987d46dc4f690be52d237bc2249b797d00181c58e4a2e283ce8a7ce57",
+  "iv": "53b57a52a2c79e2bf04a4f061542b275",
+  "salt": "0d576c82e7912ba3372f3d2efa79270bec99a19a66bf293ee2b9941f607b501e",
+  "created": "2025-11-27T13:56:36.945Z",
+  "chainIds": [
+    11155111
+  ],
+  "maxBondEth": "0.1",
+  "enabled": true
+}

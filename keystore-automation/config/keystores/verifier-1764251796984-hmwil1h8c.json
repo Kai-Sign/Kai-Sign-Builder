@@ -1,0 +1,14 @@
+{
+  "id": "verifier-1764251796984-hmwil1h8c",
+  "address": "0xD4cF5315ce9fF89C5958cd733fE81550C18bbBd1",
+  "role": "verifier",
+  "encrypted": "48bcf125fb235aa9d56b7abed998ed85c2ec6dfebd0b2abcf2c9ad831464767a6da8f66e1a0f79f9a6ec9daafbda816f51c0a9d2faea8c9e3448d5795a7cce61069925637d9a57ed2feb7040675adb24",
+  "iv": "c1494a96e6c2ae836d19b72f31bb6978",
+  "salt": "c49bfdab47b10d0d9f119ee2dbb8e8a636590507a2b6be54e279ee26de188881",
+  "created": "2025-11-27T13:56:36.984Z",
+  "chainIds": [
+    11155111
+  ],
+  "maxBondEth": "0.05",
+  "enabled": true
+}

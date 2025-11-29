@@ -1,0 +1,14 @@
+{
+  "id": "challenger-1764251797003-zx7repxlh",
+  "address": "0xbb150aa026bC3950D4bD510f2d590ca848F92aFA",
+  "role": "challenger",
+  "encrypted": "9fedc7a3fd646413b89f2e345207abd312b83af1c45f6baad9dc6360fe3f72236d04c9fbc1c38f5ab7e8c86275701e0758bc7c11b96042e2887beaf46052d28e99fbadde5a988a5aeeb843b61e8331d5",
+  "iv": "ebd066e1bc17c077ddd0b9fc653a9614",
+  "salt": "0c10e91706ec3514a5693beaca51b7e6efecd92dcdbc11ab65510b72c8adb93f",
+  "created": "2025-11-27T13:56:37.003Z",
+  "chainIds": [
+    11155111
+  ],
+  "maxBondEth": "0.03",
+  "enabled": true
+}

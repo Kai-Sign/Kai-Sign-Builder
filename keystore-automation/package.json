@@ -1,0 +1,65 @@
+{
+  "name": "kaisign-automation-bot",
+  "version": "1.0.0",
+  "description": "Automated submission and verification bot system for KaiSign ERC7730 specifications",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "dashboard": "tsx src/index.ts dashboard",
+    "discovery": "tsx src/index.ts discover",
+    "campaign": "tsx src/index.ts campaign",
+    "schedule": "tsx src/index.ts schedule",
+    "status": "tsx src/index.ts status",
+    "setup-keystores": "tsx src/scripts/setup-keystores.ts",
+    "setup": "tsx src/scripts/setup-keystores.ts",
+    "test": "vitest",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "typecheck": "tsc --noEmit",
+    "help": "node example-setup.js",
+    "quick-setup": "node quick-setup.js",
+    "test-crypto": "node test-crypto.js"
+  },
+  "dependencies": {
+    "ethers": "^6.13.5",
+    "dotenv": "^16.5.0",
+    "axios": "^1.7.7",
+    "winston": "^3.15.0",
+    "node-cron": "^3.0.3",
+    "commander": "^12.1.0",
+    "inquirer": "^12.0.0",
+    "chalk": "^5.3.0",
+    "ora": "^8.1.0",
+    "table": "^6.8.2",
+    "blessed": "^0.1.81",
+    "blessed-contrib": "^4.11.0",
+    "fast-csv": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/inquirer": "^9.0.7",
+    "@types/blessed": "^0.1.25",
+    "@typescript-eslint/eslint-plugin": "^8.18.1",
+    "@typescript-eslint/parser": "^8.18.1",
+    "eslint": "^9.18.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "keywords": [
+    "kaisign",
+    "erc7730",
+    "automation",
+    "blockchain",
+    "bot",
+    "defi"
+  ],
+  "author": "KaiSign Bot System",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

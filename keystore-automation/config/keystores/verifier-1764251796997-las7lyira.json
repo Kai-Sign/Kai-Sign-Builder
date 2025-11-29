@@ -1,0 +1,14 @@
+{
+  "id": "verifier-1764251796997-las7lyira",
+  "address": "0x17cF9B75Cd592891c15Cbf86402CBC978B672d03",
+  "role": "verifier",
+  "encrypted": "24a5e0d6d01b3cd6296a917f6f51f014a338d472c26480ab7be8a5b394de8a3f090e6628d261c3cecde415556a3f9e560772ff8cff5540b65b84bd4c15b3e8363900828d868a6555b6716e2b3e481de4",
+  "iv": "84dc638022acfe61866365b39c83b88f",
+  "salt": "d3b01c0cbff9e3bd18e3fc00622a82d1f5a0e80dd085a1afbacd02fe9323efd1",
+  "created": "2025-11-27T13:56:36.997Z",
+  "chainIds": [
+    11155111
+  ],
+  "maxBondEth": "0.05",
+  "enabled": true
+}

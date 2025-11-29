@@ -1,0 +1,14 @@
+{
+  "id": "challenger-1764251797010-nzfdnbugs",
+  "address": "0x2F2228aC4D52243E67E0fEB71bCC3293aD374306",
+  "role": "challenger",
+  "encrypted": "9eccc02d8fcfed783f4d7fbdfbc00ad5e68870485650936c5438297ee32f9c6791289de1429797b0dc328168cf37e1d425aec17d94fb566bf6498c2478e12c85c5da22e15f4bd6ae7b5e65ff7f6bec36",
+  "iv": "0764356da5217a5e8f6d4c4aadb775bc",
+  "salt": "62d6a7f58485cd42a1c9ba42ae1882fe15e439eaf7b1bb6b7641a09974a17cbb",
+  "created": "2025-11-27T13:56:37.010Z",
+  "chainIds": [
+    11155111
+  ],
+  "maxBondEth": "0.03",
+  "enabled": true
+}

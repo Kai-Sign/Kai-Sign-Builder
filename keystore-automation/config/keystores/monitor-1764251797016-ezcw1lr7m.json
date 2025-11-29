@@ -1,0 +1,14 @@
+{
+  "id": "monitor-1764251797016-ezcw1lr7m",
+  "address": "0x91b69C5CBAE56957Cee05bb6c85dbd441F130E6D",
+  "role": "monitor",
+  "encrypted": "634cd8e2929b7d8407698a6e476377afd1d04f1a378afbdacfc18765ee0c01bf727418a20bf176790806d1106597ffed02d84b839827f4716c17ef18ff08fd873479c60d68fbd955ad0d98f83d9269bd",
+  "iv": "98184358492292701dfffe38deb546b1",
+  "salt": "cbdbc7b7b8d5fb7c8076ede399c226ee2e2583b9e6b3eb910d97b540e55b6176",
+  "created": "2025-11-27T13:56:37.016Z",
+  "chainIds": [
+    11155111
+  ],
+  "maxBondEth": "0.01",
+  "enabled": true
+}

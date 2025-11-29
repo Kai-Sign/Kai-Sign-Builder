@@ -1,0 +1,62 @@
+{
+  "conservative": {
+    "discoveryConfig": {
+      "maxContractsPerChain": 10,
+      "minTxCount": 10000,
+      "includeUnverified": false,
+      "targetTypes": [
+        "defi",
+        "erc20"
+      ]
+    },
+    "submissionConfig": {
+      "maxConcurrent": 2,
+      "delayBetweenSubmissions": 60000,
+      "retryAttempts": 3,
+      "bondStrategy": "minimal"
+    },
+    "verificationConfig": {
+      "participationRate": 0.7,
+      "confidenceThreshold": 0.8,
+      "maxBotsPerVerification": 2,
+      "enableChallenger": true
+    },
+    "riskLimits": {
+      "maxBondPerHour": "0.1",
+      "maxFailureRate": 0.2,
+      "stopOnConsecutiveFailures": 2,
+      "emergencyStopLoss": "0.5"
+    }
+  },
+  "aggressive": {
+    "discoveryConfig": {
+      "maxContractsPerChain": 50,
+      "minTxCount": 1000,
+      "includeUnverified": true,
+      "targetTypes": [
+        "defi",
+        "erc20",
+        "governance",
+        "erc721"
+      ]
+    },
+    "submissionConfig": {
+      "maxConcurrent": 5,
+      "delayBetweenSubmissions": 15000,
+      "retryAttempts": 2,
+      "bondStrategy": "aggressive"
+    },
+    "verificationConfig": {
+      "participationRate": 0.9,
+      "confidenceThreshold": 0.6,
+      "maxBotsPerVerification": 3,
+      "enableChallenger": true
+    },
+    "riskLimits": {
+      "maxBondPerHour": "1.0",
+      "maxFailureRate": 0.4,
+      "stopOnConsecutiveFailures": 5,
+      "emergencyStopLoss": "2.0"
+    }
+  }
+}
