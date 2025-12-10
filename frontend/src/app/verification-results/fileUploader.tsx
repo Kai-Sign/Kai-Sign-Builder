@@ -12,7 +12,6 @@ import { useToast } from "~/hooks/use-toast";
 import { web3Service } from "~/lib/web3Service";
 import { useWallet } from "~/contexts/WalletContext";
 import { ethStorageService } from "~/lib/ethStorageService";
-import { ethers } from "ethers";
 
 export default function FileUploader() {
   const [file, setFile] = useState<File | null>(null);
@@ -174,56 +173,52 @@ export default function FileUploader() {
       return;
     }
 
-    if (!walletConnected) {
-      toast({
-        title: "Wallet Required",
-        description: "Connect your wallet to post blob to EthStorage",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setIsPostingBlob(true);
     try {
-      toast({ 
-        title: "Posting blob to EthStorage", 
-        description: "Preparing transaction for permanent storage..." 
+      toast({
+        title: "Posting blob",
+        description: "Submitting EIP-4844 blob transaction to Sepolia..."
       });
 
-      // Get the wallet signer
-      const provider = new ethers.BrowserProvider((window as any).ethereum);
-      const signer = await provider.getSigner();
-
-      // Post blob to EthStorage
-      const result = await ethStorageService.postBlob(jsonData, signer);
+      // Post blob via backend API (no wallet required - uses server-side key)
+      const result = await ethStorageService.postBlob(jsonData);
 
       if (result.success) {
-        // Set EthStorage specific values
+        // Set blob transaction values
         setEthStorageKey(result.key);
         setEthStorageProofUrl(result.ethStorageProofUrl);
         setBlobTxHash(result.txHash);
-        
-        // For backwards compatibility with reveal step, we use the key as "blob hash"
-        setBlobVersionedHash(result.key);
-        setRevealBlobHash(result.key);
 
-        toast({ 
-          title: "Blob posted to EthStorage", 
-          description: `Stored permanently with key: ${result.key.substring(0, 10)}...`, 
-          variant: "default" 
+        // Use the blob versioned hash for blob reference
+        setBlobVersionedHash(result.blobVersionedHash);
+        setRevealBlobHash(result.blobVersionedHash);
+
+        // Update metadata hash if returned (semantic hash before padding)
+        if (result.metadataHash) {
+          setMetadataHash(result.metadataHash);
+          setRevealMetadataHash(result.metadataHash);
+        }
+
+        const blockInfo = result.blockNumber ? ` in block ${result.blockNumber}` : '';
+        const paddingInfo = result.wasPadded ? ' (padded for blob efficiency)' : '';
+
+        toast({
+          title: "Blob posted successfully",
+          description: `EIP-4844 blob confirmed${blockInfo}${paddingInfo}`,
+          variant: "default"
         });
 
         // Auto-advance to reveal tab
         setActiveTab("reveal");
       } else {
-        throw new Error(result.error || 'EthStorage posting failed');
+        throw new Error(result.error || 'Blob posting failed');
       }
     } catch (error: any) {
-      console.error("EthStorage post error:", error);
-      toast({ 
-        title: "EthStorage post failed", 
-        description: error.message || "Could not post blob to EthStorage", 
-        variant: "destructive" 
+      console.error("Blob post error:", error);
+      toast({
+        title: "Blob post failed",
+        description: error.message || "Could not post blob",
+        variant: "destructive"
       });
     } finally {
       setIsPostingBlob(false);
@@ -574,18 +569,18 @@ export default function FileUploader() {
 
               <Button
                 onClick={handlePostBlob}
-                disabled={isPostingBlob || !jsonData || !walletConnected}
+                disabled={isPostingBlob || !jsonData}
                 className="w-full bg-purple-600 hover:bg-purple-700 text-white"
               >
                 {isPostingBlob ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Posting to EthStorage...
+                    Posting EIP-4844 Blob...
                   </>
                 ) : (
                   <>
                     <Upload className="mr-2 h-4 w-4" />
-                    Post to EthStorage
+                    Post as Blob (EIP-4844)
                   </>
                 )}
               </Button>
@@ -642,10 +637,16 @@ export default function FileUploader() {
 
               <div className="p-3 bg-purple-900/20 border border-purple-700 rounded-lg">
                 <p className="text-sm text-purple-300">
-                  <strong>EthStorage:</strong> Your ERC7730 JSON will be stored permanently on EthStorage Layer 2 
-                  and can be retrieved at any time using the storage key. Requires wallet connection and 
-                  small storage fee (~0.001 ETH). Make sure you've committed before posting.
+                  <strong>EIP-4844 Blob Storage:</strong> Your ERC7730 JSON will be posted as an EIP-4844 blob transaction
+                  on Sepolia. Small files are automatically padded for cost efficiency while preserving the semantic metadata hash.
                 </p>
+                <div className="mt-2 p-2 bg-blue-900/30 border border-blue-600 rounded text-xs">
+                  <div className="text-blue-200 mb-1"><strong>How it works:</strong></div>
+                  <div className="text-blue-300">1. Metadata hash calculated from original JSON</div>
+                  <div className="text-blue-300">2. Data padded to 24KB+ if needed for blob efficiency</div>
+                  <div className="text-blue-300">3. Posted as Type-3 blob transaction to Sepolia</div>
+                  <div className="text-blue-300">4. Blob versioned hash returned for retrieval</div>
+                </div>
               </div>
             </div>
           </TabsContent>

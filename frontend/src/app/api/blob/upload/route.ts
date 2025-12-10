@@ -8,6 +8,11 @@ try {
   cKzg = req("c-kzg");
 } catch {}
 
+// Minimum size for cost-effective blob upload (24KB)
+const MIN_BLOB_DATA_SIZE = 24 * 1024;
+// Padding marker to identify padded content
+const PADDING_MARKER = "\n\n/* ERC7730_BLOB_PADDING_START */\n";
+
 function toBlob(data: string): Uint8Array {
   const BLOB_SIZE = 131072; // 4096 * 32
   const blob = new Uint8Array(BLOB_SIZE);
@@ -24,6 +29,30 @@ function toBlob(data: string): Uint8Array {
   return blob;
 }
 
+/**
+ * Add padding to data if it's too small for cost-effective blob upload.
+ * The padding is clearly marked so it can be stripped when reading.
+ */
+function addPaddingIfNeeded(data: string): { paddedData: string; wasPadded: boolean } {
+  if (data.length >= MIN_BLOB_DATA_SIZE) {
+    return { paddedData: data, wasPadded: false };
+  }
+
+  const paddingNeeded = MIN_BLOB_DATA_SIZE - data.length - PADDING_MARKER.length;
+  if (paddingNeeded <= 0) {
+    return { paddedData: data, wasPadded: false };
+  }
+
+  // Create padding with repeating pattern for easy identification
+  const paddingPattern = "0";
+  const padding = paddingPattern.repeat(paddingNeeded);
+
+  return {
+    paddedData: data + PADDING_MARKER + padding,
+    wasPadded: true
+  };
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json().catch(() => null);
@@ -31,10 +60,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Expected { json }" }, { status: 400 });
     }
 
-    const RPC_URL = process.env.SEPOLIA_RPC_URL;
-    if (!RPC_URL) {
-      return NextResponse.json({ error: "Missing SEPOLIA_RPC_URL" }, { status: 500 });
-    }
+    // Use PublicNode RPC which supports post-Fusaka blob transactions
+    const RPC_URL = process.env.SEPOLIA_RPC_URL || "https://ethereum-sepolia-rpc.publicnode.com";
+
     if (!cKzg) {
       return NextResponse.json({ error: "c-kzg not available on server" }, { status: 500 });
     }
@@ -59,8 +87,16 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "No signer configured. Provide KEYSTORE_JSON+KEYSTORE_PASSWORD or PRIVATE_KEY." }, { status: 500 });
     }
 
-    const dataStr = typeof body.json === "string" ? body.json : JSON.stringify(body.json);
-    const blob = toBlob(dataStr);
+    // Get original data string
+    const originalDataStr = typeof body.json === "string" ? body.json : JSON.stringify(body.json);
+
+    // Calculate metadata hash BEFORE padding (this is the semantic hash)
+    const metadataHash = ethers.keccak256(ethers.toUtf8Bytes(originalDataStr));
+
+    // Add padding if needed for cost-effective blob upload
+    const { paddedData, wasPadded } = addPaddingIfNeeded(originalDataStr);
+
+    const blob = toBlob(paddedData);
 
     const commitment: Uint8Array = cKzg.blobToKzgCommitment(blob);
     const proof: Uint8Array = cKzg.computeBlobKzgProof(blob, commitment);
@@ -86,8 +122,8 @@ export async function POST(request: NextRequest) {
       chainId: 11155111,
       nonce,
       gasLimit: 21000n,
-      maxPriorityFeePerGas: ethers.parseUnits("1", "gwei"),
-      maxFeePerGas: (baseFee ?? ethers.parseUnits("1", "gwei")) + ethers.parseUnits("5", "gwei"),
+      maxPriorityFeePerGas: ethers.parseUnits("2", "gwei"),
+      maxFeePerGas: (baseFee ?? ethers.parseUnits("1", "gwei")) * 2n + ethers.parseUnits("2", "gwei"),
       maxFeePerBlobGas: ethers.parseUnits("30", "gwei"),
       blobVersionedHashes: [versionedHash],
       kzg: cKzg,
@@ -98,10 +134,16 @@ export async function POST(request: NextRequest) {
     const receipt = await resp.wait();
 
     return NextResponse.json({
+      success: true,
       txHash: resp.hash,
       blockNumber: receipt?.blockNumber ?? null,
       blobVersionedHash: versionedHash,
-      etherscanBlobUrl: `https://sepolia.blobscan.com/blob/${versionedHash}`,
+      metadataHash: metadataHash, // Semantic hash (before padding)
+      wasPadded: wasPadded,
+      originalSize: originalDataStr.length,
+      paddedSize: paddedData.length,
+      etherscanUrl: `https://sepolia.etherscan.io/tx/${resp.hash}`,
+      blobscanUrl: `https://sepolia.blobscan.com/tx/${resp.hash}`,
     });
   } catch (err: any) {
     return NextResponse.json(
