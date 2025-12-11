@@ -91,14 +91,13 @@ export function handleLogCreateSpec(event: LogCreateSpecEvent): void {
   spec.chainID = event.params.chainId.toString()
   spec.status = "SUBMITTED"
   spec.blockTimestamp = event.block.timestamp
+  spec.blockNumber = event.block.number
+  spec.transactionHash = event.transaction.hash
   spec.eventTimestamp = event.params.timestamp
   spec.incentiveId = event.params.incentiveId
   spec.isFinalized = false
   spec.isAccepted = false
-  
-  // Note: Blob data cannot be accessed directly in The Graph
-  // Additional metadata would need to be included in the event or retrieved off-chain
-  
+
   spec.save()
 }
 

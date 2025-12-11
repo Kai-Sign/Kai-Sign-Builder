@@ -4,10 +4,12 @@ const SUBGRAPH_URL = process.env.NEXT_PUBLIC_KAISIGN_GRAPH_URL || "https://api.s
 export interface SubgraphSpec {
   id: string;
   user: string;
-  ipfs: string;
+  blobHash: string;
   targetContract: string;
   chainID: string;
   blockTimestamp: string;
+  blockNumber: string;
+  transactionHash: string;
   status: string;
   questionId?: string;
   proposedTimestamp?: string;
@@ -82,10 +84,12 @@ export class SubgraphClient {
       specs(where: {user: "${userAddress.toLowerCase()}"}, orderBy: blockTimestamp, orderDirection: desc) {
         id
         user
-        ipfs
+        blobHash
         targetContract
         chainID
         blockTimestamp
+        blockNumber
+        transactionHash
         status
         questionId
         proposedTimestamp
@@ -106,10 +110,12 @@ export class SubgraphClient {
       specs(where: {status: "${status}"}, orderBy: blockTimestamp, orderDirection: desc, first: 100) {
         id
         user
-        ipfs
+        blobHash
         targetContract
         chainID
         blockTimestamp
+        blockNumber
+        transactionHash
         status
         questionId
         proposedTimestamp
@@ -130,10 +136,12 @@ export class SubgraphClient {
       specs(where: {targetContract: "${contractAddress.toLowerCase()}"}, orderBy: blockTimestamp, orderDirection: desc) {
         id
         user
-        ipfs
+        blobHash
         targetContract
         chainID
         blockTimestamp
+        blockNumber
+        transactionHash
         status
         questionId
         proposedTimestamp
@@ -154,10 +162,12 @@ export class SubgraphClient {
       specs(where: {incentiveId_not: null}, orderBy: blockTimestamp, orderDirection: desc, first: 100) {
         id
         user
-        ipfs
+        blobHash
         targetContract
         chainID
         blockTimestamp
+        blockNumber
+        transactionHash
         status
         questionId
         proposedTimestamp
@@ -214,10 +224,12 @@ export class SubgraphClient {
       specs(where: {status: "PROPOSED"}, orderBy: proposedTimestamp, orderDirection: desc) {
         id
         user
-        ipfs
+        blobHash
         targetContract
         chainID
         blockTimestamp
+        blockNumber
+        transactionHash
         status
         questionId
         proposedTimestamp
@@ -238,10 +250,12 @@ export class SubgraphClient {
       specs(where: {status: "FINALIZED"}, orderBy: blockTimestamp, orderDirection: desc) {
         id
         user
-        ipfs
+        blobHash
         targetContract
         chainID
         blockTimestamp
+        blockNumber
+        transactionHash
         status
         questionId
         proposedTimestamp
@@ -330,10 +344,12 @@ export class SubgraphClient {
       userSpecs: specs(where: {user: "${userAddress.toLowerCase()}"}, orderBy: blockTimestamp, orderDirection: desc) {
         id
         user
-        ipfs
+        blobHash
         targetContract
         chainID
         blockTimestamp
+        blockNumber
+        transactionHash
         status
         questionId
         proposedTimestamp
@@ -345,10 +361,12 @@ export class SubgraphClient {
       proposedSpecs: specs(where: {status: "PROPOSED"}, first: 10, orderBy: proposedTimestamp, orderDirection: desc) {
         id
         user
-        ipfs
+        blobHash
         targetContract
         chainID
         blockTimestamp
+        blockNumber
+        transactionHash
         status
         questionId
         proposedTimestamp
@@ -356,10 +374,12 @@ export class SubgraphClient {
       finalizedSpecs: specs(where: {status: "FINALIZED"}, first: 10, orderBy: blockTimestamp, orderDirection: desc) {
         id
         user
-        ipfs
+        blobHash
         targetContract
         chainID
         blockTimestamp
+        blockNumber
+        transactionHash
         status
         isAccepted
       }
