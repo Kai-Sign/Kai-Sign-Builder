@@ -740,6 +740,106 @@ async def get_batch_ipfs_metadata(request: BatchIPFSMetadataRequest):
 async def read_root():
     return {"message": "API is running"}
 
+@app.get("/contract/{address}")
+@app.get("/api/py/contract/{address}")
+async def get_contract_metadata(
+    address: str = Path(..., description="Contract address"),
+    chain_id: int = Query(1, description="Chain ID where transaction occurs")
+) -> BlobResponse:
+    """Fetch metadata for a contract by querying subgraph then fetching blob.
+
+    Args:
+        address: Contract address (0x...)
+        chain_id: Chain ID (default: 1)
+
+    Returns:
+        BlobResponse with contract metadata
+    """
+    try:
+        # Normalize address to match subgraph format (bytes, lowercase with 0x prefix)
+        if not address.startswith("0x"):
+            address = "0x" + address
+        address = address.lower()
+
+        # Query subgraph for blob hash
+        subgraph_url = "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/version/latest"
+
+        # Convert chain_id to string to match subgraph schema
+        chain_id_str = str(chain_id)
+
+        def query_subgraph():
+            response = requests.post(
+                subgraph_url,
+                json={
+                    "query": f"""{{
+                        specs(
+                            where: {{
+                                targetContract: "{address}",
+                                chainID: "{chain_id_str}"
+                            }},
+                            orderBy: blockTimestamp,
+                            orderDirection: desc
+                        ) {{
+                            id
+                            blobHash
+                            targetContract
+                            chainID
+                            status
+                            blockTimestamp
+                        }}
+                    }}"""
+                },
+                timeout=30
+            )
+            return response.json()
+
+        result = await asyncio.to_thread(query_subgraph)
+
+        # Check for GraphQL errors
+        if "errors" in result:
+            logger.error(f"Subgraph query error: {result['errors']}")
+            return BlobResponse(
+                success=False,
+                blob_hash=address,
+                error=f"Subgraph query failed: {result['errors']}"
+            )
+
+        specs = result.get("data", {}).get("specs", [])
+
+        if not specs:
+            return BlobResponse(
+                success=False,
+                blob_hash=address,
+                error=f"No metadata found for contract {address} on chain {chain_id}"
+            )
+
+        # Prefer FINALIZED over PROPOSED over other statuses
+        finalized_spec = next((s for s in specs if s.get("status") == "FINALIZED"), None)
+        proposed_spec = next((s for s in specs if s.get("status") == "PROPOSED"), None)
+        spec = finalized_spec or proposed_spec or specs[0]  # Fallback to most recent
+
+        logger.info(f"Found spec for {address}: status={spec.get('status')}, blobHash={spec.get('blobHash')}")
+
+        blob_hash = spec.get("blobHash")
+        if not blob_hash:
+            return BlobResponse(
+                success=False,
+                blob_hash=address,
+                error="Blob hash not found in subgraph"
+            )
+
+        # Fetch blob metadata using existing endpoint logic
+        blob_response = await get_blob_metadata(blob_hash, None)
+        return blob_response
+
+    except Exception as e:
+        logger.error(f"Contract metadata fetch error: {e}")
+        return BlobResponse(
+            success=False,
+            blob_hash=address,
+            error=f"Error fetching contract metadata: {str(e)}"
+        )
+
 @app.get("/blob/{blob_hash}")
 @app.get("/api/py/blob/{blob_hash}")
 async def get_blob_metadata(
