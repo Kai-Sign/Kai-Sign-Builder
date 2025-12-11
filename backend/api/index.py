@@ -930,7 +930,7 @@ async def get_contract_metadata(
 @app.get("/api/py/blob/{blob_hash}")
 async def get_blob_metadata(
     blob_hash: str = Path(..., description="Blob versioned hash (0x01...)"),
-    tx_hash: Optional[str] = None
+    tx_hash: Optional[str] = Query(None, description="Transaction hash for faster slot lookup")
 ) -> BlobResponse:
     """Fetch and decode blob data directly from Sepolia nodes.
 
