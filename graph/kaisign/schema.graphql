@@ -38,6 +38,8 @@ type Spec @entity(immutable: false) {
   chainID: String                   # from event
   status: SpecStatus!
   blockTimestamp: BigInt!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
   proposedTimestamp: BigInt
   isFinalized: Boolean
   isAccepted: Boolean
