@@ -5,9 +5,10 @@ from dotenv import load_dotenv
 import os
 import json
 import requests
-from typing import Optional, List
+from typing import Optional, List, Query
 import asyncio
 import logging
+import hashlib
 from datetime import datetime
 
 # Import patched version first to apply the monkeypatches
@@ -45,6 +46,12 @@ USE_MOCK = os.getenv("USE_MOCK", "false").lower() == "true"
 # Environment variables for contract interaction
 ALCHEMY_RPC_URL = os.getenv("ALCHEMY_RPC_URL")
 KAISIGN_CONTRACT_ADDRESS = os.getenv("KAISIGN_CONTRACT_ADDRESS", "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719")
+
+# Constants for blob decoding
+PADDING_MARKER = "\n\n/* ERC7730_BLOB_PADDING_START */\n"
+SEPOLIA_RPC = os.getenv("SEPOLIA_RPC_URL", "https://ethereum-sepolia-rpc.publicnode.com")
+SEPOLIA_BEACON = os.getenv("SEPOLIA_BEACON_URL", "https://lodestar-sepolia.chainsafe.io")
+BLOB_SIZE = 131072  # 4096 * 32
 
 def load_env():
     etherscan_api_key = os.getenv("ETHERSCAN_API_KEY")
@@ -107,6 +114,200 @@ class BatchIPFSMetadataRequest(BaseModel):
 
 class BatchIPFSMetadataResponse(BaseModel):
     results: List[IPFSMetadataResponse]
+
+class BlobResponse(BaseModel):
+    success: bool
+    blob_hash: str
+    metadata: Optional[dict] = None
+    error: Optional[str] = None
+
+def decode_blob_data(blob_hex: str) -> str:
+    """Decode raw blob hex data to string.
+
+    Blob format: 4096 field elements × 32 bytes each
+    Each field element: [0x00 (1 byte), data (31 bytes)]
+    Total usable data: ~127KB per blob
+    """
+    # Remove 0x prefix if present
+    if blob_hex.startswith('0x'):
+        blob_hex = blob_hex[2:]
+
+    blob_bytes = bytes.fromhex(blob_hex)
+    result = bytearray()
+
+    # Each field element is 32 bytes: [0x00, 31 bytes of data]
+    for field_index in range(4096):
+        offset = field_index * 32
+        # Skip first byte (always 0), read next 31 bytes
+        for byte_index in range(1, 32):
+            if offset + byte_index >= len(blob_bytes):
+                break
+            byte_val = blob_bytes[offset + byte_index]
+            result.append(byte_val)
+
+    # Decode and strip null bytes
+    return result.decode('utf-8', errors='ignore').rstrip('\x00')
+
+async def fetch_blob_from_beacon(slot: int, blob_hash: str) -> Optional[str]:
+    """Fetch blob from beacon chain API by slot."""
+    def fetch():
+        response = requests.get(
+            f"{SEPOLIA_BEACON}/eth/v1/beacon/blob_sidecars/{slot}",
+            timeout=30
+        )
+        response.raise_for_status()
+        return response.json()
+
+    try:
+        data = await asyncio.to_thread(fetch)
+        sidecars = data.get("data", [])
+
+        # Find the blob with matching versioned hash
+        for sidecar in sidecars:
+            # KZG commitment → versioned hash
+            kzg_commitment = sidecar.get("kzg_commitment", "")
+            # Versioned hash = 0x01 + sha256(commitment)[1:]
+            if kzg_commitment:
+                commitment_hex = kzg_commitment[2:] if kzg_commitment.startswith('0x') else kzg_commitment
+                commitment_bytes = bytes.fromhex(commitment_hex)
+                hash_bytes = hashlib.sha256(commitment_bytes).digest()
+                versioned_hash = "0x01" + hash_bytes[1:].hex()
+
+                if versioned_hash.lower() == blob_hash.lower():
+                    return sidecar.get("blob", "")
+
+        return None
+    except Exception as e:
+        logger.error(f"Beacon fetch error: {e}")
+        return None
+
+async def find_blob_slot(blob_hash: str, tx_hash: Optional[str] = None) -> Optional[int]:
+    """Find the beacon slot containing the blob.
+
+    Uses timestamp-based slot calculation when tx_hash is provided (fast path),
+    otherwise searches recent beacon slots (slow path).
+    """
+    # Sepolia beacon chain constants
+    SLOT_TIME = 12  # seconds per slot
+    GENESIS_TIME = 1655733600  # Sepolia beacon genesis
+
+    try:
+        # Fast path: Use tx_hash to calculate slot from block timestamp
+        if tx_hash:
+            def get_slot_from_tx():
+                # Get tx receipt for block number
+                response = requests.post(
+                    SEPOLIA_RPC,
+                    json={"jsonrpc": "2.0", "method": "eth_getTransactionReceipt", "params": [tx_hash], "id": 1},
+                    timeout=30
+                )
+                result = response.json().get("result")
+                if not result or not result.get("blockNumber"):
+                    return None
+
+                block_num = int(result["blockNumber"], 16)
+
+                # Get block timestamp
+                response = requests.post(
+                    SEPOLIA_RPC,
+                    json={"jsonrpc": "2.0", "method": "eth_getBlockByNumber", "params": [hex(block_num), False], "id": 1},
+                    timeout=30
+                )
+                block = response.json().get("result")
+                if not block or not block.get("timestamp"):
+                    return None
+
+                block_timestamp = int(block["timestamp"], 16)
+
+                # Calculate beacon slot from timestamp
+                return (block_timestamp - GENESIS_TIME) // SLOT_TIME
+
+            estimated_slot = await asyncio.to_thread(get_slot_from_tx)
+            if estimated_slot:
+                # Search in a small range around the estimated slot
+                for offset in range(-5, 6):
+                    slot = estimated_slot + offset
+
+                    def check_slot_at(s):
+                        try:
+                            response = requests.get(
+                                f"{SEPOLIA_BEACON}/eth/v1/beacon/blob_sidecars/{s}",
+                                timeout=30
+                            )
+                            if response.status_code != 200:
+                                return None
+
+                            sidecars = response.json().get("data", [])
+                            for sidecar in sidecars:
+                                kzg_commitment = sidecar.get("kzg_commitment", "")
+                                if kzg_commitment:
+                                    commitment_hex = kzg_commitment[2:] if kzg_commitment.startswith('0x') else kzg_commitment
+                                    commitment_bytes = bytes.fromhex(commitment_hex)
+                                    hash_bytes = hashlib.sha256(commitment_bytes).digest()
+                                    versioned_hash = "0x01" + hash_bytes[1:].hex()
+
+                                    if versioned_hash.lower() == blob_hash.lower():
+                                        return s
+                            return None
+                        except Exception:
+                            return None
+
+                    found = await asyncio.to_thread(lambda s=slot: check_slot_at(s))
+                    if found:
+                        return found
+
+        # Slow path: Search recent beacon slots
+        def get_head_slot():
+            response = requests.get(
+                f"{SEPOLIA_BEACON}/eth/v1/beacon/headers/head",
+                timeout=30
+            )
+            response.raise_for_status()
+            data = response.json()
+            return int(data.get("data", {}).get("header", {}).get("message", {}).get("slot", 0))
+
+        head_slot = await asyncio.to_thread(get_head_slot)
+
+        if head_slot == 0:
+            logger.error("Could not get beacon head slot")
+            return None
+
+        # Search recent beacon slots for the blob
+        search_range = 100  # Search last 100 slots (~20 minutes)
+
+        for slot in range(head_slot, head_slot - search_range, -1):
+            def check_slot(s):
+                try:
+                    response = requests.get(
+                        f"{SEPOLIA_BEACON}/eth/v1/beacon/blob_sidecars/{s}",
+                        timeout=30
+                    )
+                    if response.status_code != 200:
+                        return None
+
+                    sidecars = response.json().get("data", [])
+                    for sidecar in sidecars:
+                        kzg_commitment = sidecar.get("kzg_commitment", "")
+                        if kzg_commitment:
+                            commitment_hex = kzg_commitment[2:] if kzg_commitment.startswith('0x') else kzg_commitment
+                            commitment_bytes = bytes.fromhex(commitment_hex)
+                            hash_bytes = hashlib.sha256(commitment_bytes).digest()
+                            versioned_hash = "0x01" + hash_bytes[1:].hex()
+
+                            if versioned_hash.lower() == blob_hash.lower():
+                                return s
+                    return None
+                except Exception:
+                    return None
+
+            found_slot = await asyncio.to_thread(lambda s=slot: check_slot(s))
+            if found_slot:
+                return found_slot
+
+        return None
+    except Exception as e:
+        logger.error(f"Slot search error: {e}")
+        return None
 
 @app.exception_handler(StarletteHTTPException)
 async def http_exception_handler(request: Request, exc: StarletteHTTPException):
@@ -538,3 +739,103 @@ async def get_batch_ipfs_metadata(request: BatchIPFSMetadataRequest):
 @app.get("/api/py")
 async def read_root():
     return {"message": "API is running"}
+
+@app.get("/blob/{blob_hash}")
+@app.get("/api/py/blob/{blob_hash}")
+async def get_blob_metadata(
+    blob_hash: str = Path(..., description="Blob versioned hash (0x01...)"),
+    tx_hash: Optional[str] = None
+) -> BlobResponse:
+    """Fetch and decode blob data directly from Sepolia nodes.
+
+    Args:
+        blob_hash: The blob versioned hash (66 chars, starts with 0x01)
+        tx_hash: Optional transaction hash for faster slot lookup
+
+    Returns:
+        BlobResponse with decoded metadata JSON
+    """
+    try:
+        # Validate blob hash format
+        if not blob_hash.startswith("0x01") or len(blob_hash) != 66:
+            return BlobResponse(
+                success=False,
+                blob_hash=blob_hash,
+                error="Invalid blob hash format. Expected 0x01 prefix and 66 characters."
+            )
+
+        # Strategy 1: Try eth_getBlobByHash (if RPC supports it)
+        try:
+            def try_direct():
+                response = requests.post(
+                    SEPOLIA_RPC,
+                    json={
+                        "jsonrpc": "2.0",
+                        "method": "eth_getBlobByHash",
+                        "params": [blob_hash],
+                        "id": 1
+                    },
+                    timeout=30
+                )
+                result = response.json()
+                if "result" in result and result["result"]:
+                    return result["result"]
+                return None
+
+            blob_hex = await asyncio.to_thread(try_direct)
+            if blob_hex:
+                content = decode_blob_data(blob_hex)
+                # Strip padding
+                padding_idx = content.find(PADDING_MARKER)
+                if padding_idx != -1:
+                    content = content[:padding_idx]
+
+                metadata = json.loads(content)
+                return BlobResponse(success=True, blob_hash=blob_hash, metadata=metadata)
+        except Exception as direct_error:
+            logger.debug(f"eth_getBlobByHash failed: {direct_error}")
+            pass  # Fallback to beacon
+
+        # Strategy 2: Beacon Chain API
+        slot = await find_blob_slot(blob_hash, tx_hash)
+        if not slot:
+            return BlobResponse(
+                success=False,
+                blob_hash=blob_hash,
+                error="Could not find slot for blob. Provide tx_hash query param for faster lookup."
+            )
+
+        blob_hex = await fetch_blob_from_beacon(slot, blob_hash)
+        if not blob_hex:
+            return BlobResponse(
+                success=False,
+                blob_hash=blob_hash,
+                error="Blob not found in beacon chain sidecars. Blob may have been pruned (>18 days old)."
+            )
+
+        # Decode blob
+        content = decode_blob_data(blob_hex)
+
+        # Strip padding marker
+        padding_idx = content.find(PADDING_MARKER)
+        if padding_idx != -1:
+            content = content[:padding_idx]
+
+        # Parse JSON
+        metadata = json.loads(content)
+
+        return BlobResponse(success=True, blob_hash=blob_hash, metadata=metadata)
+
+    except json.JSONDecodeError as e:
+        return BlobResponse(
+            success=False,
+            blob_hash=blob_hash,
+            error=f"Failed to parse blob as JSON: {str(e)}"
+        )
+    except Exception as e:
+        logger.error(f"Blob fetch error: {e}")
+        return BlobResponse(
+            success=False,
+            blob_hash=blob_hash,
+            error=f"Unexpected error: {str(e)}"
+        )
