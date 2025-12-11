@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Path, Request
+from fastapi import FastAPI, HTTPException, Path, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from subprocess import Popen, PIPE
 from dotenv import load_dotenv
