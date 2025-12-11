@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import os
 import json
 import requests
-from typing import Optional, List, Query
+from typing import Optional, List
 import asyncio
 import logging
 import hashlib
