@@ -9,7 +9,6 @@ from typing import Optional, List
 import asyncio
 import logging
 import hashlib
-from eth_utils import keccak
 from datetime import datetime
 
 # Import patched version first to apply the monkeypatches
@@ -741,184 +740,122 @@ async def get_batch_ipfs_metadata(request: BatchIPFSMetadataRequest):
 async def read_root():
     return {"message": "API is running"}
 
-# Event signatures for KaiSign contract events
-# LogCreateSpec(address indexed creator, bytes32 indexed specID, bytes32 indexed blobHash, address targetContract, uint256 chainId, uint256 timestamp, bytes32 incentiveId)
+# Subgraph URL for KaiSign
+KAISIGN_SUBGRAPH_URL = "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/version/latest"
 
-def keccak256(data: bytes) -> str:
-    """Compute keccak256 hash using eth_utils."""
-    return "0x" + keccak(data).hex()
+async def query_subgraph_for_contract(target_address: str, chain_id: int) -> list:
+    """Query KaiSign subgraph to find specs for a target contract.
 
-# Precompute event topic (LogCreateSpec)
-LOG_CREATE_SPEC_SIGNATURE = keccak256(b"LogCreateSpec(address,bytes32,bytes32,address,uint256,uint256,bytes32)")
-
-async def query_kaisign_events_for_contract(target_address: str, chain_id: int) -> list:
-    """Query KaiSign contract events to find specs for a target contract.
-
-    Uses eth_getLogs to query LogCreateSpec events directly from the contract.
+    Returns list of specs with blobHash and transactionHash for efficient blob retrieval.
     """
     try:
-        if not ALCHEMY_RPC_URL:
-            raise Exception("ALCHEMY_RPC_URL environment variable is not set")
-
         # Normalize target address
         if not target_address.startswith("0x"):
             target_address = "0x" + target_address
         target_address = target_address.lower()
 
-        # Pad address to 32 bytes for topic filtering (not used directly but for reference)
-        # We'll filter by targetContract in the data field after fetching
+        # Convert chain_id to string to match subgraph schema
+        chain_id_str = str(chain_id)
 
-        def fetch_logs():
-            # Query LogCreateSpec events from KaiSign contract
-            # Topics: [eventSignature, creator (indexed), specID (indexed), blobHash (indexed)]
+        def query():
+            # Query LogCreateSpec events which have transactionHash
             response = requests.post(
-                ALCHEMY_RPC_URL,
+                KAISIGN_SUBGRAPH_URL,
                 json={
-                    "jsonrpc": "2.0",
-                    "method": "eth_getLogs",
-                    "params": [{
-                        "address": KAISIGN_CONTRACT_ADDRESS,
-                        "topics": [LOG_CREATE_SPEC_SIGNATURE],
-                        "fromBlock": "earliest",
-                        "toBlock": "latest"
-                    }],
-                    "id": 1
-                },
-                timeout=60
-            )
-            response.raise_for_status()
-            return response.json()
-
-        result = await asyncio.to_thread(fetch_logs)
-
-        if "error" in result:
-            logger.error(f"RPC error querying events: {result['error']}")
-            return []
-
-        logs = result.get("result", [])
-        matching_specs = []
-
-        for log in logs:
-            try:
-                # Decode the event data
-                # Topics: [signature, creator, specID, blobHash]
-                topics = log.get("topics", [])
-                data = log.get("data", "0x")
-
-                if len(topics) < 4:
-                    continue
-
-                # Extract indexed parameters from topics
-                # topic[1] = creator (address, padded to 32 bytes)
-                # topic[2] = specID (bytes32)
-                # topic[3] = blobHash (bytes32)
-                spec_id = topics[2]
-                blob_hash = topics[3]
-
-                # Decode non-indexed parameters from data
-                # data layout: targetContract (address), chainId (uint256), timestamp (uint256), incentiveId (bytes32)
-                if len(data) < 258:  # 0x + 64*4 = 258 chars minimum
-                    continue
-
-                data_hex = data[2:]  # Remove 0x prefix
-
-                # targetContract is at offset 0, padded to 32 bytes
-                log_target_contract = "0x" + data_hex[24:64]  # Last 20 bytes of first 32-byte slot
-                log_chain_id = int(data_hex[64:128], 16)  # Second 32-byte slot
-                log_timestamp = int(data_hex[128:192], 16)  # Third 32-byte slot
-
-                # Check if this event matches our target contract and chain
-                if log_target_contract.lower() == target_address.lower() and log_chain_id == chain_id:
-                    # Get block timestamp for ordering
-                    block_number = int(log.get("blockNumber", "0x0"), 16)
-
-                    matching_specs.append({
-                        "specID": spec_id,
-                        "blobHash": blob_hash,
-                        "targetContract": log_target_contract,
-                        "chainId": log_chain_id,
-                        "timestamp": log_timestamp,
-                        "blockNumber": block_number
-                    })
-            except Exception as parse_error:
-                logger.debug(f"Error parsing log entry: {parse_error}")
-                continue
-
-        # Sort by block number (most recent first)
-        matching_specs.sort(key=lambda x: x["blockNumber"], reverse=True)
-
-        return matching_specs
-
-    except Exception as e:
-        logger.error(f"Error querying KaiSign events: {e}")
-        return []
-
-async def get_spec_status_from_contract(spec_id: str) -> Optional[dict]:
-    """Get spec status directly from KaiSign contract.
-
-    Calls the specs(bytes32) function to get spec data.
-    Returns: {createdTimestamp, status, ipfs, questionId}
-    Status enum: 0=None, 1=Submitted, 2=Proposed, 3=Finalized, 4=Cancelled
-    """
-    try:
-        if not ALCHEMY_RPC_URL:
-            return None
-
-        # Function selector for specs(bytes32)
-        # keccak256("specs(bytes32)")[:4] = 0x6a6278c0 (need to verify)
-        specs_selector = keccak256(b"specs(bytes32)")[:10]  # 0x + 8 hex chars
-
-        # Pad specID to 32 bytes (remove 0x prefix if present, ensure 64 hex chars)
-        spec_id_clean = spec_id[2:] if spec_id.startswith("0x") else spec_id
-        call_data = specs_selector + spec_id_clean.zfill(64)
-
-        def call_contract():
-            response = requests.post(
-                ALCHEMY_RPC_URL,
-                json={
-                    "jsonrpc": "2.0",
-                    "method": "eth_call",
-                    "params": [{
-                        "to": KAISIGN_CONTRACT_ADDRESS,
-                        "data": call_data
-                    }, "latest"],
-                    "id": 1
+                    "query": f"""{{
+                        logCreateSpecs(
+                            where: {{
+                                targetContract: "{target_address}",
+                                chainId: {chain_id}
+                            }},
+                            orderBy: blockTimestamp,
+                            orderDirection: desc,
+                            first: 10
+                        ) {{
+                            id
+                            specID
+                            blobHash
+                            targetContract
+                            chainId
+                            timestamp
+                            creator
+                            blockNumber
+                            blockTimestamp
+                            transactionHash
+                        }}
+                        specs(
+                            where: {{
+                                targetContract: "{target_address}",
+                                chainID: "{chain_id_str}"
+                            }},
+                            orderBy: blockTimestamp,
+                            orderDirection: desc,
+                            first: 10
+                        ) {{
+                            id
+                            blobHash
+                            targetContract
+                            chainID
+                            status
+                            blockTimestamp
+                        }}
+                    }}"""
                 },
                 timeout=30
             )
             response.raise_for_status()
             return response.json()
 
-        result = await asyncio.to_thread(call_contract)
+        result = await asyncio.to_thread(query)
 
-        if "error" in result:
-            logger.error(f"RPC error getting spec status: {result['error']}")
-            return None
+        # Check for GraphQL errors
+        if "errors" in result:
+            logger.error(f"Subgraph query error: {result['errors']}")
+            return []
 
-        hex_result = result.get("result", "0x")
-        if hex_result == "0x" or len(hex_result) < 66:
-            return None
+        data = result.get("data", {})
+        log_create_specs = data.get("logCreateSpecs", [])
+        specs = data.get("specs", [])
 
-        # Decode response: (uint64 createdTimestamp, uint8 status, string ipfs, bytes32 questionId)
-        data = hex_result[2:]  # Remove 0x
+        # Merge spec status info with LogCreateSpec data (which has transactionHash)
+        merged_specs = []
+        spec_status_map = {s.get("id"): s.get("status") for s in specs}
 
-        # createdTimestamp is uint64, but padded to 32 bytes
-        created_timestamp = int(data[0:64], 16) if len(data) >= 64 else 0
-        # status is uint8, padded to 32 bytes
-        status = int(data[64:128], 16) if len(data) >= 128 else 0
+        for log_spec in log_create_specs:
+            spec_id = log_spec.get("specID")
+            # Try to find status from specs query
+            status = spec_status_map.get(spec_id, "SUBMITTED")
 
-        # Status enum mapping
-        status_map = {0: "NONE", 1: "SUBMITTED", 2: "PROPOSED", 3: "FINALIZED", 4: "CANCELLED"}
+            merged_specs.append({
+                "specID": spec_id,
+                "blobHash": log_spec.get("blobHash"),
+                "targetContract": log_spec.get("targetContract"),
+                "chainId": log_spec.get("chainId"),
+                "timestamp": log_spec.get("timestamp"),
+                "blockNumber": log_spec.get("blockNumber"),
+                "blockTimestamp": log_spec.get("blockTimestamp"),
+                "transactionHash": log_spec.get("transactionHash"),
+                "status": status
+            })
 
-        return {
-            "createdTimestamp": created_timestamp,
-            "status": status_map.get(status, "UNKNOWN"),
-            "statusCode": status
-        }
+        # If no logCreateSpecs but have specs, use those (fallback)
+        if not merged_specs and specs:
+            for spec in specs:
+                merged_specs.append({
+                    "specID": spec.get("id"),
+                    "blobHash": spec.get("blobHash"),
+                    "targetContract": spec.get("targetContract"),
+                    "chainId": int(spec.get("chainID", 0)),
+                    "blockTimestamp": spec.get("blockTimestamp"),
+                    "status": spec.get("status", "SUBMITTED"),
+                    "transactionHash": None  # Not available from specs entity
+                })
+
+        return merged_specs
 
     except Exception as e:
-        logger.error(f"Error getting spec status: {e}")
-        return None
+        logger.error(f"Error querying subgraph: {e}")
+        return []
 
 @app.get("/contract/{address}")
 @app.get("/api/py/contract/{address}")
@@ -926,7 +863,7 @@ async def get_contract_metadata(
     address: str = Path(..., description="Contract address"),
     chain_id: int = Query(1, description="Chain ID where transaction occurs")
 ) -> BlobResponse:
-    """Fetch metadata for a contract by querying KaiSign contract directly.
+    """Fetch metadata for a contract by querying subgraph then fetching blob.
 
     Args:
         address: Contract address (0x...)
@@ -941,8 +878,8 @@ async def get_contract_metadata(
             address = "0x" + address
         address = address.lower()
 
-        # Query KaiSign contract events directly instead of subgraph
-        specs = await query_kaisign_events_for_contract(address, chain_id)
+        # Query subgraph for specs (includes transactionHash for fast blob lookup)
+        specs = await query_subgraph_for_contract(address, chain_id)
 
         if not specs:
             return BlobResponse(
@@ -951,22 +888,9 @@ async def get_contract_metadata(
                 error=f"No metadata found for contract {address} on chain {chain_id}"
             )
 
-        # Get status for each spec and find the best one
-        best_spec = None
-        finalized_spec = None
-        proposed_spec = None
-
-        for spec in specs:
-            spec_status = await get_spec_status_from_contract(spec["specID"])
-            if spec_status:
-                spec["status"] = spec_status.get("status", "UNKNOWN")
-
-                if spec["status"] == "FINALIZED" and not finalized_spec:
-                    finalized_spec = spec
-                elif spec["status"] == "PROPOSED" and not proposed_spec:
-                    proposed_spec = spec
-
-        # Prefer FINALIZED > PROPOSED > most recent
+        # Find best spec: prefer FINALIZED > PROPOSED > most recent
+        finalized_spec = next((s for s in specs if s.get("status") == "FINALIZED"), None)
+        proposed_spec = next((s for s in specs if s.get("status") == "PROPOSED"), None)
         best_spec = finalized_spec or proposed_spec or specs[0]
 
         logger.info(f"Found spec for {address}: status={best_spec.get('status', 'UNKNOWN')}, blobHash={best_spec.get('blobHash')}")
@@ -976,11 +900,22 @@ async def get_contract_metadata(
             return BlobResponse(
                 success=False,
                 blob_hash=address,
-                error="Blob hash not found in contract events"
+                error="Blob hash not found in subgraph"
             )
 
-        # Fetch blob metadata using existing endpoint logic
-        blob_response = await get_blob_metadata(blob_hash, None)
+        # Get transactionHash for faster blob slot lookup
+        tx_hash = best_spec.get("transactionHash")
+        if tx_hash:
+            # Convert bytes to hex string if needed
+            if isinstance(tx_hash, bytes):
+                tx_hash = "0x" + tx_hash.hex()
+            elif not tx_hash.startswith("0x"):
+                tx_hash = "0x" + tx_hash
+
+        logger.info(f"Fetching blob {blob_hash} with tx_hash={tx_hash}")
+
+        # Fetch blob metadata using transactionHash for faster slot calculation
+        blob_response = await get_blob_metadata(blob_hash, tx_hash)
         return blob_response
 
     except Exception as e:
