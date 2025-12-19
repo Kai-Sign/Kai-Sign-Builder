@@ -81,7 +81,13 @@ app.include_router(kms_router)
 app.include_router(relay_router)
 
 # Configure CORS with specific origins
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:3000").split(",")
+# Include Chrome extension origins for MetaMask Snaps and KaiSign extension
+DEFAULT_ORIGINS = ",".join([
+    "http://localhost:3000",
+    "chrome-extension://ljfoeinjpaedjfecbmggjgodbgkmjkjk",  # MetaMask Snaps
+    "chrome-extension://lifhfmmakjideolgpkohjimgfigcmjnh",  # KaiSign extension
+])
+allowed_origins = os.getenv("ALLOWED_ORIGINS", DEFAULT_ORIGINS).split(",")
 
 app.add_middleware(
     CORSMiddleware,
