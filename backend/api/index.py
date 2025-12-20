@@ -10,6 +10,8 @@ import asyncio
 import logging
 import hashlib
 from datetime import datetime
+from collections import defaultdict
+import time
 
 # Import patched version first to apply the monkeypatches
 import api.patched_erc7730
@@ -37,6 +39,165 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# =============================================================================
+# RATE LIMITING - Bot-resistant implementation
+# =============================================================================
+# Uses sliding window with fingerprinting to prevent abuse
+# Bots can't easily bypass because we combine multiple signals
+
+class RateLimiter:
+    """Sliding window rate limiter with client fingerprinting."""
+
+    def __init__(self):
+        # {fingerprint: [(timestamp, request_count), ...]}
+        self.requests: dict = defaultdict(list)
+        self.blocked: dict = {}  # {fingerprint: block_until_timestamp}
+        self.lock = asyncio.Lock()
+
+        # Rate limit configuration
+        self.window_seconds = int(os.getenv("RATE_LIMIT_WINDOW", "60"))
+        self.max_requests = int(os.getenv("RATE_LIMIT_MAX", "30"))
+        self.block_duration = int(os.getenv("RATE_LIMIT_BLOCK_SECONDS", "300"))
+
+        # Burst protection: max requests in short window
+        self.burst_window = 5  # seconds
+        self.burst_max = 10  # max requests in burst window
+
+    def _get_fingerprint(self, request: Request) -> str:
+        """Generate client fingerprint from multiple signals.
+
+        Combines IP + User-Agent + Accept headers to make it harder
+        for bots to rotate identities.
+        """
+        ip = self._get_client_ip(request)
+        user_agent = request.headers.get("user-agent", "")[:100]
+        accept = request.headers.get("accept", "")[:50]
+        accept_lang = request.headers.get("accept-language", "")[:20]
+
+        # Create fingerprint hash
+        fingerprint_data = f"{ip}|{user_agent}|{accept}|{accept_lang}"
+        return hashlib.sha256(fingerprint_data.encode()).hexdigest()[:32]
+
+    def _get_client_ip(self, request: Request) -> str:
+        """Extract real client IP, handling proxies."""
+        # Check common proxy headers
+        forwarded = request.headers.get("x-forwarded-for")
+        if forwarded:
+            # Take first IP in chain (original client)
+            return forwarded.split(",")[0].strip()
+
+        real_ip = request.headers.get("x-real-ip")
+        if real_ip:
+            return real_ip
+
+        # Fallback to direct connection
+        if request.client:
+            return request.client.host
+        return "unknown"
+
+    async def is_allowed(self, request: Request) -> tuple[bool, dict]:
+        """Check if request is allowed under rate limits.
+
+        Returns (allowed, info_dict) where info_dict contains:
+        - remaining: requests remaining in window
+        - reset_in: seconds until window resets
+        - blocked_until: timestamp if blocked (None otherwise)
+        """
+        fingerprint = self._get_fingerprint(request)
+        now = time.time()
+
+        async with self.lock:
+            # Check if client is blocked
+            if fingerprint in self.blocked:
+                block_until = self.blocked[fingerprint]
+                if now < block_until:
+                    return False, {
+                        "remaining": 0,
+                        "reset_in": int(block_until - now),
+                        "blocked_until": int(block_until),
+                        "reason": "Too many requests. You are temporarily blocked."
+                    }
+                else:
+                    # Block expired
+                    del self.blocked[fingerprint]
+
+            # Clean old entries outside window
+            window_start = now - self.window_seconds
+            self.requests[fingerprint] = [
+                (ts, count) for ts, count in self.requests[fingerprint]
+                if ts > window_start
+            ]
+
+            # Count requests in window
+            total_requests = sum(count for _, count in self.requests[fingerprint])
+
+            # Check burst (last 5 seconds)
+            burst_start = now - self.burst_window
+            burst_requests = sum(
+                count for ts, count in self.requests[fingerprint]
+                if ts > burst_start
+            )
+
+            # Check limits
+            if burst_requests >= self.burst_max:
+                # Burst limit hit - short block
+                self.blocked[fingerprint] = now + 60
+                return False, {
+                    "remaining": 0,
+                    "reset_in": 60,
+                    "blocked_until": int(now + 60),
+                    "reason": "Burst limit exceeded. Slow down."
+                }
+
+            if total_requests >= self.max_requests:
+                # Window limit hit - longer block
+                self.blocked[fingerprint] = now + self.block_duration
+                return False, {
+                    "remaining": 0,
+                    "reset_in": self.block_duration,
+                    "blocked_until": int(now + self.block_duration),
+                    "reason": "Rate limit exceeded. You are temporarily blocked."
+                }
+
+            # Record this request
+            self.requests[fingerprint].append((now, 1))
+
+            return True, {
+                "remaining": self.max_requests - total_requests - 1,
+                "reset_in": int(self.window_seconds - (now - window_start)),
+                "blocked_until": None
+            }
+
+    async def cleanup(self):
+        """Periodic cleanup of old entries to prevent memory bloat."""
+        async with self.lock:
+            now = time.time()
+            window_start = now - self.window_seconds
+
+            # Clean request history
+            empty_keys = []
+            for fp in self.requests:
+                self.requests[fp] = [
+                    (ts, count) for ts, count in self.requests[fp]
+                    if ts > window_start
+                ]
+                if not self.requests[fp]:
+                    empty_keys.append(fp)
+
+            for fp in empty_keys:
+                del self.requests[fp]
+
+            # Clean expired blocks
+            expired_blocks = [
+                fp for fp, until in self.blocked.items()
+                if until < now
+            ]
+            for fp in expired_blocks:
+                del self.blocked[fp]
+
+# Global rate limiter instance
+rate_limiter = RateLimiter()
 
 load_dotenv()
 
@@ -80,22 +241,69 @@ app.include_router(healthcheck_router)
 app.include_router(kms_router)
 app.include_router(relay_router)
 
-# Configure CORS with specific origins
-# Include Chrome extension origins for MetaMask Snaps and KaiSign extension
-DEFAULT_ORIGINS = ",".join([
-    "http://localhost:3000",
-    "chrome-extension://ljfoeinjpaedjfecbmggjgodbgkmjkjk",  # MetaMask Snaps
-    "chrome-extension://lifhfmmakjideolgpkohjimgfigcmjnh",  # KaiSign extension
-])
-allowed_origins = os.getenv("ALLOWED_ORIGINS", DEFAULT_ORIGINS).split(",")
-
+# Configure CORS with wildcard - API serves public blockchain metadata
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
-    allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE"],
-    allow_headers=["Content-Type", "Authorization", "X-API-Key"],
+    allow_origins=["*"],
+    allow_credentials=False,  # Must be False with wildcard origin per CORS spec
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["*"],
 )
+
+# =============================================================================
+# RATE LIMITING MIDDLEWARE
+# =============================================================================
+# Applied to all routes except health checks
+
+# Paths exempt from rate limiting
+RATE_LIMIT_EXEMPT_PATHS = {"/", "/api/py", "/health", "/api/py/health"}
+
+@app.middleware("http")
+async def rate_limit_middleware(request: Request, call_next):
+    """Apply rate limiting to all non-exempt requests."""
+    # Skip rate limiting for exempt paths and OPTIONS requests
+    if request.url.path in RATE_LIMIT_EXEMPT_PATHS or request.method == "OPTIONS":
+        return await call_next(request)
+
+    # Check rate limit
+    allowed, info = await rate_limiter.is_allowed(request)
+
+    if not allowed:
+        return JSONResponse(
+            status_code=429,
+            content={
+                "error": "Rate limit exceeded",
+                "message": info.get("reason", "Too many requests"),
+                "retry_after": info.get("reset_in", 60)
+            },
+            headers={
+                "Retry-After": str(info.get("reset_in", 60)),
+                "X-RateLimit-Remaining": "0",
+                "X-RateLimit-Reset": str(info.get("reset_in", 60))
+            }
+        )
+
+    # Process request
+    response = await call_next(request)
+
+    # Add rate limit headers to response
+    response.headers["X-RateLimit-Remaining"] = str(info.get("remaining", 0))
+    response.headers["X-RateLimit-Reset"] = str(info.get("reset_in", 60))
+
+    return response
+
+# Periodic cleanup task
+async def rate_limit_cleanup_task():
+    """Run cleanup every 5 minutes to prevent memory bloat."""
+    while True:
+        await asyncio.sleep(300)  # 5 minutes
+        await rate_limiter.cleanup()
+        logger.debug("Rate limiter cleanup completed")
+
+@app.on_event("startup")
+async def startup_event():
+    """Start background tasks on app startup."""
+    asyncio.create_task(rate_limit_cleanup_task())
 
 class Message(BaseModel):
     message: str
