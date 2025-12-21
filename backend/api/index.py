@@ -31,6 +31,13 @@ from api.healthcheck import router as healthcheck_router
 from fastapi.exceptions import RequestValidationError
 from api.kms_routes import router as kms_router
 from api.relay import router as relay_router
+from api.eigencompute import (
+    generate_attestation,
+    verify_attestation,
+    compute_content_hash,
+    is_enabled as eigencompute_enabled,
+    AttestationResult
+)
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 # Configure logging
@@ -329,11 +336,26 @@ class BatchIPFSMetadataRequest(BaseModel):
 class BatchIPFSMetadataResponse(BaseModel):
     results: List[IPFSMetadataResponse]
 
+class AttestationProof(BaseModel):
+    """EigenCompute TEE attestation proof."""
+    content_hash: str
+    timestamp: int
+    tee_signature: Optional[str] = None
+    attestation_report: Optional[str] = None
+    verifier_url: Optional[str] = None
+    error: Optional[str] = None
+
 class BlobResponse(BaseModel):
     success: bool
     blob_hash: str
     metadata: Optional[dict] = None
     error: Optional[str] = None
+    attestation: Optional[AttestationProof] = None
+
+class VerifyAttestationRequest(BaseModel):
+    """Request body for attestation verification."""
+    data: dict
+    attestation: AttestationProof
 
 def decode_blob_data(blob_hex: str) -> str:
     """Decode raw blob hex data to string.
@@ -1191,7 +1213,26 @@ async def get_blob_metadata(
                     content = content[:padding_idx]
 
                 metadata = json.loads(content)
-                return BlobResponse(success=True, blob_hash=blob_hash, metadata=metadata)
+
+                # Generate EigenCompute attestation if enabled
+                attestation = await generate_attestation(metadata)
+                attestation_proof = None
+                if attestation:
+                    attestation_proof = AttestationProof(
+                        content_hash=attestation.content_hash,
+                        timestamp=attestation.timestamp,
+                        tee_signature=attestation.tee_signature,
+                        attestation_report=attestation.attestation_report,
+                        verifier_url=attestation.verifier_url,
+                        error=attestation.error
+                    )
+
+                return BlobResponse(
+                    success=True,
+                    blob_hash=blob_hash,
+                    metadata=metadata,
+                    attestation=attestation_proof
+                )
         except Exception as direct_error:
             logger.debug(f"eth_getBlobByHash failed: {direct_error}")
             pass  # Fallback to beacon
@@ -1224,7 +1265,25 @@ async def get_blob_metadata(
         # Parse JSON
         metadata = json.loads(content)
 
-        return BlobResponse(success=True, blob_hash=blob_hash, metadata=metadata)
+        # Generate EigenCompute attestation if enabled
+        attestation = await generate_attestation(metadata)
+        attestation_proof = None
+        if attestation:
+            attestation_proof = AttestationProof(
+                content_hash=attestation.content_hash,
+                timestamp=attestation.timestamp,
+                tee_signature=attestation.tee_signature,
+                attestation_report=attestation.attestation_report,
+                verifier_url=attestation.verifier_url,
+                error=attestation.error
+            )
+
+        return BlobResponse(
+            success=True,
+            blob_hash=blob_hash,
+            metadata=metadata,
+            attestation=attestation_proof
+        )
 
     except json.JSONDecodeError as e:
         return BlobResponse(
@@ -1239,3 +1298,64 @@ async def get_blob_metadata(
             blob_hash=blob_hash,
             error=f"Unexpected error: {str(e)}"
         )
+
+
+@app.post("/verify-attestation")
+@app.post("/api/py/verify-attestation")
+async def verify_attestation_endpoint(request: VerifyAttestationRequest):
+    """Verify an EigenCompute attestation.
+
+    Allows clients to verify that:
+    - The content hash matches the response data
+    - The TEE signature is valid (if EigenCompute is configured)
+
+    Args:
+        request: Contains data and attestation to verify
+
+    Returns:
+        Verification result with hash_valid, signature_valid, and verified status
+    """
+    try:
+        attestation_dict = {
+            "content_hash": request.attestation.content_hash,
+            "timestamp": request.attestation.timestamp,
+            "tee_signature": request.attestation.tee_signature,
+            "attestation_report": request.attestation.attestation_report,
+        }
+
+        result = await verify_attestation(request.data, attestation_dict)
+
+        return JSONResponse(content={
+            "verified": result.get("verified", False),
+            "hash_valid": result.get("hash_valid", False),
+            "signature_valid": result.get("signature_valid"),
+            "eigencompute_enabled": eigencompute_enabled(),
+            "error": result.get("error")
+        })
+
+    except Exception as e:
+        logger.error(f"Attestation verification error: {e}")
+        return JSONResponse(
+            status_code=500,
+            content={
+                "verified": False,
+                "error": f"Verification error: {str(e)}"
+            }
+        )
+
+
+@app.get("/attestation-status")
+@app.get("/api/py/attestation-status")
+async def get_attestation_status():
+    """Check if EigenCompute attestation is enabled and configured.
+
+    Returns:
+        Status of EigenCompute integration
+    """
+    return JSONResponse(content={
+        "eigencompute_enabled": eigencompute_enabled(),
+        "message": "EigenCompute attestation is " + (
+            "enabled and configured" if eigencompute_enabled()
+            else "disabled or not configured"
+        )
+    })
