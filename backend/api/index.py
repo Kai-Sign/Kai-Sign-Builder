@@ -395,80 +395,100 @@ async def fetch_blob_from_beacon(slot: int, blob_hash: str) -> Optional[str]:
         logger.error(f"Beacon fetch error: {e}")
         return None
 
-async def find_blob_slot(blob_hash: str, tx_hash: Optional[str] = None) -> Optional[int]:
+async def find_blob_slot(blob_hash: str, tx_hash_or_timestamp: Optional[str] = None) -> Optional[int]:
     """Find the beacon slot containing the blob.
 
-    Uses timestamp-based slot calculation when tx_hash is provided (fast path),
+    Uses timestamp-based slot calculation when tx_hash or timestamp is provided (fast path),
     otherwise searches recent beacon slots (slow path).
+
+    tx_hash_or_timestamp can be:
+    - A transaction hash (0x...) - will fetch block timestamp via RPC
+    - A Unix timestamp string - will use directly for slot calculation
     """
     # Sepolia beacon chain constants
     SLOT_TIME = 12  # seconds per slot
     GENESIS_TIME = 1655733600  # Sepolia beacon genesis
 
+    def check_slot_for_blob(s: int) -> Optional[int]:
+        """Check if blob exists in given slot."""
+        try:
+            response = requests.get(
+                f"{SEPOLIA_BEACON}/eth/v1/beacon/blob_sidecars/{s}",
+                timeout=10
+            )
+            if response.status_code != 200:
+                return None
+
+            sidecars = response.json().get("data", [])
+            for sidecar in sidecars:
+                kzg_commitment = sidecar.get("kzg_commitment", "")
+                if kzg_commitment:
+                    commitment_hex = kzg_commitment[2:] if kzg_commitment.startswith('0x') else kzg_commitment
+                    commitment_bytes = bytes.fromhex(commitment_hex)
+                    hash_bytes = hashlib.sha256(commitment_bytes).digest()
+                    versioned_hash = "0x01" + hash_bytes[1:].hex()
+
+                    if versioned_hash.lower() == blob_hash.lower():
+                        return s
+            return None
+        except Exception:
+            return None
+
     try:
-        # Fast path: Use tx_hash to calculate slot from block timestamp
-        if tx_hash:
-            def get_slot_from_tx():
-                # Get tx receipt for block number
-                response = requests.post(
-                    SEPOLIA_RPC,
-                    json={"jsonrpc": "2.0", "method": "eth_getTransactionReceipt", "params": [tx_hash], "id": 1},
-                    timeout=30
-                )
-                result = response.json().get("result")
-                if not result or not result.get("blockNumber"):
-                    return None
+        estimated_slot = None
 
-                block_num = int(result["blockNumber"], 16)
+        # Fast path: Calculate slot from timestamp or tx_hash
+        if tx_hash_or_timestamp:
+            # Check if it's a timestamp (numeric string) or tx hash (0x...)
+            if tx_hash_or_timestamp.startswith("0x"):
+                # It's a tx hash - fetch block timestamp
+                def get_slot_from_tx():
+                    response = requests.post(
+                        SEPOLIA_RPC,
+                        json={"jsonrpc": "2.0", "method": "eth_getTransactionReceipt", "params": [tx_hash_or_timestamp], "id": 1},
+                        timeout=10
+                    )
+                    result = response.json().get("result")
+                    if not result or not result.get("blockNumber"):
+                        return None
 
-                # Get block timestamp
-                response = requests.post(
-                    SEPOLIA_RPC,
-                    json={"jsonrpc": "2.0", "method": "eth_getBlockByNumber", "params": [hex(block_num), False], "id": 1},
-                    timeout=30
-                )
-                block = response.json().get("result")
-                if not block or not block.get("timestamp"):
-                    return None
+                    block_num = int(result["blockNumber"], 16)
+                    response = requests.post(
+                        SEPOLIA_RPC,
+                        json={"jsonrpc": "2.0", "method": "eth_getBlockByNumber", "params": [hex(block_num), False], "id": 1},
+                        timeout=10
+                    )
+                    block = response.json().get("result")
+                    if not block or not block.get("timestamp"):
+                        return None
 
-                block_timestamp = int(block["timestamp"], 16)
+                    block_timestamp = int(block["timestamp"], 16)
+                    return (block_timestamp - GENESIS_TIME) // SLOT_TIME
 
-                # Calculate beacon slot from timestamp
-                return (block_timestamp - GENESIS_TIME) // SLOT_TIME
+                estimated_slot = await asyncio.to_thread(get_slot_from_tx)
+            else:
+                # It's a timestamp - use directly
+                try:
+                    block_timestamp = int(tx_hash_or_timestamp)
+                    estimated_slot = (block_timestamp - GENESIS_TIME) // SLOT_TIME
+                except ValueError:
+                    pass
 
-            estimated_slot = await asyncio.to_thread(get_slot_from_tx)
-            if estimated_slot:
-                # Search in a small range around the estimated slot
-                for offset in range(-5, 6):
-                    slot = estimated_slot + offset
+        if estimated_slot:
+            # Search slots in PARALLEL for much faster lookup
+            # Search wider range (-10 to +5) since blob tx is before reveal tx
+            offsets = list(range(-10, 6))
 
-                    def check_slot_at(s):
-                        try:
-                            response = requests.get(
-                                f"{SEPOLIA_BEACON}/eth/v1/beacon/blob_sidecars/{s}",
-                                timeout=30
-                            )
-                            if response.status_code != 200:
-                                return None
+            async def check_slot_async(offset):
+                slot = estimated_slot + offset
+                return await asyncio.to_thread(lambda: check_slot_for_blob(slot))
 
-                            sidecars = response.json().get("data", [])
-                            for sidecar in sidecars:
-                                kzg_commitment = sidecar.get("kzg_commitment", "")
-                                if kzg_commitment:
-                                    commitment_hex = kzg_commitment[2:] if kzg_commitment.startswith('0x') else kzg_commitment
-                                    commitment_bytes = bytes.fromhex(commitment_hex)
-                                    hash_bytes = hashlib.sha256(commitment_bytes).digest()
-                                    versioned_hash = "0x01" + hash_bytes[1:].hex()
+            # Run all slot checks in parallel
+            results = await asyncio.gather(*[check_slot_async(o) for o in offsets])
 
-                                    if versioned_hash.lower() == blob_hash.lower():
-                                        return s
-                            return None
-                        except Exception:
-                            return None
-
-                    found = await asyncio.to_thread(lambda s=slot: check_slot_at(s))
-                    if found:
-                        return found
+            for result in results:
+                if result is not None:
+                    return result
 
         # Slow path: Search recent beacon slots
         def get_head_slot():
@@ -1117,19 +1137,30 @@ async def get_contract_metadata(
                 error="Blob hash not found in subgraph"
             )
 
-        # Get transactionHash for faster blob slot lookup
-        tx_hash = best_spec.get("transactionHash")
-        if tx_hash:
-            # Convert bytes to hex string if needed
-            if isinstance(tx_hash, bytes):
-                tx_hash = "0x" + tx_hash.hex()
-            elif not tx_hash.startswith("0x"):
-                tx_hash = "0x" + tx_hash
+        # Get blockTimestamp for faster blob slot lookup (more reliable than tx_hash)
+        # The blockTimestamp from subgraph is the reveal tx timestamp, blob is 1-2 slots before
+        block_timestamp = best_spec.get("blockTimestamp")
+        tx_hash_or_timestamp = None
 
-        logger.info(f"Fetching blob {blob_hash} with tx_hash={tx_hash}")
+        if block_timestamp:
+            # Use timestamp directly - faster than fetching via tx_hash
+            tx_hash_or_timestamp = str(block_timestamp)
+            logger.info(f"Using blockTimestamp={block_timestamp} for slot calculation")
+        else:
+            # Fallback to tx_hash if no timestamp
+            tx_hash = best_spec.get("transactionHash")
+            if tx_hash:
+                if isinstance(tx_hash, bytes):
+                    tx_hash = "0x" + tx_hash.hex()
+                elif not tx_hash.startswith("0x"):
+                    tx_hash = "0x" + tx_hash
+                tx_hash_or_timestamp = tx_hash
+                logger.info(f"Using tx_hash={tx_hash} for slot calculation")
 
-        # Fetch blob metadata using transactionHash for faster slot calculation
-        blob_response = await get_blob_metadata(blob_hash, tx_hash)
+        logger.info(f"Fetching blob {blob_hash}")
+
+        # Fetch blob metadata using timestamp/tx_hash for faster slot calculation
+        blob_response = await get_blob_metadata(blob_hash, tx_hash_or_timestamp)
         return blob_response
 
     except Exception as e:
