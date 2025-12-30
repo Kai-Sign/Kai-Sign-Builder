@@ -992,7 +992,7 @@ async def read_root():
 async def debug_info():
     """Return debug info about the deployment."""
     return {
-        "version": "2.1.0-sync-subgraph",
+        "version": "2.1.1-test-contract",
         "sepolia_beacon": SEPOLIA_BEACON,
         "sepolia_rpc": SEPOLIA_RPC,
         "genesis_time": 1655733600,
@@ -1105,6 +1105,86 @@ async def test_full_fetch(
                 "success": False,
                 "error": str(e)
             })
+
+    return results
+
+# Test contract fetch (step by step)
+@app.get("/api/py/test-contract/{address}")
+async def test_contract_fetch(
+    address: str = Path(...),
+    chain_id: int = Query(1)
+):
+    """Test contract fetch step by step."""
+    import time
+    results = {"steps": []}
+
+    # Step 1: Query subgraph
+    start = time.time()
+    try:
+        specs = await query_subgraph_for_contract(address, chain_id)
+        results["steps"].append({
+            "step": "subgraph_query",
+            "elapsed": round(time.time() - start, 2),
+            "success": len(specs) > 0,
+            "spec_count": len(specs)
+        })
+        if not specs:
+            return results
+    except Exception as e:
+        results["steps"].append({
+            "step": "subgraph_query",
+            "elapsed": round(time.time() - start, 2),
+            "success": False,
+            "error": str(e)
+        })
+        return results
+
+    # Get best spec
+    best_spec = specs[0]
+    blob_hash = best_spec.get("blobHash")
+    block_timestamp = best_spec.get("blockTimestamp")
+
+    results["blob_hash"] = blob_hash
+    results["block_timestamp"] = block_timestamp
+
+    # Step 2: Find slot
+    start = time.time()
+    try:
+        slot = await find_blob_slot(blob_hash, str(block_timestamp) if block_timestamp else None)
+        results["steps"].append({
+            "step": "find_slot",
+            "elapsed": round(time.time() - start, 2),
+            "success": slot is not None,
+            "slot": slot
+        })
+        if not slot:
+            return results
+    except Exception as e:
+        results["steps"].append({
+            "step": "find_slot",
+            "elapsed": round(time.time() - start, 2),
+            "success": False,
+            "error": str(e)
+        })
+        return results
+
+    # Step 3: Fetch blob
+    start = time.time()
+    try:
+        blob_hex = await fetch_blob_from_beacon(slot, blob_hash)
+        results["steps"].append({
+            "step": "fetch_blob",
+            "elapsed": round(time.time() - start, 2),
+            "success": blob_hex is not None,
+            "blob_length": len(blob_hex) if blob_hex else 0
+        })
+    except Exception as e:
+        results["steps"].append({
+            "step": "fetch_blob",
+            "elapsed": round(time.time() - start, 2),
+            "success": False,
+            "error": str(e)
+        })
 
     return results
 
