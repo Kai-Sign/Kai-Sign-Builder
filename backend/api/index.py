@@ -992,7 +992,7 @@ async def read_root():
 async def debug_info():
     """Return debug info about the deployment."""
     return {
-        "version": "2.1.3-single-route",
+        "version": "2.1.4-full-sync",
         "sepolia_beacon": SEPOLIA_BEACON,
         "sepolia_rpc": SEPOLIA_RPC,
         "genesis_time": 1655733600,
@@ -1349,115 +1349,141 @@ async def query_subgraph_for_contract(target_address: str, chain_id: int) -> lis
         logger.error(f"Error querying subgraph: {e}")
         return []
 
-# Only use /api/py prefix for contract endpoint
+# Contract metadata endpoint - uses working test-contract pattern
 @app.get("/api/py/contract/{address}")
 async def get_contract_metadata(
     address: str = Path(..., description="Contract address"),
     chain_id: int = Query(1, description="Chain ID where transaction occurs")
-) -> BlobResponse:
-    """Fetch metadata for a contract by querying subgraph then fetching blob.
+):
+    """Fetch metadata for a contract by querying subgraph then fetching blob."""
+    # Normalize address
+    if not address.startswith("0x"):
+        address = "0x" + address
+    address = address.lower()
 
-    Args:
-        address: Contract address (0x...)
-        chain_id: Chain ID (default: 1)
+    # Step 1: Query subgraph
+    specs = query_subgraph_for_contract_sync(address, chain_id)
+    if not specs:
+        return {"success": False, "blob_hash": address, "error": f"No metadata found for {address}", "metadata": None}
 
-    Returns:
-        BlobResponse with contract metadata
-    """
-    try:
-        # Normalize address
-        if not address.startswith("0x"):
-            address = "0x" + address
-        address = address.lower()
+    # Get best spec
+    finalized_spec = next((s for s in specs if s.get("status") == "FINALIZED"), None)
+    proposed_spec = next((s for s in specs if s.get("status") == "PROPOSED"), None)
+    best_spec = finalized_spec or proposed_spec or specs[0]
 
-        # Query subgraph for specs (includes transactionHash for fast blob lookup)
-        specs = await query_subgraph_for_contract(address, chain_id)
+    blob_hash = best_spec.get("blobHash")
+    block_timestamp = best_spec.get("blockTimestamp")
 
-        if not specs:
-            return BlobResponse(
-                success=False,
-                blob_hash=address,
-                error=f"No metadata found for contract {address} on chain {chain_id}"
-            )
+    if not blob_hash:
+        return {"success": False, "blob_hash": address, "error": "No blob hash found", "metadata": None}
 
-        # Find best spec: prefer FINALIZED > PROPOSED > most recent
-        finalized_spec = next((s for s in specs if s.get("status") == "FINALIZED"), None)
-        proposed_spec = next((s for s in specs if s.get("status") == "PROPOSED"), None)
-        best_spec = finalized_spec or proposed_spec or specs[0]
+    # Step 2: Find slot
+    slot = find_blob_slot_sync(blob_hash, str(block_timestamp) if block_timestamp else None)
+    if not slot:
+        return {"success": False, "blob_hash": blob_hash, "error": "Could not find slot for blob", "metadata": None}
 
-        logger.info(f"Found spec for {address}: status={best_spec.get('status', 'UNKNOWN')}, blobHash={best_spec.get('blobHash')}")
+    # Step 3: Fetch and decode blob
+    blob_hex = fetch_blob_from_beacon_sync(slot, blob_hash)
+    if not blob_hex:
+        return {"success": False, "blob_hash": blob_hash, "error": "Blob not found", "metadata": None}
 
-        blob_hash = best_spec.get("blobHash")
-        if not blob_hash:
-            return BlobResponse(
-                success=False,
-                blob_hash=address,
-                error="Blob hash not found in subgraph"
-            )
+    content = decode_blob_data(blob_hex)
+    padding_idx = content.find(PADDING_MARKER)
+    if padding_idx != -1:
+        content = content[:padding_idx]
+    metadata = json.loads(content)
 
-        # Get blockTimestamp for faster blob slot lookup (more reliable than tx_hash)
-        # The blockTimestamp from subgraph is the reveal tx timestamp, blob is 1-2 slots before
-        block_timestamp = best_spec.get("blockTimestamp")
-        tx_hash_or_timestamp = None
+    return {"success": True, "blob_hash": blob_hash, "metadata": metadata, "error": None}
 
-        if block_timestamp:
-            # Use timestamp directly - faster than fetching via tx_hash
-            tx_hash_or_timestamp = str(block_timestamp)
-            logger.info(f"Using blockTimestamp={block_timestamp} for slot calculation")
-        else:
-            # Fallback to tx_hash if no timestamp
-            tx_hash = best_spec.get("transactionHash")
-            if tx_hash:
-                if isinstance(tx_hash, bytes):
-                    tx_hash = "0x" + tx_hash.hex()
-                elif not tx_hash.startswith("0x"):
-                    tx_hash = "0x" + tx_hash
-                tx_hash_or_timestamp = tx_hash
-                logger.info(f"Using tx_hash={tx_hash} for slot calculation")
 
-        logger.info(f"Fetching blob {blob_hash}")
+def query_subgraph_for_contract_sync(target_address: str, chain_id: int) -> list:
+    """Synchronous subgraph query."""
+    if not target_address.startswith("0x"):
+        target_address = "0x" + target_address
+    target_address = target_address.lower()
+    chain_id_str = str(chain_id)
 
-        # Find slot
-        slot = await find_blob_slot(blob_hash, tx_hash_or_timestamp)
-        if not slot:
-            return BlobResponse(
-                success=False,
-                blob_hash=blob_hash,
-                error="Could not find slot for blob"
-            )
+    response = requests.post(
+        KAISIGN_SUBGRAPH_URL,
+        json={
+            "query": f"""{{
+                logCreateSpecs(
+                    where: {{targetContract: "{target_address}", chainId: {chain_id_str}}}
+                    orderBy: blockTimestamp
+                    orderDirection: desc
+                    first: 10
+                ) {{
+                    id specID blobHash targetContract chainId timestamp blockNumber blockTimestamp transactionHash
+                }}
+                specs(
+                    where: {{targetContract: "{target_address}", chainID: {chain_id_str}}}
+                    orderBy: blockTimestamp
+                    orderDirection: desc
+                    first: 10
+                ) {{
+                    id blobHash targetContract chainID status blockTimestamp
+                }}
+            }}"""
+        },
+        timeout=15
+    )
+    response.raise_for_status()
+    result = response.json()
 
-        # Fetch blob
-        blob_hex = await fetch_blob_from_beacon(slot, blob_hash)
-        if not blob_hex:
-            return BlobResponse(
-                success=False,
-                blob_hash=blob_hash,
-                error="Blob not found in beacon chain sidecars"
-            )
+    data = result.get("data", {})
+    log_specs = data.get("logCreateSpecs", [])
+    specs = data.get("specs", [])
 
-        # Decode blob
-        content = decode_blob_data(blob_hex)
-        padding_idx = content.find(PADDING_MARKER)
-        if padding_idx != -1:
-            content = content[:padding_idx]
-        metadata = json.loads(content)
+    spec_status_map = {s.get("id"): s.get("status") for s in specs}
+    merged = []
+    for ls in log_specs:
+        merged.append({
+            "blobHash": ls.get("blobHash"),
+            "blockTimestamp": ls.get("blockTimestamp"),
+            "status": spec_status_map.get(ls.get("specID"), "SUBMITTED")
+        })
+    return merged
 
-        return BlobResponse(success=True, blob_hash=blob_hash, metadata=metadata)
 
-    except json.JSONDecodeError as e:
-        logger.error(f"JSON decode error: {e}")
-        return BlobResponse(
-            success=False,
-            blob_hash=address,
-            error=f"Failed to parse blob as JSON: {str(e)}"
-        )
-    except Exception as e:
-        logger.error(f"Contract metadata fetch error: {e}")
-        return BlobResponse(
-            success=False,
-            blob_hash=address,
-            error=f"Error fetching contract metadata: {str(e)}"
-        )
+def find_blob_slot_sync(blob_hash: str, timestamp: str = None) -> int:
+    """Synchronous slot lookup."""
+    SLOT_TIME = 12
+    GENESIS_TIME = 1655733600
+
+    def check_slot(s):
+        resp = requests.get(f"{SEPOLIA_BEACON}/eth/v1/beacon/blob_sidecars/{s}", timeout=10)
+        if resp.status_code != 200:
+            return None
+        for sidecar in resp.json().get("data", []):
+            kzg = sidecar.get("kzg_commitment", "")
+            if kzg:
+                h = kzg[2:] if kzg.startswith("0x") else kzg
+                vh = "0x01" + hashlib.sha256(bytes.fromhex(h)).digest()[1:].hex()
+                if vh.lower() == blob_hash.lower():
+                    return s
+        return None
+
+    if timestamp:
+        est_slot = (int(timestamp) - GENESIS_TIME) // SLOT_TIME
+        for offset in [-1, 0, -2, 1, -3, 2]:
+            result = check_slot(est_slot + offset)
+            if result:
+                return result
+    return None
+
+
+def fetch_blob_from_beacon_sync(slot: int, blob_hash: str) -> str:
+    """Synchronous blob fetch."""
+    resp = requests.get(f"{SEPOLIA_BEACON}/eth/v1/beacon/blob_sidecars/{slot}", timeout=15)
+    resp.raise_for_status()
+    for sidecar in resp.json().get("data", []):
+        kzg = sidecar.get("kzg_commitment", "")
+        if kzg:
+            h = kzg[2:] if kzg.startswith("0x") else kzg
+            vh = "0x01" + hashlib.sha256(bytes.fromhex(h)).digest()[1:].hex()
+            if vh.lower() == blob_hash.lower():
+                return sidecar.get("blob", "")
+    return None
 
 async def _fetch_blob_internal(blob_hash: str, tx_hash: Optional[str] = None) -> BlobResponse:
     """Internal blob fetch function - use this when calling programmatically."""
