@@ -1001,7 +1001,7 @@ async def read_root():
 async def debug_info():
     """Return debug info about the deployment."""
     return {
-        "version": "2.0.5-test-full",
+        "version": "2.0.6-simplified-blob",
         "sepolia_beacon": SEPOLIA_BEACON,
         "sepolia_rpc": SEPOLIA_RPC,
         "genesis_time": 1655733600,
@@ -1361,89 +1361,70 @@ async def get_contract_metadata(
 @app.get("/api/py/blob/{blob_hash}")
 async def get_blob_metadata(
     blob_hash: str = Path(..., description="Blob versioned hash (0x01...)"),
-    tx_hash: Optional[str] = Query(None, description="Transaction hash for faster slot lookup")
+    tx_hash: Optional[str] = Query(None, description="Transaction hash or timestamp for faster slot lookup")
 ) -> BlobResponse:
     """Fetch and decode blob data directly from Sepolia nodes.
 
     Args:
         blob_hash: The blob versioned hash (66 chars, starts with 0x01)
-        tx_hash: Optional transaction hash for faster slot lookup
+        tx_hash: Optional transaction hash or Unix timestamp for faster slot lookup
 
     Returns:
         BlobResponse with decoded metadata JSON
     """
+    logger.info(f"get_blob_metadata called: blob_hash={blob_hash}, tx_hash={tx_hash}")
+
+    # Validate blob hash format
+    if not blob_hash.startswith("0x01") or len(blob_hash) != 66:
+        return BlobResponse(
+            success=False,
+            blob_hash=blob_hash,
+            error="Invalid blob hash format. Expected 0x01 prefix and 66 characters."
+        )
+
+    # Step 1: Find slot
+    logger.info("Step 1: Finding slot...")
+    slot = await find_blob_slot(blob_hash, tx_hash)
+    if not slot:
+        logger.error("Step 1 failed: Could not find slot")
+        return BlobResponse(
+            success=False,
+            blob_hash=blob_hash,
+            error="Could not find slot for blob. Provide tx_hash query param for faster lookup."
+        )
+    logger.info(f"Step 1 complete: slot={slot}")
+
+    # Step 2: Fetch blob
+    logger.info("Step 2: Fetching blob...")
+    blob_hex = await fetch_blob_from_beacon(slot, blob_hash)
+    if not blob_hex:
+        logger.error("Step 2 failed: Blob not found")
+        return BlobResponse(
+            success=False,
+            blob_hash=blob_hash,
+            error="Blob not found in beacon chain sidecars. Blob may have been pruned (>18 days old)."
+        )
+    logger.info(f"Step 2 complete: blob_length={len(blob_hex)}")
+
+    # Step 3: Decode blob
+    logger.info("Step 3: Decoding blob...")
     try:
-        # Validate blob hash format
-        if not blob_hash.startswith("0x01") or len(blob_hash) != 66:
-            return BlobResponse(
-                success=False,
-                blob_hash=blob_hash,
-                error="Invalid blob hash format. Expected 0x01 prefix and 66 characters."
-            )
-
-        # Strategy 1: Try eth_getBlobByHash (if RPC supports it)
-        # Skip this strategy - most RPCs don't support it and it wastes time
-        # try:
-        #     response = requests.post(
-        #         SEPOLIA_RPC,
-        #         json={
-        #             "jsonrpc": "2.0",
-        #             "method": "eth_getBlobByHash",
-        #             "params": [blob_hash],
-        #             "id": 1
-        #         },
-        #         timeout=5
-        #     )
-        #     result = response.json()
-        #     if "result" in result and result["result"]:
-        #         blob_hex = result["result"]
-        #         content = decode_blob_data(blob_hex)
-        #         padding_idx = content.find(PADDING_MARKER)
-        #         if padding_idx != -1:
-        #             content = content[:padding_idx]
-        #         metadata = json.loads(content)
-        #         return BlobResponse(success=True, blob_hash=blob_hash, metadata=metadata)
-        # except Exception as direct_error:
-        #     logger.debug(f"eth_getBlobByHash failed: {direct_error}")
-
-        # Strategy 2: Beacon Chain API
-        slot = await find_blob_slot(blob_hash, tx_hash)
-        if not slot:
-            return BlobResponse(
-                success=False,
-                blob_hash=blob_hash,
-                error="Could not find slot for blob. Provide tx_hash query param for faster lookup."
-            )
-
-        blob_hex = await fetch_blob_from_beacon(slot, blob_hash)
-        if not blob_hex:
-            return BlobResponse(
-                success=False,
-                blob_hash=blob_hash,
-                error="Blob not found in beacon chain sidecars. Blob may have been pruned (>18 days old)."
-            )
-
-        # Decode blob
         content = decode_blob_data(blob_hex)
-
-        # Strip padding marker
         padding_idx = content.find(PADDING_MARKER)
         if padding_idx != -1:
             content = content[:padding_idx]
-
-        # Parse JSON
         metadata = json.loads(content)
-
+        logger.info("Step 3 complete: metadata decoded successfully")
         return BlobResponse(success=True, blob_hash=blob_hash, metadata=metadata)
-
     except json.JSONDecodeError as e:
+        logger.error(f"Step 3 failed: JSON decode error - {e}")
         return BlobResponse(
             success=False,
             blob_hash=blob_hash,
             error=f"Failed to parse blob as JSON: {str(e)}"
         )
     except Exception as e:
-        logger.error(f"Blob fetch error: {e}")
+        logger.error(f"Step 3 failed: {e}")
         return BlobResponse(
             success=False,
             blob_hash=blob_hash,
