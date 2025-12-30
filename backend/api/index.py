@@ -405,6 +405,9 @@ async def find_blob_slot(blob_hash: str, tx_hash_or_timestamp: Optional[str] = N
     - A transaction hash (0x...) - will fetch block timestamp via RPC
     - A Unix timestamp string - will use directly for slot calculation
     """
+    import time
+    start_time = time.time()
+
     # Sepolia beacon chain constants
     SLOT_TIME = 12  # seconds per slot
     GENESIS_TIME = 1655733600  # Sepolia beacon genesis
@@ -431,7 +434,8 @@ async def find_blob_slot(blob_hash: str, tx_hash_or_timestamp: Optional[str] = N
                     if versioned_hash.lower() == blob_hash.lower():
                         return s
             return None
-        except Exception:
+        except Exception as e:
+            logger.debug(f"Error checking slot {s}: {e}")
             return None
 
     try:
@@ -439,6 +443,7 @@ async def find_blob_slot(blob_hash: str, tx_hash_or_timestamp: Optional[str] = N
 
         # Fast path: Calculate slot from timestamp or tx_hash
         if tx_hash_or_timestamp:
+            logger.info(f"find_blob_slot: tx_hash_or_timestamp={tx_hash_or_timestamp}")
             # Check if it's a timestamp (numeric string) or tx hash (0x...)
             if tx_hash_or_timestamp.startswith("0x"):
                 # It's a tx hash - fetch block timestamp
@@ -471,24 +476,33 @@ async def find_blob_slot(blob_hash: str, tx_hash_or_timestamp: Optional[str] = N
                 try:
                     block_timestamp = int(tx_hash_or_timestamp)
                     estimated_slot = (block_timestamp - GENESIS_TIME) // SLOT_TIME
+                    logger.info(f"find_blob_slot: calculated slot={estimated_slot} from timestamp={block_timestamp}")
                 except ValueError:
+                    logger.error(f"find_blob_slot: failed to parse timestamp={tx_hash_or_timestamp}")
                     pass
 
         if estimated_slot:
+            logger.info(f"find_blob_slot: starting parallel search around slot {estimated_slot}")
             # Search slots in PARALLEL for much faster lookup
             # Search wider range (-10 to +5) since blob tx is before reveal tx
             offsets = list(range(-10, 6))
 
             async def check_slot_async(offset):
                 slot = estimated_slot + offset
-                return await asyncio.to_thread(lambda: check_slot_for_blob(slot))
+                result = await asyncio.to_thread(lambda s=slot: check_slot_for_blob(s))
+                return result
 
             # Run all slot checks in parallel
+            logger.info(f"find_blob_slot: launching {len(offsets)} parallel tasks")
             results = await asyncio.gather(*[check_slot_async(o) for o in offsets])
+            logger.info(f"find_blob_slot: parallel search completed in {time.time() - start_time:.2f}s, results: {[r for r in results if r]}")
 
             for result in results:
                 if result is not None:
+                    logger.info(f"find_blob_slot: found blob at slot {result}")
                     return result
+
+            logger.info(f"find_blob_slot: parallel search found nothing, falling back to slow path")
 
         # Slow path: Search recent beacon slots
         def get_head_slot():
