@@ -974,6 +974,49 @@ async def get_batch_ipfs_metadata(request: BatchIPFSMetadataRequest):
 async def read_root():
     return {"message": "API is running"}
 
+# Debug endpoint to verify deployment version
+@app.get("/api/py/debug")
+async def debug_info():
+    """Return debug info about the deployment."""
+    return {
+        "version": "2.0.1-parallel-search",
+        "sepolia_beacon": SEPOLIA_BEACON,
+        "sepolia_rpc": SEPOLIA_RPC,
+        "genesis_time": 1655733600,
+        "slot_time": 12,
+        "features": ["parallel_slot_search", "blockTimestamp_lookup"]
+    }
+
+# Test endpoint for slot lookup
+@app.get("/api/py/test-slot/{blob_hash}")
+async def test_slot_lookup(
+    blob_hash: str = Path(...),
+    timestamp: Optional[str] = Query(None)
+):
+    """Test slot lookup for debugging."""
+    import time
+    start = time.time()
+
+    try:
+        slot = await find_blob_slot(blob_hash, timestamp)
+        elapsed = time.time() - start
+        return {
+            "success": slot is not None,
+            "slot": slot,
+            "elapsed_seconds": round(elapsed, 2),
+            "timestamp_provided": timestamp,
+            "beacon_url": SEPOLIA_BEACON
+        }
+    except Exception as e:
+        elapsed = time.time() - start
+        return {
+            "success": False,
+            "error": str(e),
+            "elapsed_seconds": round(elapsed, 2),
+            "timestamp_provided": timestamp,
+            "beacon_url": SEPOLIA_BEACON
+        }
+
 # Subgraph URL for KaiSign
 KAISIGN_SUBGRAPH_URL = "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/version/latest"
 
