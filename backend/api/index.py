@@ -364,16 +364,22 @@ def decode_blob_data(blob_hex: str) -> str:
 
 async def fetch_blob_from_beacon(slot: int, blob_hash: str) -> Optional[str]:
     """Fetch blob from beacon chain API by slot."""
+    from concurrent.futures import ThreadPoolExecutor
+
     def fetch():
         response = requests.get(
             f"{SEPOLIA_BEACON}/eth/v1/beacon/blob_sidecars/{slot}",
-            timeout=30
+            timeout=15
         )
         response.raise_for_status()
         return response.json()
 
     try:
-        data = await asyncio.to_thread(fetch)
+        # Use ThreadPoolExecutor with timeout
+        with ThreadPoolExecutor(max_workers=1) as executor:
+            future = executor.submit(fetch)
+            data = future.result(timeout=20)
+
         sidecars = data.get("data", [])
 
         # Find the blob with matching versioned hash
@@ -995,7 +1001,7 @@ async def read_root():
 async def debug_info():
     """Return debug info about the deployment."""
     return {
-        "version": "2.0.3-threadpool-fix",
+        "version": "2.0.4-remove-asyncio-to-thread",
         "sepolia_beacon": SEPOLIA_BEACON,
         "sepolia_rpc": SEPOLIA_RPC,
         "genesis_time": 1655733600,
@@ -1298,36 +1304,29 @@ async def get_blob_metadata(
             )
 
         # Strategy 1: Try eth_getBlobByHash (if RPC supports it)
-        try:
-            def try_direct():
-                response = requests.post(
-                    SEPOLIA_RPC,
-                    json={
-                        "jsonrpc": "2.0",
-                        "method": "eth_getBlobByHash",
-                        "params": [blob_hash],
-                        "id": 1
-                    },
-                    timeout=30
-                )
-                result = response.json()
-                if "result" in result and result["result"]:
-                    return result["result"]
-                return None
-
-            blob_hex = await asyncio.to_thread(try_direct)
-            if blob_hex:
-                content = decode_blob_data(blob_hex)
-                # Strip padding
-                padding_idx = content.find(PADDING_MARKER)
-                if padding_idx != -1:
-                    content = content[:padding_idx]
-
-                metadata = json.loads(content)
-                return BlobResponse(success=True, blob_hash=blob_hash, metadata=metadata)
-        except Exception as direct_error:
-            logger.debug(f"eth_getBlobByHash failed: {direct_error}")
-            pass  # Fallback to beacon
+        # Skip this strategy - most RPCs don't support it and it wastes time
+        # try:
+        #     response = requests.post(
+        #         SEPOLIA_RPC,
+        #         json={
+        #             "jsonrpc": "2.0",
+        #             "method": "eth_getBlobByHash",
+        #             "params": [blob_hash],
+        #             "id": 1
+        #         },
+        #         timeout=5
+        #     )
+        #     result = response.json()
+        #     if "result" in result and result["result"]:
+        #         blob_hex = result["result"]
+        #         content = decode_blob_data(blob_hex)
+        #         padding_idx = content.find(PADDING_MARKER)
+        #         if padding_idx != -1:
+        #             content = content[:padding_idx]
+        #         metadata = json.loads(content)
+        #         return BlobResponse(success=True, blob_hash=blob_hash, metadata=metadata)
+        # except Exception as direct_error:
+        #     logger.debug(f"eth_getBlobByHash failed: {direct_error}")
 
         # Strategy 2: Beacon Chain API
         slot = await find_blob_slot(blob_hash, tx_hash)
