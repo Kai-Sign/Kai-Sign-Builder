@@ -1017,6 +1017,49 @@ async def test_slot_lookup(
             "beacon_url": SEPOLIA_BEACON
         }
 
+# Test beacon connectivity
+@app.get("/api/py/test-beacon")
+async def test_beacon():
+    """Test beacon chain connectivity."""
+    import time
+    import requests as sync_requests
+
+    results = {}
+
+    # Test lodestar
+    try:
+        start = time.time()
+        resp = sync_requests.get(
+            f"{SEPOLIA_BEACON}/eth/v1/beacon/headers/head",
+            timeout=5
+        )
+        elapsed = time.time() - start
+        results["lodestar"] = {
+            "status": resp.status_code,
+            "elapsed": round(elapsed, 2),
+            "success": resp.status_code == 200
+        }
+    except Exception as e:
+        results["lodestar"] = {"error": str(e), "success": False}
+
+    # Test publicnode beacon
+    try:
+        start = time.time()
+        resp = sync_requests.get(
+            "https://ethereum-sepolia-beacon-api.publicnode.com/eth/v1/beacon/headers/head",
+            timeout=5
+        )
+        elapsed = time.time() - start
+        results["publicnode"] = {
+            "status": resp.status_code,
+            "elapsed": round(elapsed, 2),
+            "success": resp.status_code == 200
+        }
+    except Exception as e:
+        results["publicnode"] = {"error": str(e), "success": False}
+
+    return results
+
 # Subgraph URL for KaiSign
 KAISIGN_SUBGRAPH_URL = "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/version/latest"
 
