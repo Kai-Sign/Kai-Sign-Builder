@@ -486,23 +486,25 @@ async def find_blob_slot(blob_hash: str, tx_hash_or_timestamp: Optional[str] = N
             # Search slots in PARALLEL for much faster lookup
             # Search wider range (-10 to +5) since blob tx is before reveal tx
             offsets = list(range(-10, 6))
+            slots_to_check = [estimated_slot + offset for offset in offsets]
 
-            async def check_slot_async(offset):
-                slot = estimated_slot + offset
-                result = await asyncio.to_thread(lambda s=slot: check_slot_for_blob(s))
-                return result
+            # Use ThreadPoolExecutor with proper timeout handling
+            from concurrent.futures import ThreadPoolExecutor, as_completed
+            with ThreadPoolExecutor(max_workers=16) as executor:
+                logger.info(f"find_blob_slot: submitting {len(slots_to_check)} slot checks to thread pool")
+                future_to_slot = {executor.submit(check_slot_for_blob, s): s for s in slots_to_check}
 
-            # Run all slot checks in parallel
-            logger.info(f"find_blob_slot: launching {len(offsets)} parallel tasks")
-            results = await asyncio.gather(*[check_slot_async(o) for o in offsets])
-            logger.info(f"find_blob_slot: parallel search completed in {time.time() - start_time:.2f}s, results: {[r for r in results if r]}")
+                for future in as_completed(future_to_slot, timeout=15):
+                    slot = future_to_slot[future]
+                    try:
+                        result = future.result(timeout=1)
+                        if result is not None:
+                            logger.info(f"find_blob_slot: found blob at slot {result} in {time.time() - start_time:.2f}s")
+                            return result
+                    except Exception as e:
+                        logger.debug(f"find_blob_slot: slot {slot} check failed: {e}")
 
-            for result in results:
-                if result is not None:
-                    logger.info(f"find_blob_slot: found blob at slot {result}")
-                    return result
-
-            logger.info(f"find_blob_slot: parallel search found nothing, falling back to slow path")
+            logger.info(f"find_blob_slot: parallel search completed in {time.time() - start_time:.2f}s, no results found")
 
         # Slow path: Search recent beacon slots
         def get_head_slot():
@@ -993,7 +995,7 @@ async def read_root():
 async def debug_info():
     """Return debug info about the deployment."""
     return {
-        "version": "2.0.2-lambda-fix",
+        "version": "2.0.3-threadpool-fix",
         "sepolia_beacon": SEPOLIA_BEACON,
         "sepolia_rpc": SEPOLIA_RPC,
         "genesis_time": 1655733600,
