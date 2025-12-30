@@ -992,7 +992,7 @@ async def read_root():
 async def debug_info():
     """Return debug info about the deployment."""
     return {
-        "version": "2.1.2-inline-contract",
+        "version": "2.1.3-single-route",
         "sepolia_beacon": SEPOLIA_BEACON,
         "sepolia_rpc": SEPOLIA_RPC,
         "genesis_time": 1655733600,
@@ -1349,7 +1349,7 @@ async def query_subgraph_for_contract(target_address: str, chain_id: int) -> lis
         logger.error(f"Error querying subgraph: {e}")
         return []
 
-@app.get("/contract/{address}")
+# Only use /api/py prefix for contract endpoint
 @app.get("/api/py/contract/{address}")
 async def get_contract_metadata(
     address: str = Path(..., description="Contract address"),
