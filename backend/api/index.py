@@ -992,7 +992,7 @@ async def read_root():
 async def debug_info():
     """Return debug info about the deployment."""
     return {
-        "version": "2.0.8-sync-search",
+        "version": "2.0.9-internal-blob-func",
         "sepolia_beacon": SEPOLIA_BEACON,
         "sepolia_rpc": SEPOLIA_RPC,
         "genesis_time": 1655733600,
@@ -1337,7 +1337,7 @@ async def get_contract_metadata(
         logger.info(f"Fetching blob {blob_hash}")
 
         # Fetch blob metadata using timestamp/tx_hash for faster slot calculation
-        blob_response = await get_blob_metadata(blob_hash, tx_hash_or_timestamp)
+        blob_response = await _fetch_blob_internal(blob_hash, tx_hash_or_timestamp)
         return blob_response
 
     except Exception as e:
@@ -1348,22 +1348,9 @@ async def get_contract_metadata(
             error=f"Error fetching contract metadata: {str(e)}"
         )
 
-@app.get("/blob/{blob_hash}")
-@app.get("/api/py/blob/{blob_hash}")
-async def get_blob_metadata(
-    blob_hash: str = Path(..., description="Blob versioned hash (0x01...)"),
-    tx_hash: Optional[str] = Query(None, description="Transaction hash or timestamp for faster slot lookup")
-) -> BlobResponse:
-    """Fetch and decode blob data directly from Sepolia nodes.
-
-    Args:
-        blob_hash: The blob versioned hash (66 chars, starts with 0x01)
-        tx_hash: Optional transaction hash or Unix timestamp for faster slot lookup
-
-    Returns:
-        BlobResponse with decoded metadata JSON
-    """
-    logger.info(f"get_blob_metadata called: blob_hash={blob_hash}, tx_hash={tx_hash}")
+async def _fetch_blob_internal(blob_hash: str, tx_hash: Optional[str] = None) -> BlobResponse:
+    """Internal blob fetch function - use this when calling programmatically."""
+    logger.info(f"_fetch_blob_internal called: blob_hash={blob_hash}, tx_hash={tx_hash}")
 
     # Validate blob hash format
     if not blob_hash.startswith("0x01") or len(blob_hash) != 66:
@@ -1421,3 +1408,20 @@ async def get_blob_metadata(
             blob_hash=blob_hash,
             error=f"Unexpected error: {str(e)}"
         )
+
+@app.get("/blob/{blob_hash}")
+@app.get("/api/py/blob/{blob_hash}")
+async def get_blob_metadata(
+    blob_hash: str = Path(..., description="Blob versioned hash (0x01...)"),
+    tx_hash: Optional[str] = Query(None, description="Transaction hash or timestamp for faster slot lookup")
+) -> BlobResponse:
+    """Fetch and decode blob data directly from Sepolia nodes.
+
+    Args:
+        blob_hash: The blob versioned hash (66 chars, starts with 0x01)
+        tx_hash: Optional transaction hash or Unix timestamp for faster slot lookup
+
+    Returns:
+        BlobResponse with decoded metadata JSON
+    """
+    return await _fetch_blob_internal(blob_hash, tx_hash)
