@@ -992,7 +992,7 @@ async def read_root():
 async def debug_info():
     """Return debug info about the deployment."""
     return {
-        "version": "2.0.9-internal-blob-func",
+        "version": "2.1.0-sync-subgraph",
         "sepolia_beacon": SEPOLIA_BEACON,
         "sepolia_rpc": SEPOLIA_RPC,
         "genesis_time": 1655733600,
@@ -1212,12 +1212,13 @@ async def query_subgraph_for_contract(target_address: str, chain_id: int) -> lis
                         }}
                     }}"""
                 },
-                timeout=30
+                timeout=15
             )
             response.raise_for_status()
             return response.json()
 
-        result = await asyncio.to_thread(query)
+        # Call query directly (sync is OK for fast subgraph queries)
+        result = query()
 
         # Check for GraphQL errors
         if "errors" in result:
