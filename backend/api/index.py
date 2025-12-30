@@ -1001,7 +1001,7 @@ async def read_root():
 async def debug_info():
     """Return debug info about the deployment."""
     return {
-        "version": "2.0.4-remove-asyncio-to-thread",
+        "version": "2.0.5-test-full",
         "sepolia_beacon": SEPOLIA_BEACON,
         "sepolia_rpc": SEPOLIA_RPC,
         "genesis_time": 1655733600,
@@ -1038,6 +1038,84 @@ async def test_slot_lookup(
             "timestamp_provided": timestamp,
             "beacon_url": SEPOLIA_BEACON
         }
+
+# Test full blob fetch (slot + blob)
+@app.get("/api/py/test-full/{blob_hash}")
+async def test_full_fetch(
+    blob_hash: str = Path(...),
+    timestamp: Optional[str] = Query(None)
+):
+    """Test full blob fetch for debugging."""
+    import time
+
+    results = {"steps": []}
+
+    # Step 1: Find slot
+    start = time.time()
+    try:
+        slot = await find_blob_slot(blob_hash, timestamp)
+        results["steps"].append({
+            "step": "find_slot",
+            "elapsed": round(time.time() - start, 2),
+            "success": slot is not None,
+            "slot": slot
+        })
+    except Exception as e:
+        results["steps"].append({
+            "step": "find_slot",
+            "elapsed": round(time.time() - start, 2),
+            "success": False,
+            "error": str(e)
+        })
+        return results
+
+    if not slot:
+        return results
+
+    # Step 2: Fetch blob
+    start = time.time()
+    try:
+        blob_hex = await fetch_blob_from_beacon(slot, blob_hash)
+        results["steps"].append({
+            "step": "fetch_blob",
+            "elapsed": round(time.time() - start, 2),
+            "success": blob_hex is not None,
+            "blob_length": len(blob_hex) if blob_hex else 0
+        })
+    except Exception as e:
+        results["steps"].append({
+            "step": "fetch_blob",
+            "elapsed": round(time.time() - start, 2),
+            "success": False,
+            "error": str(e)
+        })
+        return results
+
+    # Step 3: Decode (if blob found)
+    if blob_hex:
+        start = time.time()
+        try:
+            content = decode_blob_data(blob_hex)
+            padding_idx = content.find(PADDING_MARKER)
+            if padding_idx != -1:
+                content = content[:padding_idx]
+            metadata = json.loads(content)
+            results["steps"].append({
+                "step": "decode",
+                "elapsed": round(time.time() - start, 2),
+                "success": True,
+                "has_context": "context" in metadata,
+                "has_display": "display" in metadata
+            })
+        except Exception as e:
+            results["steps"].append({
+                "step": "decode",
+                "elapsed": round(time.time() - start, 2),
+                "success": False,
+                "error": str(e)
+            })
+
+    return results
 
 # Test beacon connectivity
 @app.get("/api/py/test-beacon")
