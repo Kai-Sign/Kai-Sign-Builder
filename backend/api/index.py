@@ -992,7 +992,7 @@ async def read_root():
 async def debug_info():
     """Return debug info about the deployment."""
     return {
-        "version": "2.1.1-test-contract",
+        "version": "2.1.2-inline-contract",
         "sepolia_beacon": SEPOLIA_BEACON,
         "sepolia_rpc": SEPOLIA_RPC,
         "genesis_time": 1655733600,
@@ -1417,10 +1417,40 @@ async def get_contract_metadata(
 
         logger.info(f"Fetching blob {blob_hash}")
 
-        # Fetch blob metadata using timestamp/tx_hash for faster slot calculation
-        blob_response = await _fetch_blob_internal(blob_hash, tx_hash_or_timestamp)
-        return blob_response
+        # Find slot
+        slot = await find_blob_slot(blob_hash, tx_hash_or_timestamp)
+        if not slot:
+            return BlobResponse(
+                success=False,
+                blob_hash=blob_hash,
+                error="Could not find slot for blob"
+            )
 
+        # Fetch blob
+        blob_hex = await fetch_blob_from_beacon(slot, blob_hash)
+        if not blob_hex:
+            return BlobResponse(
+                success=False,
+                blob_hash=blob_hash,
+                error="Blob not found in beacon chain sidecars"
+            )
+
+        # Decode blob
+        content = decode_blob_data(blob_hex)
+        padding_idx = content.find(PADDING_MARKER)
+        if padding_idx != -1:
+            content = content[:padding_idx]
+        metadata = json.loads(content)
+
+        return BlobResponse(success=True, blob_hash=blob_hash, metadata=metadata)
+
+    except json.JSONDecodeError as e:
+        logger.error(f"JSON decode error: {e}")
+        return BlobResponse(
+            success=False,
+            blob_hash=address,
+            error=f"Failed to parse blob as JSON: {str(e)}"
+        )
     except Exception as e:
         logger.error(f"Contract metadata fetch error: {e}")
         return BlobResponse(
