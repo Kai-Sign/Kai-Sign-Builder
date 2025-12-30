@@ -488,39 +488,20 @@ async def find_blob_slot(blob_hash: str, tx_hash_or_timestamp: Optional[str] = N
                     pass
 
         if estimated_slot:
-            logger.info(f"find_blob_slot: starting parallel search around slot {estimated_slot}")
-            # Search slots in PARALLEL for much faster lookup
-            # Search wider range (-10 to +5) since blob tx is before reveal tx
-            offsets = list(range(-10, 6))
-            slots_to_check = [estimated_slot + offset for offset in offsets]
+            logger.info(f"find_blob_slot: starting sequential search around slot {estimated_slot}")
+            # Search slots SEQUENTIALLY to avoid async/threading issues
+            # Search narrower range (-3 to +2) for faster response
+            offsets = [-1, 0, -2, 1, -3, 2]
 
-            # Use asyncio.get_event_loop().run_in_executor for true async execution
-            loop = asyncio.get_event_loop()
-            logger.info(f"find_blob_slot: creating {len(slots_to_check)} async tasks")
+            for offset in offsets:
+                slot = estimated_slot + offset
+                logger.info(f"find_blob_slot: checking slot {slot} (offset {offset})")
+                result = check_slot_for_blob(slot)
+                if result is not None:
+                    logger.info(f"find_blob_slot: found blob at slot {result} in {time.time() - start_time:.2f}s")
+                    return result
 
-            async def check_slot_async(s: int):
-                try:
-                    return await loop.run_in_executor(None, check_slot_for_blob, s)
-                except Exception:
-                    return None
-
-            # Run all checks concurrently with a timeout
-            try:
-                tasks = [check_slot_async(s) for s in slots_to_check]
-                results = await asyncio.wait_for(
-                    asyncio.gather(*tasks, return_exceptions=True),
-                    timeout=20
-                )
-                logger.info(f"find_blob_slot: parallel search completed in {time.time() - start_time:.2f}s")
-
-                for result in results:
-                    if isinstance(result, int):
-                        logger.info(f"find_blob_slot: found blob at slot {result}")
-                        return result
-            except asyncio.TimeoutError:
-                logger.warning(f"find_blob_slot: parallel search timed out after 20s")
-
-            logger.info(f"find_blob_slot: parallel search found nothing")
+            logger.info(f"find_blob_slot: sequential search completed in {time.time() - start_time:.2f}s, not found")
 
         # Slow path: Search recent beacon slots
         def get_head_slot():
@@ -1011,7 +992,7 @@ async def read_root():
 async def debug_info():
     """Return debug info about the deployment."""
     return {
-        "version": "2.0.7-run-in-executor",
+        "version": "2.0.8-sync-search",
         "sepolia_beacon": SEPOLIA_BEACON,
         "sepolia_rpc": SEPOLIA_RPC,
         "genesis_time": 1655733600,
