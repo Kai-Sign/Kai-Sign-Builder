@@ -992,7 +992,7 @@ async def read_root():
 async def debug_info():
     """Return debug info about the deployment."""
     return {
-        "version": "2.1.4-full-sync",
+        "version": "2.1.5-chainid-fix",
         "sepolia_beacon": SEPOLIA_BEACON,
         "sepolia_rpc": SEPOLIA_RPC,
         "genesis_time": 1655733600,
@@ -1416,7 +1416,7 @@ def query_subgraph_for_contract_sync(target_address: str, chain_id: int) -> list
                     id specID blobHash targetContract chainId timestamp blockNumber blockTimestamp transactionHash
                 }}
                 specs(
-                    where: {{targetContract: "{target_address}", chainID: {chain_id_str}}}
+                    where: {{targetContract: "{target_address}", chainID: "{chain_id_str}"}}
                     orderBy: blockTimestamp
                     orderDirection: desc
                     first: 10
