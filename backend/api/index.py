@@ -992,7 +992,7 @@ async def read_root():
 async def debug_info():
     """Return debug info about the deployment."""
     return {
-        "version": "2.1.5-chainid-fix",
+        "version": "2.1.6-try-all-specs",
         "sepolia_beacon": SEPOLIA_BEACON,
         "sepolia_rpc": SEPOLIA_RPC,
         "genesis_time": 1655733600,
@@ -1366,26 +1366,38 @@ async def get_contract_metadata(
     if not specs:
         return {"success": False, "blob_hash": address, "error": f"No metadata found for {address}", "metadata": None}
 
-    # Get best spec
-    finalized_spec = next((s for s in specs if s.get("status") == "FINALIZED"), None)
-    proposed_spec = next((s for s in specs if s.get("status") == "PROPOSED"), None)
-    best_spec = finalized_spec or proposed_spec or specs[0]
+    # Sort specs: prefer FINALIZED, then by recency
+    # But try each until we find an available blob (older blobs may be pruned)
+    finalized_specs = [s for s in specs if s.get("status") == "FINALIZED"]
+    proposed_specs = [s for s in specs if s.get("status") == "PROPOSED"]
+    other_specs = [s for s in specs if s.get("status") not in ("FINALIZED", "PROPOSED")]
+    ordered_specs = finalized_specs + proposed_specs + other_specs
 
-    blob_hash = best_spec.get("blobHash")
-    block_timestamp = best_spec.get("blockTimestamp")
+    # Try each spec until we find one with available blob
+    blob_hash = None
+    slot = None
+    blob_hex = None
+    for spec in ordered_specs:
+        spec_blob_hash = spec.get("blobHash")
+        spec_timestamp = spec.get("blockTimestamp")
+        if not spec_blob_hash:
+            continue
 
-    if not blob_hash:
-        return {"success": False, "blob_hash": address, "error": "No blob hash found", "metadata": None}
+        # Try to find slot for this blob
+        spec_slot = find_blob_slot_sync(spec_blob_hash, str(spec_timestamp) if spec_timestamp else None)
+        if not spec_slot:
+            continue
 
-    # Step 2: Find slot
-    slot = find_blob_slot_sync(blob_hash, str(block_timestamp) if block_timestamp else None)
-    if not slot:
-        return {"success": False, "blob_hash": blob_hash, "error": "Could not find slot for blob", "metadata": None}
+        # Try to fetch blob
+        spec_blob_hex = fetch_blob_from_beacon_sync(spec_slot, spec_blob_hash)
+        if spec_blob_hex:
+            blob_hash = spec_blob_hash
+            slot = spec_slot
+            blob_hex = spec_blob_hex
+            break
 
-    # Step 3: Fetch and decode blob
-    blob_hex = fetch_blob_from_beacon_sync(slot, blob_hash)
     if not blob_hex:
-        return {"success": False, "blob_hash": blob_hash, "error": "Blob not found", "metadata": None}
+        return {"success": False, "blob_hash": address, "error": "No available blob found (all may be pruned)", "metadata": None}
 
     content = decode_blob_data(blob_hex)
     padding_idx = content.find(PADDING_MARKER)
