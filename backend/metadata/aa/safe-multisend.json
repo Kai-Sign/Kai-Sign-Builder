@@ -1,0 +1,41 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xa238cbeb142c10ef7ad8442c6d1f9e89e07e7761",
+      "chainId": 1,
+      "name": "Safe MultiSend",
+      "abi": [{
+        "type": "function",
+        "name": "multiSend",
+        "selector": "0x8d80ff0a",
+        "inputs": [
+          { "name": "transactions", "type": "bytes" }
+        ]
+      }]
+    }
+  },
+  "display": {
+    "formats": {
+      "multiSend(bytes)": {
+        "intent": "Execute batch transactions",
+        "fields": [
+          {
+            "path": "transactions",
+            "label": "Transactions",
+            "format": "multicallDecoder",
+            "type": "multicallDecoder"
+          }
+        ]
+      }
+    }
+  },
+  "parsing": {
+    "multicallStructure": {
+      "operation": { "type": "uint8", "size": 1 },
+      "to": { "type": "address", "size": 20 },
+      "value": { "type": "uint256", "size": 32 },
+      "dataLength": { "type": "uint256", "size": 32 },
+      "data": { "type": "bytes", "size": 0, "dynamic": true }
+    }
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x000000000022d473030f116ddee9f6b43ac78ba3",
+      "chainId": 1,
+      "name": "Permit2",
+      "abi": [
+        {
+          "type": "function",
+          "name": "permit",
+          "selector": "0x2b67b570",
+          "inputs": [
+            { "name": "owner", "type": "address" },
+            {
+              "name": "permitSingle",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "details",
+                  "type": "tuple",
+                  "components": [
+                    { "name": "token", "type": "address" },
+                    { "name": "amount", "type": "uint160" },
+                    { "name": "expiration", "type": "uint48" },
+                    { "name": "nonce", "type": "uint48" }
+                  ]
+                },
+                { "name": "spender", "type": "address" },
+                { "name": "sigDeadline", "type": "uint256" }
+              ]
+            },
+            { "name": "signature", "type": "bytes" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "permitTransferFrom",
+          "selector": "0x30f28b7a",
+          "inputs": [
+            {
+              "name": "permit",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "permitted",
+                  "type": "tuple",
+                  "components": [
+                    { "name": "token", "type": "address" },
+                    { "name": "amount", "type": "uint256" }
+                  ]
+                },
+                { "name": "nonce", "type": "uint256" },
+                { "name": "deadline", "type": "uint256" }
+              ]
+            },
+            {
+              "name": "transferDetails",
+              "type": "tuple",
+              "components": [
+                { "name": "to", "type": "address" },
+                { "name": "requestedAmount", "type": "uint256" }
+              ]
+            },
+            { "name": "owner", "type": "address" },
+            { "name": "signature", "type": "bytes" }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "permit(address,((address,uint160,uint48,uint48),address,uint256),bytes)": {
+        "intent": "Approve token spending via Permit2",
+        "fields": []
+      },
+      "permitTransferFrom(((address,uint256),uint256,uint256),(address,uint256),address,bytes)": {
+        "intent": "Transfer via Permit2 signature",
+        "fields": []
+      }
+    }
+  }
+}
