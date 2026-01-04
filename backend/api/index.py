@@ -36,6 +36,7 @@ from api.metadata_cache import (
     get_cached_metadata,
     set_cached_metadata,
     load_metadata_from_directory,
+    load_cache_from_disk,
     get_cache_stats,
     bulk_load_metadata,
     clear_cache as clear_metadata_cache
@@ -1796,28 +1797,42 @@ async def clear_cache():
 
 @app.on_event("startup")
 async def startup_load_cache():
-    """Load embedded metadata files into cache on startup."""
-    total_loaded = 0
+    """Load metadata cache on startup.
 
-    # Try backend-local metadata directory first (for Railway deployment)
+    Priority:
+    1. Load from Railway volume (/data) - persisted blob-fetched metadata
+    2. Load embedded files (no persist) - fallback for known contracts
+
+    Only blob-fetched metadata is persisted to volume to save storage costs.
+    """
+    from_disk = 0
+    from_embedded = 0
+
+    # Step 1: Load from Railway volume (blob-fetched metadata)
+    from_disk = load_cache_from_disk()
+    if from_disk > 0:
+        logger.info(f"Startup: Loaded {from_disk} entries from Railway volume")
+
+    # Step 2: Load embedded files (persist=False - don't duplicate to volume)
     backend_dir = os.path.dirname(os.path.dirname(__file__))
     local_metadata_dir = os.path.join(backend_dir, "metadata")
 
     if os.path.exists(local_metadata_dir):
-        count = load_metadata_from_directory(local_metadata_dir, recursive=True)
-        total_loaded += count
-        logger.info(f"Startup: Loaded {count} metadata files from {local_metadata_dir}")
+        count = load_metadata_from_directory(local_metadata_dir, recursive=True, persist=False)
+        from_embedded += count
+        logger.info(f"Startup: Loaded {count} embedded metadata files (not persisted)")
 
     # Also try scripts/metadata directory (for local development)
     base_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     scripts_metadata_dir = os.path.join(base_dir, "scripts", "metadata")
 
     if os.path.exists(scripts_metadata_dir) and scripts_metadata_dir != local_metadata_dir:
-        count = load_metadata_from_directory(scripts_metadata_dir, recursive=True)
-        total_loaded += count
-        logger.info(f"Startup: Loaded {count} metadata files from {scripts_metadata_dir}")
+        count = load_metadata_from_directory(scripts_metadata_dir, recursive=True, persist=False)
+        from_embedded += count
+        logger.info(f"Startup: Loaded {count} embedded metadata files from scripts/")
 
-    if total_loaded > 0:
-        logger.info(f"Startup: Total metadata entries in cache: {total_loaded}")
+    total = from_disk + from_embedded
+    if total > 0:
+        logger.info(f"Startup: Cache ready - {from_disk} from volume, {from_embedded} embedded, {total} total")
     else:
-        logger.warning("Startup: No metadata files found to load into cache")
+        logger.warning("Startup: No metadata loaded into cache")
