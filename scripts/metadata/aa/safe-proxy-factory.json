@@ -35,7 +35,12 @@
         "intent": "Create Safe Wallet",
         "fields": [
           { "path": "_singleton", "label": "Singleton", "format": "address" },
-          { "path": "initializer", "label": "Initializer", "format": "calldata", "type": "calldata", "to": "$._singleton" },
+          {
+            "path": "initializer",
+            "label": "Initializer Data",
+            "format": "calldata",
+            "params": { "calleePath": "_singleton" }
+          },
           { "path": "saltNonce", "label": "Salt Nonce", "format": "number" }
         ]
       },
@@ -43,7 +48,12 @@
         "intent": "Create Safe Wallet with Callback",
         "fields": [
           { "path": "_singleton", "label": "Singleton", "format": "address" },
-          { "path": "initializer", "label": "Initializer", "format": "hex" },
+          {
+            "path": "initializer",
+            "label": "Initializer Data",
+            "format": "calldata",
+            "params": { "calleePath": "_singleton" }
+          },
           { "path": "saltNonce", "label": "Salt Nonce", "format": "number" },
           { "path": "callback", "label": "Callback", "format": "address" }
         ]

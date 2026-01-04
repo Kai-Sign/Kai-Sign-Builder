@@ -1,0 +1,115 @@
+{
+  "$schema": "https://erc7730.org/schema/v1",
+  "context": {
+    "contract": {
+      "abi": [
+        {
+          "inputs": [
+            { "name": "to", "type": "address" },
+            { "name": "value", "type": "uint256" },
+            { "name": "data", "type": "bytes" },
+            { "name": "operation", "type": "uint8" },
+            { "name": "safeTxGas", "type": "uint256" },
+            { "name": "baseGas", "type": "uint256" },
+            { "name": "gasPrice", "type": "uint256" },
+            { "name": "gasToken", "type": "address" },
+            { "name": "refundReceiver", "type": "address" },
+            { "name": "signatures", "type": "bytes" }
+          ],
+          "name": "execTransaction",
+          "outputs": [{ "name": "success", "type": "bool" }],
+          "stateMutability": "payable",
+          "type": "function",
+          "selector": "0x6a761202"
+        }
+      ],
+      "deployments": {
+        "mainnet-v1.3.0": {
+          "address": "0xd9db270c1b5e3bd161e8c8503c55ceabee709552",
+          "chainId": 1
+        },
+        "mainnet-v1.4.1": {
+          "address": "0x41675c099f32341bf84bfc5382af534df5c7461a",
+          "chainId": 1
+        },
+        "sepolia-v1.3.0": {
+          "address": "0xd9db270c1b5e3bd161e8c8503c55ceabee709552",
+          "chainId": 11155111
+        },
+        "sepolia-v1.4.1": {
+          "address": "0x41675c099f32341bf84bfc5382af534df5c7461a",
+          "chainId": 11155111
+        },
+        "polygon-v1.4.1": {
+          "address": "0x41675c099f32341bf84bfc5382af534df5c7461a",
+          "chainId": 137
+        },
+        "arbitrum-v1.4.1": {
+          "address": "0x41675c099f32341bf84bfc5382af534df5c7461a",
+          "chainId": 42161
+        },
+        "optimism-v1.4.1": {
+          "address": "0x41675c099f32341bf84bfc5382af534df5c7461a",
+          "chainId": 10
+        },
+        "base-v1.4.1": {
+          "address": "0x41675c099f32341bf84bfc5382af534df5c7461a",
+          "chainId": 8453
+        }
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Safe Ecosystem Foundation",
+    "info": {
+      "url": "https://safe.global",
+      "legalName": "Safe Ecosystem Foundation",
+      "lastUpdate": "2024-12-11"
+    },
+    "token": {
+      "standard": "none"
+    }
+  },
+  "display": {
+    "formats": {
+      "execTransaction(address,uint256,bytes,uint8,uint256,uint256,uint256,address,address,bytes)": {
+        "intent": {
+          "type": "calldata",
+          "template": "Execute Safe Transaction"
+        },
+        "fields": [
+          {
+            "path": "to",
+            "label": "Target Contract",
+            "format": "addressName"
+          },
+          {
+            "path": "value",
+            "label": "ETH Value",
+            "format": "amount",
+            "params": {
+              "tokenPath": "native"
+            }
+          },
+          {
+            "path": "data",
+            "label": "Transaction Data",
+            "format": "calldata",
+            "params": {
+              "calleePath": "to"
+            }
+          },
+          {
+            "path": "operation",
+            "label": "Operation Type",
+            "format": "enum",
+            "params": {
+              "0": "Call",
+              "1": "DelegateCall"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

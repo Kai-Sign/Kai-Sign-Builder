@@ -1,0 +1,70 @@
+{
+  "$schema": "https://erc7730.org/schema/v1",
+  "context": {
+    "contract": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "name": "transactions",
+              "type": "bytes"
+            }
+          ],
+          "name": "multiSend",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function",
+          "selector": "0x8d80ff0a"
+        }
+      ],
+      "deployments": {
+        "mainnet": {
+          "address": "0x9641d764fc13c8b624c04430c7356c1c7c8102e2",
+          "chainId": 1
+        }
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Safe Ecosystem Foundation",
+    "info": {
+      "url": "https://safe.global",
+      "legalName": "Safe Ecosystem Foundation",
+      "lastUpdate": "2024-12-11"
+    },
+    "token": {
+      "standard": "none"
+    }
+  },
+  "parsing": {
+    "multicallStructure": {
+      "operation": {
+        "type": "uint8",
+        "size": 1,
+        "labels": {
+          "0": "Call",
+          "1": "DelegateCall"
+        }
+      },
+      "to": { "type": "address", "size": 20 },
+      "value": { "type": "uint256", "size": 32 },
+      "dataLength": { "type": "uint256", "size": 32 },
+      "data": { "type": "bytes", "dynamic": true }
+    }
+  },
+  "display": {
+    "formats": {
+      "multiSend(bytes)": {
+        "intent": "Multi-Send Batch Transaction",
+        "fields": [
+          {
+            "path": "transactions",
+            "label": "Batch Transactions",
+            "format": "calldata",
+            "params": { "calleePath": "transactions" }
+          }
+        ]
+      }
+    }
+  }
+}

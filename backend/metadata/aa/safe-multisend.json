@@ -21,9 +21,9 @@
         "fields": [
           {
             "path": "transactions",
-            "label": "Transactions",
-            "format": "multicallDecoder",
-            "type": "multicallDecoder"
+            "label": "Batch Transactions",
+            "format": "calldata",
+            "params": { "calleePath": "transactions" }
           }
         ]
       }
