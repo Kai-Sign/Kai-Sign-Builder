@@ -1,0 +1,17 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84",
+      "chainId": 1,
+      "name": "Lido stETH",
+      "abi": [
+        { "type": "function", "name": "submit", "selector": "0xa1903eab", "inputs": [{ "name": "_referral", "type": "address" }] }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "submit(address)": { "intent": "Stake ETH with Lido", "fields": [{ "path": "_referral", "label": "Referral", "format": "address" }] }
+    }
+  }
+}

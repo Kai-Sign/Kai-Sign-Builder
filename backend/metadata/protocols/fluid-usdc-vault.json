@@ -1,0 +1,49 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x9fb7b4477576fe5b32be4c1843afb1e55f251b33",
+      "chainId": 1,
+      "name": "Fluid USDC Vault",
+      "abi": [
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x6e553f65",
+          "inputs": [
+            { "name": "assets_", "type": "uint256" },
+            { "name": "receiver_", "type": "address" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xb460af94",
+          "inputs": [
+            { "name": "assets_", "type": "uint256" },
+            { "name": "receiver_", "type": "address" },
+            { "name": "owner_", "type": "address" }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "deposit(uint256,address)": {
+        "intent": "Deposit {assets_} to Fluid",
+        "fields": [
+          { "path": "assets_", "label": "Amount", "format": "amount", "params": { "decimals": 6, "symbol": "USDC" } },
+          { "path": "receiver_", "label": "Receiver", "format": "address" }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Withdraw {assets_} from Fluid",
+        "fields": [
+          { "path": "assets_", "label": "Amount", "format": "amount", "params": { "decimals": 6, "symbol": "USDC" } },
+          { "path": "receiver_", "label": "Receiver", "format": "address" },
+          { "path": "owner_", "label": "Owner", "format": "address" }
+        ]
+      }
+    }
+  }
+}

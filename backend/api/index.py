@@ -32,6 +32,14 @@ from fastapi.exceptions import RequestValidationError
 from api.kms_routes import router as kms_router
 from api.relay import router as relay_router
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from api.metadata_cache import (
+    get_cached_metadata,
+    set_cached_metadata,
+    load_metadata_from_directory,
+    get_cache_stats,
+    bulk_load_metadata,
+    clear_cache as clear_metadata_cache
+)
 
 # Configure logging
 logging.basicConfig(
@@ -1364,6 +1372,17 @@ async def get_contract_metadata(
     # Step 1: Query subgraph
     specs = query_subgraph_for_contract_sync(address, chain_id)
     if not specs:
+        # Try cache before failing
+        cached = get_cached_metadata(address, chain_id)
+        if cached:
+            logger.info(f"Using cached metadata for {address} (no subgraph entry)")
+            return {
+                "success": True,
+                "blob_hash": address,
+                "metadata": cached,
+                "error": None,
+                "source": "cache"
+            }
         return {"success": False, "blob_hash": address, "error": f"No metadata found for {address}", "metadata": None}
 
     # Sort specs: prefer FINALIZED, then by recency
@@ -1397,7 +1416,18 @@ async def get_contract_metadata(
             break
 
     if not blob_hex:
-        return {"success": False, "blob_hash": address, "error": "No available blob found (all may be pruned)", "metadata": None}
+        # Fallback to cache if blob is pruned
+        cached = get_cached_metadata(address, chain_id)
+        if cached:
+            logger.info(f"Using cached metadata for {address} (blob pruned)")
+            return {
+                "success": True,
+                "blob_hash": address,
+                "metadata": cached,
+                "error": None,
+                "source": "cache"
+            }
+        return {"success": False, "blob_hash": address, "error": "No available blob found (all may be pruned) and no cache available", "metadata": None}
 
     content = decode_blob_data(blob_hex)
     padding_idx = content.find(PADDING_MARKER)
@@ -1405,7 +1435,10 @@ async def get_contract_metadata(
         content = content[:padding_idx]
     metadata = json.loads(content)
 
-    return {"success": True, "blob_hash": blob_hash, "metadata": metadata, "error": None}
+    # Cache the metadata for future use (when blob gets pruned)
+    set_cached_metadata(address, chain_id, metadata)
+
+    return {"success": True, "blob_hash": blob_hash, "metadata": metadata, "error": None, "source": "blob"}
 
 
 def query_subgraph_for_contract_sync(target_address: str, chain_id: int) -> list:
@@ -1574,3 +1607,217 @@ async def get_blob_metadata(
         BlobResponse with decoded metadata JSON
     """
     return await _fetch_blob_internal(blob_hash, tx_hash)
+
+
+# =============================================================================
+# METADATA CACHE ENDPOINTS
+# =============================================================================
+
+@app.get("/api/py/cache/stats")
+async def get_cache_statistics():
+    """Get metadata cache statistics."""
+    return get_cache_stats()
+
+
+@app.post("/api/py/cache/load")
+async def load_cache_from_files(
+    directory: str = Query(None, description="Directory path containing metadata JSON files")
+):
+    """Load metadata into cache from local JSON files.
+
+    If no directory is provided, attempts to load from the default metadata directory.
+    """
+    if directory:
+        count = load_metadata_from_directory(directory, recursive=True)
+        return {"success": True, "loaded": count, "directory": directory}
+
+    # Try default metadata directory relative to this file
+    default_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "scripts", "metadata")
+    if os.path.exists(default_dir):
+        count = load_metadata_from_directory(default_dir, recursive=True)
+        return {"success": True, "loaded": count, "directory": default_dir}
+
+    return {"success": False, "loaded": 0, "error": "No directory specified and default not found"}
+
+
+class BulkCacheRequest(BaseModel):
+    """Request model for bulk cache loading."""
+    metadata_list: list
+
+
+@app.post("/api/py/cache/bulk")
+async def bulk_load_cache(request: BulkCacheRequest):
+    """Bulk load metadata entries into cache.
+
+    Accepts a list of ERC7730 metadata objects with address and chainId.
+    """
+    count = bulk_load_metadata(request.metadata_list)
+    return {"success": True, "loaded": count}
+
+
+@app.get("/api/py/cache/populate")
+async def populate_cache_from_subgraph(chain_id: int = Query(1, description="Chain ID to query")):
+    """Populate cache by fetching all submitted metadata from subgraph.
+
+    Queries the KaiSign subgraph for all finalized specs and caches their metadata.
+    This is useful for pre-warming the cache before blobs get pruned.
+    """
+    try:
+        # Query all finalized specs from subgraph
+        response = requests.post(
+            KAISIGN_SUBGRAPH_URL,
+            json={
+                "query": f"""{{
+                    specs(
+                        where: {{status: "FINALIZED", chainID: "{chain_id}"}}
+                        orderBy: blockTimestamp
+                        orderDirection: desc
+                        first: 100
+                    ) {{
+                        id
+                        blobHash
+                        targetContract
+                        chainID
+                        status
+                        blockTimestamp
+                    }}
+                    logCreateSpecs(
+                        where: {{chainId: {chain_id}}}
+                        orderBy: blockTimestamp
+                        orderDirection: desc
+                        first: 100
+                    ) {{
+                        specID
+                        blobHash
+                        targetContract
+                        chainId
+                        blockTimestamp
+                        transactionHash
+                    }}
+                }}"""
+            },
+            timeout=30
+        )
+        response.raise_for_status()
+        result = response.json()
+
+        if "errors" in result:
+            return {"success": False, "error": str(result["errors"]), "cached": 0}
+
+        data = result.get("data", {})
+        specs = data.get("specs", [])
+        log_specs = data.get("logCreateSpecs", [])
+
+        # Merge and dedupe
+        seen = set()
+        all_specs = []
+        for spec in specs:
+            key = f"{spec.get('targetContract')}_{spec.get('chainID')}"
+            if key not in seen:
+                seen.add(key)
+                all_specs.append({
+                    "blobHash": spec.get("blobHash"),
+                    "targetContract": spec.get("targetContract"),
+                    "chainId": int(spec.get("chainID", 0)),
+                    "blockTimestamp": spec.get("blockTimestamp"),
+                    "status": spec.get("status")
+                })
+
+        for log_spec in log_specs:
+            key = f"{log_spec.get('targetContract')}_{log_spec.get('chainId')}"
+            if key not in seen:
+                seen.add(key)
+                all_specs.append({
+                    "blobHash": log_spec.get("blobHash"),
+                    "targetContract": log_spec.get("targetContract"),
+                    "chainId": log_spec.get("chainId"),
+                    "blockTimestamp": log_spec.get("blockTimestamp"),
+                    "transactionHash": log_spec.get("transactionHash")
+                })
+
+        # Fetch and cache each metadata
+        cached = 0
+        failed = 0
+        for spec in all_specs:
+            blob_hash = spec.get("blobHash")
+            target = spec.get("targetContract")
+            cid = spec.get("chainId")
+            timestamp = spec.get("blockTimestamp")
+
+            if not blob_hash or not target:
+                continue
+
+            # Try to fetch blob
+            slot = find_blob_slot_sync(blob_hash, str(timestamp) if timestamp else None)
+            if not slot:
+                failed += 1
+                continue
+
+            blob_hex = fetch_blob_from_beacon_sync(slot, blob_hash)
+            if not blob_hex:
+                failed += 1
+                continue
+
+            try:
+                content = decode_blob_data(blob_hex)
+                padding_idx = content.find(PADDING_MARKER)
+                if padding_idx != -1:
+                    content = content[:padding_idx]
+                metadata = json.loads(content)
+                set_cached_metadata(target, cid, metadata)
+                cached += 1
+            except Exception as e:
+                logger.warning(f"Failed to parse metadata for {target}: {e}")
+                failed += 1
+
+        return {
+            "success": True,
+            "total_specs": len(all_specs),
+            "cached": cached,
+            "failed": failed,
+            "chain_id": chain_id
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to populate cache: {e}")
+        return {"success": False, "error": str(e), "cached": 0}
+
+
+@app.delete("/api/py/cache/clear")
+async def clear_cache():
+    """Clear all cached metadata."""
+    clear_metadata_cache()
+    return {"success": True, "message": "Cache cleared"}
+
+
+# =============================================================================
+# STARTUP EVENT - Auto-load embedded metadata
+# =============================================================================
+
+@app.on_event("startup")
+async def startup_load_cache():
+    """Load embedded metadata files into cache on startup."""
+    total_loaded = 0
+
+    # Try backend-local metadata directory first (for Railway deployment)
+    backend_dir = os.path.dirname(os.path.dirname(__file__))
+    local_metadata_dir = os.path.join(backend_dir, "metadata")
+
+    if os.path.exists(local_metadata_dir):
+        count = load_metadata_from_directory(local_metadata_dir, recursive=True)
+        total_loaded += count
+        logger.info(f"Startup: Loaded {count} metadata files from {local_metadata_dir}")
+
+    # Also try scripts/metadata directory (for local development)
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    scripts_metadata_dir = os.path.join(base_dir, "scripts", "metadata")
+
+    if os.path.exists(scripts_metadata_dir) and scripts_metadata_dir != local_metadata_dir:
+        count = load_metadata_from_directory(scripts_metadata_dir, recursive=True)
+        total_loaded += count
+        logger.info(f"Startup: Loaded {count} metadata files from {scripts_metadata_dir}")
+
+    if total_loaded > 0:
+        logger.info(f"Startup: Total metadata entries in cache: {total_loaded}")
+    else:
+        logger.warning("Startup: No metadata files found to load into cache")

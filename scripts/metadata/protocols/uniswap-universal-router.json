@@ -1,0 +1,106 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad",
+      "chainId": 1,
+      "name": "Uniswap Universal Router",
+      "abi": [{
+        "type": "function",
+        "name": "execute",
+        "selector": "0x3593564c",
+        "inputs": [
+          { "name": "commands", "type": "bytes" },
+          { "name": "inputs", "type": "bytes[]" },
+          { "name": "deadline", "type": "uint256" }
+        ]
+      }]
+    }
+  },
+  "commandRegistries": {
+    "universalRouterCommands": {
+      "0x00": {
+        "name": "V3_SWAP_EXACT_IN",
+        "intent": "Swap {amountIn} for min {amountOutMin}",
+        "inputs": [
+          { "name": "recipient", "type": "address" },
+          { "name": "amountIn", "type": "uint256", "format": "tokenAmount" },
+          { "name": "amountOutMin", "type": "uint256", "format": "tokenAmount" },
+          { "name": "path", "type": "bytes" },
+          { "name": "payerIsUser", "type": "bool" }
+        ]
+      },
+      "0x01": {
+        "name": "V3_SWAP_EXACT_OUT",
+        "intent": "Swap for exactly {amountOut}",
+        "inputs": [
+          { "name": "recipient", "type": "address" },
+          { "name": "amountOut", "type": "uint256", "format": "tokenAmount" },
+          { "name": "amountInMax", "type": "uint256", "format": "tokenAmount" },
+          { "name": "path", "type": "bytes" },
+          { "name": "payerIsUser", "type": "bool" }
+        ]
+      },
+      "0x08": {
+        "name": "V2_SWAP_EXACT_IN",
+        "intent": "Swap {amountIn} via V2 for min {amountOutMin}",
+        "inputs": [
+          { "name": "recipient", "type": "address" },
+          { "name": "amountIn", "type": "uint256", "format": "tokenAmount" },
+          { "name": "amountOutMin", "type": "uint256", "format": "tokenAmount" },
+          { "name": "path", "type": "address[]" },
+          { "name": "payerIsUser", "type": "bool" }
+        ]
+      },
+      "0x0b": {
+        "name": "WRAP_ETH",
+        "intent": "Wrap {amountMin} to WETH",
+        "inputs": [
+          { "name": "recipient", "type": "address" },
+          { "name": "amountMin", "type": "uint256", "format": "ethAmount" }
+        ]
+      },
+      "0x0c": {
+        "name": "UNWRAP_WETH",
+        "intent": "Unwrap {amountMin} to ETH",
+        "inputs": [
+          { "name": "recipient", "type": "address" },
+          { "name": "amountMin", "type": "uint256", "format": "ethAmount" }
+        ]
+      },
+      "0x04": {
+        "name": "SWEEP",
+        "intent": "Sweep {token} to recipient",
+        "inputs": [
+          { "name": "token", "type": "address", "format": "tokenSymbol" },
+          { "name": "recipient", "type": "address" },
+          { "name": "amountMin", "type": "uint256" }
+        ]
+      }
+    }
+  },
+  "display": {
+    "formats": {
+      "execute(bytes,bytes[],uint256)": {
+        "intent": {
+          "type": "composite",
+          "source": "commands",
+          "separator": " + ",
+          "registry": "universalRouterCommands"
+        },
+        "fields": [
+          {
+            "path": "commands",
+            "label": "Commands",
+            "nestedEncoding": {
+              "type": "commandArray",
+              "registry": "universalRouterCommands",
+              "decodeWith": "inputs"
+            }
+          },
+          { "path": "inputs", "label": "Inputs", "format": "hidden" },
+          { "path": "deadline", "label": "Deadline", "format": "timestamp" }
+        ]
+      }
+    }
+  }
+}

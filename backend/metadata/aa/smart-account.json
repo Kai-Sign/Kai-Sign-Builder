@@ -1,0 +1,47 @@
+{
+  "context": {
+    "contract": {
+      "chainId": 1,
+      "name": "Smart Account",
+      "abi": [
+        {
+          "type": "function",
+          "name": "execute",
+          "selector": "0xb61d27f6",
+          "inputs": [
+            { "name": "dest", "type": "address" },
+            { "name": "value", "type": "uint256" },
+            { "name": "func", "type": "bytes" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "executeBatch",
+          "selector": "0x47e1da2a",
+          "inputs": [
+            { "name": "dest", "type": "address[]" },
+            { "name": "func", "type": "bytes[]" }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "execute(address,uint256,bytes)": {
+        "intent": "Execute account operation",
+        "fields": [
+          { "path": "dest", "label": "To", "format": "address" },
+          { "path": "value", "label": "Value", "format": "amount", "params": { "decimals": 18, "symbol": "ETH" } },
+          { "path": "func", "label": "Call", "format": "calldata", "type": "calldata", "to": "$.dest" }
+        ]
+      },
+      "executeBatch(address[],bytes[])": {
+        "intent": "Execute batch operations",
+        "fields": [
+          { "path": "dest", "label": "Targets", "format": "array" }
+        ]
+      }
+    }
+  }
+}

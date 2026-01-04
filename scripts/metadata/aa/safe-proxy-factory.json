@@ -1,0 +1,53 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x4e1dcf7ad4e460cfd30791ccc4f9c8a4f820ec67",
+      "chainId": 1,
+      "name": "Safe Proxy Factory",
+      "abi": [
+        {
+          "type": "function",
+          "name": "createProxyWithNonce",
+          "selector": "0x1688f0b9",
+          "inputs": [
+            { "name": "_singleton", "type": "address" },
+            { "name": "initializer", "type": "bytes" },
+            { "name": "saltNonce", "type": "uint256" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "createProxyWithCallback",
+          "selector": "0xd18af54d",
+          "inputs": [
+            { "name": "_singleton", "type": "address" },
+            { "name": "initializer", "type": "bytes" },
+            { "name": "saltNonce", "type": "uint256" },
+            { "name": "callback", "type": "address" }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "createProxyWithNonce(address,bytes,uint256)": {
+        "intent": "Create Safe Wallet",
+        "fields": [
+          { "path": "_singleton", "label": "Singleton", "format": "address" },
+          { "path": "initializer", "label": "Initializer", "format": "calldata", "type": "calldata", "to": "$._singleton" },
+          { "path": "saltNonce", "label": "Salt Nonce", "format": "number" }
+        ]
+      },
+      "createProxyWithCallback(address,bytes,uint256,address)": {
+        "intent": "Create Safe Wallet with Callback",
+        "fields": [
+          { "path": "_singleton", "label": "Singleton", "format": "address" },
+          { "path": "initializer", "label": "Initializer", "format": "hex" },
+          { "path": "saltNonce", "label": "Salt Nonce", "format": "number" },
+          { "path": "callback", "label": "Callback", "format": "address" }
+        ]
+      }
+    }
+  }
+}

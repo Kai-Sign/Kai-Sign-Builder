@@ -1,0 +1,31 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x1f98431c8ad98523631ae4a59f267346ea31f984",
+      "chainId": 1,
+      "name": "Uniswap V3 Factory",
+      "abi": [{
+        "type": "function",
+        "name": "createPool",
+        "selector": "0xa1671295",
+        "inputs": [
+          { "name": "tokenA", "type": "address" },
+          { "name": "tokenB", "type": "address" },
+          { "name": "fee", "type": "uint24" }
+        ]
+      }]
+    }
+  },
+  "display": {
+    "formats": {
+      "createPool(address,address,uint24)": {
+        "intent": "Create Uniswap V3 pool",
+        "fields": [
+          { "path": "tokenA", "label": "Token A", "format": "address" },
+          { "path": "tokenB", "label": "Token B", "format": "address" },
+          { "path": "fee", "label": "Fee Tier", "format": "number" }
+        ]
+      }
+    }
+  }
+}

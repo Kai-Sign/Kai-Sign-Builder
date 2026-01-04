@@ -1,0 +1,61 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "chainId": 1,
+      "name": "ERC-4337 EntryPoint v0.6",
+      "abi": [
+        {
+          "type": "function",
+          "name": "handleOps",
+          "selector": "0x1fad948c",
+          "inputs": [
+            {
+              "name": "ops",
+              "type": "tuple[]",
+              "components": [
+                { "name": "sender", "type": "address" },
+                { "name": "nonce", "type": "uint256" },
+                { "name": "initCode", "type": "bytes" },
+                { "name": "callData", "type": "bytes" },
+                { "name": "callGasLimit", "type": "uint256" },
+                { "name": "verificationGasLimit", "type": "uint256" },
+                { "name": "preVerificationGas", "type": "uint256" },
+                { "name": "maxFeePerGas", "type": "uint256" },
+                { "name": "maxPriorityFeePerGas", "type": "uint256" },
+                { "name": "paymasterAndData", "type": "bytes" },
+                { "name": "signature", "type": "bytes" }
+              ]
+            },
+            { "name": "beneficiary", "type": "address" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "depositTo",
+          "selector": "0xb760faf9",
+          "inputs": [
+            { "name": "account", "type": "address" }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "handleOps((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[],address)": {
+        "intent": "Execute user operations",
+        "fields": [
+          { "path": "ops", "label": "User Operations", "format": "array" },
+          { "path": "beneficiary", "label": "Beneficiary", "format": "address" }
+        ]
+      },
+      "depositTo(address)": {
+        "intent": "Deposit to account",
+        "fields": [
+          { "path": "account", "label": "Account", "format": "address" }
+        ]
+      }
+    }
+  }
+}

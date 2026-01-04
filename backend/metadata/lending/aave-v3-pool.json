@@ -1,0 +1,53 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x87870b27f51f6d0b9e7a0033666be7f97f8baf69",
+      "chainId": 1,
+      "name": "Aave V3 Pool",
+      "abi": [
+        { "type": "function", "name": "supply", "selector": "0x617ba037", "inputs": [{ "name": "asset", "type": "address" }, { "name": "amount", "type": "uint256" }, { "name": "onBehalfOf", "type": "address" }, { "name": "referralCode", "type": "uint16" }] },
+        { "type": "function", "name": "withdraw", "selector": "0x69328dec", "inputs": [{ "name": "asset", "type": "address" }, { "name": "amount", "type": "uint256" }, { "name": "to", "type": "address" }] },
+        { "type": "function", "name": "borrow", "selector": "0xa415bcad", "inputs": [{ "name": "asset", "type": "address" }, { "name": "amount", "type": "uint256" }, { "name": "interestRateMode", "type": "uint256" }, { "name": "referralCode", "type": "uint16" }, { "name": "onBehalfOf", "type": "address" }] },
+        { "type": "function", "name": "repay", "selector": "0x573ade81", "inputs": [{ "name": "asset", "type": "address" }, { "name": "amount", "type": "uint256" }, { "name": "interestRateMode", "type": "uint256" }, { "name": "onBehalfOf", "type": "address" }] }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "supply(address,uint256,address,uint16)": {
+        "intent": "Supply {amount} to Aave",
+        "fields": [
+          { "path": "asset", "label": "Token", "format": "address" },
+          { "path": "amount", "label": "Amount", "format": "amount", "params": { "decimals": 6, "symbol": "USDC" } },
+          { "path": "onBehalfOf", "label": "On Behalf Of", "format": "address" }
+        ]
+      },
+      "withdraw(address,uint256,address)": {
+        "intent": "Withdraw {amount} from Aave",
+        "fields": [
+          { "path": "asset", "label": "Token", "format": "address" },
+          { "path": "amount", "label": "Amount", "format": "amount", "params": { "decimals": 6, "symbol": "USDC" } },
+          { "path": "to", "label": "Recipient", "format": "address" }
+        ]
+      },
+      "borrow(address,uint256,uint256,uint16,address)": {
+        "intent": "Borrow {amount} from Aave",
+        "fields": [
+          { "path": "asset", "label": "Token", "format": "address" },
+          { "path": "amount", "label": "Amount", "format": "amount", "params": { "decimals": 6, "symbol": "USDC" } },
+          { "path": "interestRateMode", "label": "Rate Mode", "format": "number" },
+          { "path": "onBehalfOf", "label": "On Behalf Of", "format": "address" }
+        ]
+      },
+      "repay(address,uint256,uint256,address)": {
+        "intent": "Repay {amount} to Aave",
+        "fields": [
+          { "path": "asset", "label": "Token", "format": "address" },
+          { "path": "amount", "label": "Amount", "format": "amount", "params": { "decimals": 6, "symbol": "USDC" } },
+          { "path": "interestRateMode", "label": "Rate Mode", "format": "number" },
+          { "path": "onBehalfOf", "label": "On Behalf Of", "format": "address" }
+        ]
+      }
+    }
+  }
+}

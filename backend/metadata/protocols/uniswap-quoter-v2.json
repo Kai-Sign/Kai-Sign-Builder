@@ -1,0 +1,37 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x61ffe014ba17989e743c5f6cb21bf9697530b21e",
+      "chainId": 1,
+      "name": "Uniswap Quoter V2",
+      "abi": [
+        {
+          "type": "function",
+          "name": "quoteExactInputSingle",
+          "selector": "0xc6a5026a",
+          "inputs": [
+            {
+              "name": "params",
+              "type": "tuple",
+              "components": [
+                { "name": "tokenIn", "type": "address" },
+                { "name": "tokenOut", "type": "address" },
+                { "name": "amountIn", "type": "uint256" },
+                { "name": "fee", "type": "uint24" },
+                { "name": "sqrtPriceLimitX96", "type": "uint160" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "quoteExactInputSingle((address,address,uint256,uint24,uint160))": {
+        "intent": "Quote exact input swap",
+        "fields": []
+      }
+    }
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xd9db270c1b5e3bd161e8c8503c55ceabee709552",
+      "chainId": 1,
+      "name": "Safe Singleton",
+      "abi": [
+        {
+          "type": "function",
+          "name": "setup",
+          "selector": "0xb63e800d",
+          "inputs": [
+            { "name": "_owners", "type": "address[]" },
+            { "name": "_threshold", "type": "uint256" },
+            { "name": "to", "type": "address" },
+            { "name": "data", "type": "bytes" },
+            { "name": "fallbackHandler", "type": "address" },
+            { "name": "paymentToken", "type": "address" },
+            { "name": "payment", "type": "uint256" },
+            { "name": "paymentReceiver", "type": "address" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "execTransaction",
+          "selector": "0x6a761202",
+          "inputs": [
+            { "name": "to", "type": "address" },
+            { "name": "value", "type": "uint256" },
+            { "name": "data", "type": "bytes" },
+            { "name": "operation", "type": "uint8" },
+            { "name": "safeTxGas", "type": "uint256" },
+            { "name": "baseGas", "type": "uint256" },
+            { "name": "gasPrice", "type": "uint256" },
+            { "name": "gasToken", "type": "address" },
+            { "name": "refundReceiver", "type": "address" },
+            { "name": "signatures", "type": "bytes" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "addOwnerWithThreshold",
+          "selector": "0x0d582f13",
+          "inputs": [
+            { "name": "owner", "type": "address" },
+            { "name": "_threshold", "type": "uint256" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "removeOwner",
+          "selector": "0xf8dc5dd9",
+          "inputs": [
+            { "name": "prevOwner", "type": "address" },
+            { "name": "owner", "type": "address" },
+            { "name": "_threshold", "type": "uint256" }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "setup(address[],uint256,address,bytes,address,address,uint256,address)": {
+        "intent": "Setup Safe wallet",
+        "fields": [
+          { "path": "_owners", "label": "Owners", "format": "array" },
+          { "path": "_threshold", "label": "Threshold", "format": "number" }
+        ]
+      },
+      "execTransaction(address,uint256,bytes,uint8,uint256,uint256,uint256,address,address,bytes)": {
+        "intent": "Execute Safe transaction",
+        "fields": [
+          { "path": "to", "label": "To", "format": "address" },
+          { "path": "value", "label": "Value", "format": "number" },
+          { "path": "data", "label": "Data", "format": "calldata", "type": "calldata", "to": "$.to" }
+        ]
+      },
+      "addOwnerWithThreshold(address,uint256)": {
+        "intent": "Add Safe owner",
+        "fields": [
+          { "path": "owner", "label": "New Owner", "format": "address" },
+          { "path": "_threshold", "label": "New Threshold", "format": "number" }
+        ]
+      },
+      "removeOwner(address,address,uint256)": {
+        "intent": "Remove Safe owner",
+        "fields": [
+          { "path": "owner", "label": "Owner to Remove", "format": "address" },
+          { "path": "_threshold", "label": "New Threshold", "format": "number" }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x111111125421ca6dc452d289314280a0f8842a65",
+      "chainId": 1,
+      "name": "1inch Aggregation Router V6",
+      "abi": [
+        {
+          "type": "function",
+          "name": "swap",
+          "selector": "0x12aa3caf",
+          "inputs": [
+            { "name": "executor", "type": "address" },
+            { "name": "desc", "type": "tuple", "components": [
+              { "name": "srcToken", "type": "address" },
+              { "name": "dstToken", "type": "address" },
+              { "name": "srcReceiver", "type": "address" },
+              { "name": "dstReceiver", "type": "address" },
+              { "name": "amount", "type": "uint256" },
+              { "name": "minReturnAmount", "type": "uint256" },
+              { "name": "flags", "type": "uint256" }
+            ]},
+            { "name": "permit", "type": "bytes" },
+            { "name": "data", "type": "bytes" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "unoswap",
+          "selector": "0x0502b1c5",
+          "inputs": [
+            { "name": "srcToken", "type": "address" },
+            { "name": "amount", "type": "uint256" },
+            { "name": "minReturn", "type": "uint256" },
+            { "name": "pools", "type": "uint256[]" }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "swap(address,tuple,bytes,bytes)": {
+        "intent": "Swap {desc.amount} via 1inch",
+        "fields": [
+          { "path": "desc.srcToken", "label": "From Token", "format": "address" },
+          { "path": "desc.dstToken", "label": "To Token", "format": "address" },
+          { "path": "desc.amount", "label": "Amount", "format": "amount", "params": { "decimals": 6, "symbol": "USDC" } },
+          { "path": "desc.minReturnAmount", "label": "Minimum Output", "format": "amount", "params": { "decimals": 18, "symbol": "ETH" } }
+        ]
+      },
+      "unoswap(address,uint256,uint256,uint256[])": {
+        "intent": "Swap {amount} via 1inch",
+        "fields": [
+          { "path": "srcToken", "label": "From Token", "format": "address" },
+          { "path": "amount", "label": "Amount In", "format": "amount", "params": { "decimals": 6, "symbol": "USDC" } },
+          { "path": "minReturn", "label": "Min Amount Out", "format": "amount", "params": { "decimals": 18, "symbol": "ETH" } },
+          { "path": "pools", "label": "Route (off-chain)", "format": "array" }
+        ]
+      }
+    }
+  }
+}

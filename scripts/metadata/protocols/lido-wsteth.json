@@ -1,0 +1,29 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+      "chainId": 1,
+      "name": "Lido wstETH",
+      "abi": [
+        { "type": "function", "name": "wrap", "selector": "0xea598cb0", "inputs": [{ "name": "_stETHAmount", "type": "uint256" }] },
+        { "type": "function", "name": "unwrap", "selector": "0xde0e9a3e", "inputs": [{ "name": "_wstETHAmount", "type": "uint256" }] }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "wrap(uint256)": {
+        "intent": "Wrap {_stETHAmount} to wstETH",
+        "fields": [
+          { "path": "_stETHAmount", "label": "Amount", "format": "amount", "params": { "decimals": 18, "symbol": "stETH" } }
+        ]
+      },
+      "unwrap(uint256)": {
+        "intent": "Unwrap {_wstETHAmount} wstETH to stETH",
+        "fields": [
+          { "path": "_wstETHAmount", "label": "Amount", "format": "amount", "params": { "decimals": 18, "symbol": "wstETH" } }
+        ]
+      }
+    }
+  }
+}
