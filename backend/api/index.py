@@ -1364,26 +1364,27 @@ async def get_contract_metadata(
     address: str = Path(..., description="Contract address"),
     chain_id: int = Query(1, description="Chain ID where transaction occurs")
 ):
-    """Fetch metadata for a contract by querying subgraph then fetching blob."""
+    """Fetch metadata for a contract - checks cache first, then fetches blob."""
     # Normalize address
     if not address.startswith("0x"):
         address = "0x" + address
     address = address.lower()
 
-    # Step 1: Query subgraph
+    # Step 1: Check cache FIRST
+    cached = get_cached_metadata(address, chain_id)
+    if cached:
+        logger.info(f"Cache HIT for {address} on chain {chain_id}")
+        return {
+            "success": True,
+            "blob_hash": address,
+            "metadata": cached,
+            "error": None,
+            "source": "cache"
+        }
+
+    # Step 2: Cache miss - query subgraph
     specs = query_subgraph_for_contract_sync(address, chain_id)
     if not specs:
-        # Try cache before failing
-        cached = get_cached_metadata(address, chain_id)
-        if cached:
-            logger.info(f"Using cached metadata for {address} (no subgraph entry)")
-            return {
-                "success": True,
-                "blob_hash": address,
-                "metadata": cached,
-                "error": None,
-                "source": "cache"
-            }
         return {"success": False, "blob_hash": address, "error": f"No metadata found for {address}", "metadata": None}
 
     # Sort specs: prefer FINALIZED, then by recency
@@ -1417,18 +1418,7 @@ async def get_contract_metadata(
             break
 
     if not blob_hex:
-        # Fallback to cache if blob is pruned
-        cached = get_cached_metadata(address, chain_id)
-        if cached:
-            logger.info(f"Using cached metadata for {address} (blob pruned)")
-            return {
-                "success": True,
-                "blob_hash": address,
-                "metadata": cached,
-                "error": None,
-                "source": "cache"
-            }
-        return {"success": False, "blob_hash": address, "error": "No available blob found (all may be pruned) and no cache available", "metadata": None}
+        return {"success": False, "blob_hash": address, "error": "No available blob found (all may be pruned)", "metadata": None}
 
     content = decode_blob_data(blob_hex)
     padding_idx = content.find(PADDING_MARKER)
