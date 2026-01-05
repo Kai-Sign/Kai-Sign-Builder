@@ -584,7 +584,7 @@
           ],
           "outputs": [],
           "stateMutability": "payable",
-          "selector": "0xd24c2325"
+          "selector": "0x2c57e884"
         },
         {
           "type": "function",
