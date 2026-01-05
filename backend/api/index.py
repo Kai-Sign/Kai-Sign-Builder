@@ -1378,10 +1378,13 @@ def get_provider(chain_id: int) -> Web3:
 def get_implementation_address_sync(proxy_address: str, chain_id: int) -> Optional[str]:
     """Try to get implementation address from a proxy contract."""
     try:
+        provider = get_provider(chain_id)
+        # Convert to checksum address (web3.py requirement)
+        proxy_address_checksum = Web3.to_checksum_address(proxy_address)
+
         # Try EIP-1967 implementation slot
         slot = "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
-        provider = get_provider(chain_id)
-        impl_bytes = provider.eth.get_storage_at(proxy_address, slot)
+        impl_bytes = provider.eth.get_storage_at(proxy_address_checksum, slot)
         impl_address = "0x" + impl_bytes.hex()[-40:]
 
         if impl_address != "0x" + "0" * 40:
@@ -1391,7 +1394,7 @@ def get_implementation_address_sync(proxy_address: str, chain_id: int) -> Option
         # Try calling implementation() or masterCopy() for Safe
         for selector in ["0x5c60da1b", "0xa619486e"]:  # implementation(), masterCopy()
             result = provider.eth.call({
-                "to": proxy_address,
+                "to": proxy_address_checksum,
                 "data": selector
             })
             if result and len(result) >= 32:
