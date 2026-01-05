@@ -2998,6 +2998,37 @@
           }
         ]
       },
+      "swapTokensMultipleV3ERC20ToNative(bytes32,string,string,address,uint256,tuple[])": {
+        "intent": "Swap USDC to ETH",
+        "fields": [
+          {
+            "path": "#._receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ]
+      },
       "swapTokensMultipleV3NativeToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])": {
         "intent": "Swap tokens",
         "fields": [
