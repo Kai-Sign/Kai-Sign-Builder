@@ -1359,6 +1359,35 @@ async def query_subgraph_for_contract(target_address: str, chain_id: int) -> lis
         return []
 
 # Contract metadata endpoint - uses working test-contract pattern
+def get_implementation_address_sync(proxy_address: str, chain_id: int) -> Optional[str]:
+    """Try to get implementation address from a proxy contract."""
+    try:
+        # Try EIP-1967 implementation slot
+        slot = "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
+        provider = get_provider(chain_id)
+        impl_bytes = provider.eth.get_storage_at(proxy_address, slot)
+        impl_address = "0x" + impl_bytes.hex()[-40:]
+
+        if impl_address != "0x" + "0" * 40:
+            logger.info(f"EIP-1967 implementation found: {impl_address}")
+            return impl_address.lower()
+
+        # Try calling implementation() or masterCopy() for Safe
+        for selector in ["0x5c60da1b", "0xa619486e"]:  # implementation(), masterCopy()
+            result = provider.eth.call({
+                "to": proxy_address,
+                "data": selector
+            })
+            if result and len(result) >= 32:
+                impl_address = "0x" + result.hex()[-40:]
+                if impl_address != "0x" + "0" * 40:
+                    logger.info(f"Implementation from {selector}: {impl_address}")
+                    return impl_address.lower()
+    except Exception as e:
+        logger.debug(f"Proxy detection failed for {proxy_address}: {e}")
+
+    return None
+
 @app.get("/api/py/contract/{address}")
 async def get_contract_metadata(
     address: str = Path(..., description="Contract address"),
@@ -1381,6 +1410,21 @@ async def get_contract_metadata(
             "error": None,
             "source": "cache"
         }
+
+    # Step 1.5: Try proxy detection
+    impl_address = get_implementation_address_sync(address, chain_id)
+    if impl_address and impl_address != address:
+        logger.info(f"Detected proxy {address} -> implementation {impl_address}")
+        cached = get_cached_metadata(impl_address, chain_id)
+        if cached:
+            logger.info(f"Cache HIT for implementation {impl_address}")
+            return {
+                "success": True,
+                "blob_hash": impl_address,
+                "metadata": cached,
+                "error": None,
+                "source": "cache_via_proxy"
+            }
 
     # Step 2: Cache miss - query subgraph
     specs = query_subgraph_for_contract_sync(address, chain_id)
