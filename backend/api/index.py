@@ -1403,7 +1403,7 @@ def get_implementation_address_sync(proxy_address: str, chain_id: int) -> Option
                     logger.info(f"Implementation from {selector}: {impl_address}")
                     return impl_address.lower()
     except Exception as e:
-        logger.debug(f"Proxy detection failed for {proxy_address}: {e}")
+        logger.error(f"Proxy detection failed for {proxy_address}: {e}", exc_info=True)
 
     return None
 
@@ -1431,10 +1431,13 @@ async def get_contract_metadata(
         }
 
     # Step 1.5: Try proxy detection
+    logger.info(f"Attempting proxy detection for {address} on chain {chain_id}")
     impl_address = get_implementation_address_sync(address, chain_id)
+    logger.info(f"Proxy detection result: {impl_address}")
     if impl_address and impl_address != address:
         logger.info(f"Detected proxy {address} -> implementation {impl_address}")
         cached = get_cached_metadata(impl_address, chain_id)
+        logger.info(f"Cache lookup for implementation: {'HIT' if cached else 'MISS'}")
         if cached:
             logger.info(f"Cache HIT for implementation {impl_address}")
             return {
@@ -1444,6 +1447,8 @@ async def get_contract_metadata(
                 "error": None,
                 "source": "cache_via_proxy"
             }
+        else:
+            logger.warning(f"Proxy detection found impl {impl_address} but no cached metadata")
 
     # Step 2: Cache miss - query subgraph
     specs = query_subgraph_for_contract_sync(address, chain_id)
