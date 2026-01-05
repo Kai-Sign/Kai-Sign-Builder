@@ -1373,7 +1373,8 @@ def get_provider(chain_id: int) -> Web3:
     }
 
     rpc_url = rpc_urls.get(chain_id, rpc_urls[1])  # Default to mainnet
-    return Web3(Web3.HTTPProvider(rpc_url))
+    # Add 3 second timeout to prevent blocking
+    return Web3(Web3.HTTPProvider(rpc_url, request_kwargs={"timeout": 3}))
 
 def get_implementation_address_sync(proxy_address: str, chain_id: int) -> Optional[str]:
     """Try to get implementation address from a proxy contract."""
