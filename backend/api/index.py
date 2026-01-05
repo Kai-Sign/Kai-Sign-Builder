@@ -1452,9 +1452,16 @@ async def get_contract_metadata(
             logger.warning(f"Proxy detection found impl {impl_address} but no cached metadata")
 
     # Step 2: Cache miss - query subgraph
+    logger.info(f"Cache and proxy detection failed, querying subgraph for {address}")
     specs = query_subgraph_for_contract_sync(address, chain_id)
     if not specs:
-        return {"success": False, "blob_hash": address, "error": f"No metadata found for {address}", "metadata": None}
+        return {
+            "success": False,
+            "blob_hash": address,
+            "error": f"No metadata found for {address}",
+            "metadata": None,
+            "source": "subgraph_not_found"
+        }
 
     # Sort specs: prefer FINALIZED, then by recency
     # But try each until we find an available blob (older blobs may be pruned)
