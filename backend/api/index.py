@@ -1379,32 +1379,44 @@ def get_provider(chain_id: int) -> Web3:
 def get_implementation_address_sync(proxy_address: str, chain_id: int) -> Optional[str]:
     """Try to get implementation address from a proxy contract."""
     try:
+        logger.info(f"[PROXY] Starting detection for {proxy_address}")
         provider = get_provider(chain_id)
+        logger.info(f"[PROXY] Provider created for chain {chain_id}")
+
         # Convert to checksum address (web3.py requirement)
         proxy_address_checksum = Web3.to_checksum_address(proxy_address)
+        logger.info(f"[PROXY] Checksum address: {proxy_address_checksum}")
 
         # Try EIP-1967 implementation slot
         slot = "0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc"
+        logger.info(f"[PROXY] Checking EIP-1967 slot...")
         impl_bytes = provider.eth.get_storage_at(proxy_address_checksum, slot)
         impl_address = "0x" + impl_bytes.hex()[-40:]
+        logger.info(f"[PROXY] EIP-1967 result: {impl_address}")
 
         if impl_address != "0x" + "0" * 40:
-            logger.info(f"EIP-1967 implementation found: {impl_address}")
+            logger.info(f"[PROXY] EIP-1967 implementation found: {impl_address}")
             return impl_address.lower()
 
         # Try calling implementation() or masterCopy() for Safe
+        logger.info(f"[PROXY] EIP-1967 empty, trying function calls...")
         for selector in ["0x5c60da1b", "0xa619486e"]:  # implementation(), masterCopy()
+            logger.info(f"[PROXY] Calling selector {selector}...")
             result = provider.eth.call({
                 "to": proxy_address_checksum,
                 "data": selector
             })
+            logger.info(f"[PROXY] Selector {selector} returned {len(result)} bytes")
             if result and len(result) >= 32:
                 impl_address = "0x" + result.hex()[-40:]
+                logger.info(f"[PROXY] Extracted address: {impl_address}")
                 if impl_address != "0x" + "0" * 40:
-                    logger.info(f"Implementation from {selector}: {impl_address}")
+                    logger.info(f"[PROXY] SUCCESS - Implementation from {selector}: {impl_address}")
                     return impl_address.lower()
+
+        logger.info(f"[PROXY] No implementation found for {proxy_address}")
     except Exception as e:
-        logger.error(f"Proxy detection failed for {proxy_address}: {e}", exc_info=True)
+        logger.error(f"[PROXY] EXCEPTION for {proxy_address}: {type(e).__name__}: {e}", exc_info=True)
 
     return None
 
