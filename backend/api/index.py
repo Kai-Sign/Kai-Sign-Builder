@@ -41,6 +41,7 @@ from api.metadata_cache import (
     bulk_load_metadata,
     clear_cache as clear_metadata_cache
 )
+from web3 import Web3
 
 # Configure logging
 logging.basicConfig(
@@ -1359,6 +1360,21 @@ async def query_subgraph_for_contract(target_address: str, chain_id: int) -> lis
         return []
 
 # Contract metadata endpoint - uses working test-contract pattern
+def get_provider(chain_id: int) -> Web3:
+    """Get Web3 provider for a given chain ID."""
+    # Map chain IDs to RPC URLs
+    rpc_urls = {
+        1: os.getenv("MAINNET_RPC_URL", "https://eth.llamarpc.com"),
+        11155111: os.getenv("SEPOLIA_RPC_URL", "https://ethereum-sepolia-rpc.publicnode.com"),
+        137: os.getenv("POLYGON_RPC_URL", "https://polygon-rpc.com"),
+        42161: os.getenv("ARBITRUM_RPC_URL", "https://arb1.arbitrum.io/rpc"),
+        10: os.getenv("OPTIMISM_RPC_URL", "https://mainnet.optimism.io"),
+        8453: os.getenv("BASE_RPC_URL", "https://mainnet.base.org"),
+    }
+
+    rpc_url = rpc_urls.get(chain_id, rpc_urls[1])  # Default to mainnet
+    return Web3(Web3.HTTPProvider(rpc_url))
+
 def get_implementation_address_sync(proxy_address: str, chain_id: int) -> Optional[str]:
     """Try to get implementation address from a proxy contract."""
     try:
