@@ -2999,8 +2999,17 @@
         ]
       },
       "swapTokensMultipleV3ERC20ToNative(bytes32,string,string,address,uint256,tuple[])": {
-        "intent": "Swap USDC to ETH",
+        "intent": "Swap tokens",
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} to ETH",
         "fields": [
+          {
+            "path": "#._swapData.[0].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[0].sendingAssetId"
+            }
+          },
           {
             "path": "#._receiver",
             "label": "Receiver",
