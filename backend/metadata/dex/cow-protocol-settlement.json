@@ -65,6 +65,15 @@
     "formats": {
       "settle(address[],uint256[],(uint256,uint256,address,uint256,uint256,uint32,bytes32,uint256,uint256,uint256,bytes)[],(address,uint256,bytes)[][3])": {
         "intent": "Settle CoW batch auction",
+        "interpolatedIntent": "Settle batch with {trades.length} trades",
+        "fields": [
+          { "path": "tokens", "label": "Tokens", "format": "array" },
+          { "path": "trades", "label": "Trades", "format": "array" }
+        ]
+      },
+      "settle(address[],uint256[],tuple[],tuple[][3])": {
+        "intent": "Settle CoW batch auction",
+        "interpolatedIntent": "Settle batch with {trades.length} trades",
         "fields": [
           { "path": "tokens", "label": "Tokens", "format": "array" },
           { "path": "trades", "label": "Trades", "format": "array" }
@@ -72,6 +81,7 @@
       },
       "setPreSignature(bytes,bool)": {
         "intent": "Set CoW order pre-signature",
+        "interpolatedIntent": "Set pre-signature for order {orderUid}",
         "fields": [
           { "path": "orderUid", "label": "Order UID", "format": "hex" },
           { "path": "signed", "label": "Signed", "format": "boolean" }
@@ -79,6 +89,7 @@
       },
       "invalidateOrder(bytes)": {
         "intent": "Invalidate CoW order",
+        "interpolatedIntent": "Invalidate order {orderUid}",
         "fields": [
           { "path": "orderUid", "label": "Order UID", "format": "hex" }
         ]

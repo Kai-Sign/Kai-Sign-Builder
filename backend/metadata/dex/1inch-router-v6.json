@@ -89,12 +89,12 @@
         ]
       },
       "unoswap(address,uint256,uint256,uint256[])": {
-        "intent": "Swap {amount} via 1inch",
+        "intent": "Swap via 1inch",
+        "interpolatedIntent": "Swap {amount} for at least {minReturn}",
         "fields": [
-          { "path": "srcToken", "label": "From Token", "format": "address" },
-          { "path": "amount", "label": "Amount In", "format": "amount", "params": { "decimals": 6, "symbol": "USDC" } },
-          { "path": "minReturn", "label": "Min Amount Out", "format": "amount", "params": { "decimals": 18, "symbol": "ETH" } },
-          { "path": "pools", "label": "Route (off-chain)", "format": "array" }
+          { "path": "srcToken", "label": "From Token", "format": "addressName" },
+          { "path": "amount", "label": "Amount In", "format": "tokenAmount", "params": { "tokenPath": "srcToken" } },
+          { "path": "minReturn", "label": "Min Amount Out", "format": "raw" }
         ]
       }
     }
