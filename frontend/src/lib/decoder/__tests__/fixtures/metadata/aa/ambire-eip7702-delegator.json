@@ -1,0 +1,77 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x5A7FC11397E9a8AD41BF10bf13F22B0a63f96f6d",
+      "chainId": 1,
+      "name": "Ambire EIP-7702 Delegator",
+      "abi": [
+        {
+          "type": "function",
+          "name": "execute",
+          "selector": "0xb61d27f6",
+          "inputs": [
+            { "name": "to", "type": "address" },
+            { "name": "value", "type": "uint256" },
+            { "name": "data", "type": "bytes" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "executeBatch",
+          "selector": "0x47e1da2a",
+          "inputs": [
+            {
+              "name": "calls",
+              "type": "tuple[]",
+              "components": [
+                { "name": "to", "type": "address" },
+                { "name": "value", "type": "uint256" },
+                { "name": "data", "type": "bytes" }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "executeMultiple",
+          "selector": "0xabc5345e",
+          "inputs": [
+            {
+              "name": "calls",
+              "type": "tuple[]",
+              "components": [
+                { "name": "to", "type": "address" },
+                { "name": "value", "type": "uint256" },
+                { "name": "data", "type": "bytes" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "execute(address,uint256,bytes)": {
+        "intent": "Execute delegated transaction",
+        "fields": [
+          { "path": "to", "label": "Target", "format": "address" },
+          { "path": "value", "label": "Value", "format": "number" },
+          { "path": "data", "label": "Data", "format": "calldata", "type": "calldata", "to": "$.to" }
+        ]
+      },
+      "executeBatch((address,uint256,bytes)[])": {
+        "intent": "Execute batch delegated transactions",
+        "fields": [
+          { "path": "calls", "label": "Calls", "format": "array" }
+        ]
+      },
+      "executeMultiple((address,uint256,bytes)[])": {
+        "intent": "Execute multiple delegated calls",
+        "fields": [
+          { "path": "calls", "label": "Calls", "format": "array" }
+        ]
+      }
+    }
+  }
+}

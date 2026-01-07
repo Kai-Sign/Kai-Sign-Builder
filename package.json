@@ -22,6 +22,7 @@
     "preview": "cd frontend && next build && next start",
     "start": "cd frontend && next start",
     "test": "vitest",
+    "test:decoder": "vitest run frontend/src/lib/decoder/__tests__",
     "typecheck": "tsc --noEmit -p frontend/tsconfig.json"
   },
   "dependencies": {
