@@ -69,12 +69,23 @@
         ]
       },
       "swap(address,tuple,bytes,bytes)": {
-        "intent": "Swap {desc.amount} via 1inch",
+        "intent": "Swap via 1inch",
+        "interpolatedIntent": "Swap {desc.amount} for at least {desc.minReturnAmount}",
         "fields": [
-          { "path": "desc.srcToken", "label": "From Token", "format": "address" },
-          { "path": "desc.dstToken", "label": "To Token", "format": "address" },
-          { "path": "desc.amount", "label": "Amount", "format": "amount", "params": { "decimals": 6, "symbol": "USDC" } },
-          { "path": "desc.minReturnAmount", "label": "Minimum Output", "format": "amount", "params": { "decimals": 18, "symbol": "ETH" } }
+          { "path": "desc.srcToken", "label": "From Token", "format": "addressName" },
+          { "path": "desc.dstToken", "label": "To Token", "format": "addressName" },
+          { "path": "desc.amount", "label": "Amount In", "format": "tokenAmount", "params": { "tokenPath": "desc.srcToken" } },
+          { "path": "desc.minReturnAmount", "label": "Minimum Output", "format": "tokenAmount", "params": { "tokenPath": "desc.dstToken" } }
+        ]
+      },
+      "swap(address,tuple,bytes)": {
+        "intent": "Swap via 1inch",
+        "interpolatedIntent": "Swap {desc.amount} for at least {desc.minReturnAmount}",
+        "fields": [
+          { "path": "desc.srcToken", "label": "From Token", "format": "addressName" },
+          { "path": "desc.dstToken", "label": "To Token", "format": "addressName" },
+          { "path": "desc.amount", "label": "Amount In", "format": "tokenAmount", "params": { "tokenPath": "desc.srcToken" } },
+          { "path": "desc.minReturnAmount", "label": "Minimum Output", "format": "tokenAmount", "params": { "tokenPath": "desc.dstToken" } }
         ]
       },
       "unoswap(address,uint256,uint256,uint256[])": {
