@@ -8,7 +8,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Alert, AlertDescription } from "~/components/ui/alert";
 import { Label } from "~/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "~/components/ui/select";
-import { Eye, Upload, AlertCircle, Plus, Trash2 } from "lucide-react";
+import { Eye, Upload, AlertCircle, Plus, Trash2, Loader2 } from "lucide-react";
+import { Input } from "~/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import { useTransactionDecoder } from "~/hooks/useTransactionDecoder";
+import { convertToLegacyFormat } from "~/lib/decoder/formatConversion";
 import {
   type CarouselApi,
   Carousel,
@@ -117,6 +121,15 @@ const HardwareViewer = ({
 
   // State for dynamically loaded sample sets
   const [sampleSets, setSampleSets] = useState<any[]>([]);
+
+  // Raw bytecode decoding state
+  const [inputMode, setInputMode] = useState<'decoded-json' | 'raw-calldata' | 'rlp-transaction'>('decoded-json');
+  const [rawInput, setRawInput] = useState('');
+  const [contractAddress, setContractAddress] = useState('');
+  const [chainId, setChainId] = useState(1);
+
+  // Decoder hook
+  const { decodeTransaction, decodeCalldata, detectInputType, isLoading: isDecoding, error: decodeError } = useTransactionDecoder();
 
 
 
@@ -364,9 +377,67 @@ const HardwareViewer = ({
   };
 
   const updateMetadataName = (id: string, name: string) => {
-    setMetadataEntries(metadataEntries.map(entry => 
+    setMetadataEntries(metadataEntries.map(entry =>
       entry.id === id ? { ...entry, name } : entry
     ));
+  };
+
+  // Handle raw bytecode decoding
+  const handleRawDecode = async () => {
+    if (!rawInput.trim()) {
+      setError('Please enter transaction data');
+      return;
+    }
+
+    setError('');
+
+    try {
+      if (inputMode === 'raw-calldata') {
+        if (!contractAddress.trim()) {
+          setError('Please enter a contract address for raw calldata');
+          return;
+        }
+
+        const result = await decodeCalldata(rawInput.trim(), contractAddress.trim(), chainId);
+
+        if (result.success) {
+          const legacyFormat = convertToLegacyFormat(result);
+          legacyFormat.toAddress = contractAddress.trim();
+          legacyFormat.chainID = chainId;
+          setTransactionData(legacyFormat as DecodedTransaction);
+        } else {
+          setError(result.error || 'Failed to decode calldata');
+        }
+      } else if (inputMode === 'rlp-transaction') {
+        const result = await decodeTransaction({
+          type: 'rlp',
+          data: rawInput.trim(),
+          chainId,
+        });
+
+        if (result.success) {
+          const legacyFormat = convertToLegacyFormat(result);
+          setTransactionData(legacyFormat as DecodedTransaction);
+        } else {
+          setError(result.error || 'Failed to decode transaction');
+        }
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Decoding failed');
+    }
+  };
+
+  // Auto-detect input type when pasting
+  const handleRawInputChange = (value: string) => {
+    setRawInput(value);
+
+    // Auto-detect type
+    const detectedType = detectInputType(value);
+    if (detectedType === 'rlp') {
+      setInputMode('rlp-transaction');
+    } else if (detectedType === 'calldata') {
+      setInputMode('raw-calldata');
+    }
   };
 
   // Auto-select operation when metadata is selected OR when transaction data changes
@@ -1359,11 +1430,14 @@ const HardwareViewer = ({
 
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <Label>Transaction Data (Decoded)</Label>
+                    <Label>Transaction Data</Label>
                     {transactionData && (
-                      <Button 
-                        onClick={() => setTransactionData(null)} 
-                        size="sm" 
+                      <Button
+                        onClick={() => {
+                          setTransactionData(null);
+                          setRawInput('');
+                        }}
+                        size="sm"
                         variant="outline"
                         className="text-xs"
                       >
@@ -1371,21 +1445,134 @@ const HardwareViewer = ({
                       </Button>
                     )}
                   </div>
-                  <Textarea
-                    placeholder="Paste decoded transaction data JSON..."
-                    value={transactionData ? JSON.stringify(transactionData, null, 2) : ""}
-                    onChange={(e) => {
-                      try {
-                        const parsed = JSON.parse(e.target.value);
-                        setTransactionData(parsed);
-                      } catch (err) {
-                        if (e.target.value === "") {
-                          setTransactionData(null);
-                        }
-                      }
-                    }}
-                    className="min-h-[200px] font-mono text-xs"
-                  />
+
+                  <Tabs value={inputMode} onValueChange={(v) => setInputMode(v as typeof inputMode)}>
+                    <TabsList className="grid w-full grid-cols-3">
+                      <TabsTrigger value="decoded-json">Decoded JSON</TabsTrigger>
+                      <TabsTrigger value="raw-calldata">Raw Calldata</TabsTrigger>
+                      <TabsTrigger value="rlp-transaction">RLP Transaction</TabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="decoded-json" className="space-y-2">
+                      <Textarea
+                        placeholder="Paste decoded transaction data JSON (from Loop Decoder)..."
+                        value={transactionData ? JSON.stringify(transactionData, null, 2) : ""}
+                        onChange={(e) => {
+                          try {
+                            const parsed = JSON.parse(e.target.value);
+                            setTransactionData(parsed);
+                          } catch (err) {
+                            if (e.target.value === "") {
+                              setTransactionData(null);
+                            }
+                          }
+                        }}
+                        className="min-h-[200px] font-mono text-xs"
+                      />
+                    </TabsContent>
+
+                    <TabsContent value="raw-calldata" className="space-y-3">
+                      <div className="space-y-2">
+                        <Label className="text-xs text-muted-foreground">Raw Calldata (0x...)</Label>
+                        <Textarea
+                          placeholder="Paste raw calldata hex (e.g., 0xa9059cbb000000...)"
+                          value={rawInput}
+                          onChange={(e) => handleRawInputChange(e.target.value)}
+                          className="min-h-[100px] font-mono text-xs"
+                        />
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div className="space-y-1">
+                          <Label className="text-xs text-muted-foreground">Contract Address</Label>
+                          <Input
+                            placeholder="0x..."
+                            value={contractAddress}
+                            onChange={(e) => setContractAddress(e.target.value)}
+                            className="font-mono text-xs"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <Label className="text-xs text-muted-foreground">Chain ID</Label>
+                          <Select value={String(chainId)} onValueChange={(v) => setChainId(Number(v))}>
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="1">Ethereum (1)</SelectItem>
+                              <SelectItem value="10">Optimism (10)</SelectItem>
+                              <SelectItem value="137">Polygon (137)</SelectItem>
+                              <SelectItem value="42161">Arbitrum (42161)</SelectItem>
+                              <SelectItem value="8453">Base (8453)</SelectItem>
+                              <SelectItem value="11155111">Sepolia (11155111)</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                      <Button
+                        onClick={handleRawDecode}
+                        disabled={isDecoding || !rawInput.trim() || !contractAddress.trim()}
+                        className="w-full"
+                      >
+                        {isDecoding ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Decoding...
+                          </>
+                        ) : (
+                          'Decode Calldata'
+                        )}
+                      </Button>
+                    </TabsContent>
+
+                    <TabsContent value="rlp-transaction" className="space-y-3">
+                      <div className="space-y-2">
+                        <Label className="text-xs text-muted-foreground">RLP-Encoded Transaction</Label>
+                        <Textarea
+                          placeholder="Paste RLP-encoded transaction (0x02f8... for EIP-1559, 0x04f8... for EIP-7702)"
+                          value={rawInput}
+                          onChange={(e) => handleRawInputChange(e.target.value)}
+                          className="min-h-[150px] font-mono text-xs"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <Label className="text-xs text-muted-foreground">Chain ID (optional, auto-detected from RLP)</Label>
+                        <Select value={String(chainId)} onValueChange={(v) => setChainId(Number(v))}>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="1">Ethereum (1)</SelectItem>
+                            <SelectItem value="10">Optimism (10)</SelectItem>
+                            <SelectItem value="137">Polygon (137)</SelectItem>
+                            <SelectItem value="42161">Arbitrum (42161)</SelectItem>
+                            <SelectItem value="8453">Base (8453)</SelectItem>
+                            <SelectItem value="11155111">Sepolia (11155111)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <Button
+                        onClick={handleRawDecode}
+                        disabled={isDecoding || !rawInput.trim()}
+                        className="w-full"
+                      >
+                        {isDecoding ? (
+                          <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            Decoding...
+                          </>
+                        ) : (
+                          'Decode Transaction'
+                        )}
+                      </Button>
+                    </TabsContent>
+                  </Tabs>
+
+                  {decodeError && (
+                    <Alert variant="destructive" className="mt-2">
+                      <AlertCircle className="h-4 w-4" />
+                      <AlertDescription>{decodeError}</AlertDescription>
+                    </Alert>
+                  )}
                 </div>
 
                 {metadataEntries.length > 0 && (
