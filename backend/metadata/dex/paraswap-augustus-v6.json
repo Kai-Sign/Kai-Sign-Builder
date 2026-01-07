@@ -97,6 +97,17 @@
           { "path": "data.beneficiary", "label": "Recipient", "format": "address" }
         ]
       },
+      "simpleSwap(tuple)": {
+        "intent": "Swap via ParaSwap",
+        "interpolatedIntent": "Swap {data.fromAmount} via ParaSwap",
+        "fields": [
+          { "path": "data.fromToken", "label": "From Token", "format": "addressName" },
+          { "path": "data.toToken", "label": "To Token", "format": "addressName" },
+          { "path": "data.fromAmount", "label": "Amount In", "format": "tokenAmount", "params": { "tokenPath": "data.fromToken" } },
+          { "path": "data.toAmount", "label": "Min Amount Out", "format": "tokenAmount", "params": { "tokenPath": "data.toToken" } },
+          { "path": "data.beneficiary", "label": "Recipient", "format": "addressName" }
+        ]
+      },
       "multiSwap(tuple)": {
         "intent": "Multi-hop swap via ParaSwap",
         "fields": [

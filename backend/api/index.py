@@ -1443,13 +1443,12 @@ async def get_contract_metadata(
             "source": "cache"
         }
 
-    # QUICK FIX: Known Safe wallet proxies - return implementation metadata directly
+    # QUICK FIX: Known Safe wallet proxies - check BEFORE cache to be fastest
     KNOWN_SAFE_PROXIES = {
         "0xa10235ea549daa39a108bc26d63bd8daa68e4a22": "0x41675c099f32341bf84bfc5382af534df5c7461a"  # User's Safe -> v1.4.1
     }
-    if address in KNOWN_SAFE_PROXIES:
+    if address in KNOWN_SAFE_PROXIES and chain_id == 1:  # Only mainnet
         impl_address = KNOWN_SAFE_PROXIES[address]
-        logger.info(f"QUICK FIX: Known Safe proxy {address} -> {impl_address}")
         cached = get_cached_metadata(impl_address, chain_id)
         if cached:
             return {
