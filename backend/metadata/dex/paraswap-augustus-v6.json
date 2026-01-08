@@ -81,6 +81,30 @@
               ]
             }
           ]
+        },
+        {
+          "type": "function",
+          "name": "swapExactAmountIn",
+          "selector": "0xe3ead59e",
+          "inputs": [
+            { "name": "executor", "type": "address" },
+            {
+              "name": "swapData",
+              "type": "tuple",
+              "components": [
+                { "name": "srcToken", "type": "address" },
+                { "name": "destToken", "type": "address" },
+                { "name": "fromAmount", "type": "uint256" },
+                { "name": "toAmount", "type": "uint256" },
+                { "name": "quotedAmount", "type": "uint256" },
+                { "name": "metadata", "type": "bytes32" },
+                { "name": "beneficiary", "type": "address" }
+              ]
+            },
+            { "name": "partnerAndFee", "type": "uint256" },
+            { "name": "permit", "type": "bytes" },
+            { "name": "executorData", "type": "bytes" }
+          ]
         }
       ]
     }
@@ -127,6 +151,17 @@
           { "path": "data.fromAmount", "label": "Amount In", "format": "tokenAmount", "params": { "tokenPath": "data.fromToken" } },
           { "path": "data.toAmount", "label": "Min Amount Out", "format": "raw" },
           { "path": "data.beneficiary", "label": "Recipient", "format": "addressName" }
+        ]
+      },
+      "swapExactAmountIn(address,tuple,uint256,bytes,bytes)": {
+        "intent": "Swap via ParaSwap",
+        "interpolatedIntent": "Swap {swapData.fromAmount} via ParaSwap",
+        "fields": [
+          { "path": "swapData.srcToken", "label": "From Token", "format": "addressName" },
+          { "path": "swapData.destToken", "label": "To Token", "format": "addressName" },
+          { "path": "swapData.fromAmount", "label": "Amount In", "format": "tokenAmount", "params": { "tokenPath": "swapData.srcToken" } },
+          { "path": "swapData.toAmount", "label": "Min Amount Out", "format": "tokenAmount", "params": { "tokenPath": "swapData.destToken" } },
+          { "path": "swapData.beneficiary", "label": "Recipient", "format": "addressName" }
         ]
       }
     }
