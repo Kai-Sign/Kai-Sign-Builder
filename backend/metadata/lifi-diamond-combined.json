@@ -3709,17 +3709,17 @@
           {
             "path": "#._swapData.[0].sendingAssetId",
             "label": "Swap From Token",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._swapData.[0].receivingAssetId",
             "label": "Swap To Token",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -3887,6 +3887,646 @@
         ]
       },
       "swapAndStartBridgeTokensViaCBridge((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(uint32,uint64))": {
+        "intent": "Swap and bridge via C Bridge",
+        "fields": [
+          {
+            "path": "#._swapData.[0].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[0].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ],
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} and bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via C Bridge"
+      },
+      "swapAndStartBridgeTokensViaStargate(tuple,tuple[],tuple)": {
+        "intent": "Swap and bridge via Stargate",
+        "fields": [
+          {
+            "path": "#._swapData.[0].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[0].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ],
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} and bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via Stargate"
+      },
+      "swapAndStartBridgeTokensViaAllBridge(tuple,tuple[],tuple)": {
+        "intent": "Swap and bridge via All Bridge",
+        "fields": [
+          {
+            "path": "#._swapData.[0].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[0].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ],
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} and bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via All Bridge"
+      },
+      "swapAndStartBridgeTokensViaGasZip(tuple,tuple[],tuple)": {
+        "intent": "Swap and bridge via Gas Zip",
+        "fields": [
+          {
+            "path": "#._swapData.[0].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[0].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ],
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} and bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via Gas Zip"
+      },
+      "swapAndStartBridgeTokensViaDeBridgeDln(tuple,tuple[],tuple)": {
+        "intent": "Swap and bridge via De Bridge Dln",
+        "fields": [
+          {
+            "path": "#._swapData.[0].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[0].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ],
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} and bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via De Bridge Dln"
+      },
+      "swapAndStartBridgeTokensViaSquid(tuple,tuple[],tuple)": {
+        "intent": "Swap and bridge via Squid",
+        "fields": [
+          {
+            "path": "#._swapData.[0].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[0].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ],
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} and bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via Squid"
+      },
+      "swapAndStartBridgeTokensViaMayan(tuple,tuple[],tuple)": {
+        "intent": "Swap and bridge via Mayan",
+        "fields": [
+          {
+            "path": "#._swapData.[0].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[0].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ],
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} and bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via Mayan"
+      },
+      "swapAndStartBridgeTokensViaHop(tuple,tuple[],tuple)": {
+        "intent": "Swap and bridge via Hop",
+        "fields": [
+          {
+            "path": "#._swapData.[0].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[0].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ],
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} and bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via Hop"
+      },
+      "swapAndStartBridgeTokensViaSymbiosis(tuple,tuple[],tuple)": {
+        "intent": "Swap and bridge via Symbiosis",
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} {#._swapData.[0].sendingAssetId} to {#._swapData.[0].receivingAssetId} and bridge {#._bridgeData.minAmount} to {#._bridgeData.receiver} on chain {#._bridgeData.destinationChainId} via Symbiosis",
+        "fields": [
+          {
+            "path": "#._swapData.[0].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[0].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[0].sendingAssetId",
+            "label": "Swap From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[0].receivingAssetId",
+            "label": "Swap To Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaAcrossV3(tuple,tuple[],tuple)": {
+        "intent": "Swap and bridge via Across V 3",
+        "fields": [
+          {
+            "path": "#._swapData.[0].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[0].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ],
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} and bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via Across V 3"
+      },
+      "swapAndStartBridgeTokensViaCBridge(tuple,tuple[],tuple)": {
         "intent": "Swap and bridge via C Bridge",
         "fields": [
           {
