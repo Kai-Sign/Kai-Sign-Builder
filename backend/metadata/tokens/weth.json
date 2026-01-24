@@ -1,0 +1,72 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "chainId": 1,
+      "name": "Wrapped Ether",
+      "symbol": "WETH",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0xd0e30db0",
+          "inputs": []
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0x2e1a7d4d",
+          "inputs": [
+            { "name": "wad", "type": "uint256" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            { "name": "guy", "type": "address" },
+            { "name": "wad", "type": "uint256" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            { "name": "dst", "type": "address" },
+            { "name": "wad", "type": "uint256" }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "deposit()": {
+        "intent": "Wrap ETH to WETH"
+      },
+      "withdraw(uint256)": {
+        "intent": "Unwrap WETH to ETH",
+        "fields": [
+          { "path": "wad", "label": "Amount", "format": "amount", "params": { "decimals": 18, "symbol": "WETH" } }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Approve WETH spending",
+        "fields": [
+          { "path": "guy", "label": "Spender", "format": "address" },
+          { "path": "wad", "label": "Amount", "format": "amount", "params": { "decimals": 18, "symbol": "WETH" } }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer WETH",
+        "fields": [
+          { "path": "dst", "label": "Recipient", "format": "address" },
+          { "path": "wad", "label": "Amount", "format": "amount", "params": { "decimals": 18, "symbol": "WETH" } }
+        ]
+      }
+    }
+  }
+}

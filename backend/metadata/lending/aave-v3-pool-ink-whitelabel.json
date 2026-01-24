@@ -1,9 +1,9 @@
 {
   "context": {
     "contract": {
-      "address": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
-      "chainId": 1,
-      "name": "Aave V3 Pool (Ethereum)",
+      "address": "0x2816cf15f6d2a220e789aa011d5ee4eb6c47feba",
+      "chainId": 57073,
+      "name": "Aave V3 Pool (InkWhitelabel)",
       "abi": [
         {
           "type": "function",
