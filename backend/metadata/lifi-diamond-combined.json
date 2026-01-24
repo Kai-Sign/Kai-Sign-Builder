@@ -2753,7 +2753,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -2818,12 +2818,12 @@
           {
             "path": "#._swapData.sendingAssetId",
             "label": "Input Token",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._swapData.receivingAssetId",
             "label": "Output Token",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._swapData.fromAmount",
@@ -2841,21 +2841,22 @@
               "calleePath": "#._swapData.callTo"
             }
           }
-        ]
+        ],
+        "interpolatedIntent": "Swap {#._swapData.fromAmount} for {#._swapData.receivingAssetId} via LiFi"
       },
       "swapTokensSingleV3ERC20ToERC20(bytes32,string,string,address,uint256,tuple)": {
         "intent": "Swap tokens via LiFi",
-        "interpolatedIntent": "Swap {_swapData.fromAmount} via LiFi",
+        "interpolatedIntent": "Swap {_swapData.fromAmount} for {_swapData.receivingAssetId} via LiFi",
         "fields": [
           {
             "path": "_swapData.sendingAssetId",
             "label": "Input Token",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "_swapData.receivingAssetId",
             "label": "Output Token",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "_swapData.fromAmount",
@@ -3005,6 +3006,11 @@
         "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} to ETH via LiFi",
         "fields": [
           {
+            "path": "#._swapData.[0].sendingAssetId",
+            "label": "Input Token",
+            "format": "tokenSymbol"
+          },
+          {
             "path": "#._swapData.[0].fromAmount",
             "label": "Swap Amount",
             "format": "tokenAmount",
@@ -3057,7 +3063,7 @@
           {
             "path": "_swapData.[0].sendingAssetId",
             "label": "Input Token",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "_swapData.[0].fromAmount",
@@ -3162,7 +3168,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -3253,7 +3259,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -3344,7 +3350,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -3435,7 +3441,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -3526,7 +3532,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -3617,7 +3623,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -3696,7 +3702,7 @@
       },
       "swapAndStartBridgeTokensViaSymbiosis((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(bytes,bytes,address,address,address,address[],address,bytes))": {
         "intent": "Swap and bridge via Symbiosis",
-        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} {#._swapData.[0].sendingAssetId} to {#._swapData.[0].receivingAssetId} and bridge {#._bridgeData.minAmount} to {#._bridgeData.receiver} on chain {#._bridgeData.destinationChainId} via Symbiosis",
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} for {#._swapData.[0].receivingAssetId} and bridge {#._bridgeData.minAmount} to {#._bridgeData.receiver} on chain {#._bridgeData.destinationChainId} via Symbiosis",
         "fields": [
           {
             "path": "#._swapData.[0].fromAmount",
@@ -3809,7 +3815,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -3900,7 +3906,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -3963,7 +3969,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -4026,7 +4032,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -4089,7 +4095,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -4152,7 +4158,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -4215,7 +4221,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -4278,7 +4284,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -4341,7 +4347,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -4392,7 +4398,7 @@
       },
       "swapAndStartBridgeTokensViaSymbiosis(tuple,tuple[],tuple)": {
         "intent": "Swap and bridge via Symbiosis",
-        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} {#._swapData.[0].sendingAssetId} to {#._swapData.[0].receivingAssetId} and bridge {#._bridgeData.minAmount} to {#._bridgeData.receiver} on chain {#._bridgeData.destinationChainId} via Symbiosis",
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} for {#._swapData.[0].receivingAssetId} and bridge {#._bridgeData.minAmount} to {#._bridgeData.receiver} on chain {#._bridgeData.destinationChainId} via Symbiosis",
         "fields": [
           {
             "path": "#._swapData.[0].fromAmount",
@@ -4405,17 +4411,17 @@
           {
             "path": "#._swapData.[0].sendingAssetId",
             "label": "Swap From Token",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._swapData.[0].receivingAssetId",
             "label": "Swap To Token",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -4477,7 +4483,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
@@ -4540,7 +4546,7 @@
           {
             "path": "#._bridgeData.sendingAssetId",
             "label": "Token to Bridge",
-            "format": "addressName"
+            "format": "tokenSymbol"
           },
           {
             "path": "#._bridgeData.receiver",
