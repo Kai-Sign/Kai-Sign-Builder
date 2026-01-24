@@ -4,16 +4,27 @@
       "address": "0x3fc91a3afd70395cd496c647d5a6cc9d4b2b7fad",
       "chainId": 1,
       "name": "Uniswap Universal Router",
-      "abi": [{
-        "type": "function",
-        "name": "execute",
-        "selector": "0x3593564c",
-        "inputs": [
-          { "name": "commands", "type": "bytes" },
-          { "name": "inputs", "type": "bytes[]" },
-          { "name": "deadline", "type": "uint256" }
-        ]
-      }]
+      "abi": [
+        {
+          "type": "function",
+          "name": "execute",
+          "selector": "0x3593564c",
+          "inputs": [
+            {
+              "name": "commands",
+              "type": "bytes"
+            },
+            {
+              "name": "inputs",
+              "type": "bytes[]"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ]
+        }
+      ]
     }
   },
   "commandRegistries": {
@@ -22,58 +33,244 @@
         "name": "V3_SWAP_EXACT_IN",
         "intent": "Swap {amountIn} for min {amountOutMin}",
         "inputs": [
-          { "name": "recipient", "type": "address" },
-          { "name": "amountIn", "type": "uint256", "format": "tokenAmount" },
-          { "name": "amountOutMin", "type": "uint256", "format": "tokenAmount" },
-          { "name": "path", "type": "bytes" },
-          { "name": "payerIsUser", "type": "bool" }
+          {
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "name": "amountIn",
+            "type": "uint256",
+            "format": "tokenAmount"
+          },
+          {
+            "name": "amountOutMin",
+            "type": "uint256",
+            "format": "tokenAmount"
+          },
+          {
+            "name": "path",
+            "type": "bytes"
+          },
+          {
+            "name": "payerIsUser",
+            "type": "bool"
+          }
         ]
       },
       "0x01": {
         "name": "V3_SWAP_EXACT_OUT",
         "intent": "Swap for exactly {amountOut}",
         "inputs": [
-          { "name": "recipient", "type": "address" },
-          { "name": "amountOut", "type": "uint256", "format": "tokenAmount" },
-          { "name": "amountInMax", "type": "uint256", "format": "tokenAmount" },
-          { "name": "path", "type": "bytes" },
-          { "name": "payerIsUser", "type": "bool" }
+          {
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "name": "amountOut",
+            "type": "uint256",
+            "format": "tokenAmount"
+          },
+          {
+            "name": "amountInMax",
+            "type": "uint256",
+            "format": "tokenAmount"
+          },
+          {
+            "name": "path",
+            "type": "bytes"
+          },
+          {
+            "name": "payerIsUser",
+            "type": "bool"
+          }
         ]
       },
       "0x08": {
         "name": "V2_SWAP_EXACT_IN",
         "intent": "Swap {amountIn} via V2 for min {amountOutMin}",
         "inputs": [
-          { "name": "recipient", "type": "address" },
-          { "name": "amountIn", "type": "uint256", "format": "tokenAmount" },
-          { "name": "amountOutMin", "type": "uint256", "format": "tokenAmount" },
-          { "name": "path", "type": "address[]" },
-          { "name": "payerIsUser", "type": "bool" }
+          {
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "name": "amountIn",
+            "type": "uint256",
+            "format": "tokenAmount"
+          },
+          {
+            "name": "amountOutMin",
+            "type": "uint256",
+            "format": "tokenAmount"
+          },
+          {
+            "name": "path",
+            "type": "address[]"
+          },
+          {
+            "name": "payerIsUser",
+            "type": "bool"
+          }
         ]
       },
       "0x0b": {
         "name": "WRAP_ETH",
         "intent": "Wrap {amountMin} to WETH",
         "inputs": [
-          { "name": "recipient", "type": "address" },
-          { "name": "amountMin", "type": "uint256", "format": "ethAmount" }
+          {
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "name": "amountMin",
+            "type": "uint256",
+            "format": "ethAmount"
+          }
         ]
       },
       "0x0c": {
         "name": "UNWRAP_WETH",
         "intent": "Unwrap {amountMin} to ETH",
         "inputs": [
-          { "name": "recipient", "type": "address" },
-          { "name": "amountMin", "type": "uint256", "format": "ethAmount" }
+          {
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "name": "amountMin",
+            "type": "uint256",
+            "format": "ethAmount"
+          }
         ]
       },
       "0x04": {
         "name": "SWEEP",
         "intent": "Sweep {token} to recipient",
         "inputs": [
-          { "name": "token", "type": "address", "format": "tokenSymbol" },
-          { "name": "recipient", "type": "address" },
-          { "name": "amountMin", "type": "uint256" }
+          {
+            "name": "token",
+            "type": "address",
+            "format": "tokenSymbol"
+          },
+          {
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "name": "amountMin",
+            "type": "uint256"
+          }
+        ]
+      },
+      "0x0e": {
+        "name": "BALANCE_CHECK_ERC20",
+        "intent": "Check {token} balance",
+        "inputs": [
+          {
+            "name": "owner",
+            "type": "address"
+          },
+          {
+            "name": "token",
+            "type": "address"
+          },
+          {
+            "name": "minBalance",
+            "type": "uint256",
+            "format": "tokenAmount"
+          }
+        ]
+      },
+      "0x10": {
+        "name": "V4_SWAP",
+        "intent": "V4 swap",
+        "inputs": [
+          {
+            "name": "actions",
+            "type": "bytes"
+          },
+          {
+            "name": "params",
+            "type": "bytes[]"
+          }
+        ]
+      },
+      "0x11": {
+        "name": "V3_POSITION_MANAGER_PERMIT",
+        "intent": "Permit v3 position",
+        "inputs": [
+          {
+            "name": "spender",
+            "type": "address"
+          },
+          {
+            "name": "tokenId",
+            "type": "uint256"
+          },
+          {
+            "name": "deadline",
+            "type": "uint256"
+          },
+          {
+            "name": "v",
+            "type": "uint8"
+          },
+          {
+            "name": "r",
+            "type": "bytes32"
+          },
+          {
+            "name": "s",
+            "type": "bytes32"
+          }
+        ]
+      },
+      "0x12": {
+        "name": "V3_POSITION_MANAGER_CALL",
+        "intent": "Call v3 position manager",
+        "inputs": [
+          {
+            "name": "callData",
+            "type": "bytes"
+          }
+        ]
+      },
+      "0x13": {
+        "name": "V4_INITIALIZE_POOL",
+        "intent": "Initialize v4 pool",
+        "inputs": [
+          {
+            "name": "key",
+            "type": "bytes"
+          },
+          {
+            "name": "sqrtPriceX96",
+            "type": "uint160"
+          }
+        ]
+      },
+      "0x14": {
+        "name": "V4_POSITION_MANAGER_CALL",
+        "intent": "Call v4 position manager",
+        "inputs": [
+          {
+            "name": "callData",
+            "type": "bytes"
+          }
+        ]
+      },
+      "0x21": {
+        "name": "EXECUTE_SUB_PLAN",
+        "intent": "Execute sub-plan",
+        "inputs": [
+          {
+            "name": "commands",
+            "type": "bytes"
+          },
+          {
+            "name": "inputs",
+            "type": "bytes[]"
+          }
         ]
       }
     }
@@ -97,8 +294,16 @@
               "decodeWith": "inputs"
             }
           },
-          { "path": "inputs", "label": "Inputs", "format": "hidden" },
-          { "path": "deadline", "label": "Deadline", "format": "timestamp" }
+          {
+            "path": "inputs",
+            "label": "Inputs",
+            "format": "hidden"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "timestamp"
+          }
         ]
       }
     }
