@@ -183,7 +183,7 @@
       },
       "0x10": {
         "name": "V4_SWAP",
-        "intent": "V4 swap",
+        "intent": "V4 swap ({actions} / {params})",
         "inputs": [
           {
             "name": "actions",
