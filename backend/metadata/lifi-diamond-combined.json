@@ -2958,8 +2958,17 @@
         ]
       },
       "swapTokensMultipleV3ERC20ToNative(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])": {
-        "intent": "Swap tokens",
+        "intent": "Swap tokens to ETH via LiFi",
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} to ETH via LiFi",
         "fields": [
+          {
+            "path": "#._swapData.[0].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[0].sendingAssetId"
+            }
+          },
           {
             "path": "#._receiver",
             "label": "Receiver",
@@ -2999,8 +3008,8 @@
         ]
       },
       "swapTokensMultipleV3ERC20ToNative(bytes32,string,string,address,uint256,tuple[])": {
-        "intent": "Swap USDC to ETH",
-        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} to ETH",
+        "intent": "Swap tokens to ETH via LiFi",
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} to ETH via LiFi",
         "fields": [
           {
             "path": "#._swapData.[0].fromAmount",
