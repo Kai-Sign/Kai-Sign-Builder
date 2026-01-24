@@ -3696,7 +3696,7 @@
       },
       "swapAndStartBridgeTokensViaSymbiosis((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(bytes,bytes,address,address,address,address[],address,bytes))": {
         "intent": "Swap and bridge via Symbiosis",
-        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} and bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via Symbiosis",
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} {#._swapData.[0].sendingAssetId} to {#._swapData.[0].receivingAssetId} and bridge {#._bridgeData.minAmount} to {#._bridgeData.receiver} on chain {#._bridgeData.destinationChainId} via Symbiosis",
         "fields": [
           {
             "path": "#._swapData.[0].fromAmount",
@@ -3705,6 +3705,16 @@
             "params": {
               "tokenPath": "#._swapData.[0].sendingAssetId"
             }
+          },
+          {
+            "path": "#._swapData.[0].sendingAssetId",
+            "label": "Swap From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[0].receivingAssetId",
+            "label": "Swap To Token",
+            "format": "addressName"
           },
           {
             "path": "#._bridgeData.sendingAssetId",
