@@ -1,0 +1,92 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x40d9b8417e6e1dcd358f04e3328bced061018a82",
+      "chainId": 42161,
+      "name": "Fluid Vault_weETH_wstETH (arbitrum)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x6e553f65",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xb460af94",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "name": "owner_",
+              "type": "address"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "deposit(uint256,address)": {
+        "intent": "Deposit {assets_} to Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenAddress": "0x35751007a407ca6feffe80b3cb397736d2cf4dbe",
+              "decimals": 18
+            }
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Withdraw {assets_} from Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenAddress": "0x35751007a407ca6feffe80b3cb397736d2cf4dbe",
+              "decimals": 18
+            }
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "owner_",
+            "label": "Owner",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

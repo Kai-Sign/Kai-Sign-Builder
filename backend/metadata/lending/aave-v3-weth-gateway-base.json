@@ -1,0 +1,54 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xa0d9c1e9e48ca30c8d8c3b5d69ff5dc1f6dffc24",
+      "chainId": 8453,
+      "name": "Aave WETH Gateway (Base)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "depositETH",
+          "selector": "0x474cf53d",
+          "inputs": [
+            {
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "name": "onBehalfOf",
+              "type": "address"
+            },
+            {
+              "name": "referralCode",
+              "type": "uint16"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "depositETH(address,address,uint16)": {
+        "intent": "Supply ETH to Aave",
+        "fields": [
+          {
+            "path": "pool",
+            "label": "Pool",
+            "format": "address"
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "number"
+          }
+        ]
+      }
+    }
+  }
+}

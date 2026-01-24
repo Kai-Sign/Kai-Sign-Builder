@@ -1,0 +1,54 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x57ce905cfd7f986a929a26b006f797d181db706e",
+      "chainId": 534351,
+      "name": "Aave WETH Gateway (ScrollSepolia)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "depositETH",
+          "selector": "0x474cf53d",
+          "inputs": [
+            {
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "name": "onBehalfOf",
+              "type": "address"
+            },
+            {
+              "name": "referralCode",
+              "type": "uint16"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "depositETH(address,address,uint16)": {
+        "intent": "Supply ETH to Aave",
+        "fields": [
+          {
+            "path": "pool",
+            "label": "Pool",
+            "format": "address"
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "number"
+          }
+        ]
+      }
+    }
+  }
+}

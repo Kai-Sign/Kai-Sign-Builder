@@ -1,9 +1,9 @@
 {
   "context": {
     "contract": {
-      "address": "0x87870bca3f3fd6335c3f4ce8392d69350b4fa4e2",
-      "chainId": 1,
-      "name": "Aave V3 Pool (Ethereum)",
+      "address": "0x8b9b2af4afb389b4a70a474dfd4adcd4a302bb40",
+      "chainId": 43113,
+      "name": "Aave V3 Pool (Fuji)",
       "abi": [
         {
           "type": "function",

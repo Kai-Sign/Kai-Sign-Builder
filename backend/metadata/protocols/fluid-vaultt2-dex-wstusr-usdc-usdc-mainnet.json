@@ -1,0 +1,96 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xacb58522296b514a0796179c48f85297f0cecb87",
+      "chainId": 1,
+      "name": "Fluid VaultT2_DEX-wstUSR-USDC_USDC (mainnet)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x6e553f65",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xb460af94",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "name": "owner_",
+              "type": "address"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "deposit(uint256,address)": {
+        "intent": "Deposit {assets_} to Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenAddress": {
+                "token0": "0x1202f5c7b4b9e47a1a484e8b270be34dbbc75055",
+                "token1": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+              }
+            }
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Withdraw {assets_} from Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenAddress": {
+                "token0": "0x1202f5c7b4b9e47a1a484e8b270be34dbbc75055",
+                "token1": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+              }
+            }
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "owner_",
+            "label": "Owner",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

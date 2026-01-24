@@ -1,0 +1,54 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x3d2ee1ab8c3a597cdf80273c684de0036481be3a",
+      "chainId": 43113,
+      "name": "Aave WETH Gateway (Fuji)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "depositETH",
+          "selector": "0x474cf53d",
+          "inputs": [
+            {
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "name": "onBehalfOf",
+              "type": "address"
+            },
+            {
+              "name": "referralCode",
+              "type": "uint16"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "depositETH(address,address,uint16)": {
+        "intent": "Supply ETH to Aave",
+        "fields": [
+          {
+            "path": "pool",
+            "label": "Pool",
+            "format": "address"
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "number"
+          }
+        ]
+      }
+    }
+  }
+}
