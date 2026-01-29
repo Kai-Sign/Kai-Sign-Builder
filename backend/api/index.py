@@ -1432,7 +1432,25 @@ async def get_contract_metadata(
     address = address.lower()
 
     # Step 1: Check cache FIRST
+    # Try exact match first
     cached = get_cached_metadata(address, chain_id)
+
+    # Fallback: If chainId=1, try address-only lookup
+    if not cached and chain_id == 1:
+        from api.metadata_cache import CHAIN_AGNOSTIC_MODE, get_cached_metadata_address_only
+        if CHAIN_AGNOSTIC_MODE:
+            cached = get_cached_metadata_address_only(address)
+            if cached:
+                logger.info(f"Cache HIT (address-only for chainId=1) for {address}")
+                return {
+                    "success": True,
+                    "blob_hash": address,
+                    "metadata": cached,
+                    "error": None,
+                    "source": "cache_agnostic"
+                }
+
+    # Return exact match if found
     if cached:
         logger.info(f"Cache HIT for {address} on chain {chain_id}")
         return {
