@@ -1,0 +1,197 @@
+{
+  "$schema": "https://raw.githubusercontent.com/ethereum/ERCS/master/assets/erc-7730/schemas/erc-7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 11155111,
+          "address": "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "commitSpec",
+          "inputs": [
+            { "name": "commitment", "type": "bytes32" },
+            { "name": "targetContract", "type": "address" },
+            { "name": "chainId", "type": "uint256" }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revealSpec",
+          "inputs": [
+            { "name": "commitmentId", "type": "bytes32" },
+            { "name": "blobHash", "type": "bytes32" },
+            { "name": "nonce", "type": "uint256" }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "proposeSpec",
+          "inputs": [
+            { "name": "specId", "type": "bytes32" }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "challengeSpec",
+          "inputs": [
+            { "name": "specId", "type": "bytes32" },
+            { "name": "questionId", "type": "bytes32" }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimIncentive",
+          "inputs": [
+            { "name": "specId", "type": "bytes32" }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawBond",
+          "inputs": [
+            { "name": "specId", "type": "bytes32" }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addContractSpec",
+          "inputs": [
+            { "name": "targetContract", "type": "address" },
+            { "name": "chainId", "type": "uint256" },
+            { "name": "blobHash", "type": "bytes32" }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeContractSpec",
+          "inputs": [
+            { "name": "targetContract", "type": "address" },
+            { "name": "chainId", "type": "uint256" },
+            { "name": "blobHash", "type": "bytes32" }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "createIncentive",
+          "inputs": [
+            { "name": "targetContract", "type": "address" },
+            { "name": "chainId", "type": "uint256" }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "updateMinBond",
+          "inputs": [
+            { "name": "newMinBond", "type": "uint256" }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateTreasury",
+          "inputs": [
+            { "name": "newTreasury", "type": "address" }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addAdmin",
+          "inputs": [
+            { "name": "newAdmin", "type": "address" }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeAdmin",
+          "inputs": [
+            { "name": "admin", "type": "address" }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "name": "KaiSign",
+    "description": "Decentralized specification registry for smart contract interactions using EIP-4844 blobs",
+    "icons": {
+      "small": "https://example.com/kaisign-icon.png"
+    },
+    "links": {
+      "website": "https://kaisign.xyz"
+    }
+  },
+  "display": {
+    "formats": {
+      "commitSpec(bytes32,address,uint256)": {
+        "label": "Commit Specification",
+        "description": "Commit to submitting a specification for a smart contract. Remember to save your nonce!",
+        "params": [
+          {
+            "label": "Commitment Hash",
+            "format": "hex"
+          },
+          {
+            "label": "Target Contract",
+            "format": "address"
+          },
+          {
+            "label": "Chain ID",
+            "format": "int"
+          }
+        ]
+      },
+      "revealSpec(bytes32,bytes32,uint256)": {
+        "label": "Reveal Specification",
+        "description": "Reveal and submit a previously committed specification with bond",
+        "params": [
+          {
+            "label": "Commitment ID",
+            "format": "hex"
+          },
+          {
+            "label": "Blob Hash",
+            "format": "hex"
+          },
+          {
+            "label": "Nonce",
+            "format": "int"
+          }
+        ]
+      },
+      "proposeSpec(bytes32)": {
+        "label": "Propose Specification",
+        "description": "Propose an existing specification for Reality.eth validation",
+        "params": [
+          {
+            "label": "Spec ID",
+            "format": "hex"
+          }
+        ]
+      },
+      "challengeSpec(bytes32,bytes32)": {
+        "label": "Challenge Specification",
+        "description": "Challenge a proposed specification through Reality.eth",
+        "params": [
+          {
+            "label": "Spec ID",
+            "format": "hex"
+          },
+          {
+            "label": "Question ID",
+            "
