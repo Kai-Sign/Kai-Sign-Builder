@@ -25,6 +25,7 @@
           "inputs": [
             { "name": "commitmentId", "type": "bytes32" },
             { "name": "blobHash", "type": "bytes32" },
+            { "name": "metadataHash", "type": "bytes32" },
             { "name": "nonce", "type": "uint256" }
           ],
           "stateMutability": "payable"
@@ -81,7 +82,10 @@
           "name": "createIncentive",
           "inputs": [
             { "name": "targetContract", "type": "address" },
-            { "name": "chainId", "type": "uint256" }
+            { "name": "targetChainId", "type": "uint256" },
+            { "name": "amount", "type": "uint256" },
+            { "name": "duration", "type": "uint64" },
+            { "name": "description", "type": "string" }
           ],
           "stateMutability": "payable"
         },
@@ -129,11 +133,12 @@
           { "path": "chainId", "label": "Chain ID", "format": "raw" }
         ]
       },
-      "revealSpec(bytes32,bytes32,uint256)": {
+      "revealSpec(bytes32,bytes32,bytes32,uint256)": {
         "intent": "Reveal Specification",
         "fields": [
           { "path": "commitmentId", "label": "Commitment ID", "format": "raw" },
           { "path": "blobHash", "label": "Blob Hash", "format": "raw" },
+          { "path": "metadataHash", "label": "Metadata Hash", "format": "raw" },
           { "path": "nonce", "label": "Nonce", "format": "raw" }
         ]
       },
@@ -178,11 +183,14 @@
           { "path": "blobHash", "label": "Blob Hash", "format": "raw" }
         ]
       },
-      "createIncentive(address,uint256)": {
+      "createIncentive(address,uint256,uint256,uint64,string)": {
         "intent": "Create Incentive",
         "fields": [
           { "path": "targetContract", "label": "Target Contract", "format": "addressName" },
-          { "path": "chainId", "label": "Chain ID", "format": "raw" }
+          { "path": "targetChainId", "label": "Chain ID", "format": "raw" },
+          { "path": "amount", "label": "Amount", "format": "amount" },
+          { "path": "duration", "label": "Duration", "format": "raw" },
+          { "path": "description", "label": "Description", "format": "raw" }
         ]
       },
       "updateMinBond(uint256)": {
