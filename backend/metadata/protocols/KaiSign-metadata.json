@@ -121,7 +121,7 @@
   },
   "display": {
     "formats": {
-      "commitSpec(bytes32 commitment,address targetContract,uint256 chainId)": {
+      "commitSpec(bytes32,address,uint256)": {
         "intent": "Commit Specification",
         "fields": [
           { "path": "commitment", "label": "Commitment Hash", "format": "raw" },
@@ -129,7 +129,7 @@
           { "path": "chainId", "label": "Chain ID", "format": "raw" }
         ]
       },
-      "revealSpec(bytes32 commitmentId,bytes32 blobHash,uint256 nonce)": {
+      "revealSpec(bytes32,bytes32,uint256)": {
         "intent": "Reveal Specification",
         "fields": [
           { "path": "commitmentId", "label": "Commitment ID", "format": "raw" },
@@ -137,32 +137,32 @@
           { "path": "nonce", "label": "Nonce", "format": "raw" }
         ]
       },
-      "proposeSpec(bytes32 specId)": {
+      "proposeSpec(bytes32)": {
         "intent": "Propose Specification",
         "fields": [
           { "path": "specId", "label": "Spec ID", "format": "raw" }
         ]
       },
-      "challengeSpec(bytes32 specId,bytes32 questionId)": {
+      "challengeSpec(bytes32,bytes32)": {
         "intent": "Challenge Specification",
         "fields": [
           { "path": "specId", "label": "Spec ID", "format": "raw" },
           { "path": "questionId", "label": "Question ID", "format": "raw" }
         ]
       },
-      "claimIncentive(bytes32 specId)": {
+      "claimIncentive(bytes32)": {
         "intent": "Claim Incentive",
         "fields": [
           { "path": "specId", "label": "Spec ID", "format": "raw" }
         ]
       },
-      "withdrawBond(bytes32 specId)": {
+      "withdrawBond(bytes32)": {
         "intent": "Withdraw Bond",
         "fields": [
           { "path": "specId", "label": "Spec ID", "format": "raw" }
         ]
       },
-      "addContractSpec(address targetContract,uint256 chainId,bytes32 blobHash)": {
+      "addContractSpec(address,uint256,bytes32)": {
         "intent": "Add Contract Specification",
         "fields": [
           { "path": "targetContract", "label": "Target Contract", "format": "addressName" },
@@ -170,7 +170,7 @@
           { "path": "blobHash", "label": "Blob Hash", "format": "raw" }
         ]
       },
-      "removeContractSpec(address targetContract,uint256 chainId,bytes32 blobHash)": {
+      "removeContractSpec(address,uint256,bytes32)": {
         "intent": "Remove Contract Specification",
         "fields": [
           { "path": "targetContract", "label": "Target Contract", "format": "addressName" },
@@ -178,32 +178,32 @@
           { "path": "blobHash", "label": "Blob Hash", "format": "raw" }
         ]
       },
-      "createIncentive(address targetContract,uint256 chainId)": {
+      "createIncentive(address,uint256)": {
         "intent": "Create Incentive",
         "fields": [
           { "path": "targetContract", "label": "Target Contract", "format": "addressName" },
           { "path": "chainId", "label": "Chain ID", "format": "raw" }
         ]
       },
-      "updateMinBond(uint256 newMinBond)": {
+      "updateMinBond(uint256)": {
         "intent": "Update Minimum Bond",
         "fields": [
           { "path": "newMinBond", "label": "New Minimum Bond", "format": "amount" }
         ]
       },
-      "updateTreasury(address newTreasury)": {
+      "updateTreasury(address)": {
         "intent": "Update Treasury",
         "fields": [
           { "path": "newTreasury", "label": "New Treasury", "format": "addressName" }
         ]
       },
-      "addAdmin(address newAdmin)": {
+      "addAdmin(address)": {
         "intent": "Add Admin",
         "fields": [
           { "path": "newAdmin", "label": "New Admin", "format": "addressName" }
         ]
       },
-      "removeAdmin(address admin)": {
+      "removeAdmin(address)": {
         "intent": "Remove Admin",
         "fields": [
           { "path": "admin", "label": "Admin to Remove", "format": "addressName" }
