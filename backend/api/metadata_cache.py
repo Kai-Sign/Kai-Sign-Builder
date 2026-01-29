@@ -86,7 +86,7 @@ def get_cached_metadata(address: str, chain_id: int) -> Optional[Dict[str, Any]]
     return None
 
 
-def set_cached_metadata(address: str, chain_id: int, metadata: Dict[str, Any], persist: bool = None) -> None:
+def set_cached_metadata(address: str, chain_id: int, metadata: Dict[str, Any], persist: Optional[bool] = None) -> None:
     """
     Store metadata in cache (memory + disk).
 
@@ -145,12 +145,19 @@ def load_metadata_from_file(file_path: str, persist: bool = True) -> Optional[Di
             set_cached_metadata(address, chain_id, metadata, persist=persist)
             return metadata
         elif "deployments" in contract:
-            # Multiple deployments format
-            for network, deployment in contract["deployments"].items():
-                if "address" in deployment and "chainId" in deployment:
-                    address = deployment["address"]
-                    chain_id = deployment["chainId"]
-                    set_cached_metadata(address, chain_id, metadata, persist=persist)
+            deployments = contract["deployments"]
+            if isinstance(deployments, list):
+                for deployment in deployments:
+                    if "address" in deployment and "chainId" in deployment:
+                        address = deployment["address"]
+                        chain_id = deployment["chainId"]
+                        set_cached_metadata(address, chain_id, metadata, persist=persist)
+            elif isinstance(deployments, dict):
+                for deployment in deployments.values():
+                    if "address" in deployment and "chainId" in deployment:
+                        address = deployment["address"]
+                        chain_id = deployment["chainId"]
+                        set_cached_metadata(address, chain_id, metadata, persist=persist)
             return metadata
         else:
             logger.warning(f"No address/chainId found in {file_path}")
@@ -314,12 +321,21 @@ def bulk_load_metadata(metadata_list: list) -> int:
                 set_cached_metadata(address, chain_id, metadata)
                 count += 1
             elif "deployments" in contract:
-                for network, deployment in contract["deployments"].items():
-                    if "address" in deployment and "chainId" in deployment:
-                        address = deployment["address"]
-                        chain_id = deployment["chainId"]
-                        set_cached_metadata(address, chain_id, metadata)
-                        count += 1
+                deployments = contract["deployments"]
+                if isinstance(deployments, list):
+                    for deployment in deployments:
+                        if "address" in deployment and "chainId" in deployment:
+                            address = deployment["address"]
+                            chain_id = deployment["chainId"]
+                            set_cached_metadata(address, chain_id, metadata)
+                            count += 1
+                elif isinstance(deployments, dict):
+                    for deployment in deployments.values():
+                        if "address" in deployment and "chainId" in deployment:
+                            address = deployment["address"]
+                            chain_id = deployment["chainId"]
+                            set_cached_metadata(address, chain_id, metadata)
+                            count += 1
         except Exception as e:
             logger.warning(f"Failed to cache metadata entry: {e}")
 
