@@ -19,6 +19,10 @@ logger = logging.getLogger(__name__)
 # In-memory cache: {"{address_lower}_{chain_id}": metadata_dict}
 _metadata_cache: Dict[str, Dict[str, Any]] = {}
 
+# Address-only cache: {"address_lower": metadata_dict}
+# Used for chainId=1 lookups when CHAIN_AGNOSTIC_MODE is enabled
+_address_cache: Dict[str, Dict[str, Any]] = {}
+
 # Railway volume path - /data is the standard mount point for Railway volumes
 # Falls back to /tmp if volume is not mounted (local dev)
 RAILWAY_VOLUME_PATH = Path("/data")
@@ -30,6 +34,10 @@ CACHE_INDEX_FILE = CACHE_DIR / "index.json"
 
 # Auto-persist flag - when True, saves to disk on every cache update
 AUTO_PERSIST = os.getenv("METADATA_CACHE_AUTO_PERSIST", "true").lower() == "true"
+
+# Chain-agnostic mode: When true, chainId=1 uses address-only lookup
+# Set METADATA_CHAIN_AGNOSTIC_MODE=false to disable this feature
+CHAIN_AGNOSTIC_MODE = os.getenv("METADATA_CHAIN_AGNOSTIC_MODE", "true").lower() == "true"
 
 
 def _ensure_cache_dir():
@@ -86,6 +94,30 @@ def get_cached_metadata(address: str, chain_id: int) -> Optional[Dict[str, Any]]
     return None
 
 
+def get_cached_metadata_address_only(address: str) -> Optional[Dict[str, Any]]:
+    """
+    Get metadata by address only (ignoring chain ID).
+    Only used when CHAIN_AGNOSTIC_MODE is enabled for chainId=1 queries.
+
+    Args:
+        address: Contract address (with or without 0x prefix)
+
+    Returns:
+        Cached metadata dict or None if not found
+    """
+    addr = address.lower()
+    if not addr.startswith("0x"):
+        addr = "0x" + addr
+
+    metadata = _address_cache.get(addr)
+    if metadata:
+        logger.info(f"Cache HIT (address-only) for {address}")
+        return metadata
+
+    logger.debug(f"Cache MISS (address-only) for {address}")
+    return None
+
+
 def set_cached_metadata(address: str, chain_id: int, metadata: Dict[str, Any], persist: Optional[bool] = None) -> None:
     """
     Store metadata in cache (memory + disk).
@@ -98,6 +130,13 @@ def set_cached_metadata(address: str, chain_id: int, metadata: Dict[str, Any], p
     """
     key = _cache_key(address, chain_id)
     _metadata_cache[key] = metadata
+
+    # Update address-only cache if enabled
+    if CHAIN_AGNOSTIC_MODE:
+        addr = address.lower()
+        if not addr.startswith("0x"):
+            addr = "0x" + addr
+        _address_cache[addr] = metadata
 
     # Persist to disk for Railway volume storage
     should_persist = persist if persist is not None else AUTO_PERSIST
@@ -229,6 +268,7 @@ def get_cache_stats() -> Dict[str, Any]:
 def clear_cache(clear_disk: bool = True) -> None:
     """Clear all cached metadata."""
     _metadata_cache.clear()
+    _address_cache.clear()
 
     if clear_disk and CACHE_DIR.exists():
         try:
