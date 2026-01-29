@@ -1241,6 +1241,108 @@ async def test_beacon():
 
     return results
 
+
+# Test Blobscan/Swarm fallback
+@app.get("/api/py/test-blobscan/{blob_hash}")
+async def test_blobscan_fallback(
+    blob_hash: str = Path(..., description="Blob versioned hash (0x01...)"),
+    network: str = Query("sepolia", description="Network: sepolia or mainnet")
+):
+    """
+    Test Blobscan/Swarm fallback directly.
+
+    This endpoint tests fetching blob data from Blobscan API and Swarm Gateway
+    when the beacon chain blob is no longer available (pruned after ~18 days).
+    """
+    import time
+
+    results = {
+        "blob_hash": blob_hash,
+        "network": network,
+        "steps": []
+    }
+
+    # Step 1: Try Blobscan API for metadata
+    base_url = BLOBSCAN_API_SEPOLIA if network == "sepolia" else BLOBSCAN_API_MAINNET
+    try:
+        start = time.time()
+        metadata_resp = requests.get(f"{base_url}/blobs/{blob_hash}", timeout=15)
+        elapsed = time.time() - start
+
+        results["steps"].append({
+            "step": "blobscan_metadata",
+            "url": f"{base_url}/blobs/{blob_hash}",
+            "status": metadata_resp.status_code,
+            "elapsed": round(elapsed, 2),
+            "success": metadata_resp.status_code == 200
+        })
+
+        if metadata_resp.status_code == 200:
+            metadata = metadata_resp.json()
+            storage_refs = metadata.get("dataStorageReferences", [])
+            results["storage_references"] = storage_refs
+    except Exception as e:
+        results["steps"].append({
+            "step": "blobscan_metadata",
+            "error": str(e),
+            "success": False
+        })
+        return results
+
+    # Step 2: Try full fallback fetch
+    try:
+        start = time.time()
+        content = fetch_blob_from_blobscan_sync(blob_hash, network)
+        elapsed = time.time() - start
+
+        if content:
+            # Try to parse as JSON
+            try:
+                padding_idx = content.find(PADDING_MARKER)
+                if padding_idx != -1:
+                    content = content[:padding_idx]
+                json_content = json.loads(content)
+                results["steps"].append({
+                    "step": "fallback_fetch",
+                    "elapsed": round(elapsed, 2),
+                    "success": True,
+                    "content_length": len(content),
+                    "is_valid_json": True
+                })
+                results["metadata_preview"] = {
+                    "context": json_content.get("context"),
+                    "metadata": json_content.get("metadata")
+                }
+                results["success"] = True
+            except json.JSONDecodeError:
+                results["steps"].append({
+                    "step": "fallback_fetch",
+                    "elapsed": round(elapsed, 2),
+                    "success": True,
+                    "content_length": len(content),
+                    "is_valid_json": False,
+                    "content_preview": content[:500]
+                })
+                results["success"] = False
+        else:
+            results["steps"].append({
+                "step": "fallback_fetch",
+                "elapsed": round(elapsed, 2),
+                "success": False,
+                "error": "No content retrieved from any storage backend"
+            })
+            results["success"] = False
+    except Exception as e:
+        results["steps"].append({
+            "step": "fallback_fetch",
+            "error": str(e),
+            "success": False
+        })
+        results["success"] = False
+
+    return results
+
+
 # Subgraph URL for KaiSign
 KAISIGN_SUBGRAPH_URL = "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/version/latest"
 
@@ -1540,7 +1642,43 @@ async def get_contract_metadata(
             break
 
     if not blob_hex:
-        return {"success": False, "blob_hash": address, "error": "No available blob found (all may be pruned)", "metadata": None}
+        # Beacon chain blob not available (pruned) - try Blobscan/Swarm fallback
+        logger.info(f"Beacon chain blob not available, trying Blobscan/Swarm fallback")
+
+        # Determine network from chain_id
+        network = "mainnet" if chain_id == 1 else "sepolia"
+
+        # Try each spec's blob hash with Blobscan fallback
+        for spec in ordered_specs:
+            spec_blob_hash = spec.get("blobHash")
+            if not spec_blob_hash:
+                continue
+
+            content = fetch_blob_from_blobscan_sync(spec_blob_hash, network)
+            if content:
+                try:
+                    # Remove padding if present
+                    padding_idx = content.find(PADDING_MARKER)
+                    if padding_idx != -1:
+                        content = content[:padding_idx]
+
+                    metadata = json.loads(content)
+
+                    # Cache the metadata
+                    set_cached_metadata(address, chain_id, metadata)
+
+                    return {
+                        "success": True,
+                        "blob_hash": spec_blob_hash,
+                        "metadata": metadata,
+                        "error": None,
+                        "source": "blobscan_fallback"
+                    }
+                except json.JSONDecodeError as e:
+                    logger.warning(f"Failed to parse Blobscan content as JSON: {e}")
+                    continue
+
+        return {"success": False, "blob_hash": address, "error": "No available blob found (beacon pruned, Blobscan/Swarm fallback failed)", "metadata": None}
 
     content = decode_blob_data(blob_hex)
     padding_idx = content.find(PADDING_MARKER)
@@ -1642,6 +1780,121 @@ def fetch_blob_from_beacon_sync(slot: int, blob_hash: str) -> str:
             if vh.lower() == blob_hash.lower():
                 return sidecar.get("blob", "")
     return None
+
+
+# =============================================================================
+# BLOBSCAN / SWARM FALLBACK - For pruned blobs (>18 days old)
+# =============================================================================
+
+BLOBSCAN_API_SEPOLIA = "https://api.sepolia.blobscan.com"
+BLOBSCAN_API_MAINNET = "https://api.blobscan.com"
+SWARM_GATEWAY = "https://api.gateway.ethswarm.org"
+
+
+def fetch_blob_from_blobscan_sync(blob_hash: str, network: str = "sepolia") -> Optional[str]:
+    """
+    Fetch blob data from Blobscan API as fallback when beacon chain blob is pruned.
+
+    Tries multiple storage backends:
+    1. Google Cloud Storage (direct blob data)
+    2. Swarm Gateway (JSON data)
+
+    Args:
+        blob_hash: The blob versioned hash (0x01...)
+        network: "sepolia" or "mainnet"
+
+    Returns:
+        Decoded blob content as string, or None if not found
+    """
+    base_url = BLOBSCAN_API_SEPOLIA if network == "sepolia" else BLOBSCAN_API_MAINNET
+
+    try:
+        # Step 1: Get blob metadata from Blobscan API
+        logger.info(f"Fetching blob metadata from Blobscan: {blob_hash}")
+        metadata_resp = requests.get(f"{base_url}/blobs/{blob_hash}", timeout=15)
+
+        if metadata_resp.status_code != 200:
+            logger.warning(f"Blobscan metadata not found: {metadata_resp.status_code}")
+            return None
+
+        metadata = metadata_resp.json()
+        storage_refs = metadata.get("dataStorageReferences", [])
+
+        # Step 2: Try Google Cloud Storage first (raw blob data)
+        google_ref = next((ref for ref in storage_refs if ref.get("storage") == "google"), None)
+        if google_ref and google_ref.get("url"):
+            logger.info(f"Trying Google Cloud Storage: {google_ref['url']}")
+            try:
+                gcs_resp = requests.get(google_ref["url"], timeout=30)
+                if gcs_resp.status_code == 200:
+                    # Raw blob data - decode it
+                    blob_bytes = gcs_resp.content
+                    content = decode_blob_bytes(blob_bytes)
+                    if content:
+                        logger.info("Successfully fetched blob from Google Cloud Storage")
+                        return content
+            except Exception as e:
+                logger.warning(f"Google Cloud Storage fetch failed: {e}")
+
+        # Step 3: Try Swarm Gateway (already decoded JSON)
+        swarm_ref = next((ref for ref in storage_refs if ref.get("storage") == "swarm"), None)
+        if swarm_ref and swarm_ref.get("url"):
+            # Extract swarm reference from URL like "http://localhost:1633/bzz/abc123..."
+            swarm_url = swarm_ref["url"]
+            swarm_hash = swarm_url.split("/bzz/")[-1] if "/bzz/" in swarm_url else None
+
+            if swarm_hash:
+                gateway_url = f"{SWARM_GATEWAY}/bzz/{swarm_hash}"
+                logger.info(f"Trying Swarm Gateway: {gateway_url}")
+                try:
+                    swarm_resp = requests.get(gateway_url, timeout=30)
+                    if swarm_resp.status_code == 200:
+                        # Swarm returns the actual JSON content
+                        content = swarm_resp.text
+                        logger.info("Successfully fetched blob from Swarm Gateway")
+                        return content
+                except Exception as e:
+                    logger.warning(f"Swarm Gateway fetch failed: {e}")
+
+        logger.warning(f"No available storage backends for blob: {blob_hash}")
+        return None
+
+    except Exception as e:
+        logger.error(f"Blobscan fallback failed: {e}")
+        return None
+
+
+def decode_blob_bytes(blob_bytes: bytes) -> Optional[str]:
+    """
+    Decode raw blob bytes to string.
+
+    Blob format: 4096 field elements × 32 bytes each
+    First byte of each 32-byte chunk is skipped (field element encoding)
+    """
+    try:
+        decoded_bytes = []
+
+        for field_element in range(4096):
+            offset = field_element * 32
+            # Skip the first byte (field element encoding), take next 31 bytes
+            for byte_index in range(1, 32):
+                if offset + byte_index >= len(blob_bytes):
+                    break
+                byte_val = blob_bytes[offset + byte_index]
+                if byte_val == 0:
+                    continue
+                decoded_bytes.append(byte_val)
+
+        # Convert to string, removing null bytes
+        content = bytes(decoded_bytes).decode('utf-8', errors='ignore')
+        content = content.replace('\x00', '')
+
+        return content if content.strip() else None
+
+    except Exception as e:
+        logger.error(f"Failed to decode blob bytes: {e}")
+        return None
+
 
 async def _fetch_blob_internal(blob_hash: str, tx_hash: Optional[str] = None) -> BlobResponse:
     """Internal blob fetch function - use this when calling programmatically."""
