@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "~/components/ui/button";
 import { Upload, CheckCircle, Loader2, Clock, ArrowRight, ArrowLeft, Copy } from "lucide-react";
 import { Card } from "~/components/ui/card";
@@ -11,6 +11,7 @@ import { useErc7730Store } from "~/store/erc7730Provider";
 import { useToast } from "~/hooks/use-toast";
 import { web3Service } from "~/lib/web3Service";
 import { useWallet } from "~/contexts/WalletContext";
+import BlobPostingStatus, { type BlobPostingStatusData } from "./BlobPostingStatus";
 
 export default function FileUploader() {
   const [file, setFile] = useState<File | null>(null);
@@ -34,6 +35,10 @@ export default function FileUploader() {
   const [blobTxHash, setBlobTxHash] = useState<string>("");
   const [isPostingBlob, setIsPostingBlob] = useState(false);
   const [manualBlobHash, setManualBlobHash] = useState<string>("");
+  const [blobPostingStatus, setBlobPostingStatus] = useState<BlobPostingStatusData>({
+    stage: 'idle',
+    message: ''
+  });
 
   // Reveal Step State
   const [revealCommitmentId, setRevealCommitmentId] = useState<string>("");
@@ -160,6 +165,31 @@ export default function FileUploader() {
     }
   };
 
+  // Poll for transaction confirmation
+  const pollForConfirmation = useCallback(async (pollingData: {
+    transactionHash: string;
+    blobHash: string;
+    rpcUrl?: string;
+  }): Promise<boolean> => {
+    const { ethers } = await import('ethers');
+    const rpcUrl = pollingData.rpcUrl || process.env.NEXT_PUBLIC_SEPOLIA_RPC_URL || 'https://rpc.sepolia.org';
+    const provider = new ethers.JsonRpcProvider(rpcUrl);
+
+    // Poll every 5 seconds for up to 5 minutes (60 attempts)
+    for (let attempt = 0; attempt < 60; attempt++) {
+      try {
+        const receipt = await provider.getTransactionReceipt(pollingData.transactionHash);
+        if (receipt) {
+          return receipt.status === 1; // Return true if successful
+        }
+      } catch (e) {
+        console.log('Polling attempt failed, retrying...', e);
+      }
+      await new Promise(r => setTimeout(r, 5000));
+    }
+    return false;
+  }, []);
+
   const handlePostBlob = async () => {
     if (!jsonData) {
       toast({
@@ -170,16 +200,25 @@ export default function FileUploader() {
       return;
     }
 
+    const startTime = Date.now();
     setIsPostingBlob(true);
-    try {
-      toast({ 
-        title: "Posting blob", 
-        description: "Submitting blob transaction (may take up to 3 minutes)..." 
-      });
+    setBlobPostingStatus({
+      stage: 'preparing',
+      message: 'Encoding JSON data for blob...',
+      startTime
+    });
 
-      // Set a 29-second timeout for the fetch
+    try {
+      // Stage 2: Submitting
+      setBlobPostingStatus(prev => ({
+        ...prev,
+        stage: 'submitting',
+        message: 'Sending to blob service (this may take up to 2 minutes)...'
+      }));
+
+      // Extended timeout - 55 seconds to match Vercel Pro limits
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 29000);
+      const timeoutId = setTimeout(() => controller.abort(), 55000);
 
       let res;
       try {
@@ -191,97 +230,154 @@ export default function FileUploader() {
         });
       } catch (error: any) {
         clearTimeout(timeoutId);
-        
-        // If it's an abort error (timeout), handle optimistically
+
+        // If it's an abort error (timeout), show pending state
         if (error.name === 'AbortError') {
-          toast({ 
-            title: "Blob submission in progress", 
-            description: "Transaction is being processed on-chain. This may take a few minutes. Check back shortly and manually check for your blob hash.", 
-            variant: "default" 
-          });
-          
-          // Don't set fake hashes - user should check manually
-          return; // Exit successfully
+          setBlobPostingStatus(prev => ({
+            ...prev,
+            stage: 'pending',
+            message: 'Request timed out but transaction may still be processing. Check Etherscan for recent blobs.'
+          }));
+          return;
         }
-        
         throw error;
       }
-      
+
       clearTimeout(timeoutId);
 
-      // Handle 202 Accepted response optimistically
+      // Handle 202 Accepted - transaction submitted, poll for confirmation
       if (res.status === 202) {
         const result = await res.json();
-        toast({ 
-          title: "Blob submission accepted", 
-          description: result.message || "Transaction is being processed on-chain. Check back in a few minutes and manually verify your blob hash.", 
-          variant: "default" 
-        });
-        
-        // Don't set fake hashes - user should check manually
-        return; // Exit successfully
+        const txHash = result?.blobTransactionHash || result?.txHash;
+        const blobHash = result?.blobHash || result?.blobVersionedHash;
+
+        setBlobPostingStatus(prev => ({
+          ...prev,
+          stage: 'pending',
+          message: 'Transaction submitted, waiting for confirmation...',
+          txHash,
+          blobHash
+        }));
+
+        // Start polling if we have transaction data
+        if (txHash && result?.pollingData) {
+          const confirmed = await pollForConfirmation(result.pollingData);
+          if (confirmed && blobHash) {
+            setBlobVersionedHash(blobHash);
+            setRevealBlobHash(blobHash);
+            setBlobTxHash(txHash);
+            setBlobPostingStatus({
+              stage: 'confirmed',
+              message: 'Blob posted successfully!',
+              txHash,
+              blobHash,
+              startTime
+            });
+            setActiveTab("reveal");
+          }
+        }
+        return;
       }
 
       if (!res.ok) {
         const text = await res.text().catch(() => '');
-        
-        // Handle timeout responses optimistically
+
+        // Handle timeout responses
         if (res.status === 408 || text.includes('timeout') || text.includes('timed out')) {
-          toast({ 
-            title: "Blob submission in progress", 
-            description: "Transaction is being processed on-chain. Please check back in a few minutes and manually verify your blob hash.", 
-            variant: "default" 
-          });
-          
-          // Don't set fake hashes - user should check manually
-          return; // Exit successfully
+          setBlobPostingStatus(prev => ({
+            ...prev,
+            stage: 'pending',
+            message: 'Request timed out but transaction may still be processing...'
+          }));
+          return;
         }
-        
-        // Handle AWS Lambda errors optimistically if it's a processing issue
-        if (res.status === 500 && (text.includes('KZG') || text.includes('processing'))) {
-          toast({ 
-            title: "Blob submission processing", 
-            description: "Transaction is being processed. If it's taking longer than expected, please try again in a moment.", 
-            variant: "default" 
-          });
-          
-          // Don't set fake hashes - user should check manually
-          return; // Exit successfully
-        }
-        
+
         throw new Error(text || `HTTP ${res.status}`);
       }
 
       const result = await res.json();
       const blobHash = result?.blobVersionedHash || result?.blobHash;
       const txHash = result?.txHash || result?.blobTransactionHash;
+      const pollingData = result?.pollingData;
 
-      if (blobHash) {
+      if (txHash) {
+        // Stage 3: Transaction pending, poll for confirmation
+        setBlobPostingStatus(prev => ({
+          ...prev,
+          stage: 'pending',
+          message: 'Transaction submitted, waiting for block confirmation...',
+          txHash,
+          blobHash
+        }));
+
+        // Poll for confirmation if we have polling data
+        if (pollingData) {
+          const confirmed = await pollForConfirmation(pollingData);
+          if (confirmed) {
+            setBlobVersionedHash(blobHash);
+            setRevealBlobHash(blobHash);
+            setBlobTxHash(txHash);
+            setBlobPostingStatus({
+              stage: 'confirmed',
+              message: 'Blob posted successfully!',
+              txHash,
+              blobHash,
+              startTime
+            });
+            setActiveTab("reveal");
+            return;
+          }
+        }
+
+        // If we have blobHash already, consider it successful
+        if (blobHash) {
+          setBlobVersionedHash(blobHash);
+          setRevealBlobHash(blobHash);
+          setBlobTxHash(txHash);
+          setBlobPostingStatus({
+            stage: 'confirmed',
+            message: 'Blob posted successfully!',
+            txHash,
+            blobHash,
+            startTime
+          });
+          setActiveTab("reveal");
+        }
+      } else if (blobHash) {
+        // Got blob hash directly without tx hash
         setBlobVersionedHash(blobHash);
         setRevealBlobHash(blobHash);
-        setBlobTxHash(txHash);
-
-        toast({ 
-          title: "Blob posted successfully", 
-          description: `Blob hash: ${blobHash && blobHash.length > 10 ? `${blobHash.substring(0, 10)}...` : blobHash || 'N/A'}`, 
-          variant: "default" 
+        setBlobPostingStatus({
+          stage: 'confirmed',
+          message: 'Blob posted successfully!',
+          blobHash,
+          startTime
         });
-
-        // Auto-advance to reveal tab
         setActiveTab("reveal");
       } else {
-        throw new Error('No blob hash returned');
+        throw new Error('No blob hash or transaction hash returned');
       }
     } catch (error: any) {
       console.error("Blob post error:", error);
-      toast({ 
-        title: "Blob post failed", 
-        description: error.message || "Could not post blob", 
-        variant: "destructive" 
+      setBlobPostingStatus(prev => ({
+        ...prev,
+        stage: 'error',
+        message: 'Blob posting failed',
+        error: error.message || 'Could not post blob'
+      }));
+      toast({
+        title: "Blob post failed",
+        description: error.message || "Could not post blob",
+        variant: "destructive"
       });
     } finally {
       setIsPostingBlob(false);
     }
+  };
+
+  const handleCancelBlobPosting = () => {
+    setBlobPostingStatus({ stage: 'idle', message: '' });
+    setIsPostingBlob(false);
   };
 
   const handleReveal = async () => {
@@ -569,7 +665,17 @@ export default function FileUploader() {
           {/* Blob Tab */}
           <TabsContent value="blob" className="space-y-4 mt-6">
             <div className="space-y-4">
-              {blobVersionedHash && (
+              {/* Show status component when posting or after completion */}
+              {blobPostingStatus.stage !== 'idle' && (
+                <BlobPostingStatus
+                  status={blobPostingStatus}
+                  onRetry={handlePostBlob}
+                  onCancel={handleCancelBlobPosting}
+                />
+              )}
+
+              {/* Show success result when confirmed */}
+              {blobPostingStatus.stage === 'idle' && blobVersionedHash && (
                 <div className="p-4 bg-green-900/30 border border-green-700 rounded-lg space-y-2">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-300">Blob Hash:</span>
@@ -598,23 +704,17 @@ export default function FileUploader() {
                 </div>
               )}
 
-              <Button
-                onClick={handlePostBlob}
-                disabled={isPostingBlob || !jsonData}
-                className="w-full bg-purple-600 hover:bg-purple-700 text-white"
-              >
-                {isPostingBlob ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Posting Blob (up to 3 min)...
-                  </>
-                ) : (
-                  <>
-                    <Upload className="mr-2 h-4 w-4" />
-                    Post as Blob
-                  </>
-                )}
-              </Button>
+              {/* Show post button only when idle */}
+              {blobPostingStatus.stage === 'idle' && (
+                <Button
+                  onClick={handlePostBlob}
+                  disabled={isPostingBlob || !jsonData}
+                  className="w-full bg-purple-600 hover:bg-purple-700 text-white"
+                >
+                  <Upload className="mr-2 h-4 w-4" />
+                  Post as Blob
+                </Button>
+              )}
 
               <div className="relative py-4">
                 <div className="absolute inset-0 flex items-center">
