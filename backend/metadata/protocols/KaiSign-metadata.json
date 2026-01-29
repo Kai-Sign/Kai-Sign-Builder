@@ -2,12 +2,12 @@
   "$schema": "https://raw.githubusercontent.com/ethereum/ERCS/master/assets/erc-7730/schemas/erc-7730-v1.schema.json",
   "context": {
     "contract": {
-      "deployments": [
-        {
+      "deployments": {
+        "sepolia": {
           "chainId": 11155111,
           "address": "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719"
         }
-      ],
+      },
       "abi": [
         {
           "type": "function",
@@ -32,9 +32,7 @@
         {
           "type": "function",
           "name": "proposeSpec",
-          "inputs": [
-            { "name": "specId", "type": "bytes32" }
-          ],
+          "inputs": [{ "name": "specId", "type": "bytes32" }],
           "stateMutability": "payable"
         },
         {
@@ -49,17 +47,13 @@
         {
           "type": "function",
           "name": "claimIncentive",
-          "inputs": [
-            { "name": "specId", "type": "bytes32" }
-          ],
+          "inputs": [{ "name": "specId", "type": "bytes32" }],
           "stateMutability": "nonpayable"
         },
         {
           "type": "function",
           "name": "withdrawBond",
-          "inputs": [
-            { "name": "specId", "type": "bytes32" }
-          ],
+          "inputs": [{ "name": "specId", "type": "bytes32" }],
           "stateMutability": "nonpayable"
         },
         {
@@ -94,33 +88,25 @@
         {
           "type": "function",
           "name": "updateMinBond",
-          "inputs": [
-            { "name": "newMinBond", "type": "uint256" }
-          ],
+          "inputs": [{ "name": "newMinBond", "type": "uint256" }],
           "stateMutability": "nonpayable"
         },
         {
           "type": "function",
           "name": "updateTreasury",
-          "inputs": [
-            { "name": "newTreasury", "type": "address" }
-          ],
+          "inputs": [{ "name": "newTreasury", "type": "address" }],
           "stateMutability": "nonpayable"
         },
         {
           "type": "function",
           "name": "addAdmin",
-          "inputs": [
-            { "name": "newAdmin", "type": "address" }
-          ],
+          "inputs": [{ "name": "newAdmin", "type": "address" }],
           "stateMutability": "nonpayable"
         },
         {
           "type": "function",
           "name": "removeAdmin",
-          "inputs": [
-            { "name": "admin", "type": "address" }
-          ],
+          "inputs": [{ "name": "admin", "type": "address" }],
           "stateMutability": "nonpayable"
         }
       ]
