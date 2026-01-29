@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const AWS_LAMBDA_BLOB_API = "https://azmnxl590h.execute-api.ap-southeast-2.amazonaws.com/prod/blob";
+const BLOB_SENDER_ADDRESS = "0x49d81a2f1DC42d230927e224c42E8b8E6A7f6f7D";
+const SEPOLIA_RPC_URL = process.env.SEPOLIA_RPC_URL || "https://rpc.sepolia.org";
 
 // Maximum timeout for Vercel deployment
 export const maxDuration = 60; // 60 seconds (maximum allowed)
@@ -35,12 +37,17 @@ export async function POST(request: NextRequest) {
       // If it's a timeout, return an optimistic response since Lambda takes ~52 seconds
       if (error.name === 'AbortError' || error.message?.includes('timeout')) {
         return NextResponse.json(
-          { 
+          {
             success: true,
             pending: true,
             message: "Blob transaction is being processed. Due to Vercel timeout limits, please check your blob manually.",
             note: "Lambda is still processing - transaction should complete within 1-2 minutes",
-            checkInstructions: "Look for blob transactions from address: 0x49d81a2f1DC42d230927e224c42E8b8E6A7f6f7D on Sepolia Etherscan"
+            checkInstructions: `Look for blob transactions from address: ${BLOB_SENDER_ADDRESS} on Sepolia Etherscan`,
+            pollingData: {
+              senderAddress: BLOB_SENDER_ADDRESS,
+              rpcUrl: SEPOLIA_RPC_URL,
+              chainId: 11155111
+            }
           },
           { status: 202 } // Accepted
         );
@@ -95,12 +102,30 @@ export async function POST(request: NextRequest) {
     }
 
     const lambdaData = await lambdaResponse.json();
-    
+
     console.log('Lambda response:', lambdaData); // Debug log
-    
-    // Return the Lambda response directly - it already has the correct format
-    // The Lambda now returns: success, blobDeploymentAddress, blobHash, trackingUrls, etc.
-    return NextResponse.json(lambdaData);
+
+    // Extract key fields from Lambda response
+    const txHash = lambdaData.blobTransactionHash || lambdaData.txHash;
+    const blobHash = lambdaData.blobHash || lambdaData.blobVersionedHash;
+
+    // Ensure pollingData is always included for frontend polling
+    const response = {
+      ...lambdaData,
+      // Normalize field names
+      blobTransactionHash: txHash,
+      blobHash: blobHash,
+      // Add polling data for frontend to use
+      pollingData: lambdaData.pollingData || {
+        transactionHash: txHash,
+        blobHash: blobHash,
+        senderAddress: BLOB_SENDER_ADDRESS,
+        rpcUrl: SEPOLIA_RPC_URL,
+        chainId: 11155111
+      }
+    };
+
+    return NextResponse.json(response);
 
   } catch (err: any) {
     console.error('Blob submit error:', err);
