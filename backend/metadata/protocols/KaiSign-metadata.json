@@ -5,7 +5,7 @@
       "deployments": [
         {
           "chainId": 11155111,
-          "address": "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719"
+          "address": "0x0000000000000000000000000000000000000000"
         }
       ],
       "abi": [
@@ -194,4 +194,121 @@
           },
           {
             "label": "Question ID",
-            "
+            "format": "hex"
+          }
+        ]
+      },
+      "claimIncentive(bytes32)": {
+        "label": "Claim Incentive",
+        "description": "Claim incentive rewards for a verified specification",
+        "params": [
+          {
+            "label": "Spec ID",
+            "format": "hex"
+          }
+        ]
+      },
+      "withdrawBond(bytes32)": {
+        "label": "Withdraw Bond",
+        "description": "Withdraw bond from a finalized specification",
+        "params": [
+          {
+            "label": "Spec ID",
+            "format": "hex"
+          }
+        ]
+      },
+      "addContractSpec(address,uint256,bytes32)": {
+        "label": "Add Contract Specification",
+        "description": "Admin function to directly add a verified specification",
+        "params": [
+          {
+            "label": "Target Contract",
+            "format": "address"
+          },
+          {
+            "label": "Chain ID",
+            "format": "int"
+          },
+          {
+            "label": "Blob Hash",
+            "format": "hex"
+          }
+        ]
+      },
+      "removeContractSpec(address,uint256,bytes32)": {
+        "label": "Remove Contract Specification",
+        "description": "Admin function to remove a specification",
+        "params": [
+          {
+            "label": "Target Contract",
+            "format": "address"
+          },
+          {
+            "label": "Chain ID",
+            "format": "int"
+          },
+          {
+            "label": "Blob Hash",
+            "format": "hex"
+          }
+        ]
+      },
+      "createIncentive(address,uint256)": {
+        "label": "Create Incentive",
+        "description": "Create an incentive for specifications on a contract",
+        "params": [
+          {
+            "label": "Target Contract",
+            "format": "address"
+          },
+          {
+            "label": "Chain ID",
+            "format": "int"
+          }
+        ]
+      },
+      "updateMinBond(uint256)": {
+        "label": "Update Minimum Bond",
+        "description": "Admin function to update minimum bond requirement",
+        "params": [
+          {
+            "label": "New Min Bond",
+            "format": "tokenAmount",
+            "token": "native"
+          }
+        ]
+      },
+      "updateTreasury(address)": {
+        "label": "Update Treasury",
+        "description": "Admin function to update treasury address",
+        "params": [
+          {
+            "label": "New Treasury",
+            "format": "address"
+          }
+        ]
+      },
+      "addAdmin(address)": {
+        "label": "Add Admin",
+        "description": "Add a new admin to the contract",
+        "params": [
+          {
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "removeAdmin(address)": {
+        "label": "Remove Admin",
+        "description": "Remove admin privileges from an address",
+        "params": [
+          {
+            "label": "Admin to Remove",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}
