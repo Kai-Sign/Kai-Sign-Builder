@@ -209,6 +209,75 @@ class RateLimiter:
 # Global rate limiter instance
 rate_limiter = RateLimiter()
 
+# =============================================================================
+# REQUEST DEDUPLICATION - Prevents duplicate work for concurrent identical requests
+# =============================================================================
+
+from asyncio import Event
+
+# In-flight request tracking: {cache_key: (event, result)}
+_pending_requests: dict = {}
+_pending_lock = asyncio.Lock()
+
+
+async def deduplicated_fetch(cache_key: str, fetch_fn):
+    """
+    Deduplicate concurrent identical requests.
+
+    If another request with the same cache_key is already in-flight,
+    wait for it to complete and share the result instead of doing duplicate work.
+
+    Args:
+        cache_key: Unique key identifying the request (e.g., "address_chainid")
+        fetch_fn: Async function to call if this is the first request
+
+    Returns:
+        The result from fetch_fn (either from this call or a concurrent one)
+    """
+    global _pending_requests
+
+    async with _pending_lock:
+        if cache_key in _pending_requests:
+            # Another request is already in progress
+            event, _ = _pending_requests[cache_key]
+            logger.info(f"Request dedup: waiting for in-flight request {cache_key}")
+        else:
+            # First request - create tracking entry
+            event = Event()
+            _pending_requests[cache_key] = (event, None)
+            logger.info(f"Request dedup: first request for {cache_key}")
+
+    # If we're waiting for another request
+    if cache_key in _pending_requests:
+        existing_event, _ = _pending_requests[cache_key]
+        if existing_event != event:
+            # Wait for the in-flight request to complete
+            await existing_event.wait()
+            # Get the result
+            _, result = _pending_requests.get(cache_key, (None, None))
+            return result
+
+    # We're the first request - do the actual work
+    try:
+        result = await fetch_fn()
+        async with _pending_lock:
+            _pending_requests[cache_key] = (event, result)
+        return result
+    except Exception as e:
+        # On error, still signal completion so waiters don't hang
+        async with _pending_lock:
+            _pending_requests[cache_key] = (event, {"error": str(e)})
+        raise
+    finally:
+        # Signal that we're done
+        event.set()
+        # Clean up after a brief delay (allow other waiters to get result)
+        await asyncio.sleep(0.5)
+        async with _pending_lock:
+            if cache_key in _pending_requests:
+                del _pending_requests[cache_key]
+
+
 load_dotenv()
 
 # Define USE_MOCK environment variable - set to False by default
@@ -743,60 +812,70 @@ async def fetch_ipfs_hash_from_contract(spec_id: str) -> Optional[str]:
         return None
 
 async def fetch_ipfs_metadata(ipfs_hash: str) -> dict:
-    """Fetch metadata from IPFS and extract contract address and chain ID."""
-    try:
-        # Try multiple IPFS gateways
-        gateways = [
-            f"https://ipfs.io/ipfs/{ipfs_hash}",
-            f"https://gateway.pinata.cloud/ipfs/{ipfs_hash}",
-            f"https://cloudflare-ipfs.com/ipfs/{ipfs_hash}"
-        ]
-        
-        for gateway_url in gateways:
-            try:
-                # Use asyncio.to_thread to make requests async-compatible
-                def make_request():
-                    response = requests.get(gateway_url, timeout=10)
-                    response.raise_for_status()
-                    return response.json()
-                
-                metadata = await asyncio.to_thread(make_request)
-                
-                # Extract contract address and chain ID from metadata
-                contract_address = None
-                chain_id = None
-                
-                # Check new ERC7730 format first: context.contract.deployments
-                if (metadata.get("context", {}).get("contract", {}).get("deployments")):
-                    deployments = metadata["context"]["contract"]["deployments"]
-                    if deployments and len(deployments) > 0:
-                        deployment = deployments[0]
-                        contract_address = deployment.get("address")
-                        chain_id = deployment.get("chainId")
-                
-                # Fall back to old format: context.eip712.deployments
-                if not contract_address and (metadata.get("context", {}).get("eip712", {}).get("deployments")):
-                    deployments = metadata["context"]["eip712"]["deployments"]
-                    if deployments and len(deployments) > 0:
-                        deployment = deployments[0]
-                        contract_address = deployment.get("address")
-                        chain_id = deployment.get("chainId")
-                
-                return {
-                    "contract_address": contract_address,
-                    "chain_id": chain_id,
-                    "metadata": metadata
-                }
-                
-            except Exception as gateway_error:
-                print(f"Failed to fetch from {gateway_url}: {gateway_error}")
-                continue
-        
-        raise Exception("Failed to fetch from all IPFS gateways")
-        
-    except Exception as e:
-        print(f"Error fetching IPFS metadata: {e}")
-        raise e
+    """Fetch metadata from IPFS and extract contract address and chain ID.
+
+    Uses parallel fetching from all gateways - first success wins.
+    """
+    gateways = [
+        f"https://ipfs.io/ipfs/{ipfs_hash}",
+        f"https://gateway.pinata.cloud/ipfs/{ipfs_hash}",
+        f"https://cloudflare-ipfs.com/ipfs/{ipfs_hash}"
+    ]
+
+    def extract_metadata_from_response(metadata: dict) -> dict:
+        """Extract contract address and chain ID from metadata."""
+        contract_address = None
+        chain_id = None
+
+        # Check new ERC7730 format first: context.contract.deployments
+        if metadata.get("context", {}).get("contract", {}).get("deployments"):
+            deployments = metadata["context"]["contract"]["deployments"]
+            if deployments and len(deployments) > 0:
+                deployment = deployments[0]
+                contract_address = deployment.get("address")
+                chain_id = deployment.get("chainId")
+
+        # Fall back to old format: context.eip712.deployments
+        if not contract_address and metadata.get("context", {}).get("eip712", {}).get("deployments"):
+            deployments = metadata["context"]["eip712"]["deployments"]
+            if deployments and len(deployments) > 0:
+                deployment = deployments[0]
+                contract_address = deployment.get("address")
+                chain_id = deployment.get("chainId")
+
+        return {
+            "contract_address": contract_address,
+            "chain_id": chain_id,
+            "metadata": metadata
+        }
+
+    async def fetch_from_gateway(url: str) -> dict:
+        """Fetch from a single gateway."""
+        def make_request():
+            response = requests.get(url, timeout=10)
+            response.raise_for_status()
+            return response.json()
+        return await asyncio.to_thread(make_request)
+
+    # Create tasks for all gateways - race them in parallel
+    tasks = [asyncio.create_task(fetch_from_gateway(url)) for url in gateways]
+
+    # Use as_completed to get the first successful result
+    for coro in asyncio.as_completed(tasks):
+        try:
+            metadata = await coro
+            # Cancel remaining tasks - we got what we need
+            for t in tasks:
+                if not t.done():
+                    t.cancel()
+            logger.info(f"IPFS fetch succeeded for {ipfs_hash}")
+            return extract_metadata_from_response(metadata)
+        except Exception as e:
+            logger.debug(f"IPFS gateway failed: {e}")
+            continue
+
+    # All gateways failed
+    raise Exception(f"Failed to fetch from all IPFS gateways for {ipfs_hash}")
 
 # Explicitly remove response_model validation to avoid Pydantic validation issues in deployment
 @app.post("/generateERC7730")
@@ -1527,14 +1606,20 @@ async def get_contract_metadata(
     address: str = Path(..., description="Contract address"),
     chain_id: int = Query(1, description="Chain ID where transaction occurs")
 ):
-    """Fetch metadata for a contract - checks cache first, then fetches blob."""
+    """Fetch metadata for a contract - checks cache first, then fetches blob.
+
+    Optimizations:
+    - Parallel IPFS gateway fetching
+    - Parallel beacon slot discovery
+    - Proxy detection caching
+    - Request deduplication for concurrent identical requests
+    """
     # Normalize address
     if not address.startswith("0x"):
         address = "0x" + address
     address = address.lower()
 
-    # Step 1: Check cache FIRST
-    # Try exact match first
+    # Step 1: Check cache FIRST (fast path - no deduplication needed)
     cached = get_cached_metadata(address, chain_id)
 
     # Fallback: If chainId=1, try address-only lookup
@@ -1563,11 +1648,11 @@ async def get_contract_metadata(
             "source": "cache"
         }
 
-    # QUICK FIX: Known Safe wallet proxies - check BEFORE cache to be fastest
+    # QUICK FIX: Known Safe wallet proxies
     KNOWN_SAFE_PROXIES = {
-        "0xa10235ea549daa39a108bc26d63bd8daa68e4a22": "0x41675c099f32341bf84bfc5382af534df5c7461a"  # User's Safe -> v1.4.1
+        "0xa10235ea549daa39a108bc26d63bd8daa68e4a22": "0x41675c099f32341bf84bfc5382af534df5c7461a"
     }
-    if address in KNOWN_SAFE_PROXIES and chain_id == 1:  # Only mainnet
+    if address in KNOWN_SAFE_PROXIES and chain_id == 1:
         impl_address = KNOWN_SAFE_PROXIES[address]
         cached = get_cached_metadata(impl_address, chain_id)
         if cached:
@@ -1579,10 +1664,19 @@ async def get_contract_metadata(
                 "source": "hardcoded_proxy"
             }
 
-    # Step 1.5: Try proxy detection
+    # Step 1.5: Try proxy detection WITH CACHING
+    from api.metadata_cache import get_cached_proxy, set_cached_proxy
     logger.info(f"Attempting proxy detection for {address} on chain {chain_id}")
-    impl_address = get_implementation_address_sync(address, chain_id)
-    logger.info(f"Proxy detection result: {impl_address}")
+
+    # Check proxy cache first
+    found_in_cache, impl_address = get_cached_proxy(address)
+    if not found_in_cache:
+        # Not in cache - do detection in thread pool (non-blocking)
+        impl_address = await asyncio.to_thread(get_implementation_address_sync, address, chain_id)
+        # Cache the result (even None for non-proxies)
+        set_cached_proxy(address, impl_address)
+
+    logger.info(f"Proxy detection result: {impl_address} (cached: {found_in_cache})")
     if impl_address and impl_address != address:
         logger.info(f"Detected proxy {address} -> implementation {impl_address}")
         cached = get_cached_metadata(impl_address, chain_id)
@@ -1599,97 +1693,115 @@ async def get_contract_metadata(
         else:
             logger.warning(f"Proxy detection found impl {impl_address} but no cached metadata")
 
-    # Step 2: Cache miss - query subgraph
-    logger.info(f"Cache and proxy detection failed, querying subgraph for {address}")
-    specs = query_subgraph_for_contract_sync(address, chain_id)
-    if not specs:
-        return {
-            "success": False,
-            "blob_hash": address,
-            "error": f"No metadata found for {address}",
-            "metadata": None,
-            "source": "subgraph_not_found"
-        }
+    # Step 2: Cache miss - use request deduplication for the slow path
+    # This prevents duplicate subgraph queries and blob fetches for concurrent requests
+    cache_key = f"contract_{address}_{chain_id}"
 
-    # Sort specs: prefer FINALIZED, then by recency
-    # But try each until we find an available blob (older blobs may be pruned)
-    finalized_specs = [s for s in specs if s.get("status") == "FINALIZED"]
-    proposed_specs = [s for s in specs if s.get("status") == "PROPOSED"]
-    other_specs = [s for s in specs if s.get("status") not in ("FINALIZED", "PROPOSED")]
-    ordered_specs = finalized_specs + proposed_specs + other_specs
+    async def _fetch_slow_path():
+        """Internal slow path - fetches from subgraph and blob."""
+        logger.info(f"Cache and proxy detection failed, querying subgraph for {address}")
+        specs = await asyncio.to_thread(query_subgraph_for_contract_sync, address, chain_id)
+        if not specs:
+            return {
+                "success": False,
+                "blob_hash": address,
+                "error": f"No metadata found for {address}",
+                "metadata": None,
+                "source": "subgraph_not_found"
+            }
 
-    # Try each spec until we find one with available blob
-    blob_hash = None
-    slot = None
-    blob_hex = None
-    for spec in ordered_specs:
-        spec_blob_hash = spec.get("blobHash")
-        spec_timestamp = spec.get("blockTimestamp")
-        if not spec_blob_hash:
-            continue
+        # Sort specs: prefer FINALIZED, then by recency
+        finalized_specs = [s for s in specs if s.get("status") == "FINALIZED"]
+        proposed_specs = [s for s in specs if s.get("status") == "PROPOSED"]
+        other_specs = [s for s in specs if s.get("status") not in ("FINALIZED", "PROPOSED")]
+        ordered_specs = finalized_specs + proposed_specs + other_specs
 
-        # Try to find slot for this blob
-        spec_slot = find_blob_slot_sync(spec_blob_hash, str(spec_timestamp) if spec_timestamp else None)
-        if not spec_slot:
-            continue
-
-        # Try to fetch blob
-        spec_blob_hex = fetch_blob_from_beacon_sync(spec_slot, spec_blob_hash)
-        if spec_blob_hex:
-            blob_hash = spec_blob_hash
-            slot = spec_slot
-            blob_hex = spec_blob_hex
-            break
-
-    if not blob_hex:
-        # Beacon chain blob not available (pruned) - try Blobscan/Swarm fallback
-        logger.info(f"Beacon chain blob not available, trying Blobscan/Swarm fallback")
-
-        # Determine network from chain_id
-        network = "mainnet" if chain_id == 1 else "sepolia"
-
-        # Try each spec's blob hash with Blobscan fallback
+        # Try each spec until we find one with available blob
+        blob_hash_result = None
+        blob_hex = None
         for spec in ordered_specs:
             spec_blob_hash = spec.get("blobHash")
+            spec_timestamp = spec.get("blockTimestamp")
             if not spec_blob_hash:
                 continue
 
-            content = fetch_blob_from_blobscan_sync(spec_blob_hash, network)
-            if content:
-                try:
-                    # Remove padding if present
-                    padding_idx = content.find(PADDING_MARKER)
-                    if padding_idx != -1:
-                        content = content[:padding_idx]
+            # Parallel slot discovery (already optimized)
+            spec_slot = await asyncio.to_thread(
+                find_blob_slot_sync, spec_blob_hash,
+                str(spec_timestamp) if spec_timestamp else None
+            )
+            if not spec_slot:
+                continue
 
-                    metadata = json.loads(content)
+            # Fetch blob
+            spec_blob_hex = await asyncio.to_thread(
+                fetch_blob_from_beacon_sync, spec_slot, spec_blob_hash
+            )
+            if spec_blob_hex:
+                blob_hash_result = spec_blob_hash
+                blob_hex = spec_blob_hex
+                break
 
-                    # Cache the metadata
-                    set_cached_metadata(address, chain_id, metadata)
+        if not blob_hex:
+            # Beacon chain blob not available (pruned) - try Blobscan/Swarm fallback
+            logger.info(f"Beacon chain blob not available, trying Blobscan/Swarm fallback")
+            network = "mainnet" if chain_id == 1 else "sepolia"
 
-                    return {
-                        "success": True,
-                        "blob_hash": spec_blob_hash,
-                        "metadata": metadata,
-                        "error": None,
-                        "source": "blobscan_fallback"
-                    }
-                except json.JSONDecodeError as e:
-                    logger.warning(f"Failed to parse Blobscan content as JSON: {e}")
+            for spec in ordered_specs:
+                spec_blob_hash = spec.get("blobHash")
+                if not spec_blob_hash:
                     continue
 
-        return {"success": False, "blob_hash": address, "error": "No available blob found (beacon pruned, Blobscan/Swarm fallback failed)", "metadata": None}
+                # Parallel Blobscan fetch (already optimized)
+                content = await asyncio.to_thread(
+                    fetch_blob_from_blobscan_sync, spec_blob_hash, network
+                )
+                if content:
+                    try:
+                        padding_idx = content.find(PADDING_MARKER)
+                        if padding_idx != -1:
+                            content = content[:padding_idx]
 
-    content = decode_blob_data(blob_hex)
-    padding_idx = content.find(PADDING_MARKER)
-    if padding_idx != -1:
-        content = content[:padding_idx]
-    metadata = json.loads(content)
+                        metadata = json.loads(content)
+                        set_cached_metadata(address, chain_id, metadata)
 
-    # Cache the metadata for future use (when blob gets pruned)
-    set_cached_metadata(address, chain_id, metadata)
+                        return {
+                            "success": True,
+                            "blob_hash": spec_blob_hash,
+                            "metadata": metadata,
+                            "error": None,
+                            "source": "blobscan_fallback"
+                        }
+                    except json.JSONDecodeError as e:
+                        logger.warning(f"Failed to parse Blobscan content as JSON: {e}")
+                        continue
 
-    return {"success": True, "blob_hash": blob_hash, "metadata": metadata, "error": None, "source": "blob"}
+            return {
+                "success": False,
+                "blob_hash": address,
+                "error": "No available blob found (beacon pruned, Blobscan/Swarm fallback failed)",
+                "metadata": None
+            }
+
+        content = decode_blob_data(blob_hex)
+        padding_idx = content.find(PADDING_MARKER)
+        if padding_idx != -1:
+            content = content[:padding_idx]
+        metadata = json.loads(content)
+
+        # Cache the metadata for future use
+        set_cached_metadata(address, chain_id, metadata)
+
+        return {
+            "success": True,
+            "blob_hash": blob_hash_result,
+            "metadata": metadata,
+            "error": None,
+            "source": "blob"
+        }
+
+    # Use deduplicated_fetch to prevent duplicate work for concurrent requests
+    return await deduplicated_fetch(cache_key, _fetch_slow_path)
 
 
 def query_subgraph_for_contract_sync(target_address: str, chain_id: int) -> list:
@@ -1741,30 +1853,52 @@ def query_subgraph_for_contract_sync(target_address: str, chain_id: int) -> list
     return merged
 
 
-def find_blob_slot_sync(blob_hash: str, timestamp: str = None) -> int:
-    """Synchronous slot lookup."""
+def find_blob_slot_sync(blob_hash: str, timestamp: str = None) -> Optional[int]:
+    """Parallel slot lookup using ThreadPoolExecutor.
+
+    Checks all candidate slots concurrently - first match wins.
+    """
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
     SLOT_TIME = 12
     GENESIS_TIME = 1655733600
 
-    def check_slot(s):
-        resp = requests.get(f"{SEPOLIA_BEACON}/eth/v1/beacon/blob_sidecars/{s}", timeout=10)
-        if resp.status_code != 200:
-            return None
-        for sidecar in resp.json().get("data", []):
-            kzg = sidecar.get("kzg_commitment", "")
-            if kzg:
-                h = kzg[2:] if kzg.startswith("0x") else kzg
-                vh = "0x01" + hashlib.sha256(bytes.fromhex(h)).digest()[1:].hex()
-                if vh.lower() == blob_hash.lower():
-                    return s
+    if not timestamp:
         return None
 
-    if timestamp:
-        est_slot = (int(timestamp) - GENESIS_TIME) // SLOT_TIME
-        for offset in [-1, 0, -2, 1, -3, 2]:
-            result = check_slot(est_slot + offset)
-            if result:
+    def check_slot(s: int) -> Optional[int]:
+        """Check if blob exists in given slot."""
+        try:
+            resp = requests.get(f"{SEPOLIA_BEACON}/eth/v1/beacon/blob_sidecars/{s}", timeout=10)
+            if resp.status_code != 200:
+                return None
+            for sidecar in resp.json().get("data", []):
+                kzg = sidecar.get("kzg_commitment", "")
+                if kzg:
+                    h = kzg[2:] if kzg.startswith("0x") else kzg
+                    vh = "0x01" + hashlib.sha256(bytes.fromhex(h)).digest()[1:].hex()
+                    if vh.lower() == blob_hash.lower():
+                        return s
+            return None
+        except Exception as e:
+            logger.debug(f"Error checking slot {s}: {e}")
+            return None
+
+    est_slot = (int(timestamp) - GENESIS_TIME) // SLOT_TIME
+    slots_to_check = [est_slot + offset for offset in [-1, 0, -2, 1, -3, 2]]
+
+    # Check all slots in parallel - first match wins
+    with ThreadPoolExecutor(max_workers=6) as executor:
+        future_to_slot = {executor.submit(check_slot, s): s for s in slots_to_check}
+        for future in as_completed(future_to_slot):
+            result = future.result()
+            if result is not None:
+                logger.info(f"Found blob at slot {result}")
+                # Cancel remaining futures by returning early
+                # (they'll be cleaned up when executor exits)
                 return result
+
+    logger.debug(f"Blob not found in any of slots {slots_to_check}")
     return None
 
 
@@ -1795,9 +1929,7 @@ def fetch_blob_from_blobscan_sync(blob_hash: str, network: str = "sepolia") -> O
     """
     Fetch blob data from Blobscan API as fallback when beacon chain blob is pruned.
 
-    Tries multiple storage backends:
-    1. Google Cloud Storage (direct blob data)
-    2. Swarm Gateway (JSON data)
+    Uses parallel fetching for storage backends - first success wins.
 
     Args:
         blob_hash: The blob versioned hash (0x01...)
@@ -1806,6 +1938,8 @@ def fetch_blob_from_blobscan_sync(blob_hash: str, network: str = "sepolia") -> O
     Returns:
         Decoded blob content as string, or None if not found
     """
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+
     base_url = BLOBSCAN_API_SEPOLIA if network == "sepolia" else BLOBSCAN_API_MAINNET
 
     try:
@@ -1820,41 +1954,53 @@ def fetch_blob_from_blobscan_sync(blob_hash: str, network: str = "sepolia") -> O
         metadata = metadata_resp.json()
         storage_refs = metadata.get("dataStorageReferences", [])
 
-        # Step 2: Try Google Cloud Storage first (raw blob data)
-        google_ref = next((ref for ref in storage_refs if ref.get("storage") == "google"), None)
-        if google_ref and google_ref.get("url"):
-            logger.info(f"Trying Google Cloud Storage: {google_ref['url']}")
+        # Define fetch functions for each backend
+        def fetch_from_gcs(url: str) -> Optional[str]:
+            """Fetch from Google Cloud Storage."""
             try:
-                gcs_resp = requests.get(google_ref["url"], timeout=30)
+                logger.info(f"Trying Google Cloud Storage: {url}")
+                gcs_resp = requests.get(url, timeout=30)
                 if gcs_resp.status_code == 200:
-                    # Raw blob data - decode it
-                    blob_bytes = gcs_resp.content
-                    content = decode_blob_bytes(blob_bytes)
+                    content = decode_blob_bytes(gcs_resp.content)
                     if content:
                         logger.info("Successfully fetched blob from Google Cloud Storage")
                         return content
             except Exception as e:
                 logger.warning(f"Google Cloud Storage fetch failed: {e}")
+            return None
 
-        # Step 3: Try Swarm Gateway (already decoded JSON)
-        swarm_ref = next((ref for ref in storage_refs if ref.get("storage") == "swarm"), None)
-        if swarm_ref and swarm_ref.get("url"):
-            # Extract swarm reference from URL like "http://localhost:1633/bzz/abc123..."
-            swarm_url = swarm_ref["url"]
-            swarm_hash = swarm_url.split("/bzz/")[-1] if "/bzz/" in swarm_url else None
-
-            if swarm_hash:
-                gateway_url = f"{SWARM_GATEWAY}/bzz/{swarm_hash}"
-                logger.info(f"Trying Swarm Gateway: {gateway_url}")
-                try:
+        def fetch_from_swarm(swarm_ref: dict) -> Optional[str]:
+            """Fetch from Swarm Gateway."""
+            try:
+                swarm_url = swarm_ref.get("url", "")
+                swarm_hash = swarm_url.split("/bzz/")[-1] if "/bzz/" in swarm_url else None
+                if swarm_hash:
+                    gateway_url = f"{SWARM_GATEWAY}/bzz/{swarm_hash}"
+                    logger.info(f"Trying Swarm Gateway: {gateway_url}")
                     swarm_resp = requests.get(gateway_url, timeout=30)
                     if swarm_resp.status_code == 200:
-                        # Swarm returns the actual JSON content
-                        content = swarm_resp.text
                         logger.info("Successfully fetched blob from Swarm Gateway")
-                        return content
-                except Exception as e:
-                    logger.warning(f"Swarm Gateway fetch failed: {e}")
+                        return swarm_resp.text
+            except Exception as e:
+                logger.warning(f"Swarm Gateway fetch failed: {e}")
+            return None
+
+        # Step 2: Try all storage backends in parallel
+        google_ref = next((ref for ref in storage_refs if ref.get("storage") == "google"), None)
+        swarm_ref = next((ref for ref in storage_refs if ref.get("storage") == "swarm"), None)
+
+        futures = []
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            if google_ref and google_ref.get("url"):
+                futures.append(executor.submit(fetch_from_gcs, google_ref["url"]))
+            if swarm_ref and swarm_ref.get("url"):
+                futures.append(executor.submit(fetch_from_swarm, swarm_ref))
+
+            # Return first successful result
+            for future in as_completed(futures):
+                result = future.result()
+                if result:
+                    return result
 
         logger.warning(f"No available storage backends for blob: {blob_hash}")
         return None

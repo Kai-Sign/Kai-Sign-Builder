@@ -23,6 +23,10 @@ _metadata_cache: Dict[str, Dict[str, Any]] = {}
 # Used for chainId=1 lookups when CHAIN_AGNOSTIC_MODE is enabled
 _address_cache: Dict[str, Dict[str, Any]] = {}
 
+# Proxy implementation cache: {"address_lower": "implementation_address" or None}
+# Caches both positive (proxy -> impl) and negative (not a proxy) results
+_proxy_cache: Dict[str, Optional[str]] = {}
+
 # Railway volume path - /data is the standard mount point for Railway volumes
 # Falls back to /tmp if volume is not mounted (local dev)
 RAILWAY_VOLUME_PATH = Path("/data")
@@ -380,6 +384,73 @@ def bulk_load_metadata(metadata_list: list) -> int:
             logger.warning(f"Failed to cache metadata entry: {e}")
 
     return count
+
+
+# =============================================================================
+# PROXY CACHE - Caches proxy detection results for fast lookups
+# =============================================================================
+
+from typing import Tuple
+
+
+def get_cached_proxy(address: str) -> Tuple[bool, Optional[str]]:
+    """
+    Get cached proxy implementation address.
+
+    Args:
+        address: Contract address to look up
+
+    Returns:
+        Tuple of (found_in_cache, implementation_address)
+        - (True, "0x...") if proxy was found and has implementation
+        - (True, None) if address was checked and is NOT a proxy
+        - (False, None) if address has never been checked
+    """
+    addr = address.lower()
+    if not addr.startswith("0x"):
+        addr = "0x" + addr
+
+    if addr in _proxy_cache:
+        impl = _proxy_cache[addr]
+        logger.debug(f"Proxy cache HIT for {addr}: {impl}")
+        return True, impl
+
+    logger.debug(f"Proxy cache MISS for {addr}")
+    return False, None
+
+
+def set_cached_proxy(address: str, implementation: Optional[str]) -> None:
+    """
+    Cache proxy detection result.
+
+    Args:
+        address: Proxy contract address
+        implementation: Implementation address, or None if not a proxy
+    """
+    addr = address.lower()
+    if not addr.startswith("0x"):
+        addr = "0x" + addr
+
+    impl = implementation.lower() if implementation else None
+    _proxy_cache[addr] = impl
+    logger.info(f"Cached proxy {addr} -> {impl}")
+
+
+def clear_proxy_cache() -> None:
+    """Clear all cached proxy detection results."""
+    _proxy_cache.clear()
+    logger.info("Proxy cache cleared")
+
+
+def get_proxy_cache_stats() -> Dict[str, Any]:
+    """Get proxy cache statistics."""
+    proxies = sum(1 for v in _proxy_cache.values() if v is not None)
+    non_proxies = sum(1 for v in _proxy_cache.values() if v is None)
+    return {
+        "total_entries": len(_proxy_cache),
+        "proxies_found": proxies,
+        "non_proxies": non_proxies
+    }
 
 
 def init_cache() -> Dict[str, Any]:
