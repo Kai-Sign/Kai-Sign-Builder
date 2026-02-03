@@ -1,0 +1,254 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xcF77a3Ba9A5CA399B7c97c74d54e5b1Beb874E43",
+      "chainId": 8453,
+      "name": "Aerodrome Router on Base",
+      "abi": [
+        {
+          "type": "function",
+          "name": "swapExactTokensForTokens",
+          "selector": "0x3d615d39",
+          "inputs": [
+            { "name": "amountIn", "type": "uint256" },
+            { "name": "amountOutMin", "type": "uint256" },
+            {
+              "name": "routes",
+              "type": "tuple[]",
+              "components": [
+                { "name": "from", "type": "address" },
+                { "name": "to", "type": "address" },
+                { "name": "stable", "type": "bool" }
+              ]
+            },
+            { "name": "to", "type": "address" },
+            { "name": "deadline", "type": "uint256" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "swapTokensForExactTokens",
+          "selector": "0x4aa06652",
+          "inputs": [
+            { "name": "amountOut", "type": "uint256" },
+            { "name": "amountInMax", "type": "uint256" },
+            {
+              "name": "routes",
+              "type": "tuple[]",
+              "components": [
+                { "name": "from", "type": "address" },
+                { "name": "to", "type": "address" },
+                { "name": "stable", "type": "bool" }
+              ]
+            },
+            { "name": "to", "type": "address" },
+            { "name": "deadline", "type": "uint256" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "addLiquidity",
+          "selector": "0xfc6bb091",
+          "inputs": [
+            { "name": "tokenA", "type": "address" },
+            { "name": "tokenB", "type": "address" },
+            { "name": "stable", "type": "bool" },
+            { "name": "amountADesired", "type": "uint256" },
+            { "name": "amountBDesired", "type": "uint256" },
+            { "name": "amountAMin", "type": "uint256" },
+            { "name": "amountBMin", "type": "uint256" },
+            { "name": "to", "type": "address" },
+            { "name": "deadline", "type": "uint256" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "removeLiquidity",
+          "selector": "0xd1adc4cd",
+          "inputs": [
+            { "name": "tokenA", "type": "address" },
+            { "name": "tokenB", "type": "address" },
+            { "name": "stable", "type": "bool" },
+            { "name": "liquidity", "type": "uint256" },
+            { "name": "amountAMin", "type": "uint256" },
+            { "name": "amountBMin", "type": "uint256" },
+            { "name": "to", "type": "address" },
+            { "name": "deadline", "type": "uint256" }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "swapExactTokensForTokens(uint256,uint256,tuple[],address,uint256)": {
+        "intent": "Swap via Aerodrome",
+        "interpolatedIntent": "Swap {amountIn} for at least {amountOutMin}",
+        "fields": [
+          {
+            "path": "routes[0].from",
+            "label": "From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "routes[-1].to",
+            "label": "To Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "routes[0].from" }
+          },
+          {
+            "path": "amountOutMin",
+            "label": "Min Amount Out",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "routes[-1].to" }
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "swapTokensForExactTokens(uint256,uint256,tuple[],address,uint256)": {
+        "intent": "Swap via Aerodrome for exact output",
+        "interpolatedIntent": "Swap for exactly {amountOut}",
+        "fields": [
+          {
+            "path": "routes[0].from",
+            "label": "From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "routes[-1].to",
+            "label": "To Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amountInMax",
+            "label": "Max Amount In",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "routes[0].from" }
+          },
+          {
+            "path": "amountOut",
+            "label": "Exact Amount Out",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "routes[-1].to" }
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "addLiquidity(address,address,bool,uint256,uint256,uint256,uint256,address,uint256)": {
+        "intent": "Add liquidity to Aerodrome pool",
+        "interpolatedIntent": "Add {amountADesired} and {amountBDesired} to liquidity pool",
+        "fields": [
+          {
+            "path": "tokenA",
+            "label": "Token A",
+            "format": "addressName"
+          },
+          {
+            "path": "tokenB",
+            "label": "Token B",
+            "format": "addressName"
+          },
+          {
+            "path": "stable",
+            "label": "Pool Type",
+            "format": "raw"
+          },
+          {
+            "path": "amountADesired",
+            "label": "Amount A Desired",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "tokenA" }
+          },
+          {
+            "path": "amountBDesired",
+            "label": "Amount B Desired",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "tokenB" }
+          },
+          {
+            "path": "amountAMin",
+            "label": "Amount A Min",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "tokenA" }
+          },
+          {
+            "path": "amountBMin",
+            "label": "Amount B Min",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "tokenB" }
+          },
+          {
+            "path": "to",
+            "label": "LP Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "removeLiquidity(address,address,bool,uint256,uint256,uint256,address,uint256)": {
+        "intent": "Remove liquidity from Aerodrome pool",
+        "interpolatedIntent": "Remove {liquidity} LP tokens from pool",
+        "fields": [
+          {
+            "path": "tokenA",
+            "label": "Token A",
+            "format": "addressName"
+          },
+          {
+            "path": "tokenB",
+            "label": "Token B",
+            "format": "addressName"
+          },
+          {
+            "path": "stable",
+            "label": "Pool Type",
+            "format": "raw"
+          },
+          {
+            "path": "liquidity",
+            "label": "LP Tokens",
+            "format": "raw"
+          },
+          {
+            "path": "amountAMin",
+            "label": "Min Amount A",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "tokenA" }
+          },
+          {
+            "path": "amountBMin",
+            "label": "Min Amount B",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "tokenB" }
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Aerodrome Finance",
+    "info": {
+      "url": "https://aerodrome.finance/",
+      "legalName": "Aerodrome Finance",
+      "lastUpdate": "2026-02-03"
+    }
+  }
+}

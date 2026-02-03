@@ -1,0 +1,112 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x21CFCFc3d8F98fC728f48341D10Ad8283F6EB7AB",
+      "chainId": 8453,
+      "name": "TRUE Token",
+      "symbol": "TRUE",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            { "name": "recipient", "type": "address" },
+            { "name": "amount", "type": "uint256" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            { "name": "spender", "type": "address" },
+            { "name": "amount", "type": "uint256" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            { "name": "sender", "type": "address" },
+            { "name": "recipient", "type": "address" },
+            { "name": "amount", "type": "uint256" }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "transfer(address,uint256)": {
+        "intent": "Transfer TRUE tokens",
+        "interpolatedIntent": "Transfer {amount} TRUE to {recipient}",
+        "fields": [
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": { "decimals": 18, "tokenSymbol": "TRUE" }
+          }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Approve TRUE spending",
+        "interpolatedIntent": "Approve {spender} to spend {amount} TRUE",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": { "decimals": 18, "tokenSymbol": "TRUE" }
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Transfer TRUE tokens from address",
+        "interpolatedIntent": "Transfer {amount} TRUE from {sender} to {recipient}",
+        "fields": [
+          {
+            "path": "sender",
+            "label": "From",
+            "format": "addressName"
+          },
+          {
+            "path": "recipient",
+            "label": "To",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": { "decimals": 18, "tokenSymbol": "TRUE" }
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "TRUE Protocol",
+    "info": {
+      "url": "https://truefi.io/",
+      "lastUpdate": "2026-02-03"
+    },
+    "token": {
+      "standard": "ERC20"
+    }
+  }
+}
