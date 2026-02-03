@@ -1,0 +1,89 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x1a40621C54330940B081F925aA027458a4c035eD",
+      "chainId": 8453,
+      "name": "TRUE Staking Rewards on Base",
+      "abi": [
+        {
+          "type": "function",
+          "name": "stake",
+          "selector": "0xa694fc3a",
+          "inputs": [
+            { "name": "amount", "type": "uint256" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0x2e1a7d4d",
+          "inputs": [
+            { "name": "amount", "type": "uint256" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "getReward",
+          "selector": "0x3d18b912",
+          "inputs": []
+        },
+        {
+          "type": "function",
+          "name": "exit",
+          "selector": "0xe9fad8ee",
+          "inputs": []
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "stake(uint256)": {
+        "intent": "Stake TRUE tokens",
+        "interpolatedIntent": "Stake {amount} TRUE tokens",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Stake Amount",
+            "format": "tokenAmount",
+            "params": {
+              "decimals": 18,
+              "tokenSymbol": "TRUE"
+            }
+          }
+        ]
+      },
+      "withdraw(uint256)": {
+        "intent": "Withdraw staked TRUE tokens",
+        "interpolatedIntent": "Withdraw {amount} TRUE tokens",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Withdrawal Amount",
+            "format": "tokenAmount",
+            "params": {
+              "decimals": 18,
+              "tokenSymbol": "TRUE"
+            }
+          }
+        ]
+      },
+      "getReward()": {
+        "intent": "Claim TRUE staking rewards",
+        "fields": []
+      },
+      "exit()": {
+        "intent": "Exit TRUE staking (withdraw all and claim rewards)",
+        "fields": []
+      }
+    }
+  },
+  "metadata": {
+    "owner": "TRUE Protocol",
+    "info": {
+      "url": "https://truefi.io/",
+      "lastUpdate": "2026-02-03"
+    }
+  }
+}
