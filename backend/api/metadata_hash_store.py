@@ -764,7 +764,7 @@ def load_from_submission_state(state_file: str) -> int:
 
 def rebuild_index() -> int:
     """
-    Drop and recreate entire index from submission-state.json.
+    Drop and recreate entire index from contract events.
 
     Returns:
         Number of entries indexed
@@ -781,13 +781,8 @@ def rebuild_index() -> int:
         _hash_cache.clear()
         _cache_order.clear()
 
-        # Reload
-        state_file = os.path.join(
-            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-            "scripts/submission-state.json"
-        )
-
-        return load_from_submission_state(state_file)
+        # Reload from contract events
+        return load_from_contract_events()
 
     except Exception as e:
         logger.error(f"Failed to rebuild index: {e}")
