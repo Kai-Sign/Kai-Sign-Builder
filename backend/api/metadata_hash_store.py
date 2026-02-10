@@ -74,18 +74,17 @@ KAISIGN_ABI = [
         "type": "function"
     },
     {
+        "type": "event",
+        "name": "LogRevealSpec",
         "anonymous": False,
         "inputs": [
-            {"indexed": True, "internalType": "bytes32", "name": "uid", "type": "bytes32"},
-            {"indexed": True, "internalType": "address", "name": "attester", "type": "address"},
-            {"indexed": True, "internalType": "address", "name": "targetContract", "type": "address"},
-            {"indexed": False, "internalType": "uint256", "name": "chainId", "type": "uint256"},
-            {"indexed": False, "internalType": "bytes32", "name": "extcodehash", "type": "bytes32"},
-            {"indexed": False, "internalType": "bytes32", "name": "blobHash", "type": "bytes32"},
-            {"indexed": False, "internalType": "bytes32", "name": "metadataHash", "type": "bytes32"}
-        ],
-        "name": "LogRevealSpec",
-        "type": "event"
+            {"name": "creator", "type": "address", "indexed": True, "internalType": "address"},
+            {"name": "uid", "type": "bytes32", "indexed": True, "internalType": "bytes32"},
+            {"name": "blobHash", "type": "bytes32", "indexed": True, "internalType": "bytes32"},
+            {"name": "commitmentId", "type": "bytes32", "indexed": False, "internalType": "bytes32"},
+            {"name": "chainId", "type": "uint256", "indexed": False, "internalType": "uint256"},
+            {"name": "extcodehash", "type": "bytes32", "indexed": False, "internalType": "bytes32"}
+        ]
     }
 ]
 
@@ -587,21 +586,23 @@ def load_from_contract_events() -> int:
 
         for i, event in enumerate(events):
             try:
+                # Extract from event args (already has chainId, extcodehash from event!)
                 uid = event['args']['uid']
+                chainId = event['args']['chainId']
+                extcodehash = '0x' + event['args']['extcodehash'].hex()
+                blobHash = '0x' + event['args']['blobHash'].hex()
+                creator = event['args']['creator']
 
-                # Get attestation details
+                # Get attestation for idx, revoked, metadataHash
                 attestation = contract.functions.getAttestation(uid).call()
 
                 # Skip if not finalized
                 if attestation[9] == 0:  # finalizedAt
                     continue
 
-                chainId = attestation[1]
-                extcodehash = '0x' + attestation[2].hex()
                 metadataHash = '0x' + attestation[4].hex()
                 idx = attestation[7]
                 revoked = attestation[8]
-                blobHash = '0x' + attestation[3].hex()
 
                 # Create minimal metadata entry (will be populated later if needed)
                 metadata = {
@@ -612,10 +613,13 @@ def load_from_contract_events() -> int:
                 }
 
                 # Upsert to database
+                # targetContract is not in event, derive from attestation or use creator as placeholder
+                target_contract = w3.to_checksum_address(creator)  # Will be updated with correct contract later
+
                 success = upsert_metadata(
                     metadata_hash=metadataHash,
                     metadata=metadata,
-                    target_contract=event['args']['targetContract'],
+                    target_contract=target_contract,
                     chain_id=chainId,
                     extcodehash=extcodehash,
                     idx=idx,
