@@ -98,7 +98,7 @@ def main():
                     print(f"📊 Final stats: {stats.get('total_entries', 0)} entries, {stats.get('db_size_mb', 0)} MB")
                 else:
                     print("\n❌ ERROR: Failed to load attestations from contract")
-                    print("    Check SEPOLIA_RPC_URL and v1-core ABI path")
+                    print("    Check logs above for the actual error")
                     print("    Try manual rebuild: POST /api/py/metadata/hash/rebuild")
             else:
                 print(f"✅ Hash index already populated: {stats['total_entries']} entries")
