@@ -74,7 +74,7 @@ def main():
     try:
         from api.metadata_hash_store import (
             init_hash_db,
-            load_from_submission_state,
+            load_from_contract_events,
             get_hash_stats
         )
 
@@ -87,33 +87,19 @@ def main():
             # Check if we need to populate
             stats = get_hash_stats()
             if stats.get("total_entries", 0) == 0:
-                print("\n📥 Hash index is empty, loading from submission-state.json...")
+                print("\n📥 Hash index is empty, scanning contract events...")
+                print(f"⏳ Loading from {kaisign_addr} (this may take 60 seconds)...")
 
-                # Find submission-state.json
-                state_file = os.path.join(
-                    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-                    "scripts/submission-state.json"
-                )
+                loaded = load_from_contract_events()
 
-                if os.path.exists(state_file):
-                    print(f"Found state file: {state_file}")
-                    print("⏳ Querying on-chain attestations (this may take 30-60 seconds)...")
-                    print("    Please wait while we fetch idx and revoked status for each entry...")
-
-                    loaded = load_from_submission_state(state_file)
-
-                    if loaded > 0:
-                        print(f"\n✅ Loaded {loaded} metadata entries into hash index")
-                        stats = get_hash_stats()
-                        print(f"📊 Final stats: {stats.get('total_entries', 0)} entries, {stats.get('db_size_mb', 0)} MB")
-                    else:
-                        print("\n❌ ERROR: Failed to load any entries from submission-state.json")
-                        print("    Hash index endpoints will return 404 until this is fixed!")
-                        print("    Check SEPOLIA_RPC_URL environment variable")
-                        print("    Try manual rebuild: POST /api/py/metadata/hash/rebuild")
+                if loaded > 0:
+                    print(f"\n✅ Loaded {loaded} attestations from contract")
+                    stats = get_hash_stats()
+                    print(f"📊 Final stats: {stats.get('total_entries', 0)} entries, {stats.get('db_size_mb', 0)} MB")
                 else:
-                    print(f"⚠️  Warning: submission-state.json not found at {state_file}")
-                    print("    Hash index will remain empty until entries are added")
+                    print("\n❌ ERROR: Failed to load attestations from contract")
+                    print("    Check SEPOLIA_RPC_URL and v1-core ABI path")
+                    print("    Try manual rebuild: POST /api/py/metadata/hash/rebuild")
             else:
                 print(f"✅ Hash index already populated: {stats['total_entries']} entries")
                 print(f"📊 Database size: {stats.get('db_size_mb', 0)} MB")
