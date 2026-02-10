@@ -146,6 +146,17 @@ def init_hash_db() -> bool:
     try:
         db = _get_db()
 
+        # Check if table exists with old schema - if so, drop it
+        try:
+            cursor = db.execute("PRAGMA table_info(metadata_registry)")
+            columns = [row[1] for row in cursor.fetchall()]
+            if columns and 'leaf_hash' not in columns:
+                logger.info("🔄 Dropping old database schema...")
+                db.execute("DROP TABLE IF EXISTS metadata_registry")
+                db.commit()
+        except:
+            pass
+
         # Create main table
         db.execute("""
             CREATE TABLE IF NOT EXISTS metadata_registry (
@@ -198,6 +209,8 @@ def init_hash_db() -> bool:
 
     except Exception as e:
         logger.error(f"Failed to initialize hash database: {e}")
+        import traceback
+        traceback.print_exc()
         return False
 
 def _migrate_add_leaf_hash() -> bool:
@@ -255,6 +268,8 @@ def _migrate_add_leaf_hash() -> bool:
 
     except Exception as e:
         logger.error(f"Migration failed: {e}")
+        import traceback
+        traceback.print_exc()
         return False
 
 # ============================================================================
