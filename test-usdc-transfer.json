@@ -1,0 +1,20 @@
+{
+  "txHash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+  "methodCall": {
+    "name": "transfer",
+    "params": [
+      {
+        "name": "to",
+        "type": "address",
+        "value": "0xa1371748d65baef4509a3c067b3fe3a1b79183ae"
+      },
+      {
+        "name": "value", 
+        "type": "uint256",
+        "value": "1000000"
+      }
+    ]
+  },
+  "transfers": [],
+  "addressesMeta": {}
+}

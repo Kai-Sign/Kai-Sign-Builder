@@ -1,0 +1,198 @@
+{
+  "$schema": "https://erc7730.org/schema/v1",
+  "context": {
+    "contract": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "name": "calls",
+              "type": "tuple[]",
+              "components": [
+                { "name": "to", "type": "address" },
+                { "name": "value", "type": "uint256" },
+                { "name": "data", "type": "bytes" }
+              ]
+            }
+          ],
+          "name": "executeBySender",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function",
+          "selector": "0xabc5345e"
+        },
+        {
+          "inputs": [
+            {
+              "name": "calls",
+              "type": "tuple[]",
+              "components": [
+                { "name": "to", "type": "address" },
+                { "name": "value", "type": "uint256" },
+                { "name": "data", "type": "bytes" }
+              ]
+            }
+          ],
+          "name": "executeBySelf",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function",
+          "selector": "0x6769de82"
+        },
+        {
+          "inputs": [
+            {
+              "name": "call",
+              "type": "tuple",
+              "components": [
+                { "name": "to", "type": "address" },
+                { "name": "value", "type": "uint256" },
+                { "name": "data", "type": "bytes" }
+              ]
+            }
+          ],
+          "name": "executeBySelfSingle",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function",
+          "selector": "0xe6a6332e"
+        },
+        {
+          "inputs": [
+            {
+              "name": "calls",
+              "type": "tuple[]",
+              "components": [
+                { "name": "to", "type": "address" },
+                { "name": "value", "type": "uint256" },
+                { "name": "data", "type": "bytes" }
+              ]
+            },
+            { "name": "signature", "type": "bytes" }
+          ],
+          "name": "execute",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function",
+          "selector": "0x6171d1c9"
+        },
+        {
+          "inputs": [
+            {
+              "name": "toExec",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "calls",
+                  "type": "tuple[]",
+                  "components": [
+                    { "name": "to", "type": "address" },
+                    { "name": "value", "type": "uint256" },
+                    { "name": "data", "type": "bytes" }
+                  ]
+                },
+                { "name": "signature", "type": "bytes" }
+              ]
+            }
+          ],
+          "name": "executeMultiple",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function",
+          "selector": "0xa2ea6766"
+        }
+      ],
+      "deployments": {
+        "mainnet": {
+          "address": "0x5A7FC11397E9a8AD41BF10bf13F22B0a63f96f6d",
+          "chainId": 1
+        }
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Ambire",
+    "info": {
+      "url": "https://ambire.com",
+      "legalName": "Ambire Ltd",
+      "lastUpdate": "2024-12-12"
+    },
+    "token": {
+      "standard": "none"
+    }
+  },
+  "display": {
+    "formats": {
+      "executeBySender((address,uint256,bytes)[])": {
+        "intent": "Execute Batch Operations (EIP-7702)",
+        "fields": [
+          {
+            "path": "calls.[].data",
+            "label": "Operations",
+            "format": "calldata",
+            "params": {
+              "calleePath": "calls.[].to"
+            }
+          }
+        ]
+      },
+      "executeBySelf((address,uint256,bytes)[])": {
+        "intent": "Execute Batch Operations (Self)",
+        "fields": [
+          {
+            "path": "calls.[].data",
+            "label": "Operations",
+            "format": "calldata",
+            "params": {
+              "calleePath": "calls.[].to"
+            }
+          }
+        ]
+      },
+      "executeBySelfSingle((address,uint256,bytes))": {
+        "intent": "Execute Single Operation (Self)",
+        "fields": [
+          {
+            "path": "call.data",
+            "label": "Operation",
+            "format": "calldata",
+            "params": {
+              "calleePath": "call.to"
+            }
+          }
+        ]
+      },
+      "execute((address,uint256,bytes)[],bytes)": {
+        "intent": "Execute Signed Batch Operations",
+        "fields": [
+          {
+            "path": "calls.[].data",
+            "label": "Operations",
+            "format": "calldata",
+            "params": {
+              "calleePath": "calls.[].to"
+            }
+          },
+          {
+            "path": "signature",
+            "label": "Signature",
+            "format": "raw"
+          }
+        ]
+      },
+      "executeMultiple(((address,uint256,bytes)[],bytes)[])": {
+        "intent": "Execute Multiple Signed Batches",
+        "fields": [
+          {
+            "path": "toExec.[].calls.[].data",
+            "label": "Operations",
+            "format": "calldata",
+            "params": {
+              "calleePath": "toExec.[].calls.[].to"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

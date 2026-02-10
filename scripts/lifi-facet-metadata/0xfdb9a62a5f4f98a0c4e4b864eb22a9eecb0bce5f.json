@@ -1,0 +1,424 @@
+{
+  "$schema": "https://erc7730.org/schema/v1",
+  "context": {
+    "contract": {
+      "abi": [
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaStargate",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_stargateData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "assetId",
+                  "type": "uint16"
+                },
+                {
+                  "name": "sendParams",
+                  "type": "tuple",
+                  "components": [
+                    {
+                      "name": "dstEid",
+                      "type": "uint32"
+                    },
+                    {
+                      "name": "to",
+                      "type": "bytes32"
+                    },
+                    {
+                      "name": "amountLD",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "minAmountLD",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "extraOptions",
+                      "type": "bytes"
+                    },
+                    {
+                      "name": "composeMsg",
+                      "type": "bytes"
+                    },
+                    {
+                      "name": "oftCmd",
+                      "type": "bytes"
+                    }
+                  ]
+                },
+                {
+                  "name": "fee",
+                  "type": "tuple",
+                  "components": [
+                    {
+                      "name": "nativeFee",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "lzTokenFee",
+                      "type": "uint256"
+                    }
+                  ]
+                },
+                {
+                  "name": "refundAddress",
+                  "type": "address"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x7cccba6d"
+        },
+        {
+          "type": "function",
+          "name": "swapAndStartBridgeTokensViaStargate",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_stargateData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "assetId",
+                  "type": "uint16"
+                },
+                {
+                  "name": "sendParams",
+                  "type": "tuple",
+                  "components": [
+                    {
+                      "name": "dstEid",
+                      "type": "uint32"
+                    },
+                    {
+                      "name": "to",
+                      "type": "bytes32"
+                    },
+                    {
+                      "name": "amountLD",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "minAmountLD",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "extraOptions",
+                      "type": "bytes"
+                    },
+                    {
+                      "name": "composeMsg",
+                      "type": "bytes"
+                    },
+                    {
+                      "name": "oftCmd",
+                      "type": "bytes"
+                    }
+                  ]
+                },
+                {
+                  "name": "fee",
+                  "type": "tuple",
+                  "components": [
+                    {
+                      "name": "nativeFee",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "lzTokenFee",
+                      "type": "uint256"
+                    }
+                  ]
+                },
+                {
+                  "name": "refundAddress",
+                  "type": "address"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x4bd751a8"
+        }
+      ],
+      "deployments": {
+        "mainnet": {
+          "address": "0xfdb9a62a5f4f98a0c4e4b864eb22a9eecb0bce5f",
+          "chainId": 1
+        },
+        "polygon": {
+          "address": "0xfdb9a62a5f4f98a0c4e4b864eb22a9eecb0bce5f",
+          "chainId": 137
+        },
+        "arbitrum": {
+          "address": "0xfdb9a62a5f4f98a0c4e4b864eb22a9eecb0bce5f",
+          "chainId": 42161
+        },
+        "optimism": {
+          "address": "0xfdb9a62a5f4f98a0c4e4b864eb22a9eecb0bce5f",
+          "chainId": 10
+        },
+        "base": {
+          "address": "0xfdb9a62a5f4f98a0c4e4b864eb22a9eecb0bce5f",
+          "chainId": 8453
+        },
+        "bsc": {
+          "address": "0xfdb9a62a5f4f98a0c4e4b864eb22a9eecb0bce5f",
+          "chainId": 56
+        },
+        "avalanche": {
+          "address": "0xfdb9a62a5f4f98a0c4e4b864eb22a9eecb0bce5f",
+          "chainId": 43114
+        },
+        "fantom": {
+          "address": "0xfdb9a62a5f4f98a0c4e4b864eb22a9eecb0bce5f",
+          "chainId": 250
+        },
+        "gnosis": {
+          "address": "0xfdb9a62a5f4f98a0c4e4b864eb22a9eecb0bce5f",
+          "chainId": 100
+        },
+        "zksync": {
+          "address": "0xfdb9a62a5f4f98a0c4e4b864eb22a9eecb0bce5f",
+          "chainId": 324
+        },
+        "linea": {
+          "address": "0xfdb9a62a5f4f98a0c4e4b864eb22a9eecb0bce5f",
+          "chainId": 59144
+        },
+        "scroll": {
+          "address": "0xfdb9a62a5f4f98a0c4e4b864eb22a9eecb0bce5f",
+          "chainId": 534352
+        },
+        "blast": {
+          "address": "0xfdb9a62a5f4f98a0c4e4b864eb22a9eecb0bce5f",
+          "chainId": 81457
+        },
+        "mode": {
+          "address": "0xfdb9a62a5f4f98a0c4e4b864eb22a9eecb0bce5f",
+          "chainId": 34443
+        }
+      }
+    }
+  },
+  "metadata": {
+    "owner": "LI.FI",
+    "info": {
+      "url": "https://li.fi",
+      "legalName": "LI.FI",
+      "lastUpdate": "2025-12-26"
+    },
+    "token": {
+      "standard": "none"
+    }
+  },
+  "display": {
+    "formats": {
+      "startBridgeTokensViaStargate((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(uint16,(uint32,bytes32,uint256,uint256,bytes,bytes,bytes),(uint256,uint256),address))": {
+        "intent": "Bridge tokens via Stargate",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaStargate((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(uint16,(uint32,bytes32,uint256,uint256,bytes,bytes,bytes),(uint256,uint256),address))": {
+        "intent": "Swap tokens and bridge via Stargate",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

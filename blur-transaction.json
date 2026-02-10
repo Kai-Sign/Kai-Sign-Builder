@@ -1,0 +1,250 @@
+{
+  "txHash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+  "methodCall": {
+    "name": "takeBid",
+    "params": [
+      {
+        "name": "inputs",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "orders",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "orders",
+                "type": "tuple[]",
+                "value": [
+                  {
+                    "trader": "0x742d35Cc6634C0532925a3b8D591D3d5F88cE442",
+                    "collection": "0xbAbaFdd8045740449a42B788a26E9b3A32F88aC1",
+                    "listingsRoot": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+                    "numberOfListings": "1",
+                    "expirationTime": "1700000000",
+                    "assetType": "0",
+                    "makerFee": {
+                      "recipient": "0x0000a26b00c1F0DF003000390027140000fAa719",
+                      "rate": "250"
+                    },
+                    "salt": "123456789"
+                  },
+                  {
+                    "trader": "0x8888888888888888888888888888888888888888",
+                    "collection": "0x9999999999999999999999999999999999999999",
+                    "listingsRoot": "0x2345678901bcdef02345678901bcdef02345678901bcdef02345678901bcdef0",
+                    "numberOfListings": "1",
+                    "expirationTime": "1700000000",
+                    "assetType": "0",
+                    "makerFee": {
+                      "recipient": "0x0000a26b00c1F0DF003000390027140000fAa719",
+                      "rate": "250"
+                    },
+                    "salt": "987654321"
+                  }
+                ],
+                "components": [
+                  {
+                    "name": "trader",
+                    "type": "address",
+                    "value": "0x742d35Cc6634C0532925a3b8D591D3d5F88cE442"
+                  },
+                  {
+                    "name": "collection",
+                    "type": "address", 
+                    "value": "0xbAbaFdd8045740449a42B788a26E9b3A32F88aC1"
+                  },
+                  {
+                    "name": "listingsRoot",
+                    "type": "bytes32",
+                    "value": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+                  },
+                  {
+                    "name": "numberOfListings",
+                    "type": "uint256",
+                    "value": "1"
+                  },
+                  {
+                    "name": "expirationTime",
+                    "type": "uint256",
+                    "value": "1700000000"
+                  },
+                  {
+                    "name": "assetType",
+                    "type": "uint8",
+                    "value": "0"
+                  },
+                  {
+                    "name": "makerFee",
+                    "type": "tuple",
+                    "components": [
+                      {
+                        "name": "recipient",
+                        "type": "address",
+                        "value": "0x0000a26b00c1F0DF003000390027140000fAa719"
+                      },
+                      {
+                        "name": "rate",
+                        "type": "uint16",
+                        "value": "250"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "salt",
+                    "type": "uint256",
+                    "value": "123456789"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "exchanges",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "exchanges",
+                "type": "tuple[]",
+                "value": [
+                  {
+                    "index": "0",
+                    "proof": ["0x1111111111111111111111111111111111111111111111111111111111111111"],
+                    "listing": {
+                      "index": "0",
+                      "tokenId": "1234",
+                      "amount": "1",
+                      "price": "1000000000000000000"
+                    },
+                    "taker": {
+                      "tokenId": "1234",
+                      "amount": "1"
+                    }
+                  },
+                  {
+                    "index": "1",
+                    "proof": ["0x2222222222222222222222222222222222222222222222222222222222222222"],
+                    "listing": {
+                      "index": "1",
+                      "tokenId": "5678",
+                      "amount": "1",
+                      "price": "2000000000000000000"
+                    },
+                    "taker": {
+                      "tokenId": "5678",
+                      "amount": "1"
+                    }
+                  }
+                ],
+                "components": [
+                  {
+                    "name": "index",
+                    "type": "uint256",
+                    "value": "0"
+                  },
+                  {
+                    "name": "proof",
+                    "type": "bytes32[]",
+                    "value": ["0x1111111111111111111111111111111111111111111111111111111111111111"]
+                  },
+                  {
+                    "name": "listing",
+                    "type": "tuple",
+                    "components": [
+                      {
+                        "name": "index",
+                        "type": "uint256",
+                        "value": "0"
+                      },
+                      {
+                        "name": "tokenId",
+                        "type": "uint256",
+                        "value": "1234"
+                      },
+                      {
+                        "name": "amount",
+                        "type": "uint256",
+                        "value": "1"
+                      },
+                      {
+                        "name": "price",
+                        "type": "uint256",
+                        "value": "1000000000000000000"
+                      }
+                    ]
+                  },
+                  {
+                    "name": "taker",
+                    "type": "tuple",
+                    "components": [
+                      {
+                        "name": "tokenId",
+                        "type": "uint256",
+                        "value": "1234"
+                      },
+                      {
+                        "name": "amount",
+                        "type": "uint256",
+                        "value": "1"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "takerFee",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "recipient",
+                "type": "address",
+                "value": "0x0000a26b00c1F0DF003000390027140000fAa719"
+              },
+              {
+                "name": "rate",
+                "type": "uint16",
+                "value": "250"
+              }
+            ]
+          },
+          {
+            "name": "signatures",
+            "type": "bytes",
+            "value": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234"
+          }
+        ]
+      },
+      {
+        "name": "oracleSignature",
+        "type": "bytes", 
+        "value": "0xabcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890ab"
+      }
+    ]
+  },
+  "transfers": [],
+  "addressesMeta": {
+    "0x742d35Cc6634C0532925a3b8D591D3d5F88cE442": {
+      "contractAddress": "0x742d35Cc6634C0532925a3b8D591D3d5F88cE442",
+      "contractName": "Trader 1",
+      "type": "EOA"
+    },
+    "0xbAbaFdd8045740449a42B788a26E9b3A32F88aC1": {
+      "contractAddress": "0xbAbaFdd8045740449a42B788a26E9b3A32F88aC1",
+      "contractName": "Sample NFT Collection",
+      "tokenSymbol": "SAMPLE",
+      "type": "ERC721"
+    },
+    "0x8888888888888888888888888888888888888888": {
+      "contractAddress": "0x8888888888888888888888888888888888888888",
+      "contractName": "Trader 2", 
+      "type": "EOA"
+    },
+    "0x9999999999999999999999999999999999999999": {
+      "contractAddress": "0x9999999999999999999999999999999999999999",
+      "contractName": "Another NFT Collection",
+      "tokenSymbol": "OTHER",
+      "type": "ERC721"
+    }
+  }
+}

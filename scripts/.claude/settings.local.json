@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(for f in lifi-facet-metadata/*.json)",
+      "Bash(done)",
+      "Bash(sort:*)"
+    ]
+  }
+}

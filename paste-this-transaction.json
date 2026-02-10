@@ -1,0 +1,72 @@
+{
+  "txHash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef",
+  "methodCall": {
+    "name": "takeBid",
+    "params": [
+      {
+        "name": "inputs",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "orders",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "orders",
+                "type": "tuple[]",
+                "value": [
+                  {
+                    "trader": "0x742d35Cc6634C0532925a3b8D591D3d5F88cE442",
+                    "collection": "0xbAbaFdd8045740449a42B788a26E9b3A32F88aC1"
+                  },
+                  {
+                    "trader": "0x8888888888888888888888888888888888888888",
+                    "collection": "0x9999999999999999999999999999999999999999"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "exchanges",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "exchanges",
+                "type": "tuple[]",
+                "value": [
+                  {
+                    "listing": {
+                      "tokenId": "1234",
+                      "price": "1000000000000000000"
+                    }
+                  },
+                  {
+                    "listing": {
+                      "tokenId": "5678", 
+                      "price": "2000000000000000000"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "addressesMeta": {
+    "0x742d35Cc6634C0532925a3b8D591D3d5F88cE442": {
+      "contractName": "Trader 1"
+    },
+    "0xbAbaFdd8045740449a42B788a26E9b3A32F88aC1": {
+      "contractName": "Sample NFT Collection"
+    },
+    "0x8888888888888888888888888888888888888888": {
+      "contractName": "Trader 2"
+    },
+    "0x9999999999999999999999999999999999999999": {
+      "contractName": "Another NFT Collection"
+    }
+  }
+}

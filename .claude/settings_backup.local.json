@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node:*)",
+      "WebFetch(domain:etherscan.io)",
+      "Bash(curl:*)",
+      "WebSearch",
+      "WebFetch(domain:eips.ethereum.org)",
+      "WebFetch(domain:docs.soliditylang.org)",
+      "Bash(npx tsc:*)",
+      "Read(//Users/muhammadaushijri/Desktop/git/**)",
+      "Bash(npm install:*)",
+      "Bash(npx ts-node:*)",
+      "Read(//Users/muhammadaushijri/**)",
+      "Bash(git add:*)",
+      "WebFetch(domain:basescan.org)",
+      "Bash(open \"http://localhost:3000/hardware-viewer\")",
+      "mcp__ide__getDiagnostics",
+      "Bash(npm run:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

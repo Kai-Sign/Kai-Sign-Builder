@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ethfs-cli upload:*)",
+      "Bash(ethfs-cli create:*)",
+      "Bash(ethfs-cli download:*)",
+      "WebFetch(domain:sepolia.etherscan.io)",
+      "Bash(gh pr list:*)",
+      "WebFetch(domain:docs.eigencloud.xyz)",
+      "WebFetch(domain:developers.eigencloud.xyz)",
+      "WebFetch(domain:blog.eigencloud.xyz)",
+      "WebSearch",
+      "WebFetch(domain:www.eigencloud.xyz)",
+      "WebFetch(domain:etherscan.io)",
+      "WebFetch(domain:docs.li.fi)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:api.github.com)",
+      "Bash(tree:*)",
+      "Bash(for f in metadata/aa/safe*.json)",
+      "Bash(do echo \"=== $f ===\")",
+      "Bash(done)",
+      "Bash(curl:*)",
+      "Bash(time curl:*)",
+      "Bash(for i in {1..5})",
+      "Bash(do)",
+      "WebFetch(domain:api-sepolia.etherscan.io)",
+      "WebFetch(domain:chainlist.org)",
+      "Bash(chmod:*)",
+      "Bash(jq:*)",
+      "Bash(sqlite3:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

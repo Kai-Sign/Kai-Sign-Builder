@@ -1,0 +1,120 @@
+{
+  "$schema": "https://erc7730.org/schema/v1",
+  "context": {
+    "contract": {
+      "abi": [
+        {
+          "inputs": [
+            { "name": "commands", "type": "bytes" },
+            { "name": "inputs", "type": "bytes[]" },
+            { "name": "deadline", "type": "uint256" }
+          ],
+          "name": "execute",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function",
+          "selector": "0x3593564c"
+        },
+        {
+          "inputs": [
+            { "name": "commands", "type": "bytes" },
+            { "name": "inputs", "type": "bytes[]" }
+          ],
+          "name": "execute",
+          "outputs": [],
+          "stateMutability": "payable",
+          "type": "function",
+          "selector": "0x24856bc3"
+        }
+      ],
+      "deployments": {
+        "mainnet": {
+          "address": "0x66a9893cC07D91D95644AEDD05D03f95e1dBA8Af",
+          "chainId": 1
+        }
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Uniswap Labs",
+    "info": {
+      "url": "https://uniswap.org",
+      "legalName": "Uniswap Labs",
+      "lastUpdate": "2024-12-13"
+    },
+    "token": {
+      "standard": "none"
+    }
+  },
+  "parsing": {
+    "multicallStructure": {
+      "commands": { "type": "bytes", "description": "Each byte is a command identifier" },
+      "inputs": { "type": "bytes[]", "description": "ABI-encoded parameters for each command" }
+    },
+    "commandTypes": {
+      "0x00": "V3_SWAP_EXACT_IN",
+      "0x01": "V3_SWAP_EXACT_OUT",
+      "0x02": "PERMIT2_TRANSFER_FROM",
+      "0x03": "PERMIT2_PERMIT_BATCH",
+      "0x04": "SWEEP",
+      "0x05": "TRANSFER",
+      "0x06": "PAY_PORTION",
+      "0x07": "V2_SWAP_EXACT_IN",
+      "0x08": "V2_SWAP_EXACT_OUT",
+      "0x09": "PERMIT2_PERMIT",
+      "0x0a": "WRAP_ETH",
+      "0x0b": "UNWRAP_WETH",
+      "0x0c": "PERMIT2_TRANSFER_FROM_BATCH",
+      "0x0d": "BALANCE_CHECK_ERC20",
+      "0x10": "V4_SWAP",
+      "0x11": "V4_POSITION_MANAGER_CALL",
+      "0x12": "V4_INITIALIZE_POOL",
+      "0x13": "V4_POSITION_MANAGER_MINT",
+      "0x14": "V4_POSITION_MANAGER_INCREASE",
+      "0x21": "EXECUTE_SUB_PLAN"
+    }
+  },
+  "display": {
+    "formats": {
+      "execute(bytes,bytes[],uint256)": {
+        "intent": "Execute Universal Router Commands",
+        "fields": [
+          {
+            "path": "commands",
+            "label": "Commands",
+            "format": "raw",
+            "params": { "parseAsCommands": true }
+          },
+          {
+            "path": "inputs",
+            "label": "Inputs",
+            "format": "multicallBatch",
+            "params": { "parseNestedCalls": true }
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "date"
+          }
+        ]
+      },
+      "execute(bytes,bytes[])": {
+        "intent": "Execute Universal Router Commands (No Deadline)",
+        "fields": [
+          {
+            "path": "commands",
+            "label": "Commands",
+            "format": "raw",
+            "params": { "parseAsCommands": true }
+          },
+          {
+            "path": "inputs",
+            "label": "Inputs",
+            "format": "multicallBatch",
+            "params": { "parseNestedCalls": true }
+          }
+        ]
+      }
+    }
+  }
+}

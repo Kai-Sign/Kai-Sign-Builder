@@ -1,0 +1,63 @@
+{
+  "generated": "2025-12-26T03:54:04.849Z",
+  "diamondAddress": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+  "combinedFile": "scripts/lifi-facet-metadata/lifi-diamond-combined.json",
+  "totalFunctions": 26,
+  "facetFiles": [
+    {
+      "address": "0xfdb9a62a5f4f98a0c4e4b864eb22a9eecb0bce5f",
+      "file": "scripts/lifi-facet-metadata/0xfdb9a62a5f4f98a0c4e4b864eb22a9eecb0bce5f.json",
+      "functions": 2
+    },
+    {
+      "address": "0x3de506059ae0b239e125e6b1365cfa92100540c0",
+      "file": "scripts/lifi-facet-metadata/0x3de506059ae0b239e125e6b1365cfa92100540c0.json",
+      "functions": 6
+    },
+    {
+      "address": "0x108b0c3f20f266469fd2e98750926811ad632589",
+      "file": "scripts/lifi-facet-metadata/0x108b0c3f20f266469fd2e98750926811ad632589.json",
+      "functions": 2
+    },
+    {
+      "address": "0x65d6b9a368be49bca4964b66e54f828cab64b8f9",
+      "file": "scripts/lifi-facet-metadata/0x65d6b9a368be49bca4964b66e54f828cab64b8f9.json",
+      "functions": 2
+    },
+    {
+      "address": "0xc4e5f14dfe359653d66ae49b1f12177e6f99102b",
+      "file": "scripts/lifi-facet-metadata/0xc4e5f14dfe359653d66ae49b1f12177e6f99102b.json",
+      "functions": 2
+    },
+    {
+      "address": "0x88e0dd83e6da24bf317323e5ca06842406d57ed0",
+      "file": "scripts/lifi-facet-metadata/0x88e0dd83e6da24bf317323e5ca06842406d57ed0.json",
+      "functions": 2
+    },
+    {
+      "address": "0x54678c366682a29112609882dc58def6753bfc27",
+      "file": "scripts/lifi-facet-metadata/0x54678c366682a29112609882dc58def6753bfc27.json",
+      "functions": 2
+    },
+    {
+      "address": "0x77a13abb679a0dafb4435d1fa4ccc95d1ab51cfc",
+      "file": "scripts/lifi-facet-metadata/0x77a13abb679a0dafb4435d1fa4ccc95d1ab51cfc.json",
+      "functions": 2
+    },
+    {
+      "address": "0x03f58dc7e2195a0c6f501bc4819066fd9dfe307f",
+      "file": "scripts/lifi-facet-metadata/0x03f58dc7e2195a0c6f501bc4819066fd9dfe307f.json",
+      "functions": 2
+    },
+    {
+      "address": "0x9a82bb477c30d92dab74875027e14d1de3510ef9",
+      "file": "scripts/lifi-facet-metadata/0x9a82bb477c30d92dab74875027e14d1de3510ef9.json",
+      "functions": 2
+    },
+    {
+      "address": "0xac82fa2d953ee5c61d87686ade620b0728f484e6",
+      "file": "scripts/lifi-facet-metadata/0xac82fa2d953ee5c61d87686ade620b0728f484e6.json",
+      "functions": 2
+    }
+  ]
+}

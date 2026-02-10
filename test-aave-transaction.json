@@ -1,0 +1,42 @@
+{
+  "txHash": "0x123456789abcdef",
+  "methodCall": {
+    "name": "repay",
+    "params": [
+      {
+        "name": "asset",
+        "type": "address",
+        "value": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "value": "1000000"
+      },
+      {
+        "name": "rateMode",
+        "type": "uint256",
+        "value": "2"
+      },
+      {
+        "name": "onBehalfOf",
+        "type": "address",
+        "value": "0xc88378f0d994b23d4b7770e8Ac416a2565270FFf"
+      }
+    ]
+  },
+  "addressesMeta": {
+    "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48": {
+      "contractAddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "contractName": "USD Coin",
+      "tokenSymbol": "USDC",
+      "decimals": 6,
+      "type": "ERC20"
+    },
+    "0xc88378f0d994b23d4b7770e8Ac416a2565270FFf": {
+      "contractAddress": "0xc88378f0d994b23d4b7770e8Ac416a2565270FFf",
+      "contractName": "User Wallet",
+      "type": "EOA"
+    }
+  }
+}

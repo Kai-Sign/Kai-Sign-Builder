@@ -1,0 +1,67 @@
+{
+  "methodCall": {
+    "name": "handleOps",
+    "type": "function",
+    "signature": "handleOps((address,uint256,bytes,bytes,bytes32,uint256,bytes32,bytes,bytes)[],address)",
+    "params": [
+      {
+        "name": "ops",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "ops",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "callData",
+                "type": "bytes",
+                "value": "0x34fcd5be...",
+                "valueDecoded": {
+                  "name": "executeBatch",
+                  "signature": "executeBatch((address,uint256,bytes)[])",
+                  "type": "function",
+                  "params": [
+                    {
+                      "name": "calls",
+                      "type": "tuple",
+                      "components": [
+                        {
+                          "name": "calls",
+                          "type": "tuple",
+                          "components": [
+                            {
+                              "name": "data",
+                              "type": "bytes",
+                              "value": "0xa9059cbb...",
+                              "valueDecoded": {
+                                "name": "transfer",
+                                "signature": "transfer(address,uint256)",
+                                "type": "function",
+                                "params": [
+                                  {
+                                    "name": "to",
+                                    "type": "address",
+                                    "value": "0xb0E6531042FC9fbf72b063dD29a388C62fF1437b"
+                                  },
+                                  {
+                                    "name": "value",
+                                    "type": "uint256",
+                                    "value": "41780000"
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

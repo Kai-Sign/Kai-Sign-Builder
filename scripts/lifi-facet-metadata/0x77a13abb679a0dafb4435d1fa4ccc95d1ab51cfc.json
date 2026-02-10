@@ -1,0 +1,376 @@
+{
+  "$schema": "https://erc7730.org/schema/v1",
+  "context": {
+    "contract": {
+      "abi": [
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaHop",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_hopData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "bonderFee",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amountOutMin",
+                  "type": "uint256"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationAmountOutMin",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationDeadline",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hopBridge",
+                  "type": "address"
+                },
+                {
+                  "name": "relayer",
+                  "type": "address"
+                },
+                {
+                  "name": "relayerFee",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x612ad9cb"
+        },
+        {
+          "type": "function",
+          "name": "swapAndStartBridgeTokensViaHop",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_hopData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "bonderFee",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amountOutMin",
+                  "type": "uint256"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationAmountOutMin",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationDeadline",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hopBridge",
+                  "type": "address"
+                },
+                {
+                  "name": "relayer",
+                  "type": "address"
+                },
+                {
+                  "name": "relayerFee",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xa4c3366e"
+        }
+      ],
+      "deployments": {
+        "mainnet": {
+          "address": "0x77a13abb679a0dafb4435d1fa4ccc95d1ab51cfc",
+          "chainId": 1
+        },
+        "polygon": {
+          "address": "0x77a13abb679a0dafb4435d1fa4ccc95d1ab51cfc",
+          "chainId": 137
+        },
+        "arbitrum": {
+          "address": "0x77a13abb679a0dafb4435d1fa4ccc95d1ab51cfc",
+          "chainId": 42161
+        },
+        "optimism": {
+          "address": "0x77a13abb679a0dafb4435d1fa4ccc95d1ab51cfc",
+          "chainId": 10
+        },
+        "base": {
+          "address": "0x77a13abb679a0dafb4435d1fa4ccc95d1ab51cfc",
+          "chainId": 8453
+        },
+        "bsc": {
+          "address": "0x77a13abb679a0dafb4435d1fa4ccc95d1ab51cfc",
+          "chainId": 56
+        },
+        "avalanche": {
+          "address": "0x77a13abb679a0dafb4435d1fa4ccc95d1ab51cfc",
+          "chainId": 43114
+        },
+        "fantom": {
+          "address": "0x77a13abb679a0dafb4435d1fa4ccc95d1ab51cfc",
+          "chainId": 250
+        },
+        "gnosis": {
+          "address": "0x77a13abb679a0dafb4435d1fa4ccc95d1ab51cfc",
+          "chainId": 100
+        },
+        "zksync": {
+          "address": "0x77a13abb679a0dafb4435d1fa4ccc95d1ab51cfc",
+          "chainId": 324
+        },
+        "linea": {
+          "address": "0x77a13abb679a0dafb4435d1fa4ccc95d1ab51cfc",
+          "chainId": 59144
+        },
+        "scroll": {
+          "address": "0x77a13abb679a0dafb4435d1fa4ccc95d1ab51cfc",
+          "chainId": 534352
+        },
+        "blast": {
+          "address": "0x77a13abb679a0dafb4435d1fa4ccc95d1ab51cfc",
+          "chainId": 81457
+        },
+        "mode": {
+          "address": "0x77a13abb679a0dafb4435d1fa4ccc95d1ab51cfc",
+          "chainId": 34443
+        }
+      }
+    }
+  },
+  "metadata": {
+    "owner": "LI.FI",
+    "info": {
+      "url": "https://li.fi",
+      "legalName": "LI.FI",
+      "lastUpdate": "2025-12-26"
+    },
+    "token": {
+      "standard": "none"
+    }
+  },
+  "display": {
+    "formats": {
+      "startBridgeTokensViaHop((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(uint256,uint256,uint256,uint256,uint256,address,address,uint256))": {
+        "intent": "Bridge tokens via Hop",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaHop((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(uint256,uint256,uint256,uint256,uint256,address,address,uint256))": {
+        "intent": "Swap tokens and bridge via Hop",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

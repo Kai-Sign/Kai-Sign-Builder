@@ -1,0 +1,420 @@
+{
+  "$schema": "https://erc7730.org/schema/v1",
+  "context": {
+    "contract": {
+      "abi": [
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaSquid",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_squidData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "routeType",
+                  "type": "uint8"
+                },
+                {
+                  "name": "destinationChain",
+                  "type": "string"
+                },
+                {
+                  "name": "destinationAddress",
+                  "type": "string"
+                },
+                {
+                  "name": "bridgedTokenSymbol",
+                  "type": "string"
+                },
+                {
+                  "name": "depositAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "sourceCalls",
+                  "type": "tuple[]",
+                  "components": [
+                    {
+                      "name": "callType",
+                      "type": "uint8"
+                    },
+                    {
+                      "name": "target",
+                      "type": "address"
+                    },
+                    {
+                      "name": "value",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "callData",
+                      "type": "bytes"
+                    },
+                    {
+                      "name": "payload",
+                      "type": "bytes"
+                    }
+                  ]
+                },
+                {
+                  "name": "destinationCalls",
+                  "type": "bytes"
+                },
+                {
+                  "name": "fee",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xb94289bb"
+        },
+        {
+          "type": "function",
+          "name": "swapAndStartBridgeTokensViaSquid",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_squidData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "routeType",
+                  "type": "uint8"
+                },
+                {
+                  "name": "destinationChain",
+                  "type": "string"
+                },
+                {
+                  "name": "destinationAddress",
+                  "type": "string"
+                },
+                {
+                  "name": "bridgedTokenSymbol",
+                  "type": "string"
+                },
+                {
+                  "name": "depositAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "sourceCalls",
+                  "type": "tuple[]",
+                  "components": [
+                    {
+                      "name": "callType",
+                      "type": "uint8"
+                    },
+                    {
+                      "name": "target",
+                      "type": "address"
+                    },
+                    {
+                      "name": "value",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "callData",
+                      "type": "bytes"
+                    },
+                    {
+                      "name": "payload",
+                      "type": "bytes"
+                    }
+                  ]
+                },
+                {
+                  "name": "destinationCalls",
+                  "type": "bytes"
+                },
+                {
+                  "name": "fee",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x092e8fa4"
+        }
+      ],
+      "deployments": {
+        "mainnet": {
+          "address": "0x88e0dd83e6da24bf317323e5ca06842406d57ed0",
+          "chainId": 1
+        },
+        "polygon": {
+          "address": "0x88e0dd83e6da24bf317323e5ca06842406d57ed0",
+          "chainId": 137
+        },
+        "arbitrum": {
+          "address": "0x88e0dd83e6da24bf317323e5ca06842406d57ed0",
+          "chainId": 42161
+        },
+        "optimism": {
+          "address": "0x88e0dd83e6da24bf317323e5ca06842406d57ed0",
+          "chainId": 10
+        },
+        "base": {
+          "address": "0x88e0dd83e6da24bf317323e5ca06842406d57ed0",
+          "chainId": 8453
+        },
+        "bsc": {
+          "address": "0x88e0dd83e6da24bf317323e5ca06842406d57ed0",
+          "chainId": 56
+        },
+        "avalanche": {
+          "address": "0x88e0dd83e6da24bf317323e5ca06842406d57ed0",
+          "chainId": 43114
+        },
+        "fantom": {
+          "address": "0x88e0dd83e6da24bf317323e5ca06842406d57ed0",
+          "chainId": 250
+        },
+        "gnosis": {
+          "address": "0x88e0dd83e6da24bf317323e5ca06842406d57ed0",
+          "chainId": 100
+        },
+        "zksync": {
+          "address": "0x88e0dd83e6da24bf317323e5ca06842406d57ed0",
+          "chainId": 324
+        },
+        "linea": {
+          "address": "0x88e0dd83e6da24bf317323e5ca06842406d57ed0",
+          "chainId": 59144
+        },
+        "scroll": {
+          "address": "0x88e0dd83e6da24bf317323e5ca06842406d57ed0",
+          "chainId": 534352
+        },
+        "blast": {
+          "address": "0x88e0dd83e6da24bf317323e5ca06842406d57ed0",
+          "chainId": 81457
+        },
+        "mode": {
+          "address": "0x88e0dd83e6da24bf317323e5ca06842406d57ed0",
+          "chainId": 34443
+        }
+      }
+    }
+  },
+  "metadata": {
+    "owner": "LI.FI",
+    "info": {
+      "url": "https://li.fi",
+      "legalName": "LI.FI",
+      "lastUpdate": "2025-12-26"
+    },
+    "token": {
+      "standard": "none"
+    }
+  },
+  "display": {
+    "formats": {
+      "startBridgeTokensViaSquid((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(uint8,string,string,string,address,(uint8,address,uint256,bytes,bytes)[],bytes,uint256))": {
+        "intent": "Bridge tokens via Squid",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaSquid((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(uint8,string,string,string,address,(uint8,address,uint256,bytes,bytes)[],bytes,uint256))": {
+        "intent": "Swap tokens and bridge via Squid",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,376 @@
+{
+  "$schema": "https://erc7730.org/schema/v1",
+  "context": {
+    "contract": {
+      "abi": [
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaSymbiosis",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_symbiosisData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "firstSwapCalldata",
+                  "type": "bytes"
+                },
+                {
+                  "name": "secondSwapCalldata",
+                  "type": "bytes"
+                },
+                {
+                  "name": "intermediateToken",
+                  "type": "address"
+                },
+                {
+                  "name": "firstDexRouter",
+                  "type": "address"
+                },
+                {
+                  "name": "secondDexRouter",
+                  "type": "address"
+                },
+                {
+                  "name": "approvedTokens",
+                  "type": "address[]"
+                },
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x3f313808"
+        },
+        {
+          "type": "function",
+          "name": "swapAndStartBridgeTokensViaSymbiosis",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_symbiosisData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "firstSwapCalldata",
+                  "type": "bytes"
+                },
+                {
+                  "name": "secondSwapCalldata",
+                  "type": "bytes"
+                },
+                {
+                  "name": "intermediateToken",
+                  "type": "address"
+                },
+                {
+                  "name": "firstDexRouter",
+                  "type": "address"
+                },
+                {
+                  "name": "secondDexRouter",
+                  "type": "address"
+                },
+                {
+                  "name": "approvedTokens",
+                  "type": "address[]"
+                },
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xa8f66666"
+        }
+      ],
+      "deployments": {
+        "mainnet": {
+          "address": "0x03f58dc7e2195a0c6f501bc4819066fd9dfe307f",
+          "chainId": 1
+        },
+        "polygon": {
+          "address": "0x03f58dc7e2195a0c6f501bc4819066fd9dfe307f",
+          "chainId": 137
+        },
+        "arbitrum": {
+          "address": "0x03f58dc7e2195a0c6f501bc4819066fd9dfe307f",
+          "chainId": 42161
+        },
+        "optimism": {
+          "address": "0x03f58dc7e2195a0c6f501bc4819066fd9dfe307f",
+          "chainId": 10
+        },
+        "base": {
+          "address": "0x03f58dc7e2195a0c6f501bc4819066fd9dfe307f",
+          "chainId": 8453
+        },
+        "bsc": {
+          "address": "0x03f58dc7e2195a0c6f501bc4819066fd9dfe307f",
+          "chainId": 56
+        },
+        "avalanche": {
+          "address": "0x03f58dc7e2195a0c6f501bc4819066fd9dfe307f",
+          "chainId": 43114
+        },
+        "fantom": {
+          "address": "0x03f58dc7e2195a0c6f501bc4819066fd9dfe307f",
+          "chainId": 250
+        },
+        "gnosis": {
+          "address": "0x03f58dc7e2195a0c6f501bc4819066fd9dfe307f",
+          "chainId": 100
+        },
+        "zksync": {
+          "address": "0x03f58dc7e2195a0c6f501bc4819066fd9dfe307f",
+          "chainId": 324
+        },
+        "linea": {
+          "address": "0x03f58dc7e2195a0c6f501bc4819066fd9dfe307f",
+          "chainId": 59144
+        },
+        "scroll": {
+          "address": "0x03f58dc7e2195a0c6f501bc4819066fd9dfe307f",
+          "chainId": 534352
+        },
+        "blast": {
+          "address": "0x03f58dc7e2195a0c6f501bc4819066fd9dfe307f",
+          "chainId": 81457
+        },
+        "mode": {
+          "address": "0x03f58dc7e2195a0c6f501bc4819066fd9dfe307f",
+          "chainId": 34443
+        }
+      }
+    }
+  },
+  "metadata": {
+    "owner": "LI.FI",
+    "info": {
+      "url": "https://li.fi",
+      "legalName": "LI.FI",
+      "lastUpdate": "2025-12-26"
+    },
+    "token": {
+      "standard": "none"
+    }
+  },
+  "display": {
+    "formats": {
+      "startBridgeTokensViaSymbiosis((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(bytes,bytes,address,address,address,address[],address,bytes))": {
+        "intent": "Bridge tokens via Symbiosis",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaSymbiosis((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(bytes,bytes,address,address,address,address[],address,bytes))": {
+        "intent": "Swap tokens and bridge via Symbiosis",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,446 @@
+{
+  "txHash": "0xc78ddb79bd7b9b1994b2680fbe51a33cc5e46a89edae6e3476ed1356277a1ad0",
+  "txType": "contract interaction",
+  "fromAddress": "0x3749dd5D2820dC16f8128c81b14a3eBa5826e04F",
+  "toAddress": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+  "contractName": null,
+  "contractType": "OTHER",
+  "methodCall": {
+    "name": "handleOps",
+    "type": "function",
+    "signature": "handleOps((address,uint256,bytes,bytes,bytes32,uint256,bytes32,bytes,bytes)[],address)",
+    "params": [
+      {
+        "name": "ops",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "ops",
+            "type": "tuple",
+            "components": [
+              {
+                "name": "sender",
+                "type": "address",
+                "value": "0x1516372A9161b89e2eb8D4F23d20e6B874cC306b"
+              },
+              {
+                "name": "nonce",
+                "type": "uint256",
+                "value": "18446744073709551620"
+              },
+              {
+                "name": "initCode",
+                "type": "bytes",
+                "value": "0x"
+              },
+              {
+                "name": "callData",
+                "type": "bytes",
+                "value": "0xb61d27f6000000000000000000000000e55fee191604cdbeb874f87a28ca89aed401c303000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000004183ff08500000000000000000000000000000000000000000000000000000000",
+                "valueDecoded": {
+                  "name": "execute",
+                  "signature": "execute(address,uint256,bytes)",
+                  "type": "function",
+                  "params": [
+                    {
+                      "name": "target",
+                      "type": "address",
+                      "value": "0xe55fEE191604cdBeb874F87A28Ca89aED401C303"
+                    },
+                    {
+                      "name": "value",
+                      "type": "uint256",
+                      "value": "0"
+                    },
+                    {
+                      "name": "data",
+                      "type": "bytes",
+                      "value": "0x183ff085",
+                      "valueDecoded": {
+                        "name": "checkIn",
+                        "signature": "checkIn()",
+                        "type": "function",
+                        "params": []
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "accountGasLimits",
+                "type": "bytes32",
+                "value": "0x00000000000000000000000000010e8e0000000000000000000000000000abb8"
+              },
+              {
+                "name": "preVerificationGas",
+                "type": "uint256",
+                "value": "56009"
+              },
+              {
+                "name": "gasFees",
+                "type": "bytes32",
+                "value": "0x000000000000000000000000001312d000000000000000000000000000332bd2"
+              },
+              {
+                "name": "paymasterAndData",
+                "type": "bytes",
+                "value": "0x"
+              },
+              {
+                "name": "signature",
+                "type": "bytes",
+                "value": "0xff00728dd8c695b606b64999498e024351ebd90b585987da974b2979b05e292bbd5314a2994504d4b3ece1ac38349e69bc7a7714c7973e1ec1831b9e12dbc79993e31c"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "beneficiary",
+        "type": "address",
+        "value": "0x3749dd5D2820dC16f8128c81b14a3eBa5826e04F"
+      }
+    ]
+  },
+  "traceCalls": [
+    {
+      "name": "validateUserOp",
+      "signature": "validateUserOp((address,uint256,bytes,bytes,bytes32,uint256,bytes32,bytes,bytes),bytes32,uint256)",
+      "type": "function",
+      "params": [
+        {
+          "name": "unknown",
+          "type": "tuple",
+          "components": [
+            {
+              "name": "unknown",
+              "type": "address",
+              "value": "0x1516372A9161b89e2eb8D4F23d20e6B874cC306b"
+            },
+            {
+              "name": "unknown",
+              "type": "uint256",
+              "value": "18446744073709551620"
+            },
+            {
+              "name": "unknown",
+              "type": "bytes",
+              "value": "0x"
+            },
+            {
+              "name": "unknown",
+              "type": "bytes",
+              "value": "0xb61d27f6000000000000000000000000e55fee191604cdbeb874f87a28ca89aed401c303000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000004183ff08500000000000000000000000000000000000000000000000000000000"
+            },
+            {
+              "name": "unknown",
+              "type": "bytes32",
+              "value": "0x00000000000000000000000000010e8e0000000000000000000000000000abb8"
+            },
+            {
+              "name": "unknown",
+              "type": "uint256",
+              "value": "56009"
+            },
+            {
+              "name": "unknown",
+              "type": "bytes32",
+              "value": "0x000000000000000000000000001312d000000000000000000000000000332bd2"
+            },
+            {
+              "name": "unknown",
+              "type": "bytes",
+              "value": "0x"
+            },
+            {
+              "name": "unknown",
+              "type": "bytes",
+              "value": "0xff00728dd8c695b606b64999498e024351ebd90b585987da974b2979b05e292bbd5314a2994504d4b3ece1ac38349e69bc7a7714c7973e1ec1831b9e12dbc79993e31c"
+            }
+          ]
+        },
+        {
+          "name": "unknown",
+          "type": "bytes32",
+          "value": "0xc9f3ea2c6c6b9ce23873f2f65b232c6240e22eadefdf7facf3b5dad083e32b04"
+        },
+        {
+          "name": "unknown",
+          "type": "uint256",
+          "value": "258203085596"
+        }
+      ],
+      "from": "0x0000000071727de22e5e9d8baf0edac6f37da032",
+      "to": "0x1516372a9161b89e2eb8d4f23d20e6b874cc306b"
+    },
+    {
+      "name": "innerHandleOp",
+      "signature": "innerHandleOp(bytes,((address,uint256,uint256,uint256,uint256,uint256,uint256,address,uint256,uint256),bytes32,uint256,uint256,uint256),bytes)",
+      "type": "function",
+      "params": [
+        {
+          "name": "callData",
+          "type": "bytes",
+          "value": "0xb61d27f6000000000000000000000000e55fee191604cdbeb874f87a28ca89aed401c303000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000600000000000000000000000000000000000000000000000000000000000000004183ff08500000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "name": "opInfo",
+          "type": "tuple",
+          "components": [
+            {
+              "name": "mUserOp",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "sender",
+                  "type": "address",
+                  "value": "0x1516372A9161b89e2eb8D4F23d20e6B874cC306b"
+                },
+                {
+                  "name": "nonce",
+                  "type": "uint256",
+                  "value": "18446744073709551620"
+                },
+                {
+                  "name": "verificationGasLimit",
+                  "type": "uint256",
+                  "value": "69262"
+                },
+                {
+                  "name": "callGasLimit",
+                  "type": "uint256",
+                  "value": "43960"
+                },
+                {
+                  "name": "paymasterVerificationGasLimit",
+                  "type": "uint256",
+                  "value": "0"
+                },
+                {
+                  "name": "paymasterPostOpGasLimit",
+                  "type": "uint256",
+                  "value": "0"
+                },
+                {
+                  "name": "preVerificationGas",
+                  "type": "uint256",
+                  "value": "56009"
+                },
+                {
+                  "name": "paymaster",
+                  "type": "address",
+                  "value": "0x0000000000000000000000000000000000000000"
+                },
+                {
+                  "name": "maxFeePerGas",
+                  "type": "uint256",
+                  "value": "3353554"
+                },
+                {
+                  "name": "maxPriorityFeePerGas",
+                  "type": "uint256",
+                  "value": "1250000"
+                }
+              ]
+            },
+            {
+              "name": "userOpHash",
+              "type": "bytes32",
+              "value": "0xc9f3ea2c6c6b9ce23873f2f65b232c6240e22eadefdf7facf3b5dad083e32b04"
+            },
+            {
+              "name": "prefund",
+              "type": "uint256",
+              "value": "567525296974"
+            },
+            {
+              "name": "contextOffset",
+              "type": "uint256",
+              "value": "96"
+            },
+            {
+              "name": "preOpGas",
+              "type": "uint256",
+              "value": "98741"
+            }
+          ]
+        },
+        {
+          "name": "context",
+          "type": "bytes",
+          "value": "0x"
+        }
+      ],
+      "from": "0x0000000071727de22e5e9d8baf0edac6f37da032",
+      "to": "0x0000000071727de22e5e9d8baf0edac6f37da032"
+    }
+  ],
+  "nativeValueSent": "0",
+  "chainSymbol": "base",
+  "chainID": 8453,
+  "interactions": [
+    {
+      "contractName": null,
+      "contractSymbol": null,
+      "contractAddress": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+      "decimals": null,
+      "chainID": 8453,
+      "contractType": "OTHER",
+      "signature": "Deposited(address,uint256)",
+      "event": {
+        "eventName": "Deposited",
+        "logIndex": 603,
+        "params": {
+          "account": "0x1516372A9161b89e2eb8D4F23d20e6B874cC306b",
+          "totalDeposit": "567525296974"
+        }
+      }
+    },
+    {
+      "contractName": null,
+      "contractSymbol": null,
+      "contractAddress": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+      "decimals": null,
+      "chainID": 8453,
+      "contractType": "OTHER",
+      "signature": "BeforeExecution()",
+      "event": {
+        "eventName": "BeforeExecution",
+        "logIndex": 604,
+        "params": {}
+      }
+    },
+    {
+      "contractName": "Towns Points",
+      "contractSymbol": "TWP",
+      "contractAddress": "0xe55fEE191604cdBeb874F87A28Ca89aED401C303",
+      "decimals": 18,
+      "chainID": 8453,
+      "contractType": "ERC20",
+      "signature": "Transfer(address,address,uint256)",
+      "event": {
+        "eventName": "Transfer",
+        "logIndex": 605,
+        "params": {
+          "from": "0x0000000000000000000000000000000000000000",
+          "to": "0x1516372A9161b89e2eb8D4F23d20e6B874cC306b",
+          "value": "5000000000000000000"
+        }
+      }
+    },
+    {
+      "contractName": null,
+      "contractSymbol": null,
+      "contractAddress": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+      "decimals": null,
+      "chainID": 8453,
+      "contractType": "OTHER",
+      "signature": "UserOperationEvent(bytes32,address,address,uint256,bool,uint256,uint256)",
+      "event": {
+        "eventName": "UserOperationEvent",
+        "logIndex": 607,
+        "params": {
+          "userOpHash": "0xc9f3ea2c6c6b9ce23873f2f65b232c6240e22eadefdf7facf3b5dad083e32b04",
+          "sender": "0x1516372A9161b89e2eb8D4F23d20e6B874cC306b",
+          "paymaster": "0x0000000000000000000000000000000000000000",
+          "nonce": "18446744073709551620",
+          "success": "true",
+          "actualGasCost": "314915903059",
+          "actualGasUsed": "136943"
+        }
+      }
+    },
+    {
+      "contractAddress": "0x1516372A9161b89e2eb8D4F23d20e6B874cC306b",
+      "contractName": null,
+      "contractSymbol": null,
+      "contractType": "OTHER",
+      "event": {
+        "eventName": "NativeTransfer",
+        "params": {
+          "from": "0x1516372A9161b89e2eb8D4F23d20e6B874cC306b",
+          "to": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+          "value": "258203085596"
+        },
+        "nativeTransfer": true,
+        "logIndex": null
+      },
+      "decimals": null,
+      "chainID": 8453,
+      "signature": null
+    },
+    {
+      "contractAddress": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+      "contractName": null,
+      "contractSymbol": null,
+      "contractType": "OTHER",
+      "event": {
+        "eventName": "NativeTransfer",
+        "params": {
+          "from": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+          "to": "0x3749dd5D2820dC16f8128c81b14a3eBa5826e04F",
+          "value": "314915903059"
+        },
+        "nativeTransfer": true,
+        "logIndex": null
+      },
+      "decimals": null,
+      "chainID": 8453,
+      "signature": null
+    }
+  ],
+  "effectiveGasPrice": "2049613",
+  "gasUsed": "125584",
+  "gasPaid": "0.000000257398598992",
+  "timestamp": 1747502393,
+  "txIndex": 127,
+  "reverted": false,
+  "transfers": [
+    {
+      "type": "ERC20",
+      "name": "Towns Points",
+      "symbol": "TWP",
+      "address": "0xe55fEE191604cdBeb874F87A28Ca89aED401C303",
+      "amount": "5",
+      "to": "0x1516372A9161b89e2eb8D4F23d20e6B874cC306b",
+      "from": "0x0000000000000000000000000000000000000000"
+    },
+    {
+      "from": "0x1516372A9161b89e2eb8D4F23d20e6B874cC306b",
+      "to": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+      "type": "native",
+      "amount": "2.58203085596e-7",
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+    },
+    {
+      "from": "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+      "to": "0x3749dd5D2820dC16f8128c81b14a3eBa5826e04F",
+      "type": "native",
+      "amount": "3.14915903059e-7",
+      "name": "Ethereum",
+      "symbol": "ETH",
+      "address": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+    }
+  ],
+  "interactedAddresses": [
+    "0x3749dd5D2820dC16f8128c81b14a3eBa5826e04F",
+    "0x0000000071727De22E5E9d8BAf0edAc6f37da032",
+    "0x1516372A9161b89e2eb8D4F23d20e6B874cC306b",
+    "0xe55fEE191604cdBeb874F87A28Ca89aED401C303",
+    "0x0000000000000000000000000000000000000000"
+  ],
+  "addressesMeta": {
+    "0xe55fEE191604cdBeb874F87A28Ca89aED401C303": {
+      "contractAddress": "0xe55fEE191604cdBeb874F87A28Ca89aED401C303",
+      "contractName": "Towns Points",
+      "tokenSymbol": "TWP",
+      "decimals": 18,
+      "type": "ERC20",
+      "address": "0xe55fEE191604cdBeb874F87A28Ca89aED401C303",
+      "chainID": 8453
+    }
+  },
+  "errors": null
+}

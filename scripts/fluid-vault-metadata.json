@@ -1,0 +1,177 @@
+{
+  "$schema": "https://erc7730.org/schema/v1",
+  "context": {
+    "contract": {
+      "abi": [
+        {
+          "inputs": [
+            { "name": "assets", "type": "uint256" },
+            { "name": "receiver", "type": "address" }
+          ],
+          "name": "deposit",
+          "outputs": [{ "name": "shares", "type": "uint256" }],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "selector": "0x6e553f65"
+        },
+        {
+          "inputs": [
+            { "name": "shares", "type": "uint256" },
+            { "name": "receiver", "type": "address" }
+          ],
+          "name": "mint",
+          "outputs": [{ "name": "assets", "type": "uint256" }],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "selector": "0x94bf804d"
+        },
+        {
+          "inputs": [
+            { "name": "assets", "type": "uint256" },
+            { "name": "receiver", "type": "address" },
+            { "name": "owner", "type": "address" }
+          ],
+          "name": "withdraw",
+          "outputs": [{ "name": "shares", "type": "uint256" }],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "selector": "0xb460af94"
+        },
+        {
+          "inputs": [
+            { "name": "shares", "type": "uint256" },
+            { "name": "receiver", "type": "address" },
+            { "name": "owner", "type": "address" }
+          ],
+          "name": "redeem",
+          "outputs": [{ "name": "assets", "type": "uint256" }],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "selector": "0xba087652"
+        }
+      ],
+      "deployments": {
+        "mainnet": {
+          "address": "0x9Fb7b4477576Fe5B32be4C1843aFB1e55F251B33",
+          "chainId": 1
+        }
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Instadapp Labs",
+    "info": {
+      "url": "https://fluid.instadapp.io",
+      "legalName": "Instadapp Labs",
+      "lastUpdate": "2024-12-11"
+    },
+    "token": {
+      "standard": "ERC-4626",
+      "name": "Fluid USD Coin",
+      "symbol": "fUSDC",
+      "decimals": 6
+    }
+  },
+  "display": {
+    "formats": {
+      "deposit(uint256,address)": {
+        "intent": {
+          "type": "calldata",
+          "template": "Deposit USDC to Fluid"
+        },
+        "fields": [
+          {
+            "path": "assets",
+            "label": "USDC Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 6,
+              "symbol": "USDC"
+            }
+          },
+          {
+            "path": "receiver",
+            "label": "Receive fUSDC To",
+            "format": "addressName"
+          }
+        ]
+      },
+      "mint(uint256,address)": {
+        "intent": {
+          "type": "calldata",
+          "template": "Mint fUSDC Shares"
+        },
+        "fields": [
+          {
+            "path": "shares",
+            "label": "fUSDC Shares",
+            "format": "amount",
+            "params": {
+              "decimals": 6,
+              "symbol": "fUSDC"
+            }
+          },
+          {
+            "path": "receiver",
+            "label": "Receive fUSDC To",
+            "format": "addressName"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": {
+          "type": "calldata",
+          "template": "Withdraw USDC from Fluid"
+        },
+        "fields": [
+          {
+            "path": "assets",
+            "label": "USDC Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 6,
+              "symbol": "USDC"
+            }
+          },
+          {
+            "path": "receiver",
+            "label": "Receive USDC To",
+            "format": "addressName"
+          },
+          {
+            "path": "owner",
+            "label": "Burn fUSDC From",
+            "format": "addressName"
+          }
+        ]
+      },
+      "redeem(uint256,address,address)": {
+        "intent": {
+          "type": "calldata",
+          "template": "Redeem fUSDC for USDC"
+        },
+        "fields": [
+          {
+            "path": "shares",
+            "label": "fUSDC Shares",
+            "format": "amount",
+            "params": {
+              "decimals": 6,
+              "symbol": "fUSDC"
+            }
+          },
+          {
+            "path": "receiver",
+            "label": "Receive USDC To",
+            "format": "addressName"
+          },
+          {
+            "path": "owner",
+            "label": "Burn fUSDC From",
+            "format": "addressName"
+          }
+        ]
+      }
+    }
+  }
+}

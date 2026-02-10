@@ -1,0 +1,658 @@
+{
+  "$schema": "https://erc7730.org/schema/v1",
+  "context": {
+    "contract": {
+      "abi": [
+        {
+          "type": "function",
+          "name": "swapTokensSingleV3ERC20ToERC20",
+          "inputs": [
+            {
+              "name": "_transactionId",
+              "type": "bytes32"
+            },
+            {
+              "name": "_integrator",
+              "type": "string"
+            },
+            {
+              "name": "_referrer",
+              "type": "string"
+            },
+            {
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "name": "_minAmountOut",
+              "type": "uint256"
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x54e97ec9"
+        },
+        {
+          "type": "function",
+          "name": "swapTokensSingleV3ERC20ToNative",
+          "inputs": [
+            {
+              "name": "_transactionId",
+              "type": "bytes32"
+            },
+            {
+              "name": "_integrator",
+              "type": "string"
+            },
+            {
+              "name": "_referrer",
+              "type": "string"
+            },
+            {
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "name": "_minAmountOut",
+              "type": "uint256"
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xcc41fe54"
+        },
+        {
+          "type": "function",
+          "name": "swapTokensSingleV3NativeToERC20",
+          "inputs": [
+            {
+              "name": "_transactionId",
+              "type": "bytes32"
+            },
+            {
+              "name": "_integrator",
+              "type": "string"
+            },
+            {
+              "name": "_referrer",
+              "type": "string"
+            },
+            {
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "name": "_minAmountOut",
+              "type": "uint256"
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x808d859c"
+        },
+        {
+          "type": "function",
+          "name": "swapTokensMultipleV3ERC20ToERC20",
+          "inputs": [
+            {
+              "name": "_transactionId",
+              "type": "bytes32"
+            },
+            {
+              "name": "_integrator",
+              "type": "string"
+            },
+            {
+              "name": "_referrer",
+              "type": "string"
+            },
+            {
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "name": "_minAmountOut",
+              "type": "uint256"
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xdd081734"
+        },
+        {
+          "type": "function",
+          "name": "swapTokensMultipleV3ERC20ToNative",
+          "inputs": [
+            {
+              "name": "_transactionId",
+              "type": "bytes32"
+            },
+            {
+              "name": "_integrator",
+              "type": "string"
+            },
+            {
+              "name": "_referrer",
+              "type": "string"
+            },
+            {
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "name": "_minAmountOut",
+              "type": "uint256"
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xd24c2325"
+        },
+        {
+          "type": "function",
+          "name": "swapTokensMultipleV3NativeToERC20",
+          "inputs": [
+            {
+              "name": "_transactionId",
+              "type": "bytes32"
+            },
+            {
+              "name": "_integrator",
+              "type": "string"
+            },
+            {
+              "name": "_referrer",
+              "type": "string"
+            },
+            {
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "name": "_minAmountOut",
+              "type": "uint256"
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xcd48728d"
+        }
+      ],
+      "deployments": {
+        "mainnet": {
+          "address": "0x3de506059ae0b239e125e6b1365cfa92100540c0",
+          "chainId": 1
+        },
+        "polygon": {
+          "address": "0x3de506059ae0b239e125e6b1365cfa92100540c0",
+          "chainId": 137
+        },
+        "arbitrum": {
+          "address": "0x3de506059ae0b239e125e6b1365cfa92100540c0",
+          "chainId": 42161
+        },
+        "optimism": {
+          "address": "0x3de506059ae0b239e125e6b1365cfa92100540c0",
+          "chainId": 10
+        },
+        "base": {
+          "address": "0x3de506059ae0b239e125e6b1365cfa92100540c0",
+          "chainId": 8453
+        },
+        "bsc": {
+          "address": "0x3de506059ae0b239e125e6b1365cfa92100540c0",
+          "chainId": 56
+        },
+        "avalanche": {
+          "address": "0x3de506059ae0b239e125e6b1365cfa92100540c0",
+          "chainId": 43114
+        },
+        "fantom": {
+          "address": "0x3de506059ae0b239e125e6b1365cfa92100540c0",
+          "chainId": 250
+        },
+        "gnosis": {
+          "address": "0x3de506059ae0b239e125e6b1365cfa92100540c0",
+          "chainId": 100
+        },
+        "zksync": {
+          "address": "0x3de506059ae0b239e125e6b1365cfa92100540c0",
+          "chainId": 324
+        },
+        "linea": {
+          "address": "0x3de506059ae0b239e125e6b1365cfa92100540c0",
+          "chainId": 59144
+        },
+        "scroll": {
+          "address": "0x3de506059ae0b239e125e6b1365cfa92100540c0",
+          "chainId": 534352
+        },
+        "blast": {
+          "address": "0x3de506059ae0b239e125e6b1365cfa92100540c0",
+          "chainId": 81457
+        },
+        "mode": {
+          "address": "0x3de506059ae0b239e125e6b1365cfa92100540c0",
+          "chainId": 34443
+        }
+      }
+    }
+  },
+  "metadata": {
+    "owner": "LI.FI",
+    "info": {
+      "url": "https://li.fi",
+      "legalName": "LI.FI",
+      "lastUpdate": "2025-12-26"
+    },
+    "token": {
+      "standard": "none"
+    }
+  },
+  "display": {
+    "formats": {
+      "swapTokensSingleV3ERC20ToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool))": {
+        "intent": "Swap tokens",
+        "fields": [
+          {
+            "path": "#._receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._minAmountOut",
+            "label": "Minimum Output",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.sendingAssetId"
+            }
+          }
+        ]
+      },
+      "swapTokensSingleV3ERC20ToNative(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool))": {
+        "intent": "Swap tokens",
+        "fields": [
+          {
+            "path": "#._receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._minAmountOut",
+            "label": "Minimum Output",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.sendingAssetId"
+            }
+          }
+        ]
+      },
+      "swapTokensSingleV3NativeToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool))": {
+        "intent": "Swap tokens",
+        "fields": [
+          {
+            "path": "#._receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._minAmountOut",
+            "label": "Minimum Output",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.sendingAssetId"
+            }
+          }
+        ]
+      },
+      "swapTokensMultipleV3ERC20ToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])": {
+        "intent": "Swap tokens",
+        "fields": [
+          {
+            "path": "#._receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._minAmountOut",
+            "label": "Minimum Output",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          }
+        ]
+      },
+      "swapTokensMultipleV3ERC20ToNative(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])": {
+        "intent": "Swap tokens",
+        "fields": [
+          {
+            "path": "#._receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._minAmountOut",
+            "label": "Minimum Output",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          }
+        ]
+      },
+      "swapTokensMultipleV3NativeToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])": {
+        "intent": "Swap tokens",
+        "fields": [
+          {
+            "path": "#._receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._minAmountOut",
+            "label": "Minimum Output",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

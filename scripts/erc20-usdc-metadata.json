@@ -1,0 +1,138 @@
+{
+  "$schema": "https://erc7730.org/schema/v1",
+  "context": {
+    "contract": {
+      "abi": [
+        {
+          "inputs": [
+            { "name": "to", "type": "address" },
+            { "name": "value", "type": "uint256" }
+          ],
+          "name": "transfer",
+          "outputs": [{ "name": "", "type": "bool" }],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "selector": "0xa9059cbb"
+        },
+        {
+          "inputs": [
+            { "name": "spender", "type": "address" },
+            { "name": "value", "type": "uint256" }
+          ],
+          "name": "approve",
+          "outputs": [{ "name": "", "type": "bool" }],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "selector": "0x095ea7b3"
+        },
+        {
+          "inputs": [
+            { "name": "from", "type": "address" },
+            { "name": "to", "type": "address" },
+            { "name": "value", "type": "uint256" }
+          ],
+          "name": "transferFrom",
+          "outputs": [{ "name": "", "type": "bool" }],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "selector": "0x23b872dd"
+        }
+      ],
+      "deployments": {
+        "mainnet": {
+          "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+          "chainId": 1
+        }
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Circle Internet Financial",
+    "info": {
+      "url": "https://www.circle.com/usdc",
+      "legalName": "Circle Internet Financial, LLC",
+      "lastUpdate": "2024-12-11"
+    },
+    "token": {
+      "standard": "ERC-20",
+      "name": "USD Coin",
+      "symbol": "USDC",
+      "decimals": 6
+    }
+  },
+  "display": {
+    "formats": {
+      "transfer(address,uint256)": {
+        "intent": {
+          "type": "calldata",
+          "template": "Transfer USDC"
+        },
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "value",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 6,
+              "symbol": "USDC"
+            }
+          }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": {
+          "type": "calldata",
+          "template": "Approve USDC Spending"
+        },
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "addressName"
+          },
+          {
+            "path": "value",
+            "label": "Allowance",
+            "format": "amount",
+            "params": {
+              "decimals": 6,
+              "symbol": "USDC"
+            }
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": {
+          "type": "calldata",
+          "template": "Transfer USDC From"
+        },
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "addressName"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "addressName"
+          },
+          {
+            "path": "value",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 6,
+              "symbol": "USDC"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

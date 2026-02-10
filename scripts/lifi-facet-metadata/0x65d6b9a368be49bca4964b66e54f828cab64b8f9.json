@@ -1,0 +1,328 @@
+{
+  "$schema": "https://erc7730.org/schema/v1",
+  "context": {
+    "contract": {
+      "abi": [
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaGasZip",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_gasZipData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "gasZipChainId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "gasZipAmount",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xfc5f1003"
+        },
+        {
+          "type": "function",
+          "name": "swapAndStartBridgeTokensViaGasZip",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_gasZipData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "gasZipChainId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "gasZipAmount",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x606326ff"
+        }
+      ],
+      "deployments": {
+        "mainnet": {
+          "address": "0x65d6b9a368be49bca4964b66e54f828cab64b8f9",
+          "chainId": 1
+        },
+        "polygon": {
+          "address": "0x65d6b9a368be49bca4964b66e54f828cab64b8f9",
+          "chainId": 137
+        },
+        "arbitrum": {
+          "address": "0x65d6b9a368be49bca4964b66e54f828cab64b8f9",
+          "chainId": 42161
+        },
+        "optimism": {
+          "address": "0x65d6b9a368be49bca4964b66e54f828cab64b8f9",
+          "chainId": 10
+        },
+        "base": {
+          "address": "0x65d6b9a368be49bca4964b66e54f828cab64b8f9",
+          "chainId": 8453
+        },
+        "bsc": {
+          "address": "0x65d6b9a368be49bca4964b66e54f828cab64b8f9",
+          "chainId": 56
+        },
+        "avalanche": {
+          "address": "0x65d6b9a368be49bca4964b66e54f828cab64b8f9",
+          "chainId": 43114
+        },
+        "fantom": {
+          "address": "0x65d6b9a368be49bca4964b66e54f828cab64b8f9",
+          "chainId": 250
+        },
+        "gnosis": {
+          "address": "0x65d6b9a368be49bca4964b66e54f828cab64b8f9",
+          "chainId": 100
+        },
+        "zksync": {
+          "address": "0x65d6b9a368be49bca4964b66e54f828cab64b8f9",
+          "chainId": 324
+        },
+        "linea": {
+          "address": "0x65d6b9a368be49bca4964b66e54f828cab64b8f9",
+          "chainId": 59144
+        },
+        "scroll": {
+          "address": "0x65d6b9a368be49bca4964b66e54f828cab64b8f9",
+          "chainId": 534352
+        },
+        "blast": {
+          "address": "0x65d6b9a368be49bca4964b66e54f828cab64b8f9",
+          "chainId": 81457
+        },
+        "mode": {
+          "address": "0x65d6b9a368be49bca4964b66e54f828cab64b8f9",
+          "chainId": 34443
+        }
+      }
+    }
+  },
+  "metadata": {
+    "owner": "LI.FI",
+    "info": {
+      "url": "https://li.fi",
+      "legalName": "LI.FI",
+      "lastUpdate": "2025-12-26"
+    },
+    "token": {
+      "standard": "none"
+    }
+  },
+  "display": {
+    "formats": {
+      "startBridgeTokensViaGasZip((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(bytes32,uint256))": {
+        "intent": "Bridge tokens via GasZip",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaGasZip((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(bytes32,uint256))": {
+        "intent": "Swap tokens and bridge via GasZip",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
