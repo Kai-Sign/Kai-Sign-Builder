@@ -642,9 +642,9 @@ def load_from_contract_events() -> int:
         return loaded
 
     except Exception as e:
-        logger.error(f"Fatal error scanning contract events: {e}")
         import traceback
-        traceback.print_exc()
+        logger.error(f"❌ Fatal error scanning contract events: {e}")
+        logger.error(f"Traceback: {traceback.format_exc()}")
         return 0
 
 def load_from_submission_state(state_file: str) -> int:
