@@ -578,7 +578,7 @@ def load_from_contract_events() -> int:
         logger.info("🔍 Scanning LogRevealSpec events (this may take 30-60 seconds)...")
 
         # Get all events using get_logs (works with all web3.py versions)
-        events = contract.events.LogRevealSpec.get_logs(fromBlock=0, toBlock='latest')
+        events = contract.events.LogRevealSpec.get_logs(from_block=0, to_block='latest')
 
         logger.info(f"Found {len(events)} revealed specs, fetching attestation data...")
 
