@@ -17,25 +17,94 @@ def main():
     if not os.environ.get("USE_MOCK"):
         # Default to mock mode if no Etherscan API key is available
         os.environ["USE_MOCK"] = "true" if not os.environ.get("ETHERSCAN_API_KEY") else "false"
-    
+
     # Get port from environment variable (Railway sets this)
     port = int(os.environ.get("PORT", 8000))
-    
+
     # Log important information
-    print(f"Starting API server on port {port}")
+    print("=" * 80)
+    print(f"🚀 KaiSign Builder API Server")
+    print("=" * 80)
+    print(f"Port: {port}")
     print(f"USE_MOCK: {os.environ.get('USE_MOCK')}")
-    
+
     if os.environ.get("ETHERSCAN_API_KEY"):
         # Don't show the full API key, just that it's set
         print(f"ETHERSCAN_API_KEY: {os.environ.get('ETHERSCAN_API_KEY')[:4]}...")
     else:
         print("ETHERSCAN_API_KEY not set - using mock data")
-    
+
     # Check for Python path issues
     if '.' not in sys.path:
         sys.path.insert(0, '.')
         print("Added current directory to Python path")
-    
+
+    # Initialize metadata cache
+    print("\n" + "=" * 80)
+    print("📦 Initializing Metadata Cache...")
+    print("=" * 80)
+    try:
+        from api.metadata_cache import init_cache
+        cache_stats = init_cache()
+        print(f"✅ Metadata cache initialized: {cache_stats}")
+    except Exception as e:
+        print(f"⚠️  Warning: Could not initialize metadata cache: {e}")
+
+    # Initialize hash index
+    print("\n" + "=" * 80)
+    print("🔍 Initializing Metadata Hash Index...")
+    print("=" * 80)
+
+    try:
+        from api.metadata_hash_store import (
+            init_hash_db,
+            load_from_submission_state,
+            get_hash_stats
+        )
+
+        db_success = init_hash_db()
+        if not db_success:
+            print("❌ Failed to initialize hash database")
+        else:
+            print("✅ Hash database initialized")
+
+            # Check if we need to populate
+            stats = get_hash_stats()
+            if stats.get("total_entries", 0) == 0:
+                print("\n📥 Hash index is empty, loading from submission-state.json...")
+
+                # Find submission-state.json
+                state_file = os.path.join(
+                    os.path.dirname(os.path.dirname(__file__)),
+                    "scripts/submission-state.json"
+                )
+
+                if os.path.exists(state_file):
+                    print(f"Found state file: {state_file}")
+                    print("⏳ Querying on-chain attestations (this may take 30-60 seconds)...")
+                    print("    Please wait while we fetch idx and revoked status for each entry...")
+
+                    loaded = load_from_submission_state(state_file)
+
+                    print(f"\n✅ Loaded {loaded} metadata entries into hash index")
+                    stats = get_hash_stats()
+                    print(f"📊 Final stats: {stats.get('total_entries', 0)} entries, {stats.get('db_size_mb', 0)} MB")
+                else:
+                    print(f"⚠️  Warning: submission-state.json not found at {state_file}")
+                    print("    Hash index will remain empty until entries are added")
+            else:
+                print(f"✅ Hash index already populated: {stats['total_entries']} entries")
+                print(f"📊 Database size: {stats.get('db_size_mb', 0)} MB")
+
+    except Exception as e:
+        print(f"⚠️  Warning: Could not initialize hash index: {e}")
+        import traceback
+        traceback.print_exc()
+
+    print("\n" + "=" * 80)
+    print("🌐 Starting FastAPI server...")
+    print("=" * 80 + "\n")
+
     # Start the FastAPI server
     uvicorn.run(
         "api.index:app",

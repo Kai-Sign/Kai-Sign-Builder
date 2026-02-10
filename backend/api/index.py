@@ -2303,6 +2303,224 @@ async def clear_cache():
 
 
 # =============================================================================
+# METADATA HASH INDEX ENDPOINTS
+# =============================================================================
+
+@app.get("/api/py/metadata/hash/{metadata_hash}")
+async def get_metadata_by_hash(
+    metadata_hash: str = Path(..., description="32-byte hex hash with or without 0x prefix")
+):
+    """
+    Fetch metadata by hash with ALL leaf hash components for verification.
+
+    This endpoint enables hardware wallets and verification tools to:
+    1. Look up metadata by content hash (not just by address)
+    2. Get all components needed to replicate the on-chain leaf hash
+    3. Verify merkle proofs independently
+
+    Example:
+        GET /api/py/metadata/hash/0x32bbd60b8b6829c08df23cee6111a5f7427f144a0bed8b0e90d64edb67effbbc
+
+    Returns:
+    {
+        "success": true,
+        "metadata_hash": "0x32bbd60b...",
+        "metadata": {...},  // Full ERC7730 metadata
+
+        "leaf_components": {
+            "leaf_typehash": "0x...",
+            "chain_id": 1,
+            "extcodehash": "0x386e55cb...",
+            "metadata_hash": "0x32bbd60b...",
+            "idx": 1,
+            "revoked": false
+        },
+
+        "leaf_hash": "0x736eeef2...",
+        "target_contract": "0x5A7FC11397E9a8AD41BF10bf13F22B0a63f96f6d",
+        "chain_id": 1,
+        "blob_hash": "0x01b3dde6...",
+        "uid": "0xcbf82bc5...",
+        "status": "finalized",
+        "source": "hash_index"
+    }
+    """
+    from api.metadata_hash_store import get_metadata_by_hash, LEAF_TYPEHASH
+
+    # Normalize hash
+    if not metadata_hash.startswith("0x"):
+        metadata_hash = "0x" + metadata_hash
+    metadata_hash = metadata_hash.lower()
+
+    # Validate format
+    if len(metadata_hash) != 66 or not all(c in '0123456789abcdef' for c in metadata_hash[2:]):
+        raise HTTPException(400, "Invalid hash format. Expected 32-byte hex (64 chars + 0x prefix)")
+
+    # Query from hash store
+    result = await asyncio.to_thread(get_metadata_by_hash, metadata_hash)
+
+    if not result:
+        raise HTTPException(
+            404,
+            f"Metadata not found for hash {metadata_hash}"
+        )
+
+    # Format response with leaf components
+    return {
+        "success": True,
+        "metadata_hash": metadata_hash,
+        "metadata": result["metadata"],
+        "leaf_components": {
+            "leaf_typehash": "0x" + LEAF_TYPEHASH.hex(),
+            "chain_id": result["leaf_components"]["chain_id"],
+            "extcodehash": result["leaf_components"]["extcodehash"],
+            "metadata_hash": metadata_hash,
+            "idx": result["leaf_components"]["idx"],
+            "revoked": result["leaf_components"]["revoked"]
+        },
+        "leaf_hash": result["leaf_hash"],
+        "target_contract": result["target_contract"],
+        "chain_id": result["chain_id"],
+        "blob_hash": result.get("blob_hash"),
+        "uid": result.get("uid"),
+        "status": result.get("status", "finalized"),
+        "source": "hash_index"
+    }
+
+
+@app.get("/api/py/metadata/contract/{address}/hashes")
+async def get_contract_hashes(
+    address: str = Path(...),
+    chain_id: int = Query(1)
+):
+    """
+    Get all metadata hashes for a contract (reverse lookup).
+
+    Example:
+        GET /api/py/metadata/contract/0x5A7FC11397E9a8AD41BF10bf13F22B0a63f96f6d/hashes?chain_id=1
+
+    Returns:
+    {
+        "success": true,
+        "contract": "0x5a7fc...",
+        "chain_id": 1,
+        "hashes": ["0x32bbd60b...", "0x19d4aace..."],
+        "count": 2
+    }
+    """
+    from api.metadata_hash_store import get_hashes_by_contract
+
+    if not address.startswith("0x"):
+        address = "0x" + address
+    address = address.lower()
+
+    hashes = await asyncio.to_thread(get_hashes_by_contract, address, chain_id)
+
+    return {
+        "success": True,
+        "contract": address,
+        "chain_id": chain_id,
+        "hashes": hashes,
+        "count": len(hashes)
+    }
+
+
+@app.get("/api/py/metadata/hash/stats")
+async def get_hash_index_stats():
+    """
+    Get hash index statistics.
+
+    Returns cache stats, database size, and hit rates.
+    """
+    from api.metadata_hash_store import get_hash_stats
+    return get_hash_stats()
+
+
+@app.post("/api/py/metadata/hash/rebuild")
+async def rebuild_hash_index():
+    """
+    Rebuild entire hash index from submission-state.json (admin endpoint).
+
+    WARNING: This will query on-chain data and may take 30-60 seconds.
+    """
+    from api.metadata_hash_store import rebuild_index
+    count = await asyncio.to_thread(rebuild_index)
+    return {"success": True, "entries_indexed": count, "message": "Hash index rebuilt successfully"}
+
+
+class HashUpdateRequest(BaseModel):
+    """Request model for hash index updates."""
+    metadata_hash: str
+    target_contract: str
+    chain_id: int
+    extcodehash: str
+    blob_hash: Optional[str] = None
+    uid: Optional[str] = None
+    metadata_path: str
+
+
+@app.post("/api/py/metadata/hash/update")
+async def update_hash_index(request: HashUpdateRequest):
+    """
+    Webhook for autonomous-submitter to update hash index with new entries.
+
+    Called automatically when specs are revealed/finalized.
+    """
+    from api.metadata_hash_store import upsert_metadata
+    from web3 import Web3
+
+    try:
+        # Read metadata from file
+        if not os.path.exists(request.metadata_path):
+            raise HTTPException(400, f"Metadata file not found: {request.metadata_path}")
+
+        with open(request.metadata_path, 'r') as f:
+            metadata = json.load(f)
+
+        # Get idx and revoked from on-chain if uid is available
+        idx = None
+        revoked = False
+
+        if request.uid:
+            try:
+                from api.metadata_hash_store import KAISIGN_ADDRESS, KAISIGN_ABI, SEPOLIA_RPC_URL
+
+                w3 = Web3(Web3.HTTPProvider(SEPOLIA_RPC_URL))
+                kaisign = w3.eth.contract(address=KAISIGN_ADDRESS, abi=KAISIGN_ABI)
+
+                uid_bytes = bytes.fromhex(request.uid[2:] if request.uid.startswith("0x") else request.uid)
+                attestation = kaisign.functions.getAttestation(uid_bytes).call()
+
+                idx = attestation[7]  # uint64 idx
+                revoked = bool(attestation[8])  # bool revoked
+
+            except Exception as e:
+                logger.warning(f"Could not fetch on-chain data for uid {request.uid}: {e}")
+
+        # Upsert to database
+        success = await asyncio.to_thread(
+            upsert_metadata,
+            metadata_hash=request.metadata_hash,
+            metadata=metadata,
+            target_contract=request.target_contract,
+            chain_id=request.chain_id,
+            extcodehash=request.extcodehash,
+            idx=idx,
+            revoked=revoked,
+            blob_hash=request.blob_hash,
+            uid=request.uid
+        )
+
+        return {"success": success, "metadata_hash": request.metadata_hash}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Failed to update hash index: {e}")
+        raise HTTPException(500, f"Failed to update hash index: {str(e)}")
+
+
+# =============================================================================
 # STARTUP EVENT - Auto-load embedded metadata
 # =============================================================================
 
