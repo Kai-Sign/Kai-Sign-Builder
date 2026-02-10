@@ -574,17 +574,23 @@ def load_from_submission_state(state_file: str) -> int:
         failed = 0
 
         for i, entry in enumerate(states):
-            # Only process finalized entries with UID
-            if entry.get('status') != 'finalized' or not entry.get('uid'):
+            # Support both uid (v2) and specId (v1)
+            spec_id = entry.get('uid') or entry.get('specId')
+            if entry.get('status') != 'finalized' or not spec_id:
                 continue
 
             try:
                 # Query on-chain for idx and revoked
-                uid_bytes = bytes.fromhex(entry['uid'][2:])
-                attestation = kaisign.functions.getAttestation(uid_bytes).call()
+                spec_id_bytes = bytes.fromhex(spec_id[2:])
+                attestation = kaisign.functions.getAttestation(spec_id_bytes).call()
 
                 idx = attestation[7]
                 revoked = attestation[8]
+
+                # Get extcodehash from attestation if not in entry
+                extcodehash = entry.get('extcodehash')
+                if not extcodehash:
+                    extcodehash = '0x' + attestation[2].hex()
 
                 # Read metadata file
                 metadata_path = entry.get('metadataPath')
@@ -602,11 +608,11 @@ def load_from_submission_state(state_file: str) -> int:
                     metadata=metadata,
                     target_contract=entry['targetContract'],
                     chain_id=entry['chainId'],
-                    extcodehash=entry['extcodehash'],
+                    extcodehash=extcodehash,
                     idx=idx,
                     revoked=revoked,
                     blob_hash=entry.get('blobHash'),
-                    uid=entry['uid'],
+                    uid=spec_id,
                     commitment_id=entry.get('commitmentId'),
                     status=entry['status'],
                     metadata_file=entry.get('metadataFile')
@@ -621,7 +627,7 @@ def load_from_submission_state(state_file: str) -> int:
                     failed += 1
 
             except Exception as e:
-                logger.warning(f"⚠️  Failed to load uid {entry.get('uid', 'unknown')}: {e}")
+                logger.warning(f"⚠️  Failed to load spec {spec_id}: {e}")
                 failed += 1
                 continue
 
