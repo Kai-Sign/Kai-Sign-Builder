@@ -164,6 +164,9 @@ def init_hash_db() -> bool:
                 idx INTEGER,
                 revoked INTEGER NOT NULL DEFAULT 0,
 
+                -- LEAF HASH (computed from components for direct lookup)
+                leaf_hash TEXT,
+
                 -- Additional context
                 blob_hash TEXT,
                 uid TEXT UNIQUE,
@@ -183,13 +186,75 @@ def init_hash_db() -> bool:
         db.execute("CREATE INDEX IF NOT EXISTS idx_uid ON metadata_registry(uid)")
         db.execute("CREATE INDEX IF NOT EXISTS idx_idx ON metadata_registry(idx)")
         db.execute("CREATE INDEX IF NOT EXISTS idx_status ON metadata_registry(status)")
+        db.execute("CREATE INDEX IF NOT EXISTS idx_leaf_hash ON metadata_registry(leaf_hash)")
 
         db.commit()
         logger.info("✅ Hash index database initialized")
+
+        # Run migration to add leaf_hash column if needed
+        _migrate_add_leaf_hash()
+
         return True
 
     except Exception as e:
         logger.error(f"Failed to initialize hash database: {e}")
+        return False
+
+def _migrate_add_leaf_hash() -> bool:
+    """
+    Migration: Add leaf_hash column and populate it for existing entries.
+
+    Returns:
+        True if successful or not needed
+    """
+    try:
+        db = _get_db()
+
+        # Check if column already exists
+        cursor = db.execute("PRAGMA table_info(metadata_registry)")
+        columns = [row[1] for row in cursor.fetchall()]
+
+        if 'leaf_hash' in columns:
+            logger.debug("leaf_hash column already exists, skipping migration")
+            return True
+
+        logger.info("🔄 Running migration: adding leaf_hash column...")
+
+        # Add column
+        db.execute("ALTER TABLE metadata_registry ADD COLUMN leaf_hash TEXT")
+
+        # Populate for all entries with idx
+        cursor = db.execute("""
+            SELECT metadata_hash, chain_id, extcodehash, idx, revoked
+            FROM metadata_registry
+            WHERE idx IS NOT NULL
+        """)
+
+        updated = 0
+        for row in cursor.fetchall():
+            leaf_hash = compute_leaf_hash(
+                chain_id=row[1],
+                extcodehash=row[2],
+                metadata_hash=row[0],
+                idx=row[3],
+                revoked=bool(row[4])
+            )
+
+            db.execute(
+                "UPDATE metadata_registry SET leaf_hash = ? WHERE metadata_hash = ?",
+                (leaf_hash, row[0])
+            )
+            updated += 1
+
+        # Create index
+        db.execute("CREATE INDEX IF NOT EXISTS idx_leaf_hash ON metadata_registry(leaf_hash)")
+
+        db.commit()
+        logger.info(f"✅ Migration complete: populated {updated} leaf hashes")
+        return True
+
+    except Exception as e:
+        logger.error(f"Migration failed: {e}")
         return False
 
 # ============================================================================
@@ -240,8 +305,11 @@ def get_metadata_by_hash(metadata_hash: str) -> Optional[Dict[str, Any]]:
     """
     3-layer lookup: L1 cache → L2 SQLite → 404
 
+    Queries by EITHER metadata_hash OR leaf_hash, allowing lookups from both
+    the extension (which uses leaf hash) and direct metadata hash queries.
+
     Args:
-        metadata_hash: 32-byte hex hash (with or without 0x prefix)
+        metadata_hash: 32-byte hex hash - either metadata hash OR leaf hash (with or without 0x prefix)
 
     Returns:
         Dict with metadata and leaf components, or None if not found
@@ -277,18 +345,18 @@ def get_metadata_by_hash(metadata_hash: str) -> Optional[Dict[str, Any]]:
         logger.debug(f"L1 cache HIT for {key[:10]}...")
         return _hash_cache[key]
 
-    # L2: Check SQLite
+    # L2: Check SQLite (query by metadata_hash OR leaf_hash)
     try:
         db = _get_db()
         cursor = db.execute(
             """
             SELECT
                 metadata_hash, metadata_json, target_contract, chain_id,
-                extcodehash, idx, revoked, blob_hash, uid, status, metadata_file
+                extcodehash, idx, revoked, blob_hash, uid, status, metadata_file, leaf_hash
             FROM metadata_registry
-            WHERE metadata_hash = ?
+            WHERE metadata_hash = ? OR leaf_hash = ?
             """,
-            (key,)
+            (key, key)
         )
         row = cursor.fetchone()
 
@@ -299,9 +367,9 @@ def get_metadata_by_hash(metadata_hash: str) -> Optional[Dict[str, Any]]:
             # Parse metadata JSON
             metadata = json.loads(row["metadata_json"])
 
-            # Compute leaf hash if idx is available
-            leaf_hash = None
-            if row["idx"] is not None:
+            # Use stored leaf hash, or compute if not stored
+            leaf_hash = row["leaf_hash"]
+            if not leaf_hash and row["idx"] is not None:
                 leaf_hash = compute_leaf_hash(
                     chain_id=row["chain_id"],
                     extcodehash=row["extcodehash"],
@@ -406,23 +474,35 @@ def upsert_metadata(
         now = int(time.time())
         metadata_json = json.dumps(metadata)
 
+        # Compute leaf hash if idx is available
+        leaf_hash = None
+        if idx is not None:
+            leaf_hash = compute_leaf_hash(
+                chain_id=chain_id,
+                extcodehash=extcodehash,
+                metadata_hash=key,
+                idx=idx,
+                revoked=revoked
+            )
+
         db.execute(
             """
             INSERT INTO metadata_registry (
                 metadata_hash, metadata_json, target_contract, chain_id,
-                extcodehash, idx, revoked,
+                extcodehash, idx, revoked, leaf_hash,
                 blob_hash, uid, commitment_id,
                 status, created_at, updated_at, metadata_file
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(metadata_hash) DO UPDATE SET
                 metadata_json = excluded.metadata_json,
                 idx = excluded.idx,
                 revoked = excluded.revoked,
+                leaf_hash = excluded.leaf_hash,
                 updated_at = excluded.updated_at
             """,
             (
                 key, metadata_json, addr, chain_id,
-                extcodehash, idx, int(revoked),
+                extcodehash, idx, int(revoked), leaf_hash,
                 kwargs.get('blob_hash'), kwargs.get('uid'), kwargs.get('commitment_id'),
                 kwargs.get('status', 'finalized'), now, now, kwargs.get('metadata_file')
             )
