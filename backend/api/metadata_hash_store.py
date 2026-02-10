@@ -45,7 +45,7 @@ DB_FILE = DB_DIR / "metadata_hash_registry.db"
 KAISIGN_ADDRESS = os.getenv('KAISIGN_ADDRESS', '0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa')
 SEPOLIA_RPC_URL = os.getenv('SEPOLIA_RPC_URL', 'https://ethereum-sepolia-rpc.publicnode.com')
 
-# KaiSign ABI for getAttestation
+# KaiSign ABI for getAttestation and LogRevealSpec
 KAISIGN_ABI = [
     {
         "inputs": [{"internalType": "bytes32", "name": "uid", "type": "bytes32"}],
@@ -72,6 +72,20 @@ KAISIGN_ABI = [
         ],
         "stateMutability": "view",
         "type": "function"
+    },
+    {
+        "anonymous": False,
+        "inputs": [
+            {"indexed": True, "internalType": "bytes32", "name": "uid", "type": "bytes32"},
+            {"indexed": True, "internalType": "address", "name": "attester", "type": "address"},
+            {"indexed": True, "internalType": "address", "name": "targetContract", "type": "address"},
+            {"indexed": False, "internalType": "uint256", "name": "chainId", "type": "uint256"},
+            {"indexed": False, "internalType": "bytes32", "name": "extcodehash", "type": "bytes32"},
+            {"indexed": False, "internalType": "bytes32", "name": "blobHash", "type": "bytes32"},
+            {"indexed": False, "internalType": "bytes32", "name": "metadataHash", "type": "bytes32"}
+        ],
+        "name": "LogRevealSpec",
+        "type": "event"
     }
 ]
 
@@ -551,21 +565,14 @@ def load_from_contract_events() -> int:
     """
     try:
         from web3 import Web3
-        import json
 
         logger.info(f"📥 Scanning contract events from {KAISIGN_ADDRESS}...")
 
         # Connect to Sepolia
         w3 = Web3(Web3.HTTPProvider(SEPOLIA_RPC_URL, request_kwargs={'timeout': 60}))
 
-        # Load ABI from v1-core
-        v1_core_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'v1-core')
-        abi_path = os.path.join(v1_core_path, 'out/KaiSignRegistry.sol/KaiSignRegistry.json')
-
-        with open(abi_path, 'r') as f:
-            abi = json.load(f)['abi']
-
-        contract = w3.eth.contract(address=KAISIGN_ADDRESS, abi=abi)
+        # Use embedded ABI
+        contract = w3.eth.contract(address=KAISIGN_ADDRESS, abi=KAISIGN_ABI)
 
         # Scan LogRevealSpec events
         logger.info("🔍 Scanning LogRevealSpec events (this may take 30-60 seconds)...")
