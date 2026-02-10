@@ -1,21 +1,18 @@
 #!/usr/bin/env node
 /**
- * Autonomous Metadata Submitter & Finalizer
+ * Autonomous Metadata Submitter
  *
- * SUBMISSION MODE (default):
  * Submits ERC7730 metadata through the full lifecycle:
- * Commit → Send Blob → Reveal → Vote Valid on Reality.eth
+ * Prepare Blob → Commit → Send Blob TX → Reveal → Vote Valid on Reality.eth
  *
- * FINALIZATION MODE (--finalize):
- * Finalizes all voted submissions after Reality.eth timeout period (48 hours).
- * Calls handleResult on KaiSign to mark specs as finalized.
+ * Matches deployed KaiSignRegistry v2.0.0 contract which uses:
+ * - extcodehash (bytecode hash) instead of contract address
+ * - commitment = keccak256(blobHash, nonce)
+ * - commitSpec(bytes32 commitment, uint256 chainId, bytes32 extcodehash)
+ * - revealSpec(bytes32 commitmentId, bytes32 blobHash, uint256 nonce, bytes32 metadataHash) payable
  *
  * Usage:
- *   # Submit new metadata
  *   PRIVATE_KEY=0x... node scripts/autonomous-submitter.js
- *
- *   # Finalize all ready submissions
- *   PRIVATE_KEY=0x... node scripts/autonomous-submitter.js --finalize
  */
 
 import dotenv from 'dotenv';
@@ -30,7 +27,7 @@ import crypto from 'crypto';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Contract ABIs
+// Contract ABIs - matches KaiSignRegistry v2.0.0
 const KAISIGN_ABI = [
   {
     "inputs": [],
@@ -42,11 +39,11 @@ const KAISIGN_ABI = [
   {
     "inputs": [
       {"internalType": "bytes32", "name": "commitment", "type": "bytes32"},
-      {"internalType": "address", "name": "targetContract", "type": "address"},
-      {"internalType": "uint256", "name": "targetChainId", "type": "uint256"}
+      {"internalType": "uint256", "name": "chainId", "type": "uint256"},
+      {"internalType": "bytes32", "name": "extcodehash", "type": "bytes32"}
     ],
     "name": "commitSpec",
-    "outputs": [],
+    "outputs": [{"internalType": "bytes32", "name": "commitmentId", "type": "bytes32"}],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -54,37 +51,18 @@ const KAISIGN_ABI = [
     "inputs": [
       {"internalType": "bytes32", "name": "commitmentId", "type": "bytes32"},
       {"internalType": "bytes32", "name": "blobHash", "type": "bytes32"},
-      {"internalType": "bytes32", "name": "metadataHash", "type": "bytes32"},
-      {"internalType": "uint256", "name": "nonce", "type": "uint256"}
+      {"internalType": "uint256", "name": "nonce", "type": "uint256"},
+      {"internalType": "bytes32", "name": "metadataHash", "type": "bytes32"}
     ],
     "name": "revealSpec",
-    "outputs": [{"internalType": "bytes32", "name": "specID", "type": "bytes32"}],
+    "outputs": [{"internalType": "bytes32", "name": "uid", "type": "bytes32"}],
     "stateMutability": "payable",
     "type": "function"
   },
   {
-    "inputs": [{"internalType": "bytes32", "name": "specID", "type": "bytes32"}],
-    "name": "handleResult",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "bytes32", "name": "specId", "type": "bytes32"}],
-    "name": "specs",
-    "outputs": [
-      {"internalType": "uint64", "name": "createdTimestamp", "type": "uint64"},
-      {"internalType": "uint64", "name": "proposedTimestamp", "type": "uint64"},
-      {"internalType": "uint8", "name": "status", "type": "uint8"},
-      {"internalType": "uint80", "name": "totalBonds", "type": "uint80"},
-      {"internalType": "uint32", "name": "reserved", "type": "uint32"},
-      {"internalType": "address", "name": "creator", "type": "address"},
-      {"internalType": "address", "name": "targetContract", "type": "address"},
-      {"internalType": "bytes32", "name": "blobHash", "type": "bytes32"},
-      {"internalType": "bytes32", "name": "questionId", "type": "bytes32"},
-      {"internalType": "bytes32", "name": "incentiveId", "type": "bytes32"},
-      {"internalType": "uint256", "name": "chainId", "type": "uint256"}
-    ],
+    "inputs": [{"internalType": "bytes32", "name": "uid", "type": "bytes32"}],
+    "name": "questionIds",
+    "outputs": [{"internalType": "bytes32", "name": "", "type": "bytes32"}],
     "stateMutability": "view",
     "type": "function"
   },
@@ -93,10 +71,8 @@ const KAISIGN_ABI = [
     "inputs": [
       {"indexed": true, "internalType": "address", "name": "committer", "type": "address"},
       {"indexed": true, "internalType": "bytes32", "name": "commitmentId", "type": "bytes32"},
-      {"indexed": true, "internalType": "address", "name": "targetContract", "type": "address"},
       {"indexed": false, "internalType": "uint256", "name": "chainId", "type": "uint256"},
-      {"indexed": false, "internalType": "uint256", "name": "bondAmount", "type": "uint256"},
-      {"indexed": false, "internalType": "uint64", "name": "revealDeadline", "type": "uint64"}
+      {"indexed": false, "internalType": "bytes32", "name": "extcodehash", "type": "bytes32"}
     ],
     "name": "LogCommitSpec",
     "type": "event"
@@ -105,11 +81,11 @@ const KAISIGN_ABI = [
     "anonymous": false,
     "inputs": [
       {"indexed": true, "internalType": "address", "name": "creator", "type": "address"},
-      {"indexed": true, "internalType": "bytes32", "name": "specID", "type": "bytes32"},
+      {"indexed": true, "internalType": "bytes32", "name": "uid", "type": "bytes32"},
       {"indexed": true, "internalType": "bytes32", "name": "blobHash", "type": "bytes32"},
       {"indexed": false, "internalType": "bytes32", "name": "commitmentId", "type": "bytes32"},
-      {"indexed": false, "internalType": "address", "name": "targetContract", "type": "address"},
-      {"indexed": false, "internalType": "uint256", "name": "chainId", "type": "uint256"}
+      {"indexed": false, "internalType": "uint256", "name": "chainId", "type": "uint256"},
+      {"indexed": false, "internalType": "bytes32", "name": "extcodehash", "type": "bytes32"}
     ],
     "name": "LogRevealSpec",
     "type": "event"
@@ -117,12 +93,11 @@ const KAISIGN_ABI = [
   {
     "anonymous": false,
     "inputs": [
-      {"indexed": true, "internalType": "address", "name": "user", "type": "address"},
-      {"indexed": true, "internalType": "bytes32", "name": "specID", "type": "bytes32"},
-      {"indexed": false, "internalType": "bytes32", "name": "questionId", "type": "bytes32"},
+      {"indexed": true, "internalType": "bytes32", "name": "uid", "type": "bytes32"},
+      {"indexed": true, "internalType": "bytes32", "name": "questionId", "type": "bytes32"},
       {"indexed": false, "internalType": "uint256", "name": "bond", "type": "uint256"}
     ],
-    "name": "LogProposeSpec",
+    "name": "QuestionCreated",
     "type": "event"
   }
 ];
@@ -183,7 +158,7 @@ const REALITY_ETH_ABI = [
 
 // Contract addresses
 const CONTRACTS = {
-  KAISIGN: '0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719',
+  KAISIGN: '0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa',  // KaiSignRegistry v2 deployed on Sepolia (0.001 ETH bond)
   REALITY_ETH: '0xaf33DcB6E8c5c4D9dDF579f53031b514d19449CA'
 };
 
@@ -195,42 +170,114 @@ const CONFIG = {
   PADDING_MARKER: '\n\n/* ERC7730_BLOB_PADDING_START */\n'
 };
 
-const METADATA_FILES = [
-  // Account Abstraction (AA)
-  path.join(__dirname, 'metadata', 'aa', 'ambire-eip7702-delegator.json'),
-  path.join(__dirname, 'metadata', 'aa', 'erc4337-entrypoint-v06.json'),
-  path.join(__dirname, 'metadata', 'aa', 'safe-multisend.json'),
-  path.join(__dirname, 'metadata', 'aa', 'safe-proxy-factory.json'),
-  path.join(__dirname, 'metadata', 'aa', 'safe-singleton.json'),
-  path.join(__dirname, 'metadata', 'aa', 'smart-account.json'),
+// Chain RPC map for fetching extcodehash
+const CHAIN_RPCS = {
+  1: process.env.MAINNET_RPC_URL || 'https://ethereum-rpc.publicnode.com',
+  8453: 'https://base-rpc.publicnode.com',
+  137: 'https://polygon-bor-rpc.publicnode.com',
+  42161: 'https://arbitrum-one-rpc.publicnode.com',
+  10: 'https://optimism-rpc.publicnode.com',
+  43114: 'https://avalanche-c-chain-rpc.publicnode.com',
+  56: 'https://bsc-rpc.publicnode.com',
+  100: 'https://gnosis-rpc.publicnode.com',
+  59144: 'https://linea-rpc.publicnode.com',
+  534352: 'https://scroll-rpc.publicnode.com',
+  324: 'https://mainnet.era.zksync.io',
+  250: 'https://rpcapi.fantom.network',
+  81457: 'https://blast-rpc.publicnode.com',
+  34443: 'https://mainnet.mode.network',
+  1088: 'https://andromeda.metis.io/?owner=1088',
+  57073: 'https://rpc-gel.inkonchain.com',
+  9745: 'https://rpc.plasma.to',
+  42220: 'https://celo-rpc.publicnode.com',
+  146: 'https://sonic-rpc.publicnode.com',
+  1868: 'https://soneium-rpc.publicnode.com',
+  // Testnets
+  11155111: 'https://ethereum-sepolia-rpc.publicnode.com',
+  84532: 'https://base-sepolia-rpc.publicnode.com',
+  421614: 'https://arbitrum-sepolia-rpc.publicnode.com',
+  43113: 'https://avalanche-fuji-c-chain-rpc.publicnode.com',
+  11155420: 'https://optimism-sepolia-rpc.publicnode.com',
+  534351: 'https://scroll-sepolia-rpc.publicnode.com',
+};
 
-  // DEX (Decentralized Exchange)
-  path.join(__dirname, 'metadata', 'dex', '0x-exchange-proxy.json'),
-  path.join(__dirname, 'metadata', 'dex', '1inch-router-v6.json'),
-  path.join(__dirname, 'metadata', 'dex', 'cow-protocol-settlement.json'),
-  path.join(__dirname, 'metadata', 'dex', 'paraswap-augustus-v6.json'),
+// Cache for extcodehash lookups (address -> bytes32)
+const extcodehashCache = new Map();
 
-  // Lending
-  path.join(__dirname, 'metadata', 'lending', 'aave-v3-pool.json'),
-  path.join(__dirname, 'metadata', 'lending', 'compound-v3-cusdc.json'),
+// Get extcodehash for a contract on a given chain
+async function getExtcodehash(address, chainId) {
+  const cacheKey = `${chainId}:${address.toLowerCase()}`;
+  if (extcodehashCache.has(cacheKey)) {
+    return extcodehashCache.get(cacheKey);
+  }
 
-  // NFT
-  path.join(__dirname, 'metadata', 'nft', 'seaport-v1.6.json'),
+  // Select RPC based on chainId
+  const rpcUrl = CHAIN_RPCS[chainId];
+  if (!rpcUrl) {
+    throw new Error(`No RPC configured for chain ${chainId}`);
+  }
 
-  // Protocols
-  path.join(__dirname, 'metadata', 'protocols', 'fluid-usdc-vault.json'),
-  path.join(__dirname, 'metadata', 'protocols', 'lido-steth.json'),
-  path.join(__dirname, 'metadata', 'protocols', 'lido-wsteth.json'),
-  path.join(__dirname, 'metadata', 'protocols', 'permit2.json'),
-  path.join(__dirname, 'metadata', 'protocols', 'uniswap-quoter-v2.json'),
-  path.join(__dirname, 'metadata', 'protocols', 'uniswap-universal-router.json'),
-  path.join(__dirname, 'metadata', 'protocols', 'uniswap-v3-factory.json'),
+  const provider = new ethers.JsonRpcProvider(rpcUrl);
+  const code = await provider.getCode(address);
 
-  // Tokens
-  path.join(__dirname, 'metadata', 'tokens', 'usdc.json'),
-];
-// Only submit for chain ID 1 (mainnet)
-const TARGET_CHAIN_ID = 1;
+  if (code === '0x') {
+    throw new Error(`No code at ${address} on chain ${chainId} (EOA or empty)`);
+  }
+
+  const hash = ethers.keccak256(code);
+  extcodehashCache.set(cacheKey, hash);
+  return hash;
+}
+
+// Prepare blob data and compute versioned hash WITHOUT sending the transaction
+async function prepareBlobData(jsonData) {
+  await initKzg();
+
+  const originalDataStr = typeof jsonData === 'string' ? jsonData : JSON.stringify(jsonData);
+  const metadataHash = ethers.keccak256(ethers.toUtf8Bytes(originalDataStr));
+
+  const { paddedData, wasPadded } = addPaddingIfNeeded(originalDataStr);
+
+  const blob = toBlob(paddedData);
+  const commitment = cKzg.blobToKzgCommitment(blob);
+  const proof = cKzg.computeBlobKzgProof(blob, commitment);
+  const isValid = cKzg.verifyBlobKzgProof(blob, commitment, proof);
+
+  if (!isValid) {
+    throw new Error('Invalid KZG proof');
+  }
+
+  const commitmentHash = ethers.sha256(commitment);
+  const versionedHash = '0x01' + commitmentHash.substring(4);
+
+  return { blob, commitment, proof, versionedHash, metadataHash, originalDataStr, wasPadded };
+}
+
+// Dynamically load all metadata files from backend/metadata directory
+function getAllMetadataFiles() {
+  const metadataDir = path.join(__dirname, '..', 'backend', 'metadata');
+  const files = [];
+
+  function walkDir(dir) {
+    const items = fs.readdirSync(dir);
+    for (const item of items) {
+      const fullPath = path.join(dir, item);
+      const stat = fs.statSync(fullPath);
+      if (stat.isDirectory()) {
+        walkDir(fullPath);
+      } else if (item.endsWith('.json')) {
+        files.push(fullPath);
+      }
+    }
+  }
+
+  walkDir(metadataDir);
+  return files;
+}
+
+const METADATA_FILES = getAllMetadataFiles();
+// Set to a chain ID to filter, or null to process all chains
+const TARGET_CHAIN_ID = null;
 const STATE_FILE = path.join(__dirname, 'submission-state.json');
 const DEFAULT_RPC = 'https://ethereum-sepolia-rpc.publicnode.com';
 // PublicNode RPC required for blob transactions (Alchemy doesn't support EIP-4844 properly)
@@ -289,44 +336,15 @@ function addPaddingIfNeeded(data) {
   };
 }
 
-// Upload blob - uses dedicated PublicNode RPC for blob transactions
-async function uploadBlob(jsonData) {
+// Send a pre-prepared blob transaction
+async function sendBlobTransaction(preparedBlob) {
   try {
-    await initKzg();
-
-    // Always use the blob-specific provider for blob transactions
     if (!blobSigner) {
       throw new Error('Blob signer not initialized');
     }
 
     console.log(`  Using BLOB_RPC: ${BLOB_RPC}`);
 
-    const originalDataStr = typeof jsonData === 'string' ? jsonData : JSON.stringify(jsonData);
-    console.log(`  Original data size: ${originalDataStr.length} bytes`);
-
-    const metadataHash = ethers.keccak256(ethers.toUtf8Bytes(originalDataStr));
-    console.log(`  Metadata hash: ${metadataHash}`);
-
-    const { paddedData, wasPadded } = addPaddingIfNeeded(originalDataStr);
-    if (wasPadded) {
-      console.log(`  Padded data size: ${paddedData.length} bytes`);
-    }
-
-    const blob = toBlob(paddedData);
-    const commitment = cKzg.blobToKzgCommitment(blob);
-    const proof = cKzg.computeBlobKzgProof(blob, commitment);
-    const isValid = cKzg.verifyBlobKzgProof(blob, commitment, proof);
-
-    if (!isValid) {
-      throw new Error('Invalid KZG proof');
-    }
-    console.log('  KZG proof valid');
-
-    const commitmentHash = ethers.sha256(commitment);
-    const versionedHash = '0x01' + commitmentHash.substring(4);
-    console.log(`  Blob versioned hash: ${versionedHash}`);
-
-    // Use the blob signer and provider for nonce/gas estimation
     const nonce = await blobSigner.getNonce();
     const latest = await blobProvider.getBlock('latest');
     const baseFee = latest?.baseFeePerGas ?? ethers.parseUnits('1', 'gwei');
@@ -342,9 +360,9 @@ async function uploadBlob(jsonData) {
       maxPriorityFeePerGas: ethers.parseUnits('2', 'gwei'),
       maxFeePerGas: baseFee * 2n + ethers.parseUnits('2', 'gwei'),
       maxFeePerBlobGas: ethers.parseUnits('30', 'gwei'),
-      blobVersionedHashes: [versionedHash],
+      blobVersionedHashes: [preparedBlob.versionedHash],
       kzg: cKzg,
-      blobs: [blob]
+      blobs: [preparedBlob.blob]
     };
 
     console.log('  Sending blob transaction via PublicNode...');
@@ -357,14 +375,11 @@ async function uploadBlob(jsonData) {
     return {
       success: true,
       txHash: response.hash,
-      blobVersionedHash: versionedHash,
-      metadataHash,
-      blockNumber: receipt?.blockNumber,
-      wasPadded
+      blockNumber: receipt?.blockNumber
     };
   } catch (error) {
-    console.error(`  Blob upload failed: ${error.message}`);
-    return { success: false, txHash: '', blobVersionedHash: '', metadataHash: '', error: error.message };
+    console.error(`  Blob send failed: ${error.message}`);
+    return { success: false, error: error.message };
   }
 }
 
@@ -441,19 +456,21 @@ function loadContractMetadata(metadataFiles) {
 }
 
 // Process single metadata
+// Flow: Prepare Blob → Get extcodehash → Commit → Send Blob TX → Reveal → Vote
 async function processMetadata(metadataPath, relativePath, metadata, targetContract, chainId, kaisign, realityEth, signer, provider, minBond) {
   const state = {
     metadataFile: relativePath,
     metadataPath,
     targetContract,
     chainId,
+    extcodehash: '',
     metadataHash: '',
     nonce: '',
     commitmentId: '',
     commitTxHash: '',
     blobHash: '',
     blobTxHash: '',
-    specId: '',
+    uid: '',
     questionId: '',
     revealTxHash: '',
     voteTxHash: '',
@@ -462,25 +479,42 @@ async function processMetadata(metadataPath, relativePath, metadata, targetContr
   };
 
   try {
-    // Calculate metadata hash
-    const metadataStr = JSON.stringify(metadata);
-    const metadataHash = ethers.keccak256(ethers.toUtf8Bytes(metadataStr));
-    state.metadataHash = metadataHash;
+    // Step 0: Prepare blob data and get extcodehash (before committing)
+    console.log(`\n  Step 0: PREPARE`);
+
+    // Get extcodehash from mainnet
+    console.log(`  Fetching extcodehash for ${targetContract} on chain ${chainId}...`);
+    const extcodehash = await getExtcodehash(targetContract, chainId);
+    state.extcodehash = extcodehash;
+    console.log(`  extcodehash: ${extcodehash}`);
+
+    // Prepare blob data to get the versioned hash
+    console.log(`  Preparing blob data...`);
+    const preparedBlob = await prepareBlobData(metadata);
+    state.metadataHash = preparedBlob.metadataHash;
+    state.blobHash = preparedBlob.versionedHash;
+    console.log(`  Blob versioned hash: ${preparedBlob.versionedHash}`);
+    console.log(`  Metadata hash: ${preparedBlob.metadataHash}`);
+    if (preparedBlob.wasPadded) {
+      console.log(`  Data was padded to minimum blob size`);
+    }
 
     // Generate nonce
     const nonce = generateNonce();
     state.nonce = nonce.toString();
+
+    // Commitment = keccak256(abi.encodePacked(blobHash, nonce))
+    const commitment = ethers.keccak256(
+      ethers.solidityPacked(['bytes32', 'uint256'], [preparedBlob.versionedHash, nonce])
+    );
+    console.log(`  Commitment: ${commitment}`);
 
     // Step 1: Commit
     console.log(`\n  Step 1: COMMIT`);
     state.status = 'committing';
     saveState([...submissionStates, state]);
 
-    const commitment = ethers.keccak256(
-      ethers.solidityPacked(['bytes32', 'uint256'], [metadataHash, nonce])
-    );
-
-    const commitTx = await kaisign.commitSpec(commitment, targetContract, chainId);
+    const commitTx = await kaisign.commitSpec(commitment, chainId, extcodehash);
     console.log(`  Commit TX: ${commitTx.hash}`);
 
     const commitReceipt = await commitTx.wait();
@@ -505,33 +539,32 @@ async function processMetadata(metadataPath, relativePath, metadata, targetContr
 
     await sleep(3000);
 
-    // Step 2: Upload Blob
-    console.log(`\n  Step 2: UPLOAD BLOB`);
+    // Step 2: Send Blob TX
+    console.log(`\n  Step 2: SEND BLOB TX`);
     state.status = 'uploading_blob';
     saveState([...submissionStates, state]);
 
-    const blobResult = await uploadBlob(metadata);
-    if (!blobResult.success) throw new Error(`Blob upload failed: ${blobResult.error}`);
+    const blobResult = await sendBlobTransaction(preparedBlob);
+    if (!blobResult.success) throw new Error(`Blob send failed: ${blobResult.error}`);
 
-    state.blobHash = blobResult.blobVersionedHash;
     state.blobTxHash = blobResult.txHash;
     state.status = 'blob_uploaded';
     saveState([...submissionStates, state]);
 
-    console.log(`  Blobscan: https://sepolia.blobscan.com/blob/${blobResult.blobVersionedHash}`);
+    console.log(`  Blobscan: https://sepolia.blobscan.com/blob/${preparedBlob.versionedHash}`);
 
     await sleep(3000);
 
-    // Step 3: Reveal
+    // Step 3: Reveal (also creates Reality.eth question and pays bond)
     console.log(`\n  Step 3: REVEAL`);
     state.status = 'revealing';
     saveState([...submissionStates, state]);
 
     const revealTx = await kaisign.revealSpec(
       state.commitmentId,
-      state.blobHash,
-      state.metadataHash,
+      preparedBlob.versionedHash,
       nonce,
+      preparedBlob.metadataHash,
       { value: minBond }
     );
     console.log(`  Reveal TX: ${revealTx.hash}`);
@@ -539,29 +572,62 @@ async function processMetadata(metadataPath, relativePath, metadata, targetContr
     const revealReceipt = await revealTx.wait();
     console.log(`  Reveal confirmed in block ${revealReceipt.blockNumber}`);
 
-    // Parse events
-    let specId = '';
+    // Parse events from reveal receipt
+    let uid = '';
     let questionId = '';
     for (const log of revealReceipt.logs) {
       try {
         const parsed = kaisign.interface.parseLog(log);
         if (parsed?.name === 'LogRevealSpec') {
-          specId = parsed.args?.specID || parsed.args?.[1];
+          uid = parsed.args?.uid || parsed.args?.[1];
         }
-        if (parsed?.name === 'LogProposeSpec') {
-          questionId = parsed.args?.questionId || parsed.args?.[2];
+        if (parsed?.name === 'QuestionCreated') {
+          questionId = parsed.args?.questionId || parsed.args?.[1];
         }
       } catch {}
     }
 
-    state.specId = specId;
+    // If QuestionCreated wasn't caught (different interface), read from contract
+    if (!questionId && uid) {
+      try {
+        questionId = await kaisign.questionIds(uid);
+      } catch {}
+    }
+
+    state.uid = uid;
     state.questionId = questionId;
     state.revealTxHash = revealTx.hash;
     state.status = questionId && questionId !== ethers.ZeroHash ? 'proposed' : 'revealed';
     saveState([...submissionStates, state]);
 
-    console.log(`  SpecId: ${specId}`);
-    console.log(`  QuestionId: ${questionId || 'Not proposed yet'}`);
+    console.log(`  UID: ${uid}`);
+    console.log(`  QuestionId: ${questionId || 'Not created yet'}`);
+
+    // Notify backend to update hash index
+    try {
+      const backendUrl = process.env.BACKEND_URL || 'http://localhost:8000';
+      const response = await fetch(`${backendUrl}/api/py/metadata/hash/update`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          metadata_hash: state.metadataHash,
+          target_contract: state.targetContract,
+          chain_id: state.chainId,
+          extcodehash: state.extcodehash,
+          blob_hash: state.blobHash,
+          uid: state.uid,
+          metadata_path: state.metadataPath
+        })
+      });
+
+      if (response.ok) {
+        console.log(`  ✅ Backend hash index updated`);
+      } else {
+        console.log(`  ⚠️  Backend update failed (non-critical): ${response.statusText}`);
+      }
+    } catch (error) {
+      console.log(`  ⚠️  Could not notify backend: ${error.message}`);
+    }
 
     // Step 4: Vote (if question exists)
     if (questionId && questionId !== ethers.ZeroHash) {
@@ -599,7 +665,6 @@ async function processMetadata(metadataPath, relativePath, metadata, targetContr
             console.log(`  Receipt fetch failed, retrying (${attempt + 1}/5)...`);
             await sleep(3000);
           } else {
-            // After 5 attempts, assume it went through if we have the tx hash
             console.log(`  Could not get receipt, but TX was sent: ${voteTx.hash}`);
             voteReceipt = { blockNumber: 'unknown' };
           }
@@ -622,145 +687,6 @@ async function processMetadata(metadataPath, relativePath, metadata, targetContr
   }
 
   return state;
-}
-
-// Spec status enum (matches KaiSign.sol)
-const SpecStatus = {
-  Committed: 0,
-  Submitted: 1,
-  Proposed: 2,
-  Finalized: 3,
-  Cancelled: 4
-};
-
-// Finalize a single submission
-async function finalizeSubmission(state, kaisign, realityEth) {
-  console.log(`\nFinalizing: ${state.metadataFile}`);
-  console.log(`  SpecId: ${state.specId}`);
-  console.log(`  QuestionId: ${state.questionId}`);
-
-  try {
-    // Check spec status from contract
-    const spec = await kaisign.specs(state.specId);
-    const currentStatus = Number(spec.status);
-
-    console.log(`  Current spec status: ${currentStatus} (${Object.keys(SpecStatus).find(k => SpecStatus[k] === currentStatus)})`);
-
-    if (currentStatus === SpecStatus.Finalized) {
-      console.log(`  Already finalized, skipping`);
-      state.status = 'finalized';
-      return { success: true, alreadyFinalized: true };
-    }
-
-    if (currentStatus !== SpecStatus.Proposed) {
-      console.log(`  Cannot finalize: spec not in Proposed status`);
-      return { success: false, error: 'Spec not in Proposed status' };
-    }
-
-    // Check if Reality.eth question is finalized
-    const isFinalized = await realityEth.isFinalized(state.questionId);
-    console.log(`  Reality.eth finalized: ${isFinalized}`);
-
-    if (!isFinalized) {
-      // Get question details to show time remaining
-      const question = await realityEth.questions(state.questionId);
-      const finalizeTs = Number(question.finalize_ts);
-      const now = Math.floor(Date.now() / 1000);
-
-      if (finalizeTs > 0) {
-        const remaining = finalizeTs - now;
-        if (remaining > 0) {
-          const hours = Math.floor(remaining / 3600);
-          const minutes = Math.floor((remaining % 3600) / 60);
-          console.log(`  Time remaining: ${hours}h ${minutes}m`);
-        } else {
-          console.log(`  Finalization time passed but not yet finalized on Reality.eth`);
-        }
-      }
-      return { success: false, error: 'Question not yet finalized on Reality.eth' };
-    }
-
-    // Get the result
-    const result = await realityEth.resultFor(state.questionId);
-    const isAccepted = BigInt(result) === 1n;
-    console.log(`  Result: ${isAccepted ? 'ACCEPTED (valid)' : 'REJECTED (invalid)'}`);
-
-    // Call handleResult on KaiSign
-    console.log(`  Calling handleResult...`);
-    const tx = await kaisign.handleResult(state.specId);
-    console.log(`  TX: ${tx.hash}`);
-
-    const receipt = await tx.wait();
-    console.log(`  Confirmed in block ${receipt.blockNumber}`);
-
-    state.status = 'finalized';
-    state.finalizeTxHash = tx.hash;
-    state.finalizeResult = isAccepted ? 'accepted' : 'rejected';
-
-    return { success: true, isAccepted, txHash: tx.hash };
-  } catch (error) {
-    console.error(`  Error: ${error.message}`);
-    return { success: false, error: error.message };
-  }
-}
-
-// Finalize all voted submissions
-async function finalizeAll(kaisign, realityEth) {
-  console.log('\n' + '='.repeat(60));
-  console.log('FINALIZATION MODE');
-  console.log('='.repeat(60));
-
-  const states = loadState();
-
-  // Find all submissions that are voted but not finalized
-  const toFinalize = states.filter(s =>
-    (s.status === 'voted' || s.status === 'completed') &&
-    s.specId &&
-    s.questionId &&
-    s.questionId !== ethers.ZeroHash
-  );
-
-  console.log(`Found ${toFinalize.length} submissions to check for finalization`);
-
-  if (toFinalize.length === 0) {
-    console.log('No submissions ready for finalization');
-    return;
-  }
-
-  let finalized = 0;
-  let alreadyFinalized = 0;
-  let notReady = 0;
-  let errors = 0;
-
-  for (const state of toFinalize) {
-    const result = await finalizeSubmission(state, kaisign, realityEth);
-
-    if (result.success) {
-      if (result.alreadyFinalized) {
-        alreadyFinalized++;
-      } else {
-        finalized++;
-      }
-    } else if (result.error?.includes('not yet finalized')) {
-      notReady++;
-    } else {
-      errors++;
-    }
-
-    // Save state after each finalization attempt
-    saveState(states);
-
-    // Small delay between calls
-    await sleep(2000);
-  }
-
-  console.log('\n' + '='.repeat(60));
-  console.log('FINALIZATION SUMMARY');
-  console.log('='.repeat(60));
-  console.log(`Newly finalized: ${finalized}`);
-  console.log(`Already finalized: ${alreadyFinalized}`);
-  console.log(`Not ready yet: ${notReady}`);
-  console.log(`Errors: ${errors}`);
 }
 
 // Print summary
@@ -794,26 +720,20 @@ function printSummary(states) {
 
 // Main
 async function main() {
-  // Check for --finalize flag
-  const args = process.argv.slice(2);
-  const finalizeMode = args.includes('--finalize');
-
   console.log('='.repeat(60));
-  console.log(finalizeMode ? 'AUTONOMOUS METADATA FINALIZER' : 'AUTONOMOUS METADATA SUBMITTER');
+  console.log('AUTONOMOUS METADATA SUBMITTER');
   console.log('='.repeat(60));
 
   const privateKey = process.env.PRIVATE_KEY;
   if (!privateKey) {
     console.error('ERROR: PRIVATE_KEY environment variable not set');
-    console.log('Usage: PRIVATE_KEY=0x... node scripts/autonomous-submitter.js [--finalize]');
-    console.log('\nModes:');
-    console.log('  (default)    Submit new metadata through full lifecycle');
-    console.log('  --finalize   Finalize all voted submissions that are ready');
+    console.log('Usage: PRIVATE_KEY=0x... node scripts/autonomous-submitter.js');
     process.exit(1);
   }
 
   const rpcUrl = process.env.SEPOLIA_RPC_URL || DEFAULT_RPC;
-  console.log(`\nRPC: ${rpcUrl}`);
+  console.log(`\nSepolia RPC: ${rpcUrl}`);
+  console.log(`Chain RPCs configured: ${Object.keys(CHAIN_RPCS).length} chains`);
 
   const provider = new ethers.JsonRpcProvider(rpcUrl);
   const signer = new ethers.Wallet(privateKey, provider);
@@ -827,14 +747,8 @@ async function main() {
   const kaisign = new ethers.Contract(CONTRACTS.KAISIGN, KAISIGN_ABI, signer);
   const realityEth = new ethers.Contract(CONTRACTS.REALITY_ETH, REALITY_ETH_ABI, signer);
 
-  // Finalize mode - only finalize existing submissions
-  if (finalizeMode) {
-    await finalizeAll(kaisign, realityEth);
-    return;
-  }
-
-  // Initialize blob-specific provider for submission mode
-  console.log(`RPC (blobs): ${BLOB_RPC}`);
+  // Initialize blob-specific provider
+  console.log(`Blob RPC: ${BLOB_RPC}`);
   blobProvider = new ethers.JsonRpcProvider(BLOB_RPC);
   blobSigner = new ethers.Wallet(privateKey, blobProvider);
   console.log(`Blob signer initialized on PublicNode`);
@@ -869,8 +783,7 @@ async function main() {
 
       processed++;
 
-      // FORCE RESUBMIT: Comment out skip logic to resubmit all metadata
-      /*
+      // Skip already-completed submissions
       const existing = submissionStates.find(
         s => s.metadataFile === file.relativePath &&
              s.chainId === deployment.chainId &&
@@ -882,7 +795,6 @@ async function main() {
         console.log(`\n[${processed}] SKIP: ${file.relativePath} (chain ${deployment.chainId}) - Already completed`);
         continue;
       }
-      */
 
       console.log(`\n[${processed}] ${file.relativePath}`);
       console.log(`  Target: ${deployment.address} on chain ${deployment.chainId} (${deployment.network})`);
