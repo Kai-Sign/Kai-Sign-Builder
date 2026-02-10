@@ -539,6 +539,104 @@ def upsert_metadata(
 # BULK LOADING
 # ============================================================================
 
+def load_from_contract_events() -> int:
+    """
+    Load attestations by scanning LogRevealSpec events from contract.
+
+    This is the PRIMARY loading method for KaiSignRegistry v2.
+    Does NOT rely on submission-state.json.
+
+    Returns:
+        Number of entries successfully loaded
+    """
+    try:
+        from web3 import Web3
+        import json
+
+        logger.info(f"📥 Scanning contract events from {KAISIGN_ADDRESS}...")
+
+        # Connect to Sepolia
+        w3 = Web3(Web3.HTTPProvider(SEPOLIA_RPC_URL, request_kwargs={'timeout': 60}))
+
+        # Load ABI from v1-core
+        v1_core_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'v1-core')
+        abi_path = os.path.join(v1_core_path, 'out/KaiSignRegistry.sol/KaiSignRegistry.json')
+
+        with open(abi_path, 'r') as f:
+            abi = json.load(f)['abi']
+
+        contract = w3.eth.contract(address=KAISIGN_ADDRESS, abi=abi)
+
+        # Scan LogRevealSpec events
+        logger.info("🔍 Scanning LogRevealSpec events (this may take 30-60 seconds)...")
+        events = contract.events.LogRevealSpec.create_filter(fromBlock=0, toBlock='latest').get_all_entries()
+
+        logger.info(f"Found {len(events)} revealed specs, fetching attestation data...")
+
+        loaded = 0
+        failed = 0
+
+        for i, event in enumerate(events):
+            try:
+                uid = event['args']['uid']
+
+                # Get attestation details
+                attestation = contract.functions.getAttestation(uid).call()
+
+                # Skip if not finalized
+                if attestation[9] == 0:  # finalizedAt
+                    continue
+
+                chainId = attestation[1]
+                extcodehash = '0x' + attestation[2].hex()
+                metadataHash = '0x' + attestation[4].hex()
+                idx = attestation[7]
+                revoked = attestation[8]
+                blobHash = '0x' + attestation[3].hex()
+
+                # Create minimal metadata entry (will be populated later if needed)
+                metadata = {
+                    "metadata": {
+                        "name": f"Spec for contract on chain {chainId}",
+                        "description": "Loaded from contract events"
+                    }
+                }
+
+                # Upsert to database
+                success = upsert_metadata(
+                    metadata_hash=metadataHash,
+                    metadata=metadata,
+                    target_contract=event['args']['targetContract'],
+                    chain_id=chainId,
+                    extcodehash=extcodehash,
+                    idx=idx,
+                    revoked=revoked,
+                    blob_hash=blobHash,
+                    uid='0x' + uid.hex(),
+                    status='finalized'
+                )
+
+                if success:
+                    loaded += 1
+                    if loaded % 50 == 0:
+                        logger.info(f"⏳ Progress: {loaded}/{len(events)} loaded")
+                else:
+                    failed += 1
+
+            except Exception as e:
+                logger.warning(f"⚠️  Failed to load event {i}: {e}")
+                failed += 1
+                continue
+
+        logger.info(f"✅ Loaded {loaded} attestations from contract ({failed} skipped/failed)")
+        return loaded
+
+    except Exception as e:
+        logger.error(f"Fatal error scanning contract events: {e}")
+        import traceback
+        traceback.print_exc()
+        return 0
+
 def load_from_submission_state(state_file: str) -> int:
     """
     Load all finalized entries from submission-state.json.
