@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"name": "Kai-Sign-Builder",
+			"path": "."
+		}
+	],
+	"settings": {
+		"workbench.panel.defaultLocation": "top"
+	}
+}
