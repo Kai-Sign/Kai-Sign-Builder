@@ -42,7 +42,7 @@ DB_DIR = RAILWAY_VOLUME_PATH / "hash_index" if RAILWAY_VOLUME_PATH.exists() else
 DB_FILE = DB_DIR / "metadata_hash_registry.db"
 
 # KaiSign contract configuration
-KAISIGN_ADDRESS = os.getenv('KAISIGN_ADDRESS', '0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719')
+KAISIGN_ADDRESS = os.getenv('KAISIGN_ADDRESS', '0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa')
 SEPOLIA_RPC_URL = os.getenv('SEPOLIA_RPC_URL', 'https://ethereum-sepolia-rpc.publicnode.com')
 
 # KaiSign ABI for getAttestation
@@ -462,11 +462,26 @@ def load_from_submission_state(state_file: str) -> int:
 
         logger.info(f"📥 Loading from {state_file}...")
 
-        # Connect to Sepolia
-        w3 = Web3(Web3.HTTPProvider(SEPOLIA_RPC_URL))
-        if not w3.is_connected():
-            logger.error("❌ Failed to connect to Sepolia RPC")
-            return 0
+        # Connect to Sepolia with retry
+        rpc_url = SEPOLIA_RPC_URL
+        logger.info(f"Connecting to RPC: {rpc_url}")
+
+        w3 = Web3(Web3.HTTPProvider(rpc_url, request_kwargs={'timeout': 60}))
+
+        # Test connection with retry
+        max_retries = 3
+        for attempt in range(max_retries):
+            try:
+                w3.eth.block_number  # Test call
+                logger.info(f"✅ Connected to RPC")
+                break
+            except Exception as e:
+                if attempt < max_retries - 1:
+                    logger.warning(f"RPC connection attempt {attempt+1} failed, retrying...")
+                    time.sleep(2)
+                else:
+                    logger.error(f"❌ Failed to connect after {max_retries} attempts: {e}")
+                    return 0
 
         kaisign = w3.eth.contract(address=KAISIGN_ADDRESS, abi=KAISIGN_ABI)
         logger.info(f"✅ Connected to KaiSign at {KAISIGN_ADDRESS}")
@@ -476,12 +491,11 @@ def load_from_submission_state(state_file: str) -> int:
             states = json.load(f)
 
         loaded = 0
-        skipped = 0
+        failed = 0
 
         for i, entry in enumerate(states):
             # Only process finalized entries with UID
             if entry.get('status') != 'finalized' or not entry.get('uid'):
-                skipped += 1
                 continue
 
             try:
@@ -489,14 +503,14 @@ def load_from_submission_state(state_file: str) -> int:
                 uid_bytes = bytes.fromhex(entry['uid'][2:])
                 attestation = kaisign.functions.getAttestation(uid_bytes).call()
 
-                # attestation is a tuple matching the struct
-                idx = attestation[7]  # uint64 idx
-                revoked = attestation[8]  # bool revoked
+                idx = attestation[7]
+                revoked = attestation[8]
 
                 # Read metadata file
                 metadata_path = entry.get('metadataPath')
                 if not metadata_path or not os.path.exists(metadata_path):
                     logger.warning(f"⚠️  Metadata file not found: {metadata_path}")
+                    failed += 1
                     continue
 
                 with open(metadata_path, 'r') as f:
@@ -520,18 +534,24 @@ def load_from_submission_state(state_file: str) -> int:
 
                 if success:
                     loaded += 1
-                    if (loaded + skipped) % 50 == 0:
-                        logger.info(f"⏳ Progress: {loaded} loaded, {skipped} skipped (total: {loaded + skipped}/{len(states)})")
+                    # Progress indicator every 50 entries
+                    if loaded % 50 == 0:
+                        logger.info(f"⏳ Progress: {loaded} loaded, {failed} failed")
+                else:
+                    failed += 1
 
             except Exception as e:
                 logger.warning(f"⚠️  Failed to load uid {entry.get('uid', 'unknown')}: {e}")
+                failed += 1
                 continue
 
-        logger.info(f"✅ Loaded {loaded} entries (skipped {skipped})")
+        logger.info(f"✅ Loaded {loaded} entries ({failed} failed)")
         return loaded
 
     except Exception as e:
-        logger.error(f"Failed to load from submission state: {e}")
+        logger.error(f"Fatal error loading from submission state: {e}")
+        import traceback
+        traceback.print_exc()
         return 0
 
 def rebuild_index() -> int:
@@ -555,8 +575,8 @@ def rebuild_index() -> int:
 
         # Reload
         state_file = os.path.join(
-            os.path.dirname(os.path.dirname(__file__)),
-            "../scripts/submission-state.json"
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            "scripts/submission-state.json"
         )
 
         return load_from_submission_state(state_file)

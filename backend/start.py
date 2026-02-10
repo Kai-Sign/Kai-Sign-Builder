@@ -50,6 +50,22 @@ def main():
     except Exception as e:
         print(f"⚠️  Warning: Could not initialize metadata cache: {e}")
 
+    # Validate required environment variables for hash index
+    print("\n" + "=" * 80)
+    print("🔍 Validating Environment for Hash Index...")
+    print("=" * 80)
+
+    sepolia_rpc = os.getenv('SEPOLIA_RPC_URL')
+    kaisign_addr = os.getenv('KAISIGN_ADDRESS', '0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa')
+
+    if sepolia_rpc:
+        print(f"✅ SEPOLIA_RPC_URL: {sepolia_rpc[:50]}...")
+    else:
+        print("⚠️  SEPOLIA_RPC_URL not set, using default")
+        os.environ['SEPOLIA_RPC_URL'] = 'https://ethereum-sepolia-rpc.publicnode.com'
+
+    print(f"✅ KAISIGN_ADDRESS: {kaisign_addr}")
+
     # Initialize hash index
     print("\n" + "=" * 80)
     print("🔍 Initializing Metadata Hash Index...")
@@ -75,7 +91,7 @@ def main():
 
                 # Find submission-state.json
                 state_file = os.path.join(
-                    os.path.dirname(os.path.dirname(__file__)),
+                    os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                     "scripts/submission-state.json"
                 )
 
@@ -86,9 +102,15 @@ def main():
 
                     loaded = load_from_submission_state(state_file)
 
-                    print(f"\n✅ Loaded {loaded} metadata entries into hash index")
-                    stats = get_hash_stats()
-                    print(f"📊 Final stats: {stats.get('total_entries', 0)} entries, {stats.get('db_size_mb', 0)} MB")
+                    if loaded > 0:
+                        print(f"\n✅ Loaded {loaded} metadata entries into hash index")
+                        stats = get_hash_stats()
+                        print(f"📊 Final stats: {stats.get('total_entries', 0)} entries, {stats.get('db_size_mb', 0)} MB")
+                    else:
+                        print("\n❌ ERROR: Failed to load any entries from submission-state.json")
+                        print("    Hash index endpoints will return 404 until this is fixed!")
+                        print("    Check SEPOLIA_RPC_URL environment variable")
+                        print("    Try manual rebuild: POST /api/py/metadata/hash/rebuild")
                 else:
                     print(f"⚠️  Warning: submission-state.json not found at {state_file}")
                     print("    Hash index will remain empty until entries are added")
@@ -97,9 +119,12 @@ def main():
                 print(f"📊 Database size: {stats.get('db_size_mb', 0)} MB")
 
     except Exception as e:
-        print(f"⚠️  Warning: Could not initialize hash index: {e}")
+        print(f"❌ ERROR: Could not initialize hash index: {e}")
         import traceback
         traceback.print_exc()
+        print("\n⚠️  Hash index endpoints will return 404 until this is fixed!")
+        print("    Check SEPOLIA_RPC_URL environment variable")
+        print("    Try manual rebuild: POST /api/py/metadata/hash/rebuild")
 
     print("\n" + "=" * 80)
     print("🌐 Starting FastAPI server...")
