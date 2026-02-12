@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "sync-abis": "cd frontend && bash scripts/sync-abis.sh",
-    "prebuild": "npm run sync-abis",
     "build": "cd frontend && next build",
     "next-dev": "cd frontend && next dev",
     "check": "next lint --dir frontend && tsc --noEmit -p frontend/tsconfig.json",
