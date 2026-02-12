@@ -418,7 +418,8 @@ export default function FileUploader() {
         return;
       }
 
-      const txHash = await web3Service.revealSpec(
+      // revealSpec now returns both specID (from LogRevealSpec event) and txHash
+      const result = await web3Service.revealSpec(
         revealCommitmentId,
         revealBlobHash,
         revealMetadataHash,
@@ -426,18 +427,13 @@ export default function FileUploader() {
         bondWei
       );
 
-      setRevealTxHash(txHash);
-
-      // Calculate spec ID (optional, for reference)
-      const calculatedSpecId = ethers.keccak256(ethers.solidityPacked(
-        ["bytes32", "address", "uint256", "address", "uint64"],
-        [revealBlobHash, targetContract, targetChainId, currentAccount, Date.now()]
-      ));
-      setSpecId(calculatedSpecId);
+      // specID is extracted from LogRevealSpec event (don't calculate it!)
+      setSpecId(result.specID);
+      setRevealTxHash(result.txHash);
 
       toast({
         title: "Reveal Successful",
-        description: `TX: ${txHash.substring(0, 10)}...`,
+        description: `Spec ID: ${result.specID.substring(0, 10)}... | TX: ${result.txHash.substring(0, 10)}...`,
         variant: "default",
       });
     } catch (error: any) {
