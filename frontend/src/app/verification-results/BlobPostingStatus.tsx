@@ -19,6 +19,7 @@ export interface BlobPostingStatusData {
   message: string;
   txHash?: string;
   blobHash?: string;
+  votingID?: string;  // Added for v2.0.0 - displayed when spec is proposed
   error?: string;
   startTime?: number;
 }
@@ -259,6 +260,25 @@ export default function BlobPostingStatus({
                 >
                   <ExternalLink className="h-4 w-4" />
                 </a>
+              </div>
+            </div>
+          )}
+
+          {status.votingID && (
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-gray-400">Voting ID:</span>
+              <div className="flex items-center gap-2">
+                <code className="text-xs bg-gray-800 px-2 py-1 rounded text-purple-400">
+                  {status.votingID.substring(0, 10)}...{status.votingID.substring(status.votingID.length - 8)}
+                </code>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => copyToClipboard(status.votingID!, 'Voting ID')}
+                  className="h-6 w-6 p-0"
+                >
+                  <Copy className="h-3 w-3" />
+                </Button>
               </div>
             </div>
           )}

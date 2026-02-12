@@ -1,9 +1,19 @@
-// @ts-nocheck
-// TypeScript is disabled in this file due to dynamic contract interactions across
-// multiple KaiSign versions and ethers v6 function APIs (e.g., .staticCall, .estimateGas
-// on function objects). Strong typing here caused noisy, non-actionable errors and
-// duplicate API variants; runtime behavior is preserved.
+/**
+ * Web3Service - KaiSign contract interactions with MetaMask
+ *
+ * Updated to use v1-core contract ABIs (v2.0.0) with proper event parsing
+ * and TypeScript type safety.
+ */
 import { ethers } from "ethers";
+import {
+  KAISIGN_ABI,
+  type KaiSignContract,
+  type CommitResult,
+  type RevealResult,
+  type ProposeResult,
+  contractService,
+  parseContractError
+} from "./abis";
 
 // Declare the window.ethereum for TypeScript
 declare global {
@@ -64,364 +74,9 @@ type RealityEthContract = ethers.Contract & {
   }>;
 };
 
-// ABI for the KaiSign V1 contract - Updated to match actual contract interface
-const CONTRACT_ABI = [
-  {
-    "inputs": [],
-    "name": "minBond",
-    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {"internalType": "bytes32", "name": "commitment", "type": "bytes32"},
-      {"internalType": "address", "name": "targetContract", "type": "address"},
-      {"internalType": "uint256", "name": "targetChainId", "type": "uint256"}
-    ],
-    "name": "commitSpec",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {"internalType": "bytes32", "name": "commitmentId", "type": "bytes32"},
-      {"internalType": "bytes32", "name": "blobHash", "type": "bytes32"},
-      {"internalType": "bytes32", "name": "metadataHash", "type": "bytes32"},
-      {"internalType": "uint256", "name": "nonce", "type": "uint256"}
-    ],
-    "name": "revealSpec",
-    "outputs": [{"internalType": "bytes32", "name": "specID", "type": "bytes32"}],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "bytes32", "name": "specID", "type": "bytes32"}],
-    "name": "proposeSpec",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "bytes32", "name": "specID", "type": "bytes32"}],
-    "name": "assertSpecValid",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "bytes32", "name": "specID", "type": "bytes32"}],
-    "name": "assertSpecInvalid",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {"internalType": "address", "name": "targetContract", "type": "address"},
-      {"internalType": "uint256", "name": "targetChainId", "type": "uint256"},
-      {"internalType": "uint256", "name": "amount", "type": "uint256"},
-      {"internalType": "uint64", "name": "duration", "type": "uint64"},
-      {"internalType": "string", "name": "description", "type": "string"}
-    ],
-    "name": "createIncentive",
-    "outputs": [{"internalType": "bytes32", "name": "incentiveId", "type": "bytes32"}],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "address", "name": "user", "type": "address"}],
-    "name": "getUserIncentives",
-    "outputs": [{"internalType": "bytes32[]", "name": "", "type": "bytes32[]"}],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "bytes32", "name": "incentiveId", "type": "bytes32"}],
-    "name": "incentives",
-    "outputs": [
-      {"internalType": "address", "name": "creator", "type": "address"},
-      {"internalType": "uint256", "name": "amount", "type": "uint256"},
-      {"internalType": "uint256", "name": "reserved", "type": "uint256"},
-      {"internalType": "uint64", "name": "deadline", "type": "uint64"},
-      {"internalType": "uint64", "name": "createdAt", "type": "uint64"},
-      {"internalType": "address", "name": "targetContract", "type": "address"},
-      {"internalType": "bytes32", "name": "specID", "type": "bytes32"},
-      {"internalType": "bool", "name": "isActive", "type": "bool"},
-      {"internalType": "uint256", "name": "chainId", "type": "uint256"},
-      {"internalType": "string", "name": "description", "type": "string"}
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "bytes32", "name": "commitmentId", "type": "bytes32"}],
-    "name": "commitments",
-    "outputs": [
-      {"internalType": "address", "name": "committer", "type": "address"},
-      {"internalType": "uint64", "name": "commitTimestamp", "type": "uint64"},
-      {"internalType": "uint32", "name": "reserved1", "type": "uint32"},
-      {"internalType": "address", "name": "targetContract", "type": "address"},
-      {"internalType": "bool", "name": "isRevealed", "type": "bool"},
-      {"internalType": "uint80", "name": "bondAmount", "type": "uint80"},
-      {"internalType": "uint8", "name": "reserved", "type": "uint8"},
-      {"internalType": "uint64", "name": "revealDeadline", "type": "uint64"},
-      {"internalType": "uint256", "name": "chainId", "type": "uint256"},
-      {"internalType": "bytes32", "name": "incentiveId", "type": "bytes32"}
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {"internalType": "address", "name": "targetContract", "type": "address"},
-      {"internalType": "uint256", "name": "chainId", "type": "uint256"}
-    ],
-    "name": "getSpecsByContract",
-    "outputs": [{"internalType": "bytes32[]", "name": "", "type": "bytes32[]"}],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "bytes32", "name": "specId", "type": "bytes32"}],
-    "name": "specs",
-    "outputs": [
-      {"internalType": "uint64", "name": "createdTimestamp", "type": "uint64"},
-      {"internalType": "uint64", "name": "proposedTimestamp", "type": "uint64"},
-      {"internalType": "uint8", "name": "status", "type": "uint8"},
-      {"internalType": "uint80", "name": "totalBonds", "type": "uint80"},
-      {"internalType": "uint32", "name": "reserved", "type": "uint32"},
-      {"internalType": "address", "name": "creator", "type": "address"},
-      {"internalType": "address", "name": "targetContract", "type": "address"},
-      {"internalType": "bytes32", "name": "blobHash", "type": "bytes32"},
-      {"internalType": "bytes32", "name": "questionId", "type": "bytes32"},
-      {"internalType": "bytes32", "name": "incentiveId", "type": "bytes32"},
-      {"internalType": "uint256", "name": "chainId", "type": "uint256"}
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "bytes32", "name": "specID", "type": "bytes32"}],
-    "name": "handleResult",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {"internalType": "bytes32", "name": "specID", "type": "bytes32"},
-      {"internalType": "address", "name": "token", "type": "address"}
-    ],
-    "name": "claimActiveTokenIncentive",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "bytes32", "name": "specID", "type": "bytes32"}],
-    "name": "settleBonds",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "string", "name": "ipfs", "type": "string"}],
-    "name": "getStatus",
-    "outputs": [{"internalType": "uint8", "name": "", "type": "uint8"}],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "string", "name": "ipfs", "type": "string"}],
-    "name": "isAccepted",
-    "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "string", "name": "ipfs", "type": "string"}],
-    "name": "getCreatedTimestamp",
-    "outputs": [{"internalType": "uint64", "name": "", "type": "uint64"}],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {"internalType": "address", "name": "targetContract", "type": "address"},
-      {"internalType": "uint256", "name": "targetChainId", "type": "uint256"},
-      {"internalType": "uint256", "name": "amount", "type": "uint256"},
-      {"internalType": "uint64", "name": "duration", "type": "uint64"},
-      {"internalType": "string", "name": "description", "type": "string"}
-    ],
-    "name": "createIncentive",
-    "outputs": [{"internalType": "bytes32", "name": "incentiveId", "type": "bytes32"}],
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {"internalType": "address", "name": "targetContract", "type": "address"},
-      {"internalType": "uint256", "name": "chainId", "type": "uint256"}
-    ],
-    "name": "getSpecsByContract",
-    "outputs": [{"internalType": "bytes32[]", "name": "", "type": "bytes32[]"}],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "address", "name": "targetContract", "type": "address"}],
-    "name": "getContractSpecCount",
-    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "bytes32", "name": "", "type": "bytes32"}],
-    "name": "specs",
-    "outputs": [
-      {"internalType": "uint64", "name": "createdTimestamp", "type": "uint64"},
-      {"internalType": "uint64", "name": "proposedTimestamp", "type": "uint64"},
-      {"internalType": "uint8", "name": "status", "type": "uint8"},
-      {"internalType": "bool", "name": "bondsSettled", "type": "bool"},
-      {"internalType": "uint48", "name": "totalBonds", "type": "uint48"},
-      {"internalType": "uint8", "name": "reserved", "type": "uint8"},
-      {"internalType": "address", "name": "creator", "type": "address"},
-      {"internalType": "address", "name": "targetContract", "type": "address"},
-      {"internalType": "string", "name": "ipfs", "type": "string"},
-      {"internalType": "bytes32", "name": "questionId", "type": "bytes32"},
-      {"internalType": "bytes32", "name": "incentiveId", "type": "bytes32"}
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "bytes32", "name": "", "type": "bytes32"}],
-    "name": "commitments",
-    "outputs": [
-      {"internalType": "address", "name": "committer", "type": "address"},
-      {"internalType": "uint64", "name": "commitTimestamp", "type": "uint64"},
-      {"internalType": "uint32", "name": "reserved1", "type": "uint32"},
-      {"internalType": "address", "name": "targetContract", "type": "address"},
-      {"internalType": "bool", "name": "isRevealed", "type": "bool"},
-      {"internalType": "uint80", "name": "bondAmount", "type": "uint80"},
-      {"internalType": "uint8", "name": "reserved", "type": "uint8"},
-      {"internalType": "uint64", "name": "revealDeadline", "type": "uint64"},
-      {"internalType": "uint256", "name": "chainId", "type": "uint256"},
-      {"internalType": "bytes32", "name": "incentiveId", "type": "bytes32"}
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{"internalType": "bytes32", "name": "", "type": "bytes32"}],
-    "name": "incentives",
-    "outputs": [
-      {"internalType": "address", "name": "creator", "type": "address"},
-      {"internalType": "address", "name": "token", "type": "address"},
-      {"internalType": "uint128", "name": "amount", "type": "uint128"},
-      {"internalType": "uint64", "name": "deadline", "type": "uint64"},
-      {"internalType": "uint64", "name": "createdAt", "type": "uint64"},
-      {"internalType": "address", "name": "targetContract", "type": "address"},
-      {"internalType": "bool", "name": "isClaimed", "type": "bool"},
-      {"internalType": "bool", "name": "isActive", "type": "bool"},
-      {"internalType": "uint80", "name": "reserved", "type": "uint80"},
-      {"internalType": "uint256", "name": "chainId", "type": "uint256"},
-      {"internalType": "string", "name": "description", "type": "string"}
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "realityETH",
-    "outputs": [{"internalType": "address", "name": "", "type": "address"}],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "treasury",
-    "outputs": [{"internalType": "address", "name": "", "type": "address"}],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {"indexed": true, "internalType": "address", "name": "committer", "type": "address"},
-      {"indexed": true, "internalType": "bytes32", "name": "commitmentId", "type": "bytes32"},
-      {"indexed": true, "internalType": "address", "name": "targetContract", "type": "address"},
-      {"indexed": false, "internalType": "uint256", "name": "chainId", "type": "uint256"},
-      {"indexed": false, "internalType": "uint256", "name": "bondAmount", "type": "uint256"},
-      {"indexed": false, "internalType": "uint64", "name": "revealDeadline", "type": "uint64"}
-    ],
-    "name": "LogCommitSpec",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {"indexed": true, "internalType": "bytes32", "name": "incentiveId", "type": "bytes32"},
-      {"indexed": true, "internalType": "address", "name": "creator", "type": "address"},
-      {"indexed": true, "internalType": "address", "name": "targetContract", "type": "address"},
-      {"indexed": false, "internalType": "uint256", "name": "chainId", "type": "uint256"},
-      {"indexed": false, "internalType": "address", "name": "token", "type": "address"},
-      {"indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256"},
-      {"indexed": false, "internalType": "uint64", "name": "deadline", "type": "uint64"},
-      {"indexed": false, "internalType": "string", "name": "description", "type": "string"}
-    ],
-    "name": "LogIncentiveCreated",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {"indexed": true, "internalType": "address", "name": "creator", "type": "address"},
-      {"indexed": true, "internalType": "bytes32", "name": "specID", "type": "bytes32"},
-      {"indexed": false, "internalType": "string", "name": "blobHash", "type": "string"},
-      {"indexed": false, "internalType": "address", "name": "targetContract", "type": "address"},
-      {"indexed": false, "internalType": "uint256", "name": "chainId", "type": "uint256"},
-      {"indexed": false, "internalType": "uint256", "name": "timestamp", "type": "uint256"},
-      {"indexed": false, "internalType": "bytes32", "name": "incentiveId", "type": "bytes32"}
-    ],
-    "name": "LogCreateSpec",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {"indexed": true, "internalType": "address", "name": "creator", "type": "address"},
-      {"indexed": true, "internalType": "bytes32", "name": "specID", "type": "bytes32"},
-      {"indexed": true, "internalType": "bytes32", "name": "commitmentId", "type": "bytes32"},
-      {"indexed": false, "internalType": "string", "name": "blobHash", "type": "string"},
-      {"indexed": false, "internalType": "address", "name": "targetContract", "type": "address"},
-      {"indexed": false, "internalType": "uint256", "name": "chainId", "type": "uint256"}
-    ],
-    "name": "LogRevealSpec",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {"indexed": true, "internalType": "address", "name": "user", "type": "address"},
-      {"indexed": true, "internalType": "bytes32", "name": "specID", "type": "bytes32"},
-      {"indexed": false, "internalType": "bytes32", "name": "questionId", "type": "bytes32"},
-      {"indexed": false, "internalType": "uint256", "name": "bond", "type": "uint256"}
-    ],
-    "name": "LogProposeSpec",
-    "type": "event"
-  },
-  {
-    "inputs": [{"internalType": "bytes32", "name": "", "type": "bytes32"}],
-    "name": "bondsSettled",
-    "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
-    "stateMutability": "view",
-    "type": "function"
-  }
-];
-
+// KaiSign contract ABI - Now imported from v1-core ABIs (see ./abis/types.ts)
+// Using KAISIGN_ABI from the abis module
+const CONTRACT_ABI = KAISIGN_ABI;
 // Reality.eth contract ABI (minimal for bond calculations)
 const REALITY_ETH_ABI = [
   {
@@ -1066,32 +721,19 @@ export class Web3Service {
       const commitReceipt = await commitTx.wait();
 
       
-      // Step 2: Extract the actual commitment ID from the LogCommitSpec event
-      let commitmentId: string | null = null;
-      
-      for (const log of commitReceipt.logs) {
-        try {
-          const parsed = this.contract.interface.parseLog(log);
-          if (parsed && parsed.name === 'LogCommitSpec') {
-            commitmentId = parsed.args.commitmentId;
-
-            break;
-          }
-        } catch (e) {
-          // Ignore logs that can't be parsed by our interface
-        }
-      }
-      
-      if (!commitmentId) {
-        throw new Error("Could not find LogCommitSpec event in transaction logs");
-      }
+      // Step 2: Parse LogCommitSpec event using contractService (autonomous-submitter.js pattern)
+      const commitEvent = contractService.parseLogCommitSpec(commitReceipt, this.contract);
+      const commitmentId = commitEvent.commitmentId;
+      const revealDeadline = commitEvent.revealDeadline
+        ? Number(commitEvent.revealDeadline)
+        : Math.floor(Date.now() / 1000) + 3600; // 1 hour fallback
       
 
-      
+
       return {
         commitmentId,
         commitTxHash: commitTx.hash,
-        revealDeadline: Math.floor(Date.now() / 1000) + 3600, // 1 hour from now
+        revealDeadline,
         nonce: Number(nonce),
         commitment,
         metadataHash
@@ -1161,7 +803,7 @@ export class Web3Service {
   /**
    * Reveal spec using V1 contract (step 2 of commit-reveal pattern)
    */
-  async revealSpec(commitmentId: string, blobHash: string, metadataHash: string, nonce: number, bondAmount: bigint): Promise<string> {
+  async revealSpec(commitmentId: string, blobHash: string, metadataHash: string, nonce: number, bondAmount: bigint): Promise<{ specID: string; txHash: string }> {
     try {
       if (!this.contract || !this.signer) {
         throw new Error("Not connected to MetaMask. Please connect first.");
@@ -1247,8 +889,19 @@ export class Web3Service {
 
       const revealReceipt = await revealTx.wait();
 
+      // Parse LogRevealSpec event to extract specID (CRITICAL: don't calculate it!)
+      // Pattern from autonomous-submitter.js lines 576-586
+      const revealEvent = contractService.parseLogRevealSpec(revealReceipt, this.contract);
+      const specID = revealEvent.specID;
 
-      return revealTx.hash;
+      console.log(`✅ Spec revealed with ID: ${specID}, TX: ${revealTx.hash}`);
+
+      // Return both specID (from event) and txHash (from transaction)
+      // Frontend needs specID to track the spec and txHash to show on Etherscan
+      return {
+        specID,
+        txHash: revealTx.hash
+      };
     } catch (error: any) {
       console.error("Error revealing spec:", error);
       throw new Error(`Reveal failed: ${error.message || 'Unknown error'}`);
@@ -2518,6 +2171,16 @@ export class Web3Service {
 
       const tx = await this.contract.proposeSpec(specId, { value: bondAmount });
       const receipt = await tx.wait();
+
+      // Parse LogProposeSpec event to extract votingID (v2.0.0 field)
+      try {
+        const proposeEvent = contractService.parseLogProposeSpec(receipt, this.contract);
+        console.log(`✅ Spec proposed with votingID: ${proposeEvent.votingID}`);
+        // Note: Currently returning txHash for backward compatibility
+        // Frontend can be updated to extract votingID from event if needed
+      } catch (eventError) {
+        console.warn('Could not parse LogProposeSpec event:', eventError);
+      }
 
       return tx.hash;
     } catch (error: any) {
