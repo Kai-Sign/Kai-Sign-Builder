@@ -323,7 +323,7 @@ export default function ApiDocsPage() {
     try {
       // Step 1: Query subgraph for specs
       const graphqlQuery = `{ 
-        specs(where: {targetContract: "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719"}) { 
+        specs(where: {targetContract: "0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa"}) { 
           blobHash 
           targetContract 
           status 
@@ -403,7 +403,7 @@ export default function ApiDocsPage() {
           json: {
             context: {
               contract: {
-                address: "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719",
+                address: "0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa",
                 chainId: 11155111
               }
             },
@@ -967,11 +967,11 @@ export default function ApiDocsPage() {
       description: "Get specifications for a specific contract",
       code: `curl -s -X POST \\
   -H "Content-Type: application/json" \\
-  -d '{"query":"{ specs(where: {targetContract: \\"0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719\\"}) { blobHash targetContract status } }"}' \\
+  -d '{"query":"{ specs(where: {targetContract: \\"0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa\\"}) { blobHash targetContract status } }"}' \\
   "https://api.studio.thegraph.com/query/117022/kaisign-subgraph/version/latest"`,
       executable: true,
       executeType: 'graphql',
-      query: '{ specs(where: {targetContract: "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719"}) { blobHash targetContract status } }'
+      query: '{ specs(where: {targetContract: "0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa"}) { blobHash targetContract status } }'
     },
     {
       title: "Get Finalized Specs Only",
@@ -997,7 +997,7 @@ export default function ApiDocsPage() {
       description: "Save as query.sh and run to get specs and fetch their blob metadata",
       code: `#!/bin/bash
 URL="https://api.studio.thegraph.com/query/117022/kaisign-subgraph/version/latest"
-CONTRACT_ADDRESS="0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719"
+CONTRACT_ADDRESS="0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa"
 
 echo "Getting specs for contract $CONTRACT_ADDRESS..."
 SPECS=$(curl -s -X POST \\
@@ -1091,7 +1091,7 @@ chmod +x query.sh
 ./query.sh
 
 # 4. To use a different contract address, edit the script:
-# Change CONTRACT_ADDRESS="0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719"
+# Change CONTRACT_ADDRESS="0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa"
 # to your desired contract address
 
 # 5. Requirements:
@@ -1419,7 +1419,7 @@ chmod +x query.sh
                 <ExternalLink size={16} />
               </a>
               <a
-                href="https://sepolia.etherscan.io/address/0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719#events"
+                href="https://sepolia.etherscan.io/address/0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa#events"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-blue-400 hover:text-blue-300"

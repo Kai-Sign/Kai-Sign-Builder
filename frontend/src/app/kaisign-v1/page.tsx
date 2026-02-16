@@ -153,7 +153,7 @@ export default function KaiSignV1Page() {
       const convertedSpecs: SpecData[] = finalizedSpecs.map(spec => ({
         specId: spec.id,
         creator: spec.creator,
-        targetContract: spec.targetContract || "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719",
+        targetContract: spec.targetContract || "0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa",
         blobHash: spec.blobHash || "", // Use blobHash if available
         status: 3, // FINALIZED
         createdTimestamp: parseInt(spec.createdTimestamp),
@@ -225,7 +225,7 @@ export default function KaiSignV1Page() {
         };
 
         const contract = new ethers.Contract(
-          "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719",
+          "0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa",
           [
             "function getSpecsByContract(address,uint256) view returns (bytes32[])",
             "function specs(bytes32) view returns (uint64,uint64,uint8,uint80,uint32,address,address,bytes32,bytes32,bytes32,uint256)",
@@ -236,7 +236,7 @@ export default function KaiSignV1Page() {
         ) as unknown as KaiSignSpecsContract;
         
         // Get specs for the contract
-        const specIds = await contract.getSpecsByContract("0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719", 11155111);
+        const specIds = await contract.getSpecsByContract("0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa", 11155111);
         console.log("=== LOADING ALL SPECS ===");
         console.log("Found", specIds.length, "specs for contract");
         
@@ -314,7 +314,7 @@ export default function KaiSignV1Page() {
         };
 
         const contract = new ethers.Contract(
-          "0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719",
+          "0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa",
           [
             "event LogIncentiveCreated(bytes32 indexed incentiveId, address indexed creator, address indexed targetContract, uint256 chainId, address token, uint256 amount, uint64 deadline, string description)",
             "function incentives(bytes32) view returns (address,address,uint128,uint64,uint64,address,bool,bool,uint80,uint256,string)",
