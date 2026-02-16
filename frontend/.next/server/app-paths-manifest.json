@@ -1,3 +1,26 @@
 {
-  "/verification-results/page": "app/verification-results/page.js"
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/analyze/route": "app/api/analyze/route.js",
+  "/api/contract-metadata/route": "app/api/contract-metadata/route.js",
+  "/api/contracts/route": "app/api/contracts/route.js",
+  "/api/contracts/[address]/route": "app/api/contracts/[address]/route.js",
+  "/api/health/route": "app/api/health/route.js",
+  "/api/metadata/route": "app/api/metadata/route.js",
+  "/api/py/generateERC7730/route": "app/api/py/generateERC7730/route.js",
+  "/api/ipfs/upload/route": "app/api/ipfs/upload/route.js",
+  "/api/test/route": "app/api/test/route.js",
+  "/api/trpc/[trpc]/route": "app/api/trpc/[trpc]/route.js",
+  "/api/blob/submit/route": "app/api/blob/submit/route.js",
+  "/api/blob/upload/route": "app/api/blob/upload/route.js",
+  "/hardware-viewer/page": "app/hardware-viewer/page.js",
+  "/api-docs/page": "app/api-docs/page.js",
+  "/contract-metadata-demo/page": "app/contract-metadata-demo/page.js",
+  "/page": "app/page.js",
+  "/verification-results/page": "app/verification-results/page.js",
+  "/kaisign-v1/page": "app/kaisign-v1/page.js",
+  "/digital-signatures/page": "app/digital-signatures/page.js",
+  "/operations/page": "app/operations/page.js",
+  "/review/page": "app/review/page.js",
+  "/metadata/page": "app/metadata/page.js",
+  "/verification-status/page": "app/verification-status/page.js"
 }
