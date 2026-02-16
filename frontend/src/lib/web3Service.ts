@@ -668,51 +668,17 @@ export class Web3Service {
       
       // Step 1: Commit
 
-
-
-      
-      // Check if commitment already exists
+      // Optional: Estimate gas for user feedback (don't fail if estimation fails)
       try {
-
-        const commitmentId = ethers.keccak256(ethers.solidityPacked(
-          ["bytes32", "address", "address", "uint256"],
-          [commitment, await this.signer.getAddress(), target, Math.floor(Date.now() / 1000)]
-        ));
-        
-        const existingCommitment = await this.contract.commitments(commitmentId);
-        console.log("Checking if commitment already exists:", existingCommitment.committer !== ethers.ZeroAddress);
-        
-        // Try a static call first to see if it would succeed
-        const staticResult = await this.contract.commitSpec.staticCall(
+        const gasEstimate = await this.contract.commitSpec.estimateGas(
           commitment,
           target,
           targetChainId || 1
         );
-        console.log("Static call successful, proceeding with transaction");
-        
-      } catch (checkError) {
-        console.error("Pre-transaction checks failed:", checkError);
-        
-        // If it's a revert, try to get more info
-        if (checkError.data) {
-
-        }
-        
-        throw new Error(`Pre-transaction validation failed: ${checkError.message}`);
-      }
-      
-      // Try manual gas estimation
-      try {
-
-        const gasEstimate = await this.contract.commitSpec.estimateGas(
-          commitment, 
-          target, 
-          targetChainId || 1
-        );
-
+        console.log(`Estimated gas: ${gasEstimate.toString()}`);
       } catch (gasError) {
-        console.error("Gas estimation failed:", gasError);
-        throw new Error(`Gas estimation failed: ${gasError.message}`);
+        console.warn("Gas estimation failed:", gasError.message);
+        // Don't throw - let the transaction attempt anyway
       }
       
       const commitTx = await this.contract.commitSpec(commitment, target, targetChainId || 1);
@@ -822,58 +788,65 @@ export class Web3Service {
       // Debug: Check what the contract has stored for this commitment
       try {
         const storedCommitment = await this.contract.commitments(commitmentId);
-        console.log("Stored commitment data:", {
-          committer: storedCommitment[0],
-          commitTimestamp: storedCommitment[1].toString(),
-          reserved1: storedCommitment[2].toString(),
-          targetContract: storedCommitment[3],
-          isRevealed: storedCommitment[4],
-          bondAmount: storedCommitment[5].toString(),
-          reserved: storedCommitment[6].toString(),
-          revealDeadline: storedCommitment[7].toString(),
-          chainId: storedCommitment[8].toString(),
-          incentiveId: storedCommitment[9]
-        });
-        
-        // Check if we're the right committer
-        const ourAddress = await this.signer.getAddress();
-        console.log("Our address:", ourAddress);
-        console.log("Committer address:", storedCommitment[0]);
-        
-        // Check if commitment expired
-        const currentTime = Math.floor(Date.now() / 1000);
-        const revealDeadline = Number(storedCommitment[7]);
-        console.log("Current time:", currentTime);
-        console.log("Reveal deadline:", revealDeadline);
-        if (currentTime > revealDeadline) {
-          throw new Error("Commitment has expired. Please create a new commitment.");
+
+        // Check if commitment exists (committer will be zero address if not)
+        if (!storedCommitment[0] || storedCommitment[0] === ethers.ZeroAddress) {
+          console.warn("Commitment not found in contract - may have been cancelled or expired");
+        } else {
+          console.log("Stored commitment data:", {
+            committer: storedCommitment[0],
+            commitTimestamp: storedCommitment[1]?.toString(),
+            targetContract: storedCommitment[3],
+            isRevealed: storedCommitment[4],
+            bondAmount: storedCommitment[5]?.toString(),
+            revealDeadline: storedCommitment[7]?.toString(),
+            chainId: storedCommitment[8]?.toString(),
+          });
+
+          // Check if we're the right committer
+          const ourAddress = await this.signer.getAddress();
+          console.log("Our address:", ourAddress);
+          console.log("Committer address:", storedCommitment[0]);
+
+          // Check if commitment expired
+          const currentTime = Math.floor(Date.now() / 1000);
+          const revealDeadline = Number(storedCommitment[7]);
+          console.log("Current time:", currentTime);
+          console.log("Reveal deadline:", revealDeadline);
+          if (currentTime > revealDeadline) {
+            throw new Error("Commitment has expired. Please create a new commitment.");
+          }
+
+          // Let's verify what commitment the contract expects
+          const expectedCommitment = ethers.keccak256(
+            ethers.solidityPacked(["bytes32", "uint256"], [metadataHash, BigInt(nonce)])
+          );
+          console.log("Expected commitment hash:", expectedCommitment);
+
+          // Reconstruct the commitment ID as the contract would
+          const reconstructedCommitmentId = ethers.keccak256(
+            ethers.solidityPacked(
+              ["bytes32", "address", "address", "uint256", "uint64"],
+              [expectedCommitment, storedCommitment[0], storedCommitment[3], storedCommitment[8], storedCommitment[1]]
+            )
+          );
+          console.log("Reconstructed commitment ID:", reconstructedCommitmentId);
+          console.log("Provided commitment ID:", commitmentId);
+          console.log("Do they match?", reconstructedCommitmentId === commitmentId);
+
+          if (reconstructedCommitmentId !== commitmentId) {
+            console.error("Commitment ID mismatch! The nonce or metadata hash doesn't match what was used during commit.");
+            console.log("This commitment was created with a different nonce or metadata hash.");
+            console.log("Please ensure you're using the exact same nonce that was returned during commit.");
+          }
         }
-        
-        // Let's verify what commitment the contract expects
-        const expectedCommitment = ethers.keccak256(
-          ethers.solidityPacked(["bytes32", "uint256"], [metadataHash, BigInt(nonce)])
-        );
-        console.log("Expected commitment hash:", expectedCommitment);
-        
-        // Reconstruct the commitment ID as the contract would
-        const reconstructedCommitmentId = ethers.keccak256(
-          ethers.solidityPacked(
-            ["bytes32", "address", "address", "uint256", "uint64"],
-            [expectedCommitment, storedCommitment[0], storedCommitment[3], storedCommitment[8], storedCommitment[1]]
-          )
-        );
-        console.log("Reconstructed commitment ID:", reconstructedCommitmentId);
-        console.log("Provided commitment ID:", commitmentId);
-        console.log("Do they match?", reconstructedCommitmentId === commitmentId);
-        
-        if (reconstructedCommitmentId !== commitmentId) {
-          console.error("Commitment ID mismatch! The nonce or metadata hash doesn't match what was used during commit.");
-          console.log("This commitment was created with a different nonce or metadata hash.");
-          console.log("Please ensure you're using the exact same nonce that was returned during commit.");
+      } catch (debugError: any) {
+        // Handle decode errors gracefully - commitment might not exist
+        if (debugError.code === 'BAD_DATA') {
+          console.log("Cannot read commitment (does not exist or decode failed):", commitmentId);
+        } else {
+          console.log("Debug error (non-critical):", debugError.message);
         }
-        
-      } catch (debugError) {
-        console.log("Debug error (non-critical):", debugError);
       }
 
       // Try a static call first to see what exactly fails
@@ -2139,9 +2112,16 @@ export class Web3Service {
     if (!this.contract) {
       throw new Error("Not connected to contract.");
     }
+
     try {
       const c = await this.contract.commitments(commitmentId);
-      if (!c) return null;
+
+      // Check if commitment exists (committer will be zero address if not)
+      if (!c[0] || c[0] === ethers.ZeroAddress) {
+        console.log("Commitment not found:", commitmentId);
+        return null;
+      }
+
       return {
         committer: c[0],
         commitTimestamp: Number(c[1]),
@@ -2154,9 +2134,16 @@ export class Web3Service {
         chainId: Number(c[8]),
         incentiveId: c[9]
       };
-    } catch (err) {
+    } catch (err: any) {
+      // Distinguish between "not found" and "decode error"
+      if (err.code === 'BAD_DATA') {
+        console.log("Commitment does not exist (decode failed):", commitmentId);
+        return null;
+      }
+
+      // Other errors (network, etc.) should be logged and re-thrown
       console.error("Error reading commitment:", err);
-      return null;
+      throw err;
     }
   }
 
