@@ -56,7 +56,7 @@ def main():
     print("=" * 80)
 
     sepolia_rpc = os.getenv('SEPOLIA_RPC_URL')
-    kaisign_addr = os.getenv('KAISIGN_ADDRESS', '0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa')
+    kaisign_addr = os.getenv('KAISIGN_ADDRESS', '0xA819D2d3A2820995701cF46F8a314C7040d86BEe')
 
     if sepolia_rpc:
         print(f"✅ SEPOLIA_RPC_URL: {sepolia_rpc[:50]}...")

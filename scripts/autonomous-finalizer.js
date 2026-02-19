@@ -126,7 +126,7 @@ const REALITY_ETH_ABI = [
 // ─── Contract addresses ──────────────────────────────────────────────────────
 
 const CONTRACTS = {
-  KAISIGN: process.env.KAISIGN_ADDRESS || '0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa',  // KaiSignRegistry v2 on Sepolia
+  KAISIGN: process.env.KAISIGN_ADDRESS || '0xA819D2d3A2820995701cF46F8a314C7040d86BEe',  // KaiSignRegistry v2 on Sepolia
   REALITY_ETH: process.env.REALITY_ETH_ADDRESS || '0xaf33DcB6E8c5c4D9dDF579f53031b514d19449CA'
 };
 

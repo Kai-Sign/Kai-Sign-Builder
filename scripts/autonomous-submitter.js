@@ -5,11 +5,11 @@
  * Submits ERC7730 metadata through the full lifecycle:
  * Prepare Blob → Commit → Send Blob TX → Reveal → Vote Valid on Reality.eth
  *
- * Matches deployed KaiSignRegistry v2.0.0 contract which uses:
+ * Matches deployed KaiSignRegistry ERC20-only contract which uses:
  * - extcodehash (bytecode hash) instead of contract address
  * - commitment = keccak256(blobHash, nonce)
  * - commitSpec(bytes32 commitment, uint256 chainId, bytes32 extcodehash)
- * - revealSpec(bytes32 commitmentId, bytes32 blobHash, uint256 nonce, bytes32 metadataHash) payable
+ * - revealSpec(bytes32 commitmentId, bytes32 blobHash, uint256 nonce, bytes32 metadataHash, uint256 tokenAmount)
  *
  * Usage:
  *   PRIVATE_KEY=0x... node scripts/autonomous-submitter.js
@@ -52,11 +52,26 @@ const KAISIGN_ABI = [
       {"internalType": "bytes32", "name": "commitmentId", "type": "bytes32"},
       {"internalType": "bytes32", "name": "blobHash", "type": "bytes32"},
       {"internalType": "uint256", "name": "nonce", "type": "uint256"},
-      {"internalType": "bytes32", "name": "metadataHash", "type": "bytes32"}
+      {"internalType": "bytes32", "name": "metadataHash", "type": "bytes32"},
+      {"internalType": "uint256", "name": "tokenAmount", "type": "uint256"}
     ],
     "name": "revealSpec",
     "outputs": [{"internalType": "bytes32", "name": "uid", "type": "bytes32"}],
-    "stateMutability": "payable",
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "bondToken",
+    "outputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "realityETH",
+    "outputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -115,6 +130,18 @@ const REALITY_ETH_ABI = [
     "type": "function"
   },
   {
+    "inputs": [
+      {"internalType": "bytes32", "name": "question_id", "type": "bytes32"},
+      {"internalType": "bytes32", "name": "answer", "type": "bytes32"},
+      {"internalType": "uint256", "name": "max_previous", "type": "uint256"},
+      {"internalType": "uint256", "name": "tokens", "type": "uint256"}
+    ],
+    "name": "submitAnswerERC20",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [{"internalType": "bytes32", "name": "question_id", "type": "bytes32"}],
     "name": "getBond",
     "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
@@ -158,17 +185,55 @@ const REALITY_ETH_ABI = [
 
 // Contract addresses
 const CONTRACTS = {
-  KAISIGN: '0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa',  // KaiSignRegistry v2 deployed on Sepolia (0.001 ETH bond)
-  REALITY_ETH: '0xaf33DcB6E8c5c4D9dDF579f53031b514d19449CA'
+  KAISIGN: '0xA819D2d3A2820995701cF46F8a314C7040d86BEe',  // KaiSignRegistry ERC20-only (migrated, idx 448)
+  REALITY_ETH: '0xaf33DcB6E8c5c4D9dDF579f53031b514d19449CA',  // ETH version (for reads)
+  REALITY_ETH_ERC20: '0xa2735BB12DC952Aa40c989c05F17caf95FD36a2f',  // ERC20 Reality.eth
+  BOND_TOKEN: '0x9323E2D267946FFF844650cF00A9dEb962d1C0e2'  // PermissionedBToken
 };
+
+// ERC20 ABI for token approvals
+const ERC20_ABI = [
+  {
+    "inputs": [
+      {"internalType": "address", "name": "spender", "type": "address"},
+      {"internalType": "uint256", "name": "amount", "type": "uint256"}
+    ],
+    "name": "approve",
+    "outputs": [{"internalType": "bool", "name": "", "type": "bool"}],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "address", "name": "account", "type": "address"}
+    ],
+    "name": "balanceOf",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {"internalType": "address", "name": "owner", "type": "address"},
+      {"internalType": "address", "name": "spender", "type": "address"}
+    ],
+    "name": "allowance",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  }
+];
 
 // Configuration
 const CONFIG = {
-  MIN_BOND: BigInt('100000000000000'), // 0.0001 ETH
+  MIN_BOND: BigInt('100000000000000000'), // 0.1 tokens
   SEPOLIA_CHAIN_ID: 11155111,
   MIN_BLOB_DATA_SIZE: 24 * 1024,
   PADDING_MARKER: '\n\n/* ERC7730_BLOB_PADDING_START */\n'
 };
+
+// Limit number of submissions (0 = unlimited, use LIMIT=1 env var for single test)
+const SUBMISSION_LIMIT = parseInt(process.env.LIMIT || '0', 10);
 
 // Chain RPC map for fetching extcodehash
 const CHAIN_RPCS = {
@@ -456,8 +521,8 @@ function loadContractMetadata(metadataFiles) {
 }
 
 // Process single metadata
-// Flow: Prepare Blob → Get extcodehash → Commit → Send Blob TX → Reveal → Vote
-async function processMetadata(metadataPath, relativePath, metadata, targetContract, chainId, kaisign, realityEth, signer, provider, minBond) {
+// Flow: Prepare Blob → Get extcodehash → Commit → Send Blob TX → Approve Token → Reveal → Vote
+async function processMetadata(metadataPath, relativePath, metadata, targetContract, chainId, kaisign, realityEth, realityEthErc20, bondToken, signer, provider, minBond) {
   const state = {
     metadataFile: relativePath,
     metadataPath,
@@ -555,17 +620,30 @@ async function processMetadata(metadataPath, relativePath, metadata, targetContr
 
     await sleep(3000);
 
-    // Step 3: Reveal (also creates Reality.eth question and pays bond)
+    // Step 3: Reveal (also creates Reality.eth question and pays bond via token)
     console.log(`\n  Step 3: REVEAL`);
     state.status = 'revealing';
     saveState([...submissionStates, state]);
 
+    // Check and approve bond token for KaiSign contract (max approval pattern)
+    const currentAllowance = await bondToken.allowance(await signer.getAddress(), CONTRACTS.KAISIGN);
+    const MIN_ALLOWANCE_THRESHOLD = ethers.parseEther('1'); // Always keep at least 1 token approved
+    if (currentAllowance < MIN_ALLOWANCE_THRESHOLD) {
+      console.log(`  Current allowance: ${ethers.formatEther(currentAllowance)}, approving max...`);
+      const approveTx = await bondToken.approve(CONTRACTS.KAISIGN, ethers.MaxUint256);
+      await approveTx.wait();
+      console.log(`  Token approved (max allowance)`);
+    } else {
+      console.log(`  Token allowance sufficient: ${ethers.formatEther(currentAllowance)}`);
+    }
+
+    // Use revealSpec for ERC20-only mode
     const revealTx = await kaisign.revealSpec(
       state.commitmentId,
       preparedBlob.versionedHash,
       nonce,
       preparedBlob.metadataHash,
-      { value: minBond }
+      minBond
     );
     console.log(`  Reveal TX: ${revealTx.hash}`);
 
@@ -636,9 +714,9 @@ async function processMetadata(metadataPath, relativePath, metadata, targetContr
       state.status = 'voting';
       saveState([...submissionStates, state]);
 
-      // Get current bond
-      const currentBond = await realityEth.getBond(questionId);
-      const question = await realityEth.questions(questionId);
+      // Get current bond from ERC20 Reality.eth (where question was created)
+      const currentBond = await realityEthErc20.getBond(questionId);
+      const question = await realityEthErc20.questions(questionId);
 
       let newBond;
       if (currentBond === 0n) {
@@ -647,11 +725,23 @@ async function processMetadata(metadataPath, relativePath, metadata, targetContr
         newBond = currentBond * 2n;
       }
 
-      console.log(`  Current bond: ${ethers.formatEther(currentBond)} ETH`);
-      console.log(`  New bond: ${ethers.formatEther(newBond)} ETH`);
+      console.log(`  Current bond: ${ethers.formatEther(currentBond)} tokens`);
+      console.log(`  New bond: ${ethers.formatEther(newBond)} tokens`);
+
+      // Check and approve bond token for Reality.eth ERC20 (max approval pattern)
+      const realityAllowance = await bondToken.allowance(await signer.getAddress(), CONTRACTS.REALITY_ETH_ERC20);
+      if (realityAllowance < newBond) {
+        console.log(`  Approving max tokens for Reality.eth ERC20...`);
+        const voteApproveTx = await bondToken.approve(CONTRACTS.REALITY_ETH_ERC20, ethers.MaxUint256);
+        await voteApproveTx.wait();
+        console.log(`  Token approved (max allowance)`);
+      } else {
+        console.log(`  Token allowance sufficient: ${ethers.formatEther(realityAllowance)}`);
+      }
 
       const validAnswer = ethers.zeroPadValue(ethers.toBeHex(1), 32);
-      const voteTx = await realityEth.submitAnswer(questionId, validAnswer, currentBond, { value: newBond });
+      // Use submitAnswerERC20 for token-based bonds on ERC20 Reality.eth instance
+      const voteTx = await realityEthErc20.submitAnswerERC20(questionId, validAnswer, currentBond, newBond);
       console.log(`  Vote TX: ${voteTx.hash}`);
 
       // Retry logic for getting receipt (RPC can be flaky)
@@ -746,6 +836,13 @@ async function main() {
   // Initialize contracts
   const kaisign = new ethers.Contract(CONTRACTS.KAISIGN, KAISIGN_ABI, signer);
   const realityEth = new ethers.Contract(CONTRACTS.REALITY_ETH, REALITY_ETH_ABI, signer);
+  const realityEthErc20 = new ethers.Contract(CONTRACTS.REALITY_ETH_ERC20, REALITY_ETH_ABI, signer);
+  const bondToken = new ethers.Contract(CONTRACTS.BOND_TOKEN, ERC20_ABI, signer);
+
+  // Check token balance
+  const tokenBalance = await bondToken.balanceOf(signerAddress);
+  console.log(`Bond Token: ${CONTRACTS.BOND_TOKEN}`);
+  console.log(`Token Balance: ${ethers.formatEther(tokenBalance)} PERM`);
 
   // Initialize blob-specific provider
   console.log(`Blob RPC: ${BLOB_RPC}`);
@@ -753,12 +850,17 @@ async function main() {
   blobSigner = new ethers.Wallet(privateKey, blobProvider);
   console.log(`Blob signer initialized on PublicNode`);
 
-  if (balance < ethers.parseEther('0.05')) {
-    console.warn('\nWARNING: Balance is low. You may need more ETH for all submissions.');
+  if (balance < ethers.parseEther('0.01')) {
+    console.warn('\nWARNING: ETH balance is low. You need ETH for gas.');
   }
 
   const minBond = await kaisign.minBond();
-  console.log(`Min bond: ${ethers.formatEther(minBond)} ETH`);
+  console.log(`Min bond: ${ethers.formatEther(minBond)} tokens`);
+
+  if (tokenBalance < minBond) {
+    console.error('\nERROR: Insufficient token balance for bonds');
+    process.exit(1);
+  }
 
   submissionStates = loadState();
 
@@ -807,6 +909,8 @@ async function main() {
         deployment.chainId,
         kaisign,
         realityEth,
+        realityEthErc20,
+        bondToken,
         signer,
         provider,
         minBond

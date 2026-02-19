@@ -42,7 +42,7 @@ DB_DIR = RAILWAY_VOLUME_PATH / "hash_index" if RAILWAY_VOLUME_PATH.exists() else
 DB_FILE = DB_DIR / "metadata_hash_registry.db"
 
 # KaiSign contract configuration
-KAISIGN_ADDRESS = os.getenv('KAISIGN_ADDRESS', '0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa')
+KAISIGN_ADDRESS = os.getenv('KAISIGN_ADDRESS', '0xA819D2d3A2820995701cF46F8a314C7040d86BEe')
 SEPOLIA_RPC_URL = os.getenv('SEPOLIA_RPC_URL', 'https://ethereum-sepolia-rpc.publicnode.com')
 
 # KaiSign ABI for getAttestation and LogRevealSpec

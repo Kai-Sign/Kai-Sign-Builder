@@ -1,0 +1,33 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xc3d688b66703497daa19211eedff47f25384cdc3",
+      "chainId": 1,
+      "name": "Compound V3 cUSDC",
+      "abi": [
+        { "type": "function", "name": "supply", "selector": "0xf2b9fdb8", "inputs": [{ "name": "asset", "type": "address" }, { "name": "amount", "type": "uint256" }] },
+        { "type": "function", "name": "withdraw", "selector": "0xf3fef3a3", "inputs": [{ "name": "asset", "type": "address" }, { "name": "amount", "type": "uint256" }] }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "supply(address,uint256)": {
+        "intent": "Supply to Compound",
+        "interpolatedIntent": "Supply {amount} to Compound",
+        "fields": [
+          { "path": "asset", "label": "Token", "format": "addressName" },
+          { "path": "amount", "label": "Amount", "format": "tokenAmount", "params": { "tokenPath": "asset" } }
+        ]
+      },
+      "withdraw(address,uint256)": {
+        "intent": "Withdraw from Compound",
+        "interpolatedIntent": "Withdraw {amount} from Compound",
+        "fields": [
+          { "path": "asset", "label": "Token", "format": "addressName" },
+          { "path": "amount", "label": "Amount", "format": "tokenAmount", "params": { "tokenPath": "asset" } }
+        ]
+      }
+    }
+  }
+}

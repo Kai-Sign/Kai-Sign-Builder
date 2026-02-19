@@ -1,0 +1,131 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x111111125421ca6dc452d289314280a0f8842a65",
+      "chainId": 1,
+      "name": "1inch Aggregation Router V6",
+      "abi": [
+        {
+          "type": "function",
+          "name": "swap",
+          "selector": "0x12aa3caf",
+          "inputs": [
+            { "name": "executor", "type": "address" },
+            { "name": "desc", "type": "tuple", "components": [
+              { "name": "srcToken", "type": "address" },
+              { "name": "dstToken", "type": "address" },
+              { "name": "srcReceiver", "type": "address" },
+              { "name": "dstReceiver", "type": "address" },
+              { "name": "amount", "type": "uint256" },
+              { "name": "minReturnAmount", "type": "uint256" },
+              { "name": "flags", "type": "uint256" }
+            ]},
+            { "name": "permit", "type": "bytes" },
+            { "name": "data", "type": "bytes" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "swap",
+          "selector": "0x07ed2379",
+          "inputs": [
+            { "name": "executor", "type": "address" },
+            { "name": "desc", "type": "tuple", "components": [
+              { "name": "srcToken", "type": "address" },
+              { "name": "dstToken", "type": "address" },
+              { "name": "srcReceiver", "type": "address" },
+              { "name": "dstReceiver", "type": "address" },
+              { "name": "amount", "type": "uint256" },
+              { "name": "minReturnAmount", "type": "uint256" },
+              { "name": "flags", "type": "uint256" }
+            ]},
+            { "name": "data", "type": "bytes" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "unoswap",
+          "selector": "0x0502b1c5",
+          "inputs": [
+            { "name": "srcToken", "type": "address" },
+            { "name": "amount", "type": "uint256" },
+            { "name": "minReturn", "type": "uint256" },
+            { "name": "pools", "type": "uint256[]" }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "fillOrder",
+          "selector": "0x9fda64bd",
+          "inputs": [
+            { "name": "order", "type": "tuple", "components": [
+              { "name": "salt", "type": "uint256" },
+              { "name": "maker", "type": "uint256" },
+              { "name": "receiver", "type": "uint256" },
+              { "name": "makerAsset", "type": "uint256" },
+              { "name": "takerAsset", "type": "uint256" },
+              { "name": "makingAmount", "type": "uint256" },
+              { "name": "takingAmount", "type": "uint256" },
+              { "name": "makerTraits", "type": "uint256" }
+            ]},
+            { "name": "r", "type": "bytes32" },
+            { "name": "vs", "type": "bytes32" },
+            { "name": "amount", "type": "uint256" },
+            { "name": "takerTraits", "type": "uint256" }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "swap(address,(address,address,address,address,uint256,uint256,uint256),bytes)": {
+        "intent": "Swap via 1inch",
+        "interpolatedIntent": "Swap {desc.amount} for at least {desc.minReturnAmount}",
+        "fields": [
+          { "path": "desc.srcToken", "label": "From Token", "format": "addressName" },
+          { "path": "desc.dstToken", "label": "To Token", "format": "addressName" },
+          { "path": "desc.amount", "label": "Amount In", "format": "tokenAmount", "params": { "tokenPath": "desc.srcToken" } },
+          { "path": "desc.minReturnAmount", "label": "Minimum Output", "format": "tokenAmount", "params": { "tokenPath": "desc.dstToken" } }
+        ]
+      },
+      "swap(address,tuple,bytes,bytes)": {
+        "intent": "Swap via 1inch",
+        "interpolatedIntent": "Swap {desc.amount} for at least {desc.minReturnAmount}",
+        "fields": [
+          { "path": "desc.srcToken", "label": "From Token", "format": "addressName" },
+          { "path": "desc.dstToken", "label": "To Token", "format": "addressName" },
+          { "path": "desc.amount", "label": "Amount In", "format": "tokenAmount", "params": { "tokenPath": "desc.srcToken" } },
+          { "path": "desc.minReturnAmount", "label": "Minimum Output", "format": "tokenAmount", "params": { "tokenPath": "desc.dstToken" } }
+        ]
+      },
+      "swap(address,tuple,bytes)": {
+        "intent": "Swap via 1inch",
+        "interpolatedIntent": "Swap {desc.amount} for at least {desc.minReturnAmount}",
+        "fields": [
+          { "path": "desc.srcToken", "label": "From Token", "format": "addressName" },
+          { "path": "desc.dstToken", "label": "To Token", "format": "addressName" },
+          { "path": "desc.amount", "label": "Amount In", "format": "tokenAmount", "params": { "tokenPath": "desc.srcToken" } },
+          { "path": "desc.minReturnAmount", "label": "Minimum Output", "format": "tokenAmount", "params": { "tokenPath": "desc.dstToken" } }
+        ]
+      },
+      "unoswap(address,uint256,uint256,uint256[])": {
+        "intent": "Swap via 1inch",
+        "interpolatedIntent": "Swap {amount} for at least {minReturn}",
+        "fields": [
+          { "path": "srcToken", "label": "From Token", "format": "addressName" },
+          { "path": "amount", "label": "Amount In", "format": "tokenAmount", "params": { "tokenPath": "srcToken" } },
+          { "path": "minReturn", "label": "Min Amount Out", "format": "raw" }
+        ]
+      },
+      "fillOrder((uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256),bytes32,bytes32,uint256,uint256)": {
+        "intent": "Fill limit order via 1inch",
+        "fields": [
+          { "path": "order.makingAmount", "label": "Maker Amount", "format": "raw" },
+          { "path": "order.takingAmount", "label": "Taker Amount", "format": "raw" },
+          { "path": "amount", "label": "Fill Amount", "format": "raw" }
+        ]
+      }
+    }
+  }
+}
