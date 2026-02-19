@@ -68,7 +68,7 @@ export default function VerificationResultsPage() {
 
           <div className="mt-6 p-4 bg-purple-900 rounded-lg">
             <p className="text-sm text-purple-200">
-              <strong>V1 Contract:</strong> 0xC203e8C22eFCA3C9218a6418f6d4281Cb7744dAa on Sepolia Testnet
+              <strong>V1 Contract:</strong> 0xA819D2d3A2820995701cF46F8a314C7040d86BEe on Sepolia Testnet
               <br />
               <strong>Note:</strong> The V1 system includes enhanced security features and gas optimizations. 
               All interactions are logged and can be tracked through the contract events.
