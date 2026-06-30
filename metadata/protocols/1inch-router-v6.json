@@ -1,0 +1,2117 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x111111125421ca6dc452d289314280a0f8842a65",
+      "chainId": 1,
+      "name": "1inch Aggregation Router V6",
+      "abi": [
+        {
+          "type": "function",
+          "name": "swap",
+          "selector": "0x12aa3caf",
+          "inputs": [
+            {
+              "name": "executor",
+              "type": "address"
+            },
+            {
+              "name": "desc",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "srcToken",
+                  "type": "address"
+                },
+                {
+                  "name": "dstToken",
+                  "type": "address"
+                },
+                {
+                  "name": "srcReceiver",
+                  "type": "address"
+                },
+                {
+                  "name": "dstReceiver",
+                  "type": "address"
+                },
+                {
+                  "name": "amount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "minReturnAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "flags",
+                  "type": "uint256"
+                }
+              ]
+            },
+            {
+              "name": "permit",
+              "type": "bytes"
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "swap",
+          "selector": "0x07ed2379",
+          "inputs": [
+            {
+              "name": "executor",
+              "type": "address"
+            },
+            {
+              "name": "desc",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "srcToken",
+                  "type": "address"
+                },
+                {
+                  "name": "dstToken",
+                  "type": "address"
+                },
+                {
+                  "name": "srcReceiver",
+                  "type": "address"
+                },
+                {
+                  "name": "dstReceiver",
+                  "type": "address"
+                },
+                {
+                  "name": "amount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "minReturnAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "flags",
+                  "type": "uint256"
+                }
+              ]
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "unoswap",
+          "selector": "0x0502b1c5",
+          "inputs": [
+            {
+              "name": "srcToken",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "minReturn",
+              "type": "uint256"
+            },
+            {
+              "name": "pools",
+              "type": "uint256[]"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "fillOrder",
+          "selector": "0x9fda64bd",
+          "inputs": [
+            {
+              "name": "order",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "salt",
+                  "type": "uint256"
+                },
+                {
+                  "name": "maker",
+                  "type": "uint256"
+                },
+                {
+                  "name": "receiver",
+                  "type": "uint256"
+                },
+                {
+                  "name": "makerAsset",
+                  "type": "uint256"
+                },
+                {
+                  "name": "takerAsset",
+                  "type": "uint256"
+                },
+                {
+                  "name": "makingAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "takingAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "makerTraits",
+                  "type": "uint256"
+                }
+              ]
+            },
+            {
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "name": "vs",
+              "type": "bytes32"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "takerTraits",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "cancelOrder",
+          "selector": "0xb68fb020",
+          "inputs": [
+            {
+              "name": "makerTraits",
+              "type": "uint256"
+            },
+            {
+              "name": "orderHash",
+              "type": "bytes32"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "permitAndCall",
+          "selector": "0x5816d723",
+          "inputs": [
+            {
+              "name": "permit",
+              "type": "bytes"
+            },
+            {
+              "name": "action",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "advanceEpoch",
+          "selector": "0x0d2c7c16",
+          "inputs": [
+            {
+              "internalType": "uint96",
+              "name": "series",
+              "type": "uint96"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "bitsInvalidateForOrder",
+          "selector": "0x05b1ea03",
+          "inputs": [
+            {
+              "internalType": "MakerTraits",
+              "name": "makerTraits",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "additionalMask",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "cancelOrders",
+          "selector": "0x89e7c650",
+          "inputs": [
+            {
+              "internalType": "MakerTraits[]",
+              "name": "makerTraits",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "bytes32[]",
+              "name": "orderHashes",
+              "type": "bytes32[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "clipperSwap",
+          "selector": "0xd2d374e5",
+          "inputs": [
+            {
+              "internalType": "contract IClipperExchange",
+              "name": "clipperExchange",
+              "type": "address"
+            },
+            {
+              "internalType": "Address",
+              "name": "srcToken",
+              "type": "uint256"
+            },
+            {
+              "internalType": "contract IERC20",
+              "name": "dstToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "inputAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "outputAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "goodUntil",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "vs",
+              "type": "bytes32"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "returnAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "clipperSwapTo",
+          "selector": "0xc4d652af",
+          "inputs": [
+            {
+              "internalType": "contract IClipperExchange",
+              "name": "clipperExchange",
+              "type": "address"
+            },
+            {
+              "internalType": "address payable",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "Address",
+              "name": "srcToken",
+              "type": "uint256"
+            },
+            {
+              "internalType": "contract IERC20",
+              "name": "dstToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "inputAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "outputAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "goodUntil",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "vs",
+              "type": "bytes32"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "returnAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "curveSwapCallback",
+          "selector": "0xe413f48d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "inCoin",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "dx",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "ethUnoswap",
+          "selector": "0xa76dfc3b",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "minReturn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "returnAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "ethUnoswap2",
+          "selector": "0x89af926a",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "minReturn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex2",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "returnAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "ethUnoswap3",
+          "selector": "0x188ac35d",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "minReturn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex2",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex3",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "returnAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "ethUnoswapTo",
+          "selector": "0x175accdc",
+          "inputs": [
+            {
+              "internalType": "Address",
+              "name": "to",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minReturn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "returnAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "ethUnoswapTo2",
+          "selector": "0x0f449d71",
+          "inputs": [
+            {
+              "internalType": "Address",
+              "name": "to",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minReturn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex2",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "returnAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "ethUnoswapTo3",
+          "selector": "0x493189f0",
+          "inputs": [
+            {
+              "internalType": "Address",
+              "name": "to",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minReturn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex2",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex3",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "returnAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "fillContractOrder",
+          "selector": "0xcc713a04",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "salt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "Address",
+                  "name": "maker",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "Address",
+                  "name": "receiver",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "Address",
+                  "name": "makerAsset",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "Address",
+                  "name": "takerAsset",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "makingAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "takingAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "MakerTraits",
+                  "name": "makerTraits",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IOrderMixin.Order",
+              "name": "order",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "TakerTraits",
+              "name": "takerTraits",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "fillContractOrderArgs",
+          "selector": "0x56a75868",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "salt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "Address",
+                  "name": "maker",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "Address",
+                  "name": "receiver",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "Address",
+                  "name": "makerAsset",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "Address",
+                  "name": "takerAsset",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "makingAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "takingAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "MakerTraits",
+                  "name": "makerTraits",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IOrderMixin.Order",
+              "name": "order",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "TakerTraits",
+              "name": "takerTraits",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "args",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "fillOrderArgs",
+          "selector": "0xf497df75",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "salt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "Address",
+                  "name": "maker",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "Address",
+                  "name": "receiver",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "Address",
+                  "name": "makerAsset",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "Address",
+                  "name": "takerAsset",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "makingAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "takingAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "MakerTraits",
+                  "name": "makerTraits",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IOrderMixin.Order",
+              "name": "order",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "vs",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "TakerTraits",
+              "name": "takerTraits",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "args",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "increaseEpoch",
+          "selector": "0xc3cf8043",
+          "inputs": [
+            {
+              "internalType": "uint96",
+              "name": "series",
+              "type": "uint96"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pause",
+          "selector": "0x8456cb59",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "rescueFunds",
+          "selector": "0x78e3214f",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "simulate",
+          "selector": "0xbd61951d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "target",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "uniswapV3SwapCallback",
+          "selector": "0xfa461e33",
+          "inputs": [
+            {
+              "internalType": "int256",
+              "name": "amount0Delta",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "amount1Delta",
+              "type": "int256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unoswap",
+          "selector": "0x83800a8e",
+          "inputs": [
+            {
+              "internalType": "Address",
+              "name": "token",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minReturn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "returnAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unoswap2",
+          "selector": "0x8770ba91",
+          "inputs": [
+            {
+              "internalType": "Address",
+              "name": "token",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minReturn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex2",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "returnAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unoswap3",
+          "selector": "0x19367472",
+          "inputs": [
+            {
+              "internalType": "Address",
+              "name": "token",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minReturn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex2",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex3",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "returnAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unoswapTo",
+          "selector": "0xe2c95c82",
+          "inputs": [
+            {
+              "internalType": "Address",
+              "name": "to",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "token",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minReturn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "returnAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unoswapTo2",
+          "selector": "0xea76dddf",
+          "inputs": [
+            {
+              "internalType": "Address",
+              "name": "to",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "token",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minReturn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex2",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "returnAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unoswapTo3",
+          "selector": "0xf7a70056",
+          "inputs": [
+            {
+              "internalType": "Address",
+              "name": "to",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "token",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minReturn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex2",
+              "type": "uint256"
+            },
+            {
+              "internalType": "Address",
+              "name": "dex3",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "returnAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unpause",
+          "selector": "0x3f4ba83a",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        }
+      ],
+      "deployments": {
+        "mainnet": {
+          "address": "0x111111125421ca6dc452d289314280a0f8842a65",
+          "chainId": 1
+        },
+        "arbitrum": {
+          "address": "0x111111125421ca6dc452d289314280a0f8842a65",
+          "chainId": 42161
+        }
+      }
+    }
+  },
+  "display": {
+    "formats": {
+      "swap(address,(address,address,address,address,uint256,uint256,uint256),bytes)": {
+        "intent": "Swap via 1inch",
+        "interpolatedIntent": "Swap {desc.amount} for at least {desc.minReturnAmount}",
+        "fields": [
+          {
+            "path": "desc.srcToken",
+            "label": "From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "desc.dstToken",
+            "label": "To Token",
+            "format": "addressName"
+          },
+          {
+            "path": "desc.amount",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "desc.srcToken"
+            }
+          },
+          {
+            "path": "desc.minReturnAmount",
+            "label": "Minimum Output",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "desc.dstToken"
+            }
+          }
+        ]
+      },
+      "swap(address,tuple,bytes,bytes)": {
+        "intent": "Swap via 1inch",
+        "interpolatedIntent": "Swap {desc.amount} for at least {desc.minReturnAmount}",
+        "fields": [
+          {
+            "path": "desc.srcToken",
+            "label": "From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "desc.dstToken",
+            "label": "To Token",
+            "format": "addressName"
+          },
+          {
+            "path": "desc.amount",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "desc.srcToken"
+            }
+          },
+          {
+            "path": "desc.minReturnAmount",
+            "label": "Minimum Output",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "desc.dstToken"
+            }
+          }
+        ]
+      },
+      "swap(address,tuple,bytes)": {
+        "intent": "Swap via 1inch",
+        "interpolatedIntent": "Swap {desc.amount} for at least {desc.minReturnAmount}",
+        "fields": [
+          {
+            "path": "desc.srcToken",
+            "label": "From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "desc.dstToken",
+            "label": "To Token",
+            "format": "addressName"
+          },
+          {
+            "path": "desc.amount",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "desc.srcToken"
+            }
+          },
+          {
+            "path": "desc.minReturnAmount",
+            "label": "Minimum Output",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "desc.dstToken"
+            }
+          }
+        ]
+      },
+      "unoswap(address,uint256,uint256,uint256[])": {
+        "intent": "Swap via 1inch",
+        "interpolatedIntent": "Swap {amount} for at least {minReturn}",
+        "fields": [
+          {
+            "path": "srcToken",
+            "label": "From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "srcToken"
+            }
+          },
+          {
+            "path": "minReturn",
+            "label": "Min Amount Out",
+            "format": "raw"
+          }
+        ]
+      },
+      "fillOrder((uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256),bytes32,bytes32,uint256,uint256)": {
+        "intent": "Fill limit order via 1inch",
+        "fields": [
+          {
+            "path": "order.makingAmount",
+            "label": "Maker Amount",
+            "format": "raw"
+          },
+          {
+            "path": "order.takingAmount",
+            "label": "Taker Amount",
+            "format": "raw"
+          },
+          {
+            "path": "amount",
+            "label": "Fill Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "cancelOrder(uint256,bytes32)": {
+        "intent": "Cancel 1inch order",
+        "fields": [
+          {
+            "path": "makerTraits",
+            "label": "Maker Traits",
+            "format": "raw"
+          },
+          {
+            "path": "orderHash",
+            "label": "Order Hash",
+            "format": "raw"
+          }
+        ]
+      },
+      "permitAndCall(bytes,bytes)": {
+        "intent": "Execute 1inch action with permit",
+        "fields": [
+          {
+            "path": "permit",
+            "label": "Permit",
+            "format": "hex"
+          },
+          {
+            "path": "action",
+            "label": "Action",
+            "format": "hex"
+          }
+        ]
+      },
+      "advanceEpoch(uint96,uint256)": {
+        "intent": "Review Advance Epoch transaction",
+        "fields": [
+          {
+            "path": "series",
+            "label": "Series",
+            "format": "raw"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "bitsInvalidateForOrder(uint256,uint256)": {
+        "intent": "Review Bits Invalidate For Order transaction",
+        "fields": [
+          {
+            "path": "makerTraits",
+            "label": "Maker Traits",
+            "format": "raw"
+          },
+          {
+            "path": "additionalMask",
+            "label": "Additional Mask",
+            "format": "raw"
+          }
+        ]
+      },
+      "cancelOrders(uint256[],bytes32[])": {
+        "intent": "Review Cancel Orders transaction",
+        "fields": [
+          {
+            "path": "makerTraits",
+            "label": "Maker Traits",
+            "format": "raw"
+          },
+          {
+            "path": "orderHashes",
+            "label": "Order Hashes",
+            "format": "hex"
+          }
+        ]
+      },
+      "clipperSwap(address,uint256,address,uint256,uint256,uint256,bytes32,bytes32)": {
+        "intent": "Review Clipper Swap transaction",
+        "fields": [
+          {
+            "path": "clipperExchange",
+            "label": "Clipper Exchange",
+            "format": "address"
+          },
+          {
+            "path": "srcToken",
+            "label": "Src Token",
+            "format": "raw"
+          },
+          {
+            "path": "dstToken",
+            "label": "Dst Token",
+            "format": "address"
+          },
+          {
+            "path": "inputAmount",
+            "label": "Input Amount",
+            "format": "raw"
+          },
+          {
+            "path": "outputAmount",
+            "label": "Output Amount",
+            "format": "raw"
+          },
+          {
+            "path": "goodUntil",
+            "label": "Good Until",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "vs",
+            "label": "Vs",
+            "format": "hex"
+          }
+        ]
+      },
+      "clipperSwapTo(address,address,uint256,address,uint256,uint256,uint256,bytes32,bytes32)": {
+        "intent": "Review Clipper Swap To transaction",
+        "fields": [
+          {
+            "path": "clipperExchange",
+            "label": "Clipper Exchange",
+            "format": "address"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "srcToken",
+            "label": "Src Token",
+            "format": "raw"
+          },
+          {
+            "path": "dstToken",
+            "label": "Dst Token",
+            "format": "address"
+          },
+          {
+            "path": "inputAmount",
+            "label": "Input Amount",
+            "format": "raw"
+          },
+          {
+            "path": "outputAmount",
+            "label": "Output Amount",
+            "format": "raw"
+          },
+          {
+            "path": "goodUntil",
+            "label": "Good Until",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "vs",
+            "label": "Vs",
+            "format": "hex"
+          }
+        ]
+      },
+      "curveSwapCallback(address,address,address,uint256,uint256)": {
+        "intent": "Review Curve Swap Callback transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "address"
+          },
+          {
+            "path": "param1",
+            "label": "Param1",
+            "format": "address"
+          },
+          {
+            "path": "inCoin",
+            "label": "In Coin",
+            "format": "address"
+          },
+          {
+            "path": "dx",
+            "label": "Dx",
+            "format": "raw"
+          },
+          {
+            "path": "param4",
+            "label": "Param4",
+            "format": "raw"
+          }
+        ]
+      },
+      "ethUnoswap(uint256,uint256)": {
+        "intent": "Review Eth Unoswap transaction",
+        "fields": [
+          {
+            "path": "minReturn",
+            "label": "Min Return",
+            "format": "raw"
+          },
+          {
+            "path": "dex",
+            "label": "Dex",
+            "format": "raw"
+          }
+        ]
+      },
+      "ethUnoswap2(uint256,uint256,uint256)": {
+        "intent": "Review Eth Unoswap2 transaction",
+        "fields": [
+          {
+            "path": "minReturn",
+            "label": "Min Return",
+            "format": "raw"
+          },
+          {
+            "path": "dex",
+            "label": "Dex",
+            "format": "raw"
+          },
+          {
+            "path": "dex2",
+            "label": "Dex2",
+            "format": "raw"
+          }
+        ]
+      },
+      "ethUnoswap3(uint256,uint256,uint256,uint256)": {
+        "intent": "Review Eth Unoswap3 transaction",
+        "fields": [
+          {
+            "path": "minReturn",
+            "label": "Min Return",
+            "format": "raw"
+          },
+          {
+            "path": "dex",
+            "label": "Dex",
+            "format": "raw"
+          },
+          {
+            "path": "dex2",
+            "label": "Dex2",
+            "format": "raw"
+          },
+          {
+            "path": "dex3",
+            "label": "Dex3",
+            "format": "raw"
+          }
+        ]
+      },
+      "ethUnoswapTo(uint256,uint256,uint256)": {
+        "intent": "Review Eth Unoswap To transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "raw"
+          },
+          {
+            "path": "minReturn",
+            "label": "Min Return",
+            "format": "raw"
+          },
+          {
+            "path": "dex",
+            "label": "Dex",
+            "format": "raw"
+          }
+        ]
+      },
+      "ethUnoswapTo2(uint256,uint256,uint256,uint256)": {
+        "intent": "Review Eth Unoswap To2 transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "raw"
+          },
+          {
+            "path": "minReturn",
+            "label": "Min Return",
+            "format": "raw"
+          },
+          {
+            "path": "dex",
+            "label": "Dex",
+            "format": "raw"
+          },
+          {
+            "path": "dex2",
+            "label": "Dex2",
+            "format": "raw"
+          }
+        ]
+      },
+      "ethUnoswapTo3(uint256,uint256,uint256,uint256,uint256)": {
+        "intent": "Review Eth Unoswap To3 transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "raw"
+          },
+          {
+            "path": "minReturn",
+            "label": "Min Return",
+            "format": "raw"
+          },
+          {
+            "path": "dex",
+            "label": "Dex",
+            "format": "raw"
+          },
+          {
+            "path": "dex2",
+            "label": "Dex2",
+            "format": "raw"
+          },
+          {
+            "path": "dex3",
+            "label": "Dex3",
+            "format": "raw"
+          }
+        ]
+      },
+      "fillContractOrder((uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256),bytes,uint256,uint256)": {
+        "intent": "Review Fill Contract Order transaction",
+        "fields": [
+          {
+            "path": "order",
+            "label": "Order",
+            "format": "raw"
+          },
+          {
+            "path": "signature",
+            "label": "Signature",
+            "format": "hex"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "takerTraits",
+            "label": "Taker Traits",
+            "format": "raw"
+          }
+        ]
+      },
+      "fillContractOrderArgs((uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256),bytes,uint256,uint256,bytes)": {
+        "intent": "Review Fill Contract Order Args transaction",
+        "fields": [
+          {
+            "path": "order",
+            "label": "Order",
+            "format": "raw"
+          },
+          {
+            "path": "signature",
+            "label": "Signature",
+            "format": "hex"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "takerTraits",
+            "label": "Taker Traits",
+            "format": "raw"
+          },
+          {
+            "path": "args",
+            "label": "Args",
+            "format": "hex"
+          }
+        ]
+      },
+      "fillOrderArgs((uint256,uint256,uint256,uint256,uint256,uint256,uint256,uint256),bytes32,bytes32,uint256,uint256,bytes)": {
+        "intent": "Review Fill Order Args transaction",
+        "fields": [
+          {
+            "path": "order",
+            "label": "Order",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "vs",
+            "label": "Vs",
+            "format": "hex"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "takerTraits",
+            "label": "Taker Traits",
+            "format": "raw"
+          },
+          {
+            "path": "args",
+            "label": "Args",
+            "format": "hex"
+          }
+        ]
+      },
+      "increaseEpoch(uint96)": {
+        "intent": "Review Increase Epoch transaction",
+        "fields": [
+          {
+            "path": "series",
+            "label": "Series",
+            "format": "raw"
+          }
+        ]
+      },
+      "pause()": {
+        "intent": "Review Pause transaction",
+        "fields": []
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "rescueFunds(address,uint256)": {
+        "intent": "Review Rescue Funds transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "simulate(address,bytes)": {
+        "intent": "Review Simulate transaction",
+        "fields": [
+          {
+            "path": "target",
+            "label": "Target",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "uniswapV3SwapCallback(int256,int256,bytes)": {
+        "intent": "Review Uniswap V3 Swap Callback transaction",
+        "fields": [
+          {
+            "path": "amount0Delta",
+            "label": "Amount0 Delta",
+            "format": "raw"
+          },
+          {
+            "path": "amount1Delta",
+            "label": "Amount1 Delta",
+            "format": "raw"
+          },
+          {
+            "path": "param2",
+            "label": "Param2",
+            "format": "hex"
+          }
+        ]
+      },
+      "unoswap(uint256,uint256,uint256,uint256)": {
+        "intent": "Review Unoswap transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "raw"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "minReturn",
+            "label": "Min Return",
+            "format": "raw"
+          },
+          {
+            "path": "dex",
+            "label": "Dex",
+            "format": "raw"
+          }
+        ]
+      },
+      "unoswap2(uint256,uint256,uint256,uint256,uint256)": {
+        "intent": "Review Unoswap2 transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "raw"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "minReturn",
+            "label": "Min Return",
+            "format": "raw"
+          },
+          {
+            "path": "dex",
+            "label": "Dex",
+            "format": "raw"
+          },
+          {
+            "path": "dex2",
+            "label": "Dex2",
+            "format": "raw"
+          }
+        ]
+      },
+      "unoswap3(uint256,uint256,uint256,uint256,uint256,uint256)": {
+        "intent": "Review Unoswap3 transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "raw"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "minReturn",
+            "label": "Min Return",
+            "format": "raw"
+          },
+          {
+            "path": "dex",
+            "label": "Dex",
+            "format": "raw"
+          },
+          {
+            "path": "dex2",
+            "label": "Dex2",
+            "format": "raw"
+          },
+          {
+            "path": "dex3",
+            "label": "Dex3",
+            "format": "raw"
+          }
+        ]
+      },
+      "unoswapTo(uint256,uint256,uint256,uint256,uint256)": {
+        "intent": "Review Unoswap To transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "raw"
+          },
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "raw"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "minReturn",
+            "label": "Min Return",
+            "format": "raw"
+          },
+          {
+            "path": "dex",
+            "label": "Dex",
+            "format": "raw"
+          }
+        ]
+      },
+      "unoswapTo2(uint256,uint256,uint256,uint256,uint256,uint256)": {
+        "intent": "Review Unoswap To2 transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "raw"
+          },
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "raw"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "minReturn",
+            "label": "Min Return",
+            "format": "raw"
+          },
+          {
+            "path": "dex",
+            "label": "Dex",
+            "format": "raw"
+          },
+          {
+            "path": "dex2",
+            "label": "Dex2",
+            "format": "raw"
+          }
+        ]
+      },
+      "unoswapTo3(uint256,uint256,uint256,uint256,uint256,uint256,uint256)": {
+        "intent": "Review Unoswap To3 transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "raw"
+          },
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "raw"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "minReturn",
+            "label": "Min Return",
+            "format": "raw"
+          },
+          {
+            "path": "dex",
+            "label": "Dex",
+            "format": "raw"
+          },
+          {
+            "path": "dex2",
+            "label": "Dex2",
+            "format": "raw"
+          },
+          {
+            "path": "dex3",
+            "label": "Dex3",
+            "format": "raw"
+          }
+        ]
+      },
+      "unpause()": {
+        "intent": "Review Unpause transaction",
+        "fields": []
+      }
+    }
+  }
+}

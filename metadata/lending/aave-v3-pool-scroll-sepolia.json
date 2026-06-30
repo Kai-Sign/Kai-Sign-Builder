@@ -1,0 +1,344 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x48914c788295b5db23af2b5f0b3be775c4ea9440",
+      "chainId": 534351,
+      "name": "Aave V3 Pool (ScrollSepolia)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "supply",
+          "selector": "0x617ba037",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "onBehalfOf",
+              "type": "address"
+            },
+            {
+              "name": "referralCode",
+              "type": "uint16"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0x69328dec",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "borrow",
+          "selector": "0xa415bcad",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "interestRateMode",
+              "type": "uint256"
+            },
+            {
+              "name": "referralCode",
+              "type": "uint16"
+            },
+            {
+              "name": "onBehalfOf",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "repay",
+          "selector": "0x573ade81",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "interestRateMode",
+              "type": "uint256"
+            },
+            {
+              "name": "onBehalfOf",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "admin",
+          "selector": "0xf851a440",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "implementation",
+          "selector": "0x5c60da1b",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xd1f57894",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_logic",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x3659cfe6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "supply(address,uint256,address,uint16)": {
+        "intent": "Supply {amount} to Aave",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "asset"
+            }
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "number"
+          }
+        ]
+      },
+      "withdraw(address,uint256,address)": {
+        "intent": "Withdraw {amount} from Aave",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "asset"
+            }
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "borrow(address,uint256,uint256,uint16,address)": {
+        "intent": "Borrow {amount} from Aave",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "asset"
+            }
+          },
+          {
+            "path": "interestRateMode",
+            "label": "Rate Mode",
+            "format": "number"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "number"
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          }
+        ]
+      },
+      "repay(address,uint256,uint256,address)": {
+        "intent": "Repay {amount} to Aave",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "asset"
+            }
+          },
+          {
+            "path": "interestRateMode",
+            "label": "Rate Mode",
+            "format": "number"
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          }
+        ]
+      },
+      "admin()": {
+        "intent": "Review Admin transaction",
+        "fields": []
+      },
+      "implementation()": {
+        "intent": "Review Implementation transaction",
+        "fields": []
+      },
+      "initialize(address,bytes)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_logic",
+            "label": " logic",
+            "format": "address"
+          },
+          {
+            "path": "_data",
+            "label": " data",
+            "format": "hex"
+          }
+        ]
+      },
+      "upgradeTo(address)": {
+        "intent": "Review Upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      }
+    }
+  }
+}

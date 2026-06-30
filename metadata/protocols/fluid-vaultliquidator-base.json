@@ -1,0 +1,330 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x33d69ab7058fd5381b468173532100d54b6a40df",
+      "chainId": 8453,
+      "name": "Fluid VaultLiquidator (base)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "operate",
+          "selector": "0x032d2276",
+          "inputs": [
+            {
+              "name": "nftId_",
+              "type": "uint256"
+            },
+            {
+              "name": "newCol_",
+              "type": "int256"
+            },
+            {
+              "name": "newDebt_",
+              "type": "int256"
+            },
+            {
+              "name": "to_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x6e553f65",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xb460af94",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "name": "owner_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "execute",
+          "selector": "0x1cff79cd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "implementation_",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data_",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "spell",
+          "selector": "0x82bc4aaf",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "targets_",
+              "type": "address[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "calldatas_",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "toggleImplementation",
+          "selector": "0xd9e10f45",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "implementation_",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "status_",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "toggleRebalancer",
+          "selector": "0x29e31bdd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "rebalancer_",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "status_",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xedbd7668",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to_",
+              "type": "address"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokens_",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amounts_",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "operate(uint256,int256,int256,address)": {
+        "intent": "Manage Fluid vault position",
+        "fields": [
+          {
+            "path": "nftId_",
+            "label": "Position ID",
+            "format": "raw"
+          },
+          {
+            "path": "newCol_",
+            "label": "Collateral Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "newDebt_",
+            "label": "Debt Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "deposit(uint256,address)": {
+        "intent": "Deposit {assets_} to Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Withdraw {assets_} from Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "owner_",
+            "label": "Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "execute(address,bytes)": {
+        "intent": "Review Execute transaction",
+        "fields": [
+          {
+            "path": "implementation_",
+            "label": "Implementation ",
+            "format": "address"
+          },
+          {
+            "path": "data_",
+            "label": "Data ",
+            "format": "hex"
+          }
+        ]
+      },
+      "spell(address[],bytes[])": {
+        "intent": "Review Spell transaction",
+        "fields": [
+          {
+            "path": "targets_",
+            "label": "Targets ",
+            "format": "raw"
+          },
+          {
+            "path": "calldatas_",
+            "label": "Calldatas ",
+            "format": "hex"
+          }
+        ]
+      },
+      "toggleImplementation(address,bool)": {
+        "intent": "Review Toggle Implementation transaction",
+        "fields": [
+          {
+            "path": "implementation_",
+            "label": "Implementation ",
+            "format": "address"
+          },
+          {
+            "path": "status_",
+            "label": "Status ",
+            "format": "boolean"
+          }
+        ]
+      },
+      "toggleRebalancer(address,bool)": {
+        "intent": "Review Toggle Rebalancer transaction",
+        "fields": [
+          {
+            "path": "rebalancer_",
+            "label": "Rebalancer ",
+            "format": "address"
+          },
+          {
+            "path": "status_",
+            "label": "Status ",
+            "format": "boolean"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "withdraw(address,address[],uint256[])": {
+        "intent": "Review Withdraw transaction",
+        "fields": [
+          {
+            "path": "to_",
+            "label": "To ",
+            "format": "address"
+          },
+          {
+            "path": "tokens_",
+            "label": "Tokens ",
+            "format": "raw"
+          },
+          {
+            "path": "amounts_",
+            "label": "Amounts ",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

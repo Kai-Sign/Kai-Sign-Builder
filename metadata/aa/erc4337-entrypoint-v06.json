@@ -1,0 +1,661 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789",
+      "chainId": 1,
+      "name": "ERC-4337 EntryPoint v0.6",
+      "abi": [
+        {
+          "type": "function",
+          "name": "handleOps",
+          "selector": "0x1fad948c",
+          "inputs": [
+            {
+              "name": "ops",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "sender",
+                  "type": "address"
+                },
+                {
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "name": "initCode",
+                  "type": "bytes"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "callGasLimit",
+                  "type": "uint256"
+                },
+                {
+                  "name": "verificationGasLimit",
+                  "type": "uint256"
+                },
+                {
+                  "name": "preVerificationGas",
+                  "type": "uint256"
+                },
+                {
+                  "name": "maxFeePerGas",
+                  "type": "uint256"
+                },
+                {
+                  "name": "maxPriorityFeePerGas",
+                  "type": "uint256"
+                },
+                {
+                  "name": "paymasterAndData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "signature",
+                  "type": "bytes"
+                }
+              ]
+            },
+            {
+              "name": "beneficiary",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "depositTo",
+          "selector": "0xb760faf9",
+          "inputs": [
+            {
+              "name": "account",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "addStake",
+          "selector": "0x0396cb60",
+          "inputs": [
+            {
+              "internalType": "uint32",
+              "name": "unstakeDelaySec",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "getSenderAddress",
+          "selector": "0x9b249f69",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "initCode",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "handleAggregatedOps",
+          "selector": "0x4b1d7cf5",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "sender",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "nonce",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "initCode",
+                      "type": "bytes"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "callData",
+                      "type": "bytes"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "callGasLimit",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "verificationGasLimit",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "preVerificationGas",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "maxFeePerGas",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "maxPriorityFeePerGas",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "paymasterAndData",
+                      "type": "bytes"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "signature",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct UserOperation[]",
+                  "name": "userOps",
+                  "type": "tuple[]"
+                },
+                {
+                  "internalType": "contract IAggregator",
+                  "name": "aggregator",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct IEntryPoint.UserOpsPerAggregator[]",
+              "name": "opsPerAggregator",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "address payable",
+              "name": "beneficiary",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "incrementNonce",
+          "selector": "0x0bd28e3b",
+          "inputs": [
+            {
+              "internalType": "uint192",
+              "name": "key",
+              "type": "uint192"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "innerHandleOp",
+          "selector": "0x1d732756",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "callData",
+              "type": "bytes"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "sender",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "nonce",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "callGasLimit",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "verificationGasLimit",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "preVerificationGas",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "paymaster",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "maxFeePerGas",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "maxPriorityFeePerGas",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct EntryPoint.MemoryUserOp",
+                  "name": "mUserOp",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "userOpHash",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "prefund",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "contextOffset",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "preOpGas",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct EntryPoint.UserOpInfo",
+              "name": "opInfo",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "context",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "actualGasCost",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "simulateHandleOp",
+          "selector": "0xd6383f94",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "sender",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "initCode",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "callGasLimit",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "verificationGasLimit",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "preVerificationGas",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "maxFeePerGas",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "maxPriorityFeePerGas",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "paymasterAndData",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct UserOperation",
+              "name": "op",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "target",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "targetCallData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "simulateValidation",
+          "selector": "0xee219423",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "sender",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "initCode",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "callGasLimit",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "verificationGasLimit",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "preVerificationGas",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "maxFeePerGas",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "maxPriorityFeePerGas",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "paymasterAndData",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct UserOperation",
+              "name": "userOp",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unlockStake",
+          "selector": "0xbb9fe6bf",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawStake",
+          "selector": "0xc23a5cea",
+          "inputs": [
+            {
+              "internalType": "address payable",
+              "name": "withdrawAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawTo",
+          "selector": "0x205c2878",
+          "inputs": [
+            {
+              "internalType": "address payable",
+              "name": "withdrawAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "withdrawAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "handleOps((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[],address)": {
+        "intent": "Execute user operations",
+        "fields": [
+          {
+            "path": "ops",
+            "label": "User Operations",
+            "format": "array"
+          },
+          {
+            "path": "ops.[].callData",
+            "label": "Operation Call Data",
+            "format": "calldata",
+            "type": "calldata",
+            "to": "$.ops.[].sender"
+          },
+          {
+            "path": "beneficiary",
+            "label": "Beneficiary",
+            "format": "address"
+          }
+        ]
+      },
+      "depositTo(address)": {
+        "intent": "Deposit to account",
+        "fields": [
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "addStake(uint32)": {
+        "intent": "Review Add Stake transaction",
+        "fields": [
+          {
+            "path": "unstakeDelaySec",
+            "label": "Unstake Delay Sec",
+            "format": "raw"
+          }
+        ]
+      },
+      "getSenderAddress(bytes)": {
+        "intent": "Review Get Sender Address transaction",
+        "fields": [
+          {
+            "path": "initCode",
+            "label": "Init Code",
+            "format": "hex"
+          }
+        ]
+      },
+      "handleAggregatedOps(((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes)[],address,bytes)[],address)": {
+        "intent": "Review Handle Aggregated Ops transaction",
+        "fields": [
+          {
+            "path": "opsPerAggregator",
+            "label": "Ops Per Aggregator",
+            "format": "raw"
+          },
+          {
+            "path": "beneficiary",
+            "label": "Beneficiary",
+            "format": "address"
+          }
+        ]
+      },
+      "incrementNonce(uint192)": {
+        "intent": "Review Increment Nonce transaction",
+        "fields": [
+          {
+            "path": "key",
+            "label": "Key",
+            "format": "raw"
+          }
+        ]
+      },
+      "innerHandleOp(bytes,((address,uint256,uint256,uint256,uint256,address,uint256,uint256),bytes32,uint256,uint256,uint256),bytes)": {
+        "intent": "Review Inner Handle Op transaction",
+        "fields": [
+          {
+            "path": "callData",
+            "label": "Call Data",
+            "format": "hex"
+          },
+          {
+            "path": "opInfo",
+            "label": "Op Info",
+            "format": "raw"
+          },
+          {
+            "path": "context",
+            "label": "Context",
+            "format": "hex"
+          }
+        ]
+      },
+      "simulateHandleOp((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),address,bytes)": {
+        "intent": "Review Simulate Handle Op transaction",
+        "fields": [
+          {
+            "path": "op",
+            "label": "Op",
+            "format": "raw"
+          },
+          {
+            "path": "target",
+            "label": "Target",
+            "format": "address"
+          },
+          {
+            "path": "targetCallData",
+            "label": "Target Call Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "simulateValidation((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes))": {
+        "intent": "Review Simulate Validation transaction",
+        "fields": [
+          {
+            "path": "userOp",
+            "label": "User Op",
+            "format": "raw"
+          }
+        ]
+      },
+      "unlockStake()": {
+        "intent": "Review Unlock Stake transaction",
+        "fields": []
+      },
+      "withdrawStake(address)": {
+        "intent": "Review Withdraw Stake transaction",
+        "fields": [
+          {
+            "path": "withdrawAddress",
+            "label": "Withdraw Address",
+            "format": "address"
+          }
+        ]
+      },
+      "withdrawTo(address,uint256)": {
+        "intent": "Review Withdraw To transaction",
+        "fields": [
+          {
+            "path": "withdrawAddress",
+            "label": "Withdraw Address",
+            "format": "address"
+          },
+          {
+            "path": "withdrawAmount",
+            "label": "Withdraw Amount",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

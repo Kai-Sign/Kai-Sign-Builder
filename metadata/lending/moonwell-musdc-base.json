@@ -1,0 +1,56 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 8453,
+          "address": "0xedc817a28e8b93b03976fbd4a3ddbc9f7d176c22"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Moonwell",
+    "contractName": "Moonwell USDC (mUSDC)"
+  },
+  "display": {
+    "formats": {
+      "mint(uint256 mintAmount)": {
+        "intent": "Supply USDC to Moonwell",
+        "interpolatedIntent": "Supply {mintAmount} USDC to Moonwell on Base",
+        "fields": [
+          { "path": "mintAmount", "label": "Amount", "format": "amount", "params": { "decimals": 6, "symbol": "USDC" } }
+        ]
+      },
+      "redeem(uint256 redeemTokens)": {
+        "intent": "Redeem mUSDC from Moonwell",
+        "interpolatedIntent": "Redeem {redeemTokens} mUSDC from Moonwell",
+        "fields": [
+          { "path": "redeemTokens", "label": "mUSDC Amount", "format": "amount", "params": { "decimals": 8, "symbol": "mUSDC" } }
+        ]
+      },
+      "redeemUnderlying(uint256 redeemAmount)": {
+        "intent": "Withdraw USDC from Moonwell",
+        "interpolatedIntent": "Withdraw {redeemAmount} USDC from Moonwell",
+        "fields": [
+          { "path": "redeemAmount", "label": "USDC Amount", "format": "amount", "params": { "decimals": 6, "symbol": "USDC" } }
+        ]
+      },
+      "borrow(uint256 borrowAmount)": {
+        "intent": "Borrow USDC from Moonwell",
+        "interpolatedIntent": "Borrow {borrowAmount} USDC from Moonwell on Base",
+        "fields": [
+          { "path": "borrowAmount", "label": "Borrow Amount", "format": "amount", "params": { "decimals": 6, "symbol": "USDC" } }
+        ]
+      },
+      "repayBorrow(uint256 repayAmount)": {
+        "intent": "Repay USDC loan on Moonwell",
+        "interpolatedIntent": "Repay {repayAmount} USDC to Moonwell on Base",
+        "fields": [
+          { "path": "repayAmount", "label": "Repay Amount", "format": "amount", "params": { "decimals": 6, "symbol": "USDC" } }
+        ]
+      }
+    }
+  }
+}

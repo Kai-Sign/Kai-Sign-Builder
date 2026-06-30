@@ -1,0 +1,256 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x3883f5e181fccaf8410fa61e12b59bad963fb645",
+      "chainId": 1,
+      "name": "Theta Network",
+      "symbol": "THETA",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeController",
+          "selector": "0x3cebb823",
+          "inputs": [
+            {
+              "name": "_newController",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x40c10f19",
+          "inputs": [
+            {
+              "name": "_owner",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeUnlockTime",
+          "selector": "0x48f1cfdb",
+          "inputs": [
+            {
+              "name": "_unlockTime",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "allowPrecirculation",
+          "selector": "0x8ef16d02",
+          "inputs": [
+            {
+              "name": "_addr",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "disallowPrecirculation",
+          "selector": "0xcc481912",
+          "inputs": [
+            {
+              "name": "_addr",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} THETA",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "THETA"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} THETA",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "THETA"
+            }
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "changeController(address)": {
+        "intent": "Review Change Controller transaction",
+        "fields": [
+          {
+            "path": "_newController",
+            "label": " new Controller",
+            "format": "address"
+          }
+        ]
+      },
+      "mint(address,uint256)": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "_owner",
+            "label": " owner",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "changeUnlockTime(uint256)": {
+        "intent": "Review Change Unlock Time transaction",
+        "fields": [
+          {
+            "path": "_unlockTime",
+            "label": " unlock Time",
+            "format": "raw"
+          }
+        ]
+      },
+      "allowPrecirculation(address)": {
+        "intent": "Review Allow Precirculation transaction",
+        "fields": [
+          {
+            "path": "_addr",
+            "label": " addr",
+            "format": "address"
+          }
+        ]
+      },
+      "disallowPrecirculation(address)": {
+        "intent": "Review Disallow Precirculation transaction",
+        "fields": [
+          {
+            "path": "_addr",
+            "label": " addr",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

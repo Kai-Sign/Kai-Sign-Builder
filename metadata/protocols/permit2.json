@@ -1,0 +1,797 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x000000000022d473030f116ddee9f6b43ac78ba3",
+      "chainId": 1,
+      "name": "Permit2",
+      "abi": [
+        {
+          "type": "function",
+          "name": "permit",
+          "selector": "0x2b67b570",
+          "inputs": [
+            {
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "name": "permitSingle",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "details",
+                  "type": "tuple",
+                  "components": [
+                    {
+                      "name": "token",
+                      "type": "address"
+                    },
+                    {
+                      "name": "amount",
+                      "type": "uint160"
+                    },
+                    {
+                      "name": "expiration",
+                      "type": "uint48"
+                    },
+                    {
+                      "name": "nonce",
+                      "type": "uint48"
+                    }
+                  ]
+                },
+                {
+                  "name": "spender",
+                  "type": "address"
+                },
+                {
+                  "name": "sigDeadline",
+                  "type": "uint256"
+                }
+              ]
+            },
+            {
+              "name": "signature",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "permitTransferFrom",
+          "selector": "0x30f28b7a",
+          "inputs": [
+            {
+              "name": "permit",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "permitted",
+                  "type": "tuple",
+                  "components": [
+                    {
+                      "name": "token",
+                      "type": "address"
+                    },
+                    {
+                      "name": "amount",
+                      "type": "uint256"
+                    }
+                  ]
+                },
+                {
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256"
+                }
+              ]
+            },
+            {
+              "name": "transferDetails",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "name": "requestedAmount",
+                  "type": "uint256"
+                }
+              ]
+            },
+            {
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "name": "signature",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x87517c45",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint160",
+              "name": "amount",
+              "type": "uint160"
+            },
+            {
+              "internalType": "uint48",
+              "name": "expiration",
+              "type": "uint48"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "invalidateNonces",
+          "selector": "0x65d9723c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint48",
+              "name": "newNonce",
+              "type": "uint48"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "invalidateUnorderedNonces",
+          "selector": "0x3ff9dcb1",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "wordPos",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "mask",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "lockdown",
+          "selector": "0xcc53287f",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "token",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "spender",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct IAllowanceTransfer.TokenSpenderPair[]",
+              "name": "approvals",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "permit",
+          "selector": "0x2a2d80d1",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "token",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint160",
+                      "name": "amount",
+                      "type": "uint160"
+                    },
+                    {
+                      "internalType": "uint48",
+                      "name": "expiration",
+                      "type": "uint48"
+                    },
+                    {
+                      "internalType": "uint48",
+                      "name": "nonce",
+                      "type": "uint48"
+                    }
+                  ],
+                  "internalType": "struct IAllowanceTransfer.PermitDetails[]",
+                  "name": "details",
+                  "type": "tuple[]"
+                },
+                {
+                  "internalType": "address",
+                  "name": "spender",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "sigDeadline",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IAllowanceTransfer.PermitBatch",
+              "name": "permitBatch",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "permitTransferFrom",
+          "selector": "0xedd9444b",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "token",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct ISignatureTransfer.TokenPermissions[]",
+                  "name": "permitted",
+                  "type": "tuple[]"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ISignatureTransfer.PermitBatchTransferFrom",
+              "name": "permit",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "requestedAmount",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ISignatureTransfer.SignatureTransferDetails[]",
+              "name": "transferDetails",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "permitWitnessTransferFrom",
+          "selector": "0x137c29fe",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "token",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct ISignatureTransfer.TokenPermissions",
+                  "name": "permitted",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ISignatureTransfer.PermitTransferFrom",
+              "name": "permit",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "requestedAmount",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ISignatureTransfer.SignatureTransferDetails",
+              "name": "transferDetails",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "witness",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "string",
+              "name": "witnessTypeString",
+              "type": "string"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "permitWitnessTransferFrom",
+          "selector": "0xfe8ec1a7",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "token",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct ISignatureTransfer.TokenPermissions[]",
+                  "name": "permitted",
+                  "type": "tuple[]"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ISignatureTransfer.PermitBatchTransferFrom",
+              "name": "permit",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "requestedAmount",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ISignatureTransfer.SignatureTransferDetails[]",
+              "name": "transferDetails",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "witness",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "string",
+              "name": "witnessTypeString",
+              "type": "string"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x0d58b1db",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "from",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint160",
+                  "name": "amount",
+                  "type": "uint160"
+                },
+                {
+                  "internalType": "address",
+                  "name": "token",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct IAllowanceTransfer.AllowanceTransferDetails[]",
+              "name": "transferDetails",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x36c78516",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint160",
+              "name": "amount",
+              "type": "uint160"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "permit(address,((address,uint160,uint48,uint48),address,uint256),bytes)": {
+        "intent": "Approve token spending via Permit2",
+        "fields": []
+      },
+      "permitTransferFrom(((address,uint256),uint256,uint256),(address,uint256),address,bytes)": {
+        "intent": "Transfer via Permit2 signature",
+        "fields": []
+      },
+      "approve(address,address,uint160,uint48)": {
+        "intent": "Review Approve transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "expiration",
+            "label": "Expiration",
+            "format": "raw"
+          }
+        ]
+      },
+      "invalidateNonces(address,address,uint48)": {
+        "intent": "Review Invalidate Nonces transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "newNonce",
+            "label": "New Nonce",
+            "format": "raw"
+          }
+        ]
+      },
+      "invalidateUnorderedNonces(uint256,uint256)": {
+        "intent": "Review Invalidate Unordered Nonces transaction",
+        "fields": [
+          {
+            "path": "wordPos",
+            "label": "Word Pos",
+            "format": "raw"
+          },
+          {
+            "path": "mask",
+            "label": "Mask",
+            "format": "raw"
+          }
+        ]
+      },
+      "lockdown((address,address)[])": {
+        "intent": "Review Lockdown transaction",
+        "fields": [
+          {
+            "path": "approvals",
+            "label": "Approvals",
+            "format": "raw"
+          }
+        ]
+      },
+      "permit(address,((address,uint160,uint48,uint48)[],address,uint256),bytes)": {
+        "intent": "Review Permit transaction",
+        "fields": [
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "permitBatch",
+            "label": "Permit Batch",
+            "format": "raw"
+          },
+          {
+            "path": "signature",
+            "label": "Signature",
+            "format": "hex"
+          }
+        ]
+      },
+      "permitTransferFrom(((address,uint256)[],uint256,uint256),(address,uint256)[],address,bytes)": {
+        "intent": "Review Permit Transfer From transaction",
+        "fields": [
+          {
+            "path": "permit",
+            "label": "Permit",
+            "format": "raw"
+          },
+          {
+            "path": "transferDetails",
+            "label": "Transfer Details",
+            "format": "raw"
+          },
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "signature",
+            "label": "Signature",
+            "format": "hex"
+          }
+        ]
+      },
+      "permitWitnessTransferFrom(((address,uint256),uint256,uint256),(address,uint256),address,bytes32,string,bytes)": {
+        "intent": "Review Permit Witness Transfer From transaction",
+        "fields": [
+          {
+            "path": "permit",
+            "label": "Permit",
+            "format": "raw"
+          },
+          {
+            "path": "transferDetails",
+            "label": "Transfer Details",
+            "format": "raw"
+          },
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "witness",
+            "label": "Witness",
+            "format": "hex"
+          },
+          {
+            "path": "witnessTypeString",
+            "label": "Witness Type String",
+            "format": "raw"
+          },
+          {
+            "path": "signature",
+            "label": "Signature",
+            "format": "hex"
+          }
+        ]
+      },
+      "permitWitnessTransferFrom(((address,uint256)[],uint256,uint256),(address,uint256)[],address,bytes32,string,bytes)": {
+        "intent": "Review Permit Witness Transfer From transaction",
+        "fields": [
+          {
+            "path": "permit",
+            "label": "Permit",
+            "format": "raw"
+          },
+          {
+            "path": "transferDetails",
+            "label": "Transfer Details",
+            "format": "raw"
+          },
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "witness",
+            "label": "Witness",
+            "format": "hex"
+          },
+          {
+            "path": "witnessTypeString",
+            "label": "Witness Type String",
+            "format": "raw"
+          },
+          {
+            "path": "signature",
+            "label": "Signature",
+            "format": "hex"
+          }
+        ]
+      },
+      "transferFrom((address,address,uint160,address)[])": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "transferDetails",
+            "label": "Transfer Details",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint160,address)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

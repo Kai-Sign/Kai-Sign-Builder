@@ -1,0 +1,411 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xdef1ca1fb7fbcdc777520aa7f396b4e015f497ab",
+      "chainId": 1,
+      "name": "CoW Protocol",
+      "symbol": "COW",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowance",
+          "selector": "0xa457c2d7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowance",
+          "selector": "0x39509351",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "addedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x40c10f19",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "target",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "permit",
+          "selector": "0xd505accf",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "simulateDelegatecall",
+          "selector": "0xf84436bd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "targetContract",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "calldataPayload",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "response",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "simulateDelegatecallInternal",
+          "selector": "0x43218e19",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "targetContract",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "calldataPayload",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "response",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} COW",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "COW"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} COW",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "COW"
+            }
+          }
+        ]
+      },
+      "decreaseAllowance(address,uint256)": {
+        "intent": "Review Decrease Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "subtractedValue",
+            "label": "Subtracted Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "increaseAllowance(address,uint256)": {
+        "intent": "Review Increase Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "addedValue",
+            "label": "Added Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "mint(address,uint256)": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "target",
+            "label": "Target",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Permit transaction",
+        "fields": [
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "simulateDelegatecall(address,bytes)": {
+        "intent": "Review Simulate Delegatecall transaction",
+        "fields": [
+          {
+            "path": "targetContract",
+            "label": "Target Contract",
+            "format": "address"
+          },
+          {
+            "path": "calldataPayload",
+            "label": "Calldata Payload",
+            "format": "hex"
+          }
+        ]
+      },
+      "simulateDelegatecallInternal(address,bytes)": {
+        "intent": "Review Simulate Delegatecall Internal transaction",
+        "fields": [
+          {
+            "path": "targetContract",
+            "label": "Target Contract",
+            "format": "address"
+          },
+          {
+            "path": "calldataPayload",
+            "label": "Calldata Payload",
+            "format": "hex"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "sender",
+            "label": "Sender",
+            "format": "address"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

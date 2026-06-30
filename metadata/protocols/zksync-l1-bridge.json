@@ -1,0 +1,70 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x32400084c286cf3e17e7b677ea9583e60a000324",
+      "chainId": 1,
+      "name": "zkSync Era L1 Bridge Diamond",
+      "abi": [
+        {
+          "type": "function",
+          "name": "requestL2Transaction",
+          "selector": "0xeb672419",
+          "inputs": [
+            { "name": "_contractL2", "type": "address" },
+            { "name": "_l2Value", "type": "uint256" },
+            { "name": "_calldata", "type": "bytes" },
+            { "name": "_l2GasLimit", "type": "uint256" },
+            { "name": "_l2GasPerPubdataByteLimit", "type": "uint256" },
+            { "name": "_factoryDeps", "type": "bytes[]" },
+            { "name": "_refundRecipient", "type": "address" }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "finalizeEthWithdrawal",
+          "selector": "0x6c0960f9",
+          "inputs": [
+            { "name": "_l2BatchNumber", "type": "uint256" },
+            { "name": "_l2MessageIndex", "type": "uint256" },
+            { "name": "_l2TxNumberInBatch", "type": "uint16" },
+            { "name": "_message", "type": "bytes" },
+            { "name": "_merkleProof", "type": "bytes32[]" }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "requestL2Transaction(address,uint256,bytes,uint256,uint256,bytes[],address)": {
+        "intent": "Deposit ETH or call contract on zkSync Era L2",
+        "interpolatedIntent": "Send {_l2Value} ETH to {_contractL2} on zkSync Era",
+        "fields": [
+          { "path": "_contractL2", "label": "L2 Recipient", "format": "addressName" },
+          { "path": "_l2Value", "label": "ETH Value (L2)", "format": "ethAmount" },
+          { "path": "_l2GasLimit", "label": "L2 Gas Limit", "format": "raw" },
+          { "path": "_refundRecipient", "label": "Fee Refund Recipient", "format": "addressName" }
+        ]
+      },
+      "finalizeEthWithdrawal(uint256,uint256,uint16,bytes,bytes32[])": {
+        "intent": "Claim ETH withdrawal from zkSync Era to Ethereum",
+        "interpolatedIntent": "Finalize ETH withdrawal from zkSync Era batch #{_l2BatchNumber}",
+        "fields": [
+          { "path": "_l2BatchNumber", "label": "L2 Batch Number", "format": "raw" },
+          { "path": "_l2MessageIndex", "label": "Message Index", "format": "raw" }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Matter Labs",
+    "info": {
+      "url": "https://portal.zksync.io/bridge/",
+      "legalName": "Matter Labs",
+      "lastUpdate": "2026-03-27"
+    }
+  }
+}

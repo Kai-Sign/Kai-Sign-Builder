@@ -1,0 +1,144 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xffffffaeff0b96ea8e4f94b2253f31abdd875847",
+      "chainId": 10,
+      "name": "Synthetix V3 Core (Optimism)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x0d3cf5a8",
+          "inputs": [
+            { "name": "accountId", "type": "uint128" },
+            { "name": "collateralType", "type": "address" },
+            { "name": "tokenAmount", "type": "uint256" }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0x7ba4bb23",
+          "inputs": [
+            { "name": "accountId", "type": "uint128" },
+            { "name": "collateralType", "type": "address" },
+            { "name": "tokenAmount", "type": "uint256" }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintUsd",
+          "selector": "0xdf16a074",
+          "inputs": [
+            { "name": "accountId", "type": "uint128" },
+            { "name": "poolId", "type": "uint128" },
+            { "name": "collateralType", "type": "address" },
+            { "name": "amount", "type": "uint256" }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burnUsd",
+          "selector": "0xd3264e43",
+          "inputs": [
+            { "name": "accountId", "type": "uint128" },
+            { "name": "poolId", "type": "uint128" },
+            { "name": "collateralType", "type": "address" },
+            { "name": "amount", "type": "uint256" }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "delegateCollateral",
+          "selector": "0xa0778144",
+          "inputs": [
+            { "name": "accountId", "type": "uint128" },
+            { "name": "poolId", "type": "uint128" },
+            { "name": "collateralType", "type": "address" },
+            { "name": "amount", "type": "uint256" },
+            { "name": "leverage", "type": "uint256" }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "createAccount",
+          "selector": "0x7f9cff3f",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "deposit(uint128,address,uint256)": {
+        "intent": "Deposit collateral to Synthetix V3",
+        "interpolatedIntent": "Deposit {tokenAmount} {collateralType} to Synthetix account #{accountId}",
+        "fields": [
+          { "path": "accountId", "label": "Account ID", "format": "raw" },
+          { "path": "collateralType", "label": "Collateral", "format": "addressName" },
+          { "path": "tokenAmount", "label": "Amount", "format": "tokenAmount", "params": { "tokenPath": "collateralType" } }
+        ]
+      },
+      "withdraw(uint128,address,uint256)": {
+        "intent": "Withdraw collateral from Synthetix V3",
+        "interpolatedIntent": "Withdraw {tokenAmount} {collateralType} from Synthetix account #{accountId}",
+        "fields": [
+          { "path": "accountId", "label": "Account ID", "format": "raw" },
+          { "path": "collateralType", "label": "Collateral", "format": "addressName" },
+          { "path": "tokenAmount", "label": "Amount", "format": "tokenAmount", "params": { "tokenPath": "collateralType" } }
+        ]
+      },
+      "mintUsd(uint128,uint128,address,uint256)": {
+        "intent": "Mint sUSD on Synthetix V3",
+        "interpolatedIntent": "Mint {amount} sUSD against {collateralType} collateral",
+        "fields": [
+          { "path": "accountId", "label": "Account ID", "format": "raw" },
+          { "path": "poolId", "label": "Pool ID", "format": "raw" },
+          { "path": "collateralType", "label": "Collateral", "format": "addressName" },
+          { "path": "amount", "label": "sUSD Amount", "format": "amount", "params": { "decimals": 18, "symbol": "sUSD" } }
+        ]
+      },
+      "burnUsd(uint128,uint128,address,uint256)": {
+        "intent": "Burn sUSD on Synthetix V3",
+        "interpolatedIntent": "Burn {amount} sUSD to repay Synthetix debt",
+        "fields": [
+          { "path": "accountId", "label": "Account ID", "format": "raw" },
+          { "path": "poolId", "label": "Pool ID", "format": "raw" },
+          { "path": "collateralType", "label": "Collateral", "format": "addressName" },
+          { "path": "amount", "label": "sUSD Amount", "format": "amount", "params": { "decimals": 18, "symbol": "sUSD" } }
+        ]
+      },
+      "delegateCollateral(uint128,uint128,address,uint256,uint256)": {
+        "intent": "Delegate collateral to Synthetix V3 pool",
+        "interpolatedIntent": "Delegate {amount} {collateralType} to pool #{poolId}",
+        "fields": [
+          { "path": "accountId", "label": "Account ID", "format": "raw" },
+          { "path": "poolId", "label": "Pool ID", "format": "raw" },
+          { "path": "collateralType", "label": "Collateral", "format": "addressName" },
+          { "path": "amount", "label": "Amount", "format": "tokenAmount", "params": { "tokenPath": "collateralType" } },
+          { "path": "leverage", "label": "Leverage", "format": "raw" }
+        ]
+      },
+      "createAccount()": {
+        "intent": "Create Synthetix V3 account",
+        "interpolatedIntent": "Create a new Synthetix V3 account",
+        "fields": []
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Synthetix",
+    "info": {
+      "url": "https://synthetix.io/",
+      "legalName": "Synthetix Protocol",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

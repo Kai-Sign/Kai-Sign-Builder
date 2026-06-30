@@ -1,0 +1,622 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x324c5dc1fc42c7a4d43d92df1eba58a54d13bf2d",
+      "chainId": 8453,
+      "name": "Fluid VaultFactory (base)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "operate",
+          "selector": "0x032d2276",
+          "inputs": [
+            {
+              "name": "nftId_",
+              "type": "uint256"
+            },
+            {
+              "name": "newCol_",
+              "type": "int256"
+            },
+            {
+              "name": "newDebt_",
+              "type": "int256"
+            },
+            {
+              "name": "to_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x6e553f65",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xb460af94",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "name": "owner_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "id_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "deployVault",
+          "selector": "0x968cbade",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "vaultDeploymentLogic_",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "vaultDeploymentData_",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "vault_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x94bf804d",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "vaultId_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "user_",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "safeTransferFrom",
+          "selector": "0x42842e0e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "id_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "safeTransferFrom",
+          "selector": "0xb88d4fde",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "id_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data_",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setApprovalForAll",
+          "selector": "0xa22cb465",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "operator_",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "approved_",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setDeployer",
+          "selector": "0xa34b5ee8",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "deployer_",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "allowed_",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setGlobalAuth",
+          "selector": "0x8f2db95d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "globalAuth_",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "allowed_",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setVaultAuth",
+          "selector": "0x7faa1d21",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "vault_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "vaultAuth_",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "allowed_",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setVaultDeploymentLogic",
+          "selector": "0x08a892d9",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "deploymentLogic_",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "allowed_",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "spell",
+          "selector": "0xc7acb01f",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "target_",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data_",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "response_",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "id_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "operate(uint256,int256,int256,address)": {
+        "intent": "Manage Fluid vault position",
+        "fields": [
+          {
+            "path": "nftId_",
+            "label": "Position ID",
+            "format": "raw"
+          },
+          {
+            "path": "newCol_",
+            "label": "Collateral Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "newDebt_",
+            "label": "Debt Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "deposit(uint256,address)": {
+        "intent": "Deposit {assets_} to Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Withdraw {assets_} from Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "owner_",
+            "label": "Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Review Approve transaction",
+        "fields": [
+          {
+            "path": "spender_",
+            "label": "Spender ",
+            "format": "address"
+          },
+          {
+            "path": "id_",
+            "label": "Id ",
+            "format": "raw"
+          }
+        ]
+      },
+      "deployVault(address,bytes)": {
+        "intent": "Review Deploy Vault transaction",
+        "fields": [
+          {
+            "path": "vaultDeploymentLogic_",
+            "label": "Vault Deployment Logic ",
+            "format": "address"
+          },
+          {
+            "path": "vaultDeploymentData_",
+            "label": "Vault Deployment Data ",
+            "format": "hex"
+          }
+        ]
+      },
+      "mint(uint256,address)": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "vaultId_",
+            "label": "Vault Id ",
+            "format": "raw"
+          },
+          {
+            "path": "user_",
+            "label": "User ",
+            "format": "address"
+          }
+        ]
+      },
+      "safeTransferFrom(address,address,uint256)": {
+        "intent": "Review Safe Transfer From transaction",
+        "fields": [
+          {
+            "path": "from_",
+            "label": "From ",
+            "format": "address"
+          },
+          {
+            "path": "to_",
+            "label": "To ",
+            "format": "address"
+          },
+          {
+            "path": "id_",
+            "label": "Id ",
+            "format": "raw"
+          }
+        ]
+      },
+      "safeTransferFrom(address,address,uint256,bytes)": {
+        "intent": "Review Safe Transfer From transaction",
+        "fields": [
+          {
+            "path": "from_",
+            "label": "From ",
+            "format": "address"
+          },
+          {
+            "path": "to_",
+            "label": "To ",
+            "format": "address"
+          },
+          {
+            "path": "id_",
+            "label": "Id ",
+            "format": "raw"
+          },
+          {
+            "path": "data_",
+            "label": "Data ",
+            "format": "hex"
+          }
+        ]
+      },
+      "setApprovalForAll(address,bool)": {
+        "intent": "Review Set Approval For All transaction",
+        "fields": [
+          {
+            "path": "operator_",
+            "label": "Operator ",
+            "format": "address"
+          },
+          {
+            "path": "approved_",
+            "label": "Approved ",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setDeployer(address,bool)": {
+        "intent": "Review Set Deployer transaction",
+        "fields": [
+          {
+            "path": "deployer_",
+            "label": "Deployer ",
+            "format": "address"
+          },
+          {
+            "path": "allowed_",
+            "label": "Allowed ",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setGlobalAuth(address,bool)": {
+        "intent": "Review Set Global Auth transaction",
+        "fields": [
+          {
+            "path": "globalAuth_",
+            "label": "Global Auth ",
+            "format": "address"
+          },
+          {
+            "path": "allowed_",
+            "label": "Allowed ",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setVaultAuth(address,address,bool)": {
+        "intent": "Review Set Vault Auth transaction",
+        "fields": [
+          {
+            "path": "vault_",
+            "label": "Vault ",
+            "format": "address"
+          },
+          {
+            "path": "vaultAuth_",
+            "label": "Vault Auth ",
+            "format": "address"
+          },
+          {
+            "path": "allowed_",
+            "label": "Allowed ",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setVaultDeploymentLogic(address,bool)": {
+        "intent": "Review Set Vault Deployment Logic transaction",
+        "fields": [
+          {
+            "path": "deploymentLogic_",
+            "label": "Deployment Logic ",
+            "format": "address"
+          },
+          {
+            "path": "allowed_",
+            "label": "Allowed ",
+            "format": "boolean"
+          }
+        ]
+      },
+      "spell(address,bytes)": {
+        "intent": "Review Spell transaction",
+        "fields": [
+          {
+            "path": "target_",
+            "label": "Target ",
+            "format": "address"
+          },
+          {
+            "path": "data_",
+            "label": "Data ",
+            "format": "hex"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from_",
+            "label": "From ",
+            "format": "address"
+          },
+          {
+            "path": "to_",
+            "label": "To ",
+            "format": "address"
+          },
+          {
+            "path": "id_",
+            "label": "Id ",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

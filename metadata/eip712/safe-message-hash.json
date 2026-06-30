@@ -1,0 +1,34 @@
+{
+  "context": {
+    "eip712": {
+      "domain": {
+        "name": "Safe",
+        "verifyingContract": "*"
+      },
+      "primaryType": "SafeMessage",
+      "types": {
+        "EIP712Domain": [
+          { "name": "name", "type": "string" },
+          { "name": "version", "type": "string" },
+          { "name": "chainId", "type": "uint256" },
+          { "name": "verifyingContract", "type": "address" }
+        ],
+        "SafeMessage": [
+          { "name": "message", "type": "bytes" }
+        ]
+      },
+      "name": "Safe Off-Chain Message",
+      "description": "Sign an arbitrary off-chain message via Safe multi-sig"
+    }
+  },
+  "display": {
+    "formats": {
+      "SafeMessage": {
+        "intent": "Sign off-chain message via Safe",
+        "fields": [
+          { "path": "message", "label": "Message", "format": "raw" }
+        ]
+      }
+    }
+  }
+}

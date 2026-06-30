@@ -1,0 +1,356 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+      "chainId": 1,
+      "name": "Lido wstETH",
+      "symbol": "wstETH",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "wrap",
+          "selector": "0xea598cb0",
+          "inputs": [
+            {
+              "name": "_stETHAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unwrap",
+          "selector": "0xde0e9a3e",
+          "inputs": [
+            {
+              "name": "_wstETHAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "_recipient",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowance",
+          "selector": "0xa457c2d7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowance",
+          "selector": "0x39509351",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "addedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "permit",
+          "selector": "0xd505accf",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "wrap(uint256)": {
+        "intent": "Wrap stETH to wstETH",
+        "interpolatedIntent": "Wrap {_stETHAmount} stETH to wstETH",
+        "fields": [
+          {
+            "path": "_stETHAmount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "stETH"
+            }
+          }
+        ]
+      },
+      "unwrap(uint256)": {
+        "intent": "Unwrap wstETH to stETH",
+        "interpolatedIntent": "Unwrap {_wstETHAmount} wstETH to stETH",
+        "fields": [
+          {
+            "path": "_wstETHAmount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "wstETH"
+            }
+          }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Approve wstETH spending",
+        "interpolatedIntent": "Approve {_spender} to spend {_amount} wstETH",
+        "fields": [
+          {
+            "path": "_spender",
+            "label": "Spender",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "wstETH"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer wstETH",
+        "interpolatedIntent": "Transfer {_amount} wstETH to {_recipient}",
+        "fields": [
+          {
+            "path": "_recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "wstETH"
+            }
+          }
+        ]
+      },
+      "decreaseAllowance(address,uint256)": {
+        "intent": "Review Decrease Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "subtractedValue",
+            "label": "Subtracted Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "increaseAllowance(address,uint256)": {
+        "intent": "Review Increase Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "addedValue",
+            "label": "Added Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Permit transaction",
+        "fields": [
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "sender",
+            "label": "Sender",
+            "format": "address"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

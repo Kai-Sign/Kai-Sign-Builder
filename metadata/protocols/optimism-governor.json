@@ -1,0 +1,1620 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xcdf27f107725988f2261ce2256bdfcde8b382b10",
+      "chainId": 10,
+      "name": "Optimism Governor",
+      "abi": [
+        {
+          "type": "function",
+          "name": "castVote",
+          "selector": "0x56781388",
+          "inputs": [
+            {
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "name": "support",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "castVoteWithReason",
+          "selector": "0x7b3c71d3",
+          "inputs": [
+            {
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "name": "support",
+              "type": "uint8"
+            },
+            {
+              "name": "reason",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "propose",
+          "selector": "0x7d5e81e2",
+          "inputs": [
+            {
+              "name": "targets",
+              "type": "address[]"
+            },
+            {
+              "name": "values",
+              "type": "uint256[]"
+            },
+            {
+              "name": "calldatas",
+              "type": "bytes[]"
+            },
+            {
+              "name": "description",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "queue",
+          "selector": "0x160cbed7",
+          "inputs": [
+            {
+              "name": "targets",
+              "type": "address[]"
+            },
+            {
+              "name": "values",
+              "type": "uint256[]"
+            },
+            {
+              "name": "calldatas",
+              "type": "bytes[]"
+            },
+            {
+              "name": "descriptionHash",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "execute",
+          "selector": "0x2656227d",
+          "inputs": [
+            {
+              "name": "targets",
+              "type": "address[]"
+            },
+            {
+              "name": "values",
+              "type": "uint256[]"
+            },
+            {
+              "name": "calldatas",
+              "type": "bytes[]"
+            },
+            {
+              "name": "descriptionHash",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "admin",
+          "selector": "0xf851a440",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "admin_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeAdmin",
+          "selector": "0x8f283970",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "implementation",
+          "selector": "0x5c60da1b",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "implementation_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x3659cfe6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "cancel",
+          "selector": "0x452115d6",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "targets",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "values",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "calldatas",
+              "type": "bytes[]"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "descriptionHash",
+              "type": "bytes32"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "cancelWithModule",
+          "selector": "0xd958bc1d",
+          "inputs": [
+            {
+              "internalType": "contract VotingModule",
+              "name": "module",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "proposalData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "descriptionHash",
+              "type": "bytes32"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "castVoteBySig",
+          "selector": "0x3bccf4fd",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "support",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "castVoteFromAlligator",
+          "selector": "0xa2c465d9",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "voter",
+              "type": "address"
+            },
+            {
+              "internalType": "uint8",
+              "name": "support",
+              "type": "uint8"
+            },
+            {
+              "internalType": "string",
+              "name": "reason",
+              "type": "string"
+            },
+            {
+              "internalType": "uint256",
+              "name": "votes",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "params",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "castVoteWithReasonAndParams",
+          "selector": "0x5f398a14",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "support",
+              "type": "uint8"
+            },
+            {
+              "internalType": "string",
+              "name": "reason",
+              "type": "string"
+            },
+            {
+              "internalType": "bytes",
+              "name": "params",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "castVoteWithReasonAndParamsBySig",
+          "selector": "0x03420181",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "support",
+              "type": "uint8"
+            },
+            {
+              "internalType": "string",
+              "name": "reason",
+              "type": "string"
+            },
+            {
+              "internalType": "bytes",
+              "name": "params",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "editProposalType",
+          "selector": "0xf89f6d92",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "proposalType",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "executeWithModule",
+          "selector": "0xb3759161",
+          "inputs": [
+            {
+              "internalType": "contract VotingModule",
+              "name": "module",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "proposalData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "descriptionHash",
+              "type": "bytes32"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "increaseWeightCast",
+          "selector": "0x2e9ba283",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "votes",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "accountVotes",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0x78e243fe",
+          "inputs": [
+            {
+              "internalType": "contract IVotingToken",
+              "name": "_votingToken",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IVotableSupplyOracle",
+              "name": "_votableSupplyOracle",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_manager",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_alligator",
+              "type": "address"
+            },
+            {
+              "internalType": "contract TimelockControllerUpgradeable",
+              "name": "_timelockAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IProposalTypesConfigurator",
+              "name": "_proposalTypesConfigurator",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint16",
+                  "name": "quorum",
+                  "type": "uint16"
+                },
+                {
+                  "internalType": "uint16",
+                  "name": "approvalThreshold",
+                  "type": "uint16"
+                },
+                {
+                  "internalType": "string",
+                  "name": "name",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "description",
+                  "type": "string"
+                },
+                {
+                  "internalType": "address",
+                  "name": "module",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct IProposalTypesConfigurator.ProposalType[]",
+              "name": "_proposalTypes",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "onERC1155BatchReceived",
+          "selector": "0xbc197c81",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes4",
+              "name": "",
+              "type": "bytes4"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "onERC1155Received",
+          "selector": "0xf23a6e61",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes4",
+              "name": "",
+              "type": "bytes4"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "onERC721Received",
+          "selector": "0x150b7a02",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes4",
+              "name": "",
+              "type": "bytes4"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "propose",
+          "selector": "0x9a79018e",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "targets",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "values",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "calldatas",
+              "type": "bytes[]"
+            },
+            {
+              "internalType": "string",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "internalType": "uint8",
+              "name": "proposalType",
+              "type": "uint8"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "proposeWithModule",
+          "selector": "0xb3e43242",
+          "inputs": [
+            {
+              "internalType": "contract VotingModule",
+              "name": "module",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "proposalData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "string",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "internalType": "uint8",
+              "name": "proposalType",
+              "type": "uint8"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "queueWithModule",
+          "selector": "0x9c82ec3c",
+          "inputs": [
+            {
+              "internalType": "contract VotingModule",
+              "name": "module",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "proposalData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "descriptionHash",
+              "type": "bytes32"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "reinitialize",
+          "selector": "0x078a13b1",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_alligator",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_votableSupplyOracle",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_proposalTypesConfigurator",
+              "type": "address"
+            },
+            {
+              "internalType": "contract TimelockControllerUpgradeable",
+              "name": "_timelockAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "relay",
+          "selector": "0xc28bc2fa",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "target",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "setManager",
+          "selector": "0xd0ebdbe7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_newManager",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setModuleApproval",
+          "selector": "0x7ac54f39",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "module",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "approved",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setProposalDeadline",
+          "selector": "0xf7903e9f",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint64",
+              "name": "deadline",
+              "type": "uint64"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setProposalThreshold",
+          "selector": "0xece40cc1",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newProposalThreshold",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setVotingDelay",
+          "selector": "0x70b0f660",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newVotingDelay",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setVotingPeriod",
+          "selector": "0xea0217cf",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newVotingPeriod",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateTimelock",
+          "selector": "0xa890c910",
+          "inputs": [
+            {
+              "internalType": "contract TimelockControllerUpgradeable",
+              "name": "newTimelock",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "castVote(uint256,uint8)": {
+        "intent": "Vote on Optimism governance proposal",
+        "interpolatedIntent": "Vote {support} on Optimism proposal #{proposalId}",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal ID",
+            "format": "raw"
+          },
+          {
+            "path": "support",
+            "label": "Vote (0=Against, 1=For, 2=Abstain)",
+            "format": "raw"
+          }
+        ]
+      },
+      "castVoteWithReason(uint256,uint8,string)": {
+        "intent": "Vote on Optimism governance proposal with reason",
+        "interpolatedIntent": "Vote {support} on Optimism proposal #{proposalId}",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal ID",
+            "format": "raw"
+          },
+          {
+            "path": "support",
+            "label": "Vote (0=Against, 1=For, 2=Abstain)",
+            "format": "raw"
+          },
+          {
+            "path": "reason",
+            "label": "Reason",
+            "format": "raw"
+          }
+        ]
+      },
+      "propose(address[],uint256[],bytes[],string)": {
+        "intent": "Create Optimism governance proposal",
+        "fields": [
+          {
+            "path": "description",
+            "label": "Description",
+            "format": "raw"
+          }
+        ]
+      },
+      "queue(address[],uint256[],bytes[],bytes32)": {
+        "intent": "Queue Optimism governance proposal for execution",
+        "fields": [
+          {
+            "path": "descriptionHash",
+            "label": "Description Hash",
+            "format": "raw"
+          }
+        ]
+      },
+      "execute(address[],uint256[],bytes[],bytes32)": {
+        "intent": "Execute Optimism governance proposal",
+        "fields": [
+          {
+            "path": "descriptionHash",
+            "label": "Description Hash",
+            "format": "raw"
+          }
+        ]
+      },
+      "admin()": {
+        "intent": "Review Admin transaction",
+        "fields": []
+      },
+      "changeAdmin(address)": {
+        "intent": "Review Change Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "implementation()": {
+        "intent": "Review Implementation transaction",
+        "fields": []
+      },
+      "upgradeTo(address)": {
+        "intent": "Review Upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "cancel(address[],uint256[],bytes[],bytes32)": {
+        "intent": "Review Cancel transaction",
+        "fields": [
+          {
+            "path": "targets",
+            "label": "Targets",
+            "format": "raw"
+          },
+          {
+            "path": "values",
+            "label": "Values",
+            "format": "raw"
+          },
+          {
+            "path": "calldatas",
+            "label": "Calldatas",
+            "format": "hex"
+          },
+          {
+            "path": "descriptionHash",
+            "label": "Description Hash",
+            "format": "hex"
+          }
+        ]
+      },
+      "cancelWithModule(address,bytes,bytes32)": {
+        "intent": "Review Cancel With Module transaction",
+        "fields": [
+          {
+            "path": "module",
+            "label": "Module",
+            "format": "address"
+          },
+          {
+            "path": "proposalData",
+            "label": "Proposal Data",
+            "format": "hex"
+          },
+          {
+            "path": "descriptionHash",
+            "label": "Description Hash",
+            "format": "hex"
+          }
+        ]
+      },
+      "castVoteBySig(uint256,uint8,uint8,bytes32,bytes32)": {
+        "intent": "Review Cast Vote By Sig transaction",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal Id",
+            "format": "raw"
+          },
+          {
+            "path": "support",
+            "label": "Support",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "castVoteFromAlligator(uint256,address,uint8,string,uint256,bytes)": {
+        "intent": "Review Cast Vote From Alligator transaction",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal Id",
+            "format": "raw"
+          },
+          {
+            "path": "voter",
+            "label": "Voter",
+            "format": "address"
+          },
+          {
+            "path": "support",
+            "label": "Support",
+            "format": "raw"
+          },
+          {
+            "path": "reason",
+            "label": "Reason",
+            "format": "raw"
+          },
+          {
+            "path": "votes",
+            "label": "Votes",
+            "format": "raw"
+          },
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "hex"
+          }
+        ]
+      },
+      "castVoteWithReasonAndParams(uint256,uint8,string,bytes)": {
+        "intent": "Review Cast Vote With Reason And Params transaction",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal Id",
+            "format": "raw"
+          },
+          {
+            "path": "support",
+            "label": "Support",
+            "format": "raw"
+          },
+          {
+            "path": "reason",
+            "label": "Reason",
+            "format": "raw"
+          },
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "hex"
+          }
+        ]
+      },
+      "castVoteWithReasonAndParamsBySig(uint256,uint8,string,bytes,uint8,bytes32,bytes32)": {
+        "intent": "Review Cast Vote With Reason And Params By Sig transaction",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal Id",
+            "format": "raw"
+          },
+          {
+            "path": "support",
+            "label": "Support",
+            "format": "raw"
+          },
+          {
+            "path": "reason",
+            "label": "Reason",
+            "format": "raw"
+          },
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "hex"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "editProposalType(uint256,uint8)": {
+        "intent": "Review Edit Proposal Type transaction",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal Id",
+            "format": "raw"
+          },
+          {
+            "path": "proposalType",
+            "label": "Proposal Type",
+            "format": "raw"
+          }
+        ]
+      },
+      "executeWithModule(address,bytes,bytes32)": {
+        "intent": "Review Execute With Module transaction",
+        "fields": [
+          {
+            "path": "module",
+            "label": "Module",
+            "format": "address"
+          },
+          {
+            "path": "proposalData",
+            "label": "Proposal Data",
+            "format": "hex"
+          },
+          {
+            "path": "descriptionHash",
+            "label": "Description Hash",
+            "format": "hex"
+          }
+        ]
+      },
+      "increaseWeightCast(uint256,address,uint256,uint256)": {
+        "intent": "Review Increase Weight Cast transaction",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal Id",
+            "format": "raw"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          },
+          {
+            "path": "votes",
+            "label": "Votes",
+            "format": "raw"
+          },
+          {
+            "path": "accountVotes",
+            "label": "Account Votes",
+            "format": "raw"
+          }
+        ]
+      },
+      "initialize(address,address,address,address,address,address,(uint16,uint16,string,string,address)[])": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_votingToken",
+            "label": " voting Token",
+            "format": "address"
+          },
+          {
+            "path": "_votableSupplyOracle",
+            "label": " votable Supply Oracle",
+            "format": "address"
+          },
+          {
+            "path": "_manager",
+            "label": " manager",
+            "format": "address"
+          },
+          {
+            "path": "_alligator",
+            "label": " alligator",
+            "format": "address"
+          },
+          {
+            "path": "_timelockAddress",
+            "label": " timelock Address",
+            "format": "address"
+          },
+          {
+            "path": "_proposalTypesConfigurator",
+            "label": " proposal Types Configurator",
+            "format": "address"
+          },
+          {
+            "path": "_proposalTypes",
+            "label": " proposal Types",
+            "format": "raw"
+          }
+        ]
+      },
+      "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)": {
+        "intent": "Review On ERC1155 Batch Received transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "address"
+          },
+          {
+            "path": "param1",
+            "label": "Param1",
+            "format": "address"
+          },
+          {
+            "path": "param2",
+            "label": "Param2",
+            "format": "raw"
+          },
+          {
+            "path": "param3",
+            "label": "Param3",
+            "format": "raw"
+          },
+          {
+            "path": "param4",
+            "label": "Param4",
+            "format": "hex"
+          }
+        ]
+      },
+      "onERC1155Received(address,address,uint256,uint256,bytes)": {
+        "intent": "Review On ERC1155 Received transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "address"
+          },
+          {
+            "path": "param1",
+            "label": "Param1",
+            "format": "address"
+          },
+          {
+            "path": "param2",
+            "label": "Param2",
+            "format": "raw"
+          },
+          {
+            "path": "param3",
+            "label": "Param3",
+            "format": "raw"
+          },
+          {
+            "path": "param4",
+            "label": "Param4",
+            "format": "hex"
+          }
+        ]
+      },
+      "onERC721Received(address,address,uint256,bytes)": {
+        "intent": "Review On ERC721 Received transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "address"
+          },
+          {
+            "path": "param1",
+            "label": "Param1",
+            "format": "address"
+          },
+          {
+            "path": "param2",
+            "label": "Param2",
+            "format": "raw"
+          },
+          {
+            "path": "param3",
+            "label": "Param3",
+            "format": "hex"
+          }
+        ]
+      },
+      "propose(address[],uint256[],bytes[],string,uint8)": {
+        "intent": "Review Propose transaction",
+        "fields": [
+          {
+            "path": "targets",
+            "label": "Targets",
+            "format": "raw"
+          },
+          {
+            "path": "values",
+            "label": "Values",
+            "format": "raw"
+          },
+          {
+            "path": "calldatas",
+            "label": "Calldatas",
+            "format": "hex"
+          },
+          {
+            "path": "description",
+            "label": "Description",
+            "format": "raw"
+          },
+          {
+            "path": "proposalType",
+            "label": "Proposal Type",
+            "format": "raw"
+          }
+        ]
+      },
+      "proposeWithModule(address,bytes,string,uint8)": {
+        "intent": "Review Propose With Module transaction",
+        "fields": [
+          {
+            "path": "module",
+            "label": "Module",
+            "format": "address"
+          },
+          {
+            "path": "proposalData",
+            "label": "Proposal Data",
+            "format": "hex"
+          },
+          {
+            "path": "description",
+            "label": "Description",
+            "format": "raw"
+          },
+          {
+            "path": "proposalType",
+            "label": "Proposal Type",
+            "format": "raw"
+          }
+        ]
+      },
+      "queueWithModule(address,bytes,bytes32)": {
+        "intent": "Review Queue With Module transaction",
+        "fields": [
+          {
+            "path": "module",
+            "label": "Module",
+            "format": "address"
+          },
+          {
+            "path": "proposalData",
+            "label": "Proposal Data",
+            "format": "hex"
+          },
+          {
+            "path": "descriptionHash",
+            "label": "Description Hash",
+            "format": "hex"
+          }
+        ]
+      },
+      "reinitialize(address,address,address,address)": {
+        "intent": "Review Reinitialize transaction",
+        "fields": [
+          {
+            "path": "_alligator",
+            "label": " alligator",
+            "format": "address"
+          },
+          {
+            "path": "_votableSupplyOracle",
+            "label": " votable Supply Oracle",
+            "format": "address"
+          },
+          {
+            "path": "_proposalTypesConfigurator",
+            "label": " proposal Types Configurator",
+            "format": "address"
+          },
+          {
+            "path": "_timelockAddress",
+            "label": " timelock Address",
+            "format": "address"
+          }
+        ]
+      },
+      "relay(address,uint256,bytes)": {
+        "intent": "Review Relay transaction",
+        "fields": [
+          {
+            "path": "target",
+            "label": "Target",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "setManager(address)": {
+        "intent": "Review Set Manager transaction",
+        "fields": [
+          {
+            "path": "_newManager",
+            "label": " new Manager",
+            "format": "address"
+          }
+        ]
+      },
+      "setModuleApproval(address,bool)": {
+        "intent": "Review Set Module Approval transaction",
+        "fields": [
+          {
+            "path": "module",
+            "label": "Module",
+            "format": "address"
+          },
+          {
+            "path": "approved",
+            "label": "Approved",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setProposalDeadline(uint256,uint64)": {
+        "intent": "Review Set Proposal Deadline transaction",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal Id",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "setProposalThreshold(uint256)": {
+        "intent": "Review Set Proposal Threshold transaction",
+        "fields": [
+          {
+            "path": "newProposalThreshold",
+            "label": "New Proposal Threshold",
+            "format": "raw"
+          }
+        ]
+      },
+      "setVotingDelay(uint256)": {
+        "intent": "Review Set Voting Delay transaction",
+        "fields": [
+          {
+            "path": "newVotingDelay",
+            "label": "New Voting Delay",
+            "format": "raw"
+          }
+        ]
+      },
+      "setVotingPeriod(uint256)": {
+        "intent": "Review Set Voting Period transaction",
+        "fields": [
+          {
+            "path": "newVotingPeriod",
+            "label": "New Voting Period",
+            "format": "raw"
+          }
+        ]
+      },
+      "updateTimelock(address)": {
+        "intent": "Review Update Timelock transaction",
+        "fields": [
+          {
+            "path": "newTimelock",
+            "label": "New Timelock",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Optimism Foundation",
+    "info": {
+      "url": "https://vote.optimism.io/",
+      "legalName": "Optimism Foundation",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

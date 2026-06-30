@@ -1,0 +1,412 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x3785f1f250686e987714804a29c0ab63a7d35482",
+      "chainId": 8453,
+      "name": "Fluid VaultLiquidatorImplementationV1 (base)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "operate",
+          "selector": "0x032d2276",
+          "inputs": [
+            {
+              "name": "nftId_",
+              "type": "uint256"
+            },
+            {
+              "name": "newCol_",
+              "type": "int256"
+            },
+            {
+              "name": "newDebt_",
+              "type": "int256"
+            },
+            {
+              "name": "to_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x6e553f65",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xb460af94",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "name": "owner_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "executeOperation",
+          "selector": "0x920f5c84",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "assets",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "premiums",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "address",
+              "name": "initiator",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_data",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "liquidateDust",
+          "selector": "0x0a719694",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "vault",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "vaultType",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "expiration",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "topTick",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "debtToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "debtAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "token0DebtAmt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "token1DebtAmt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "debtSharesMin",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "colPerUnitDebt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "token0ColAmtPerUnitShares",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "token1ColAmtPerUnitShares",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "absorb",
+                  "type": "bool"
+                }
+              ],
+              "internalType": "struct VaultLiquidatorImplementationV1.LiquidationDustParams",
+              "name": "params_",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "liquidation",
+          "selector": "0xcf50d450",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "vault",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "vaultType",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "expiration",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "int256",
+                  "name": "topTick",
+                  "type": "int256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "route",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "flashloanToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "flashloanAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "token0DebtAmt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "token1DebtAmt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "debtSharesMin",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "colPerUnitDebt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "token0ColAmtPerUnitShares",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "token1ColAmtPerUnitShares",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "absorb",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "swapToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "swapAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "swapRouter",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "swapApproval",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "swapData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct VaultLiquidatorImplementationV1.LiquidationParams",
+              "name": "params_",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "operate(uint256,int256,int256,address)": {
+        "intent": "Manage Fluid vault position",
+        "fields": [
+          {
+            "path": "nftId_",
+            "label": "Position ID",
+            "format": "raw"
+          },
+          {
+            "path": "newCol_",
+            "label": "Collateral Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "newDebt_",
+            "label": "Debt Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "deposit(uint256,address)": {
+        "intent": "Deposit {assets_} to Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Withdraw {assets_} from Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "owner_",
+            "label": "Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "executeOperation(address[],uint256[],uint256[],address,bytes)": {
+        "intent": "Review Execute Operation transaction",
+        "fields": [
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          },
+          {
+            "path": "amounts",
+            "label": "Amounts",
+            "format": "raw"
+          },
+          {
+            "path": "premiums",
+            "label": "Premiums",
+            "format": "raw"
+          },
+          {
+            "path": "initiator",
+            "label": "Initiator",
+            "format": "address"
+          },
+          {
+            "path": "_data",
+            "label": " data",
+            "format": "hex"
+          }
+        ]
+      },
+      "liquidateDust((address,uint256,uint256,int256,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,bool))": {
+        "intent": "Review Liquidate Dust transaction",
+        "fields": [
+          {
+            "path": "params_",
+            "label": "Params ",
+            "format": "raw"
+          }
+        ]
+      },
+      "liquidation((address,uint256,uint256,int256,uint256,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,bool,address,uint256,address,address,bytes))": {
+        "intent": "Review Liquidation transaction",
+        "fields": [
+          {
+            "path": "params_",
+            "label": "Params ",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

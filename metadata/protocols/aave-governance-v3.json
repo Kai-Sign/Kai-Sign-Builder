@@ -1,0 +1,100 @@
+{
+  "$schema": "../../specs/erc7730-v2.schema.json",
+  "context": {
+    "$id": "AaveGovernanceV3",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x9aee0b04504cef83a65ac3f0e838d0593bcb2bc7" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/aave/abis/0x9aee0b04504cef83a65ac3f0e838d0593bcb2bc7.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave Governance V3",
+    "info": { "url": "https://governance.aave.com" },
+    "constants": {
+      "AAVEaddress": "0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9"
+    },
+    "enums": {
+      "voteSupport": {
+        "0": "Against",
+        "1": "For",
+        "2": "Abstain"
+      }
+    }
+  },
+  "display": {
+    "formats": {
+      "castVote(uint256,uint8,string,bytes)": {
+        "intent": "Vote on Aave governance proposal",
+        "fields": [
+          {
+            "path": "#.proposalId",
+            "label": "Proposal ID",
+            "format": "raw",
+            "visible": "always"
+          },
+          {
+            "path": "#.support",
+            "label": "Vote",
+            "format": "enum",
+            "params": { "$ref": "$.metadata.enums.voteSupport" },
+            "visible": "always"
+          },
+          {
+            "path": "#.reason",
+            "label": "Reason",
+            "format": "raw",
+            "visible": { "ifNotIn": [""] }
+          }
+        ]
+      },
+      "createProposal((address[],uint256[],string[],bytes[],bool[]),address,bytes)": {
+        "intent": "Create Aave governance proposal",
+        "fields": [
+          {
+            "path": "#.accessLevel",
+            "label": "Access Level",
+            "format": "raw",
+            "visible": "always"
+          }
+        ]
+      },
+      "executeProposal(uint256)": {
+        "intent": "Execute Aave governance proposal",
+        "fields": [
+          {
+            "path": "#.proposalId",
+            "label": "Proposal ID",
+            "format": "raw",
+            "visible": "always"
+          }
+        ]
+      },
+      "cancelProposal(uint256)": {
+        "intent": "Cancel Aave governance proposal",
+        "fields": [
+          {
+            "path": "#.proposalId",
+            "label": "Proposal ID",
+            "format": "raw",
+            "visible": "always"
+          }
+        ]
+      },
+      "delegate(address)": {
+        "intent": "Delegate Aave governance power",
+        "fields": [
+          {
+            "path": "#.delegatee",
+            "label": "Delegate To",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          }
+        ]
+      }
+    }
+  }
+}

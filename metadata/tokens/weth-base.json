@@ -1,0 +1,169 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x4200000000000000000000000000000000000006",
+      "chainId": 8453,
+      "name": "Wrapped Ether (L2)",
+      "symbol": "WETH",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0xd0e30db0",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "src",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0x2e1a7d4d",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} WETH",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "WETH"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} WETH",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "WETH"
+            }
+          }
+        ]
+      },
+      "deposit()": {
+        "intent": "Review Deposit transaction",
+        "fields": []
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "src",
+            "label": "Src",
+            "format": "address"
+          },
+          {
+            "path": "dst",
+            "label": "Dst",
+            "format": "address"
+          },
+          {
+            "path": "wad",
+            "label": "Wad",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdraw(uint256)": {
+        "intent": "Review Withdraw transaction",
+        "fields": [
+          {
+            "path": "wad",
+            "label": "Wad",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

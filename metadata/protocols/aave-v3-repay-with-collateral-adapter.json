@@ -1,0 +1,47 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x35bb522b102326ea3F1141661dF4626C87000e3E"
+        }
+      ],
+      "abi": [
+        {"type": "function", "name": "repayWithCollateral", "selector": "0x00000000", "inputs": [{"name": "collateralAsset", "type": "address"}, {"name": "debtAsset", "type": "address"}, {"name": "collateralAmount", "type": "uint256"}, {"name": "rateMode", "type": "uint256"}]},
+        {"type": "function", "name": "swapAndRepayWithCollateral", "selector": "0x00000000", "inputs": [{"name": "collateralAsset", "type": "address"}, {"name": "debtAsset", "type": "address"}, {"name": "collateralAmount", "type": "uint256"}, {"name": "rateMode", "type": "uint256"}, {"name": "swapCalldata", "type": "bytes"}]}
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave V3 RepayWithCollateralAdapter",
+    "info": {
+      "website": "https://aave.com"
+    }
+  },
+  "display": {
+    "formats": {
+      "repayWithCollateral(address,address,uint256,uint256)": {
+        "intent": "Close Position: Repay {debtAsset} with {collateralAsset}",
+        "fields": [
+          {"path": "collateralAsset", "label": "Collateral Asset", "format": "tokenAmount"},
+          {"path": "debtAsset", "label": "Debt Asset", "format": "tokenAmount"},
+          {"path": "collateralAmount", "label": "Collateral Amount", "format": "amount"},
+          {"path": "rateMode", "label": "Rate Mode", "format": "raw"}
+        ]
+      },
+      "swapAndRepayWithCollateral(address,address,uint256,uint256,bytes)": {
+        "intent": "Swap + Repay with Collateral: {debtAsset}",
+        "fields": [
+          {"path": "collateralAsset", "label": "Collateral Asset", "format": "tokenAmount"},
+          {"path": "debtAsset", "label": "Debt Asset", "format": "tokenAmount"},
+          {"path": "collateralAmount", "label": "Amount", "format": "amount"},
+          {"path": "rateMode", "label": "Rate Mode", "format": "raw"},
+          {"path": "swapCalldata", "label": "Swap Calldata", "format": "raw"}
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84",
+      "chainId": 1,
+      "name": "Lido stETH",
+      "abi": [
+        {
+          "type": "function",
+          "name": "submit",
+          "selector": "0xa1903eab",
+          "inputs": [
+            { "name": "_referral", "type": "address" }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            { "name": "_spender", "type": "address" },
+            { "name": "_amount", "type": "uint256" }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            { "name": "_recipient", "type": "address" },
+            { "name": "_amount", "type": "uint256" }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            { "name": "_sender", "type": "address" },
+            { "name": "_recipient", "type": "address" },
+            { "name": "_amount", "type": "uint256" }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "submit(address)": {
+        "intent": "Stake ETH via Lido",
+        "interpolatedIntent": "Stake ETH via Lido (referral: {_referral})",
+        "fields": [
+          { "path": "_referral", "label": "Referral", "format": "addressName" }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Approve stETH spending",
+        "interpolatedIntent": "Approve {_spender} to spend {_amount} stETH",
+        "fields": [
+          { "path": "_spender", "label": "Spender", "format": "addressName" },
+          { "path": "_amount", "label": "Amount", "format": "amount", "params": { "decimals": 18, "symbol": "stETH" } }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer stETH",
+        "interpolatedIntent": "Transfer {_amount} stETH to {_recipient}",
+        "fields": [
+          { "path": "_recipient", "label": "Recipient", "format": "addressName" },
+          { "path": "_amount", "label": "Amount", "format": "amount", "params": { "decimals": 18, "symbol": "stETH" } }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Transfer stETH on behalf of sender",
+        "interpolatedIntent": "Transfer {_amount} stETH from {_sender} to {_recipient}",
+        "fields": [
+          { "path": "_sender", "label": "From", "format": "addressName" },
+          { "path": "_recipient", "label": "To", "format": "addressName" },
+          { "path": "_amount", "label": "Amount", "format": "amount", "params": { "decimals": 18, "symbol": "stETH" } }
+        ]
+      }
+    }
+  }
+}

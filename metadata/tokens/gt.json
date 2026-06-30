@@ -1,0 +1,237 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xe66747a101bff2dba3697199dcce5b743b454759",
+      "chainId": 1,
+      "name": "GateToken",
+      "symbol": "GT",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "selector": "0x42966c68",
+          "inputs": [
+            {
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unfreeze",
+          "selector": "0x6623fc46",
+          "inputs": [
+            {
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "activeMode",
+          "selector": "0x98e4d671",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "freeze",
+          "selector": "0xd7a78db8",
+          "inputs": [
+            {
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "resetMode",
+          "selector": "0xe36c62a2",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} GT",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "GT"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} GT",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "GT"
+            }
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "burn(uint256)": {
+        "intent": "Review Burn transaction",
+        "fields": [
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "unfreeze(uint256)": {
+        "intent": "Review Unfreeze transaction",
+        "fields": [
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "activeMode()": {
+        "intent": "Review Active Mode transaction",
+        "fields": []
+      },
+      "freeze(uint256)": {
+        "intent": "Review Freeze transaction",
+        "fields": [
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "resetMode()": {
+        "intent": "Review Reset Mode transaction",
+        "fields": []
+      }
+    }
+  }
+}

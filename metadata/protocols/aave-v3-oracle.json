@@ -1,0 +1,42 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x54586bE62E3c3580375aE3723C145253060Ca0C2"
+        }
+      ],
+      "abi": [
+        {"type": "function", "name": "setAssetSources", "selector": "0xefd3f1f3", "inputs": [{"name": "assets", "type": "address[]"}, {"name": "sources", "type": "address[]"}]},
+        {"type": "function", "name": "setFallbackOracle", "selector": "0xac24ab4b", "inputs": [{"name": "fallbackOracle", "type": "address"}]}
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave V3 Oracle",
+    "info": {
+      "website": "https://aave.com",
+      "docs": "https://docs.aave.com/developers/core/oracle"
+    }
+  },
+  "display": {
+    "formats": {
+      "setAssetSources(address[],address[])": {
+        "intent": "Set Price Sources for Assets",
+        "fields": [
+          {"path": "assets", "label": "Assets", "format": "raw"},
+          {"path": "sources", "label": "Price Sources", "format": "raw"}
+        ]
+      },
+      "setFallbackOracle(address)": {
+        "intent": "Set Fallback Oracle",
+        "fields": [
+          {"path": "fallbackOracle", "label": "Fallback Oracle", "format": "addressName"}
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "_meta": {
+    "generatedAt": "2026-04-21T11:57:30.047Z",
+    "generatedBy": "tests/replay-export.js",
+    "sourceExports": [
+      {
+        "file": "kaisign-full-export-1776642925491.json",
+        "exportDate": "2026-04-19T23:55:25.479Z",
+        "transactionCount": 100,
+        "replayedAt": "2026-04-21T11:57:30.042Z"
+      }
+    ]
+  },
+  "0x7d7327624bf9627fc11f6da240db8066c4beb3c8-1": {
+    "address": "0x7d7327624bf9627fc11f6da240db8066c4beb3c8",
+    "chainId": 1,
+    "txCount": 1,
+    "unknownCount": 1,
+    "selectors": [
+      "0xf4e8cd69"
+    ],
+    "detectedName": null,
+    "sampleTxIds": [
+      "1776631720465"
+    ],
+    "firstSeen": "2026-04-19T20:48:40.465Z",
+    "lastSeen": "2026-04-19T20:48:40.465Z"
+  },
+  "0x076bb6117750e80ad570d98891b68da86c203a88-1": {
+    "address": "0x076bb6117750e80ad570d98891b68da86c203a88",
+    "chainId": 1,
+    "txCount": 2,
+    "unknownCount": 2,
+    "selectors": [
+      "0xf4e8cd69"
+    ],
+    "detectedName": null,
+    "sampleTxIds": [
+      "1776631272310",
+      "1776630896083"
+    ],
+    "firstSeen": "2026-04-19T20:34:56.083Z",
+    "lastSeen": "2026-04-19T20:41:12.311Z"
+  },
+  "0x5979d7b546e38e414f7e9822514be443a4800529-1": {
+    "address": "0x5979d7b546e38e414f7e9822514be443a4800529",
+    "chainId": 1,
+    "txCount": 7,
+    "unknownCount": 7,
+    "selectors": [
+      "0x095ea7b3"
+    ],
+    "detectedName": null,
+    "sampleTxIds": [
+      "1776630868573",
+      "1776601527245",
+      "1776601338115"
+    ],
+    "firstSeen": "2026-04-19T09:49:49.215Z",
+    "lastSeen": "2026-04-19T20:34:28.573Z"
+  },
+  "0x35751007a407ca6feffe80b3cb397736d2cf4dbe-1": {
+    "address": "0x35751007a407ca6feffe80b3cb397736d2cf4dbe",
+    "chainId": 1,
+    "txCount": 4,
+    "unknownCount": 4,
+    "selectors": [
+      "0x095ea7b3"
+    ],
+    "detectedName": null,
+    "sampleTxIds": [
+      "1776593086622",
+      "1776592049180",
+      "1776592038435"
+    ],
+    "firstSeen": "2026-04-19T09:46:50.367Z",
+    "lastSeen": "2026-04-19T10:04:46.622Z"
+  },
+  "0x7747f8d2a76bd6345cc29622a946a929647f2359-1": {
+    "address": "0x7747f8d2a76bd6345cc29622a946a929647f2359",
+    "chainId": 1,
+    "txCount": 1,
+    "unknownCount": 1,
+    "selectors": [
+      "0x1fff991f"
+    ],
+    "detectedName": null,
+    "sampleTxIds": [
+      "1776588361584"
+    ],
+    "firstSeen": "2026-04-19T08:46:01.584Z",
+    "lastSeen": "2026-04-19T08:46:01.584Z"
+  },
+  "0x04c0599ae5a44757c0af6f9ec3b93da8976c150a-1": {
+    "address": "0x04c0599ae5a44757c0af6f9ec3b93da8976c150a",
+    "chainId": 1,
+    "txCount": 11,
+    "unknownCount": 11,
+    "selectors": [
+      "0x095ea7b3"
+    ],
+    "detectedName": null,
+    "sampleTxIds": [
+      "1776588332934",
+      "1776588231259",
+      "1776588100894"
+    ],
+    "firstSeen": "2026-04-19T08:25:33.253Z",
+    "lastSeen": "2026-04-19T08:45:32.934Z"
+  }
+}

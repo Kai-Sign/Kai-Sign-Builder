@@ -1,0 +1,38 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 42161,
+          "address": "0x1a44076050125825900e736c501f859c50fe728c"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "LayerZero Labs",
+    "contractName": "LayerZero Endpoint V2 (Arbitrum)"
+  },
+  "display": {
+    "formats": {
+      "send((uint32 dstEid,bytes32 to,uint256 amountLD,uint256 minAmountLD,bytes extraOptions,bytes composeMsg,bytes oftCmd) params,address refundAddress)": {
+        "intent": "Send cross-chain message via LayerZero V2",
+        "interpolatedIntent": "Send {params.amountLD} tokens to chain {params.dstEid} via LayerZero",
+        "fields": [
+          { "path": "params.dstEid", "label": "Destination Chain ID", "format": "integer" },
+          { "path": "params.amountLD", "label": "Amount", "format": "raw" },
+          { "path": "params.minAmountLD", "label": "Min Amount Received", "format": "raw" },
+          { "path": "refundAddress", "label": "Refund Address", "format": "addressName" }
+        ]
+      },
+      "setDelegate(address delegate)": {
+        "intent": "Set LayerZero delegate",
+        "interpolatedIntent": "Set {delegate} as LayerZero configuration delegate",
+        "fields": [
+          { "path": "delegate", "label": "Delegate", "format": "addressName" }
+        ]
+      }
+    }
+  }
+}

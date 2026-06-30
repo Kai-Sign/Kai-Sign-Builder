@@ -1,0 +1,1317 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x028ec7330ff87667b6dfb0d94b954c820195336c",
+      "chainId": 1,
+      "name": "Yearn V3 Vault",
+      "abi": [
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x6e553f65",
+          "inputs": [
+            {
+              "name": "assets",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xb460af94",
+          "inputs": [
+            {
+              "name": "assets",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redeem",
+          "selector": "0xba087652",
+          "inputs": [
+            {
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x94bf804d",
+          "inputs": [
+            {
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0x75b30be6",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "name": "symbol",
+              "type": "string"
+            },
+            {
+              "name": "role_manager",
+              "type": "address"
+            },
+            {
+              "name": "profit_max_unlock_time",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "set_accountant",
+          "selector": "0x71da8a8d",
+          "inputs": [
+            {
+              "name": "new_accountant",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "set_default_queue",
+          "selector": "0x2d9caa4e",
+          "inputs": [
+            {
+              "name": "new_default_queue",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "set_use_default_queue",
+          "selector": "0x29c8a33b",
+          "inputs": [
+            {
+              "name": "use_default_queue",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "set_deposit_limit",
+          "selector": "0x6fe01d1e",
+          "inputs": [
+            {
+              "name": "deposit_limit",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "set_deposit_limit",
+          "selector": "0x81685796",
+          "inputs": [
+            {
+              "name": "deposit_limit",
+              "type": "uint256"
+            },
+            {
+              "name": "override",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "set_deposit_limit_module",
+          "selector": "0xbb435466",
+          "inputs": [
+            {
+              "name": "deposit_limit_module",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "set_deposit_limit_module",
+          "selector": "0x9823dd78",
+          "inputs": [
+            {
+              "name": "deposit_limit_module",
+              "type": "address"
+            },
+            {
+              "name": "override",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "set_withdraw_limit_module",
+          "selector": "0x7b675894",
+          "inputs": [
+            {
+              "name": "withdraw_limit_module",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "set_minimum_total_idle",
+          "selector": "0xbdd81c01",
+          "inputs": [
+            {
+              "name": "minimum_total_idle",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setProfitMaxUnlockTime",
+          "selector": "0xdf69b22a",
+          "inputs": [
+            {
+              "name": "new_profit_max_unlock_time",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "set_role",
+          "selector": "0x2cf7fd85",
+          "inputs": [
+            {
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "name": "role",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "add_role",
+          "selector": "0xa97cefa2",
+          "inputs": [
+            {
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "name": "role",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "remove_role",
+          "selector": "0xe2bf56dd",
+          "inputs": [
+            {
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "name": "role",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transfer_role_manager",
+          "selector": "0xef54cefd",
+          "inputs": [
+            {
+              "name": "role_manager",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "accept_role_manager",
+          "selector": "0xf776bf1f",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "process_report",
+          "selector": "0x6ec2b8d4",
+          "inputs": [
+            {
+              "name": "strategy",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "buy_debt",
+          "selector": "0xe5e91818",
+          "inputs": [
+            {
+              "name": "strategy",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "add_strategy",
+          "selector": "0xde7aeb41",
+          "inputs": [
+            {
+              "name": "new_strategy",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "add_strategy",
+          "selector": "0xc2e73cca",
+          "inputs": [
+            {
+              "name": "new_strategy",
+              "type": "address"
+            },
+            {
+              "name": "add_to_queue",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revoke_strategy",
+          "selector": "0x577db316",
+          "inputs": [
+            {
+              "name": "strategy",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "force_revoke_strategy",
+          "selector": "0xfd129e63",
+          "inputs": [
+            {
+              "name": "strategy",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "update_max_debt_for_strategy",
+          "selector": "0xb9ddcd68",
+          "inputs": [
+            {
+              "name": "strategy",
+              "type": "address"
+            },
+            {
+              "name": "new_max_debt",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "update_debt",
+          "selector": "0x0aeebf55",
+          "inputs": [
+            {
+              "name": "strategy",
+              "type": "address"
+            },
+            {
+              "name": "target_debt",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "update_debt",
+          "selector": "0xba54971f",
+          "inputs": [
+            {
+              "name": "strategy",
+              "type": "address"
+            },
+            {
+              "name": "target_debt",
+              "type": "uint256"
+            },
+            {
+              "name": "max_loss",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "shutdown_vault",
+          "selector": "0x36a55450",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xa318c1a4",
+          "inputs": [
+            {
+              "name": "assets",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "name": "max_loss",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xd81a09f6",
+          "inputs": [
+            {
+              "name": "assets",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "name": "max_loss",
+              "type": "uint256"
+            },
+            {
+              "name": "strategies",
+              "type": "address[]"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redeem",
+          "selector": "0x9f40a7b3",
+          "inputs": [
+            {
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "name": "max_loss",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redeem",
+          "selector": "0x06580f2d",
+          "inputs": [
+            {
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "name": "max_loss",
+              "type": "uint256"
+            },
+            {
+              "name": "strategies",
+              "type": "address[]"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "permit",
+          "selector": "0xd505accf",
+          "inputs": [
+            {
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "deposit(uint256,address)": {
+        "intent": "Deposit into Yearn V3 vault",
+        "interpolatedIntent": "Deposit {assets} into Yearn V3 vault for {receiver}",
+        "fields": [
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Withdraw from Yearn V3 vault",
+        "interpolatedIntent": "Withdraw {assets} from Yearn V3 vault to {receiver}",
+        "fields": [
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "addressName"
+          }
+        ]
+      },
+      "redeem(uint256,address,address)": {
+        "intent": "Redeem Yearn V3 vault shares",
+        "interpolatedIntent": "Redeem {shares} shares from Yearn V3 vault",
+        "fields": [
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "addressName"
+          }
+        ]
+      },
+      "mint(uint256,address)": {
+        "intent": "Mint Yearn V3 vault shares",
+        "interpolatedIntent": "Mint {shares} shares from Yearn V3 vault for {receiver}",
+        "fields": [
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          }
+        ]
+      },
+      "initialize(address,string,string,address,uint256)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "name",
+            "label": "Name",
+            "format": "raw"
+          },
+          {
+            "path": "symbol",
+            "label": "Symbol",
+            "format": "raw"
+          },
+          {
+            "path": "role_manager",
+            "label": "Role manager",
+            "format": "address"
+          },
+          {
+            "path": "profit_max_unlock_time",
+            "label": "Profit max unlock time",
+            "format": "raw"
+          }
+        ]
+      },
+      "set_accountant(address)": {
+        "intent": "Review Set accountant transaction",
+        "fields": [
+          {
+            "path": "new_accountant",
+            "label": "New accountant",
+            "format": "address"
+          }
+        ]
+      },
+      "set_default_queue(address[])": {
+        "intent": "Review Set default queue transaction",
+        "fields": [
+          {
+            "path": "new_default_queue",
+            "label": "New default queue",
+            "format": "raw"
+          }
+        ]
+      },
+      "set_use_default_queue(bool)": {
+        "intent": "Review Set use default queue transaction",
+        "fields": [
+          {
+            "path": "use_default_queue",
+            "label": "Use default queue",
+            "format": "boolean"
+          }
+        ]
+      },
+      "set_deposit_limit(uint256)": {
+        "intent": "Review Set deposit limit transaction",
+        "fields": [
+          {
+            "path": "deposit_limit",
+            "label": "Deposit limit",
+            "format": "raw"
+          }
+        ]
+      },
+      "set_deposit_limit(uint256,bool)": {
+        "intent": "Review Set deposit limit transaction",
+        "fields": [
+          {
+            "path": "deposit_limit",
+            "label": "Deposit limit",
+            "format": "raw"
+          },
+          {
+            "path": "override",
+            "label": "Override",
+            "format": "boolean"
+          }
+        ]
+      },
+      "set_deposit_limit_module(address)": {
+        "intent": "Review Set deposit limit module transaction",
+        "fields": [
+          {
+            "path": "deposit_limit_module",
+            "label": "Deposit limit module",
+            "format": "address"
+          }
+        ]
+      },
+      "set_deposit_limit_module(address,bool)": {
+        "intent": "Review Set deposit limit module transaction",
+        "fields": [
+          {
+            "path": "deposit_limit_module",
+            "label": "Deposit limit module",
+            "format": "address"
+          },
+          {
+            "path": "override",
+            "label": "Override",
+            "format": "boolean"
+          }
+        ]
+      },
+      "set_withdraw_limit_module(address)": {
+        "intent": "Review Set withdraw limit module transaction",
+        "fields": [
+          {
+            "path": "withdraw_limit_module",
+            "label": "Withdraw limit module",
+            "format": "address"
+          }
+        ]
+      },
+      "set_minimum_total_idle(uint256)": {
+        "intent": "Review Set minimum total idle transaction",
+        "fields": [
+          {
+            "path": "minimum_total_idle",
+            "label": "Minimum total idle",
+            "format": "raw"
+          }
+        ]
+      },
+      "setProfitMaxUnlockTime(uint256)": {
+        "intent": "Review Set Profit Max Unlock Time transaction",
+        "fields": [
+          {
+            "path": "new_profit_max_unlock_time",
+            "label": "New profit max unlock time",
+            "format": "raw"
+          }
+        ]
+      },
+      "set_role(address,uint256)": {
+        "intent": "Review Set role transaction",
+        "fields": [
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          },
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "raw"
+          }
+        ]
+      },
+      "add_role(address,uint256)": {
+        "intent": "Review Add role transaction",
+        "fields": [
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          },
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "raw"
+          }
+        ]
+      },
+      "remove_role(address,uint256)": {
+        "intent": "Review Remove role transaction",
+        "fields": [
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          },
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "raw"
+          }
+        ]
+      },
+      "transfer_role_manager(address)": {
+        "intent": "Review Transfer role manager transaction",
+        "fields": [
+          {
+            "path": "role_manager",
+            "label": "Role manager",
+            "format": "address"
+          }
+        ]
+      },
+      "accept_role_manager()": {
+        "intent": "Review Accept role manager transaction",
+        "fields": []
+      },
+      "process_report(address)": {
+        "intent": "Review Process report transaction",
+        "fields": [
+          {
+            "path": "strategy",
+            "label": "Strategy",
+            "format": "address"
+          }
+        ]
+      },
+      "buy_debt(address,uint256)": {
+        "intent": "Review Buy debt transaction",
+        "fields": [
+          {
+            "path": "strategy",
+            "label": "Strategy",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "add_strategy(address)": {
+        "intent": "Review Add strategy transaction",
+        "fields": [
+          {
+            "path": "new_strategy",
+            "label": "New strategy",
+            "format": "address"
+          }
+        ]
+      },
+      "add_strategy(address,bool)": {
+        "intent": "Review Add strategy transaction",
+        "fields": [
+          {
+            "path": "new_strategy",
+            "label": "New strategy",
+            "format": "address"
+          },
+          {
+            "path": "add_to_queue",
+            "label": "Add to queue",
+            "format": "boolean"
+          }
+        ]
+      },
+      "revoke_strategy(address)": {
+        "intent": "Review Revoke strategy transaction",
+        "fields": [
+          {
+            "path": "strategy",
+            "label": "Strategy",
+            "format": "address"
+          }
+        ]
+      },
+      "force_revoke_strategy(address)": {
+        "intent": "Review Force revoke strategy transaction",
+        "fields": [
+          {
+            "path": "strategy",
+            "label": "Strategy",
+            "format": "address"
+          }
+        ]
+      },
+      "update_max_debt_for_strategy(address,uint256)": {
+        "intent": "Review Update max debt for strategy transaction",
+        "fields": [
+          {
+            "path": "strategy",
+            "label": "Strategy",
+            "format": "address"
+          },
+          {
+            "path": "new_max_debt",
+            "label": "New max debt",
+            "format": "raw"
+          }
+        ]
+      },
+      "update_debt(address,uint256)": {
+        "intent": "Review Update debt transaction",
+        "fields": [
+          {
+            "path": "strategy",
+            "label": "Strategy",
+            "format": "address"
+          },
+          {
+            "path": "target_debt",
+            "label": "Target debt",
+            "format": "raw"
+          }
+        ]
+      },
+      "update_debt(address,uint256,uint256)": {
+        "intent": "Review Update debt transaction",
+        "fields": [
+          {
+            "path": "strategy",
+            "label": "Strategy",
+            "format": "address"
+          },
+          {
+            "path": "target_debt",
+            "label": "Target debt",
+            "format": "raw"
+          },
+          {
+            "path": "max_loss",
+            "label": "Max loss",
+            "format": "raw"
+          }
+        ]
+      },
+      "shutdown_vault()": {
+        "intent": "Review Shutdown vault transaction",
+        "fields": []
+      },
+      "withdraw(uint256,address,address,uint256)": {
+        "intent": "Review Withdraw transaction",
+        "fields": [
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "max_loss",
+            "label": "Max loss",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address,uint256,address[])": {
+        "intent": "Review Withdraw transaction",
+        "fields": [
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "max_loss",
+            "label": "Max loss",
+            "format": "raw"
+          },
+          {
+            "path": "strategies",
+            "label": "Strategies",
+            "format": "raw"
+          }
+        ]
+      },
+      "redeem(uint256,address,address,uint256)": {
+        "intent": "Review Redeem transaction",
+        "fields": [
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "max_loss",
+            "label": "Max loss",
+            "format": "raw"
+          }
+        ]
+      },
+      "redeem(uint256,address,address,uint256,address[])": {
+        "intent": "Review Redeem transaction",
+        "fields": [
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "max_loss",
+            "label": "Max loss",
+            "format": "raw"
+          },
+          {
+            "path": "strategies",
+            "label": "Strategies",
+            "format": "raw"
+          }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Review Approve transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Review Transfer transaction",
+        "fields": [
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "sender",
+            "label": "Sender",
+            "format": "address"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Permit transaction",
+        "fields": [
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Yearn Finance",
+    "info": {
+      "url": "https://yearn.fi/",
+      "legalName": "Yearn Finance",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

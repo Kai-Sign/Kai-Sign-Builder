@@ -1,0 +1,142 @@
+{
+  "$schema": "../../specs/erc7730-v2.schema.json",
+  "context": {
+    "$id": "BendDAOLendPool",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x70b97a0da65c15dfb0ffa02aee6fa36e507c2762" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/benddao/abis/0x70b97a0da65c15dfb0ffa02aee6fa36e507c2762.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "BendDAO",
+    "contractName": "BendDAO LendPool",
+    "info": { "url": "https://benddao.xyz" },
+    "constants": {
+      "WETHaddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      "USDCaddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+    }
+  },
+  "display": {
+    "formats": {
+      "borrow(address,uint256,address,uint256,uint16)": {
+        "intent": "Borrow against NFT collateral",
+        "fields": [
+          {
+            "path": "#.asset",
+            "label": "Borrow Asset",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.amount",
+            "label": "Borrow Amount",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.asset" },
+            "visible": "always"
+          },
+          {
+            "path": "#.nftAsset",
+            "label": "NFT Collateral",
+            "format": "addressName",
+            "params": { "types": ["collection"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.nftTokenId",
+            "label": "NFT Token ID",
+            "format": "nftName",
+            "params": { "collectionPath": "#.nftAsset" },
+            "visible": "always"
+          },
+          {
+            "path": "#.onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          }
+        ]
+      },
+      "repay(address,uint256,uint256)": {
+        "intent": "Repay NFT-backed loan",
+        "fields": [
+          {
+            "path": "#.nftAsset",
+            "label": "NFT Collateral",
+            "format": "addressName",
+            "params": { "types": ["collection"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.nftTokenId",
+            "label": "NFT Token ID",
+            "format": "nftName",
+            "params": { "collectionPath": "#.nftAsset" },
+            "visible": "always"
+          },
+          {
+            "path": "#.amount",
+            "label": "Repay Amount",
+            "format": "raw",
+            "visible": "always"
+          }
+        ]
+      },
+      "deposit(address,uint256,address,uint16)": {
+        "intent": "Deposit to BendDAO",
+        "fields": [
+          {
+            "path": "#.asset",
+            "label": "Asset",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.asset" },
+            "visible": "always"
+          },
+          {
+            "path": "#.onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          }
+        ]
+      },
+      "withdraw(address,uint256,address)": {
+        "intent": "Withdraw from BendDAO",
+        "fields": [
+          {
+            "path": "#.asset",
+            "label": "Asset",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.asset" },
+            "visible": "always"
+          },
+          {
+            "path": "#.to",
+            "label": "Recipient",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          }
+        ]
+      }
+    }
+  }
+}

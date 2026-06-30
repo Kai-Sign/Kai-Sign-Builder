@@ -1,0 +1,393 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x0b9857ae2d4a3dbe74ffe1d7df045bb7f96e4840",
+      "chainId": 1,
+      "name": "Arbitrum Outbox",
+      "abi": [
+        {
+          "type": "function",
+          "name": "executeTransaction",
+          "selector": "0x08635a95",
+          "inputs": [
+            {
+              "name": "proof",
+              "type": "bytes32[]"
+            },
+            {
+              "name": "index",
+              "type": "uint256"
+            },
+            {
+              "name": "l2Sender",
+              "type": "address"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "l2Block",
+              "type": "uint256"
+            },
+            {
+              "name": "l1Block",
+              "type": "uint256"
+            },
+            {
+              "name": "l2Timestamp",
+              "type": "uint256"
+            },
+            {
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "admin",
+          "selector": "0xf851a440",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "admin_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeAdmin",
+          "selector": "0x8f283970",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "implementation",
+          "selector": "0x5c60da1b",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "implementation_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x3659cfe6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "executeTransactionSimulation",
+          "selector": "0x288e5b10",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "index",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "l2Sender",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "l2Block",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "l1Block",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "l2Timestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xc4d66de8",
+          "inputs": [
+            {
+              "internalType": "contract IBridge",
+              "name": "_bridge",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "postUpgradeInit",
+          "selector": "0x95fcea78",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateRollupAddress",
+          "selector": "0x6ae71f12",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateSendRoot",
+          "selector": "0xa04cee60",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "root",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "l2BlockHash",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "executeTransaction(bytes32[],uint256,address,address,uint256,uint256,uint256,uint256,bytes)": {
+        "intent": "Execute Arbitrum outbox transaction to {to}",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Target",
+            "format": "address"
+          },
+          {
+            "path": "l2Sender",
+            "label": "L2 Sender",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "ETH Value",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "ETH"
+            }
+          },
+          {
+            "path": "index",
+            "label": "Outbox Index",
+            "format": "number"
+          },
+          {
+            "path": "l2Block",
+            "label": "L2 Block",
+            "format": "number"
+          },
+          {
+            "path": "l1Block",
+            "label": "L1 Block",
+            "format": "number"
+          },
+          {
+            "path": "l2Timestamp",
+            "label": "L2 Timestamp",
+            "format": "number"
+          },
+          {
+            "path": "data",
+            "label": "Call Data",
+            "format": "raw"
+          }
+        ]
+      },
+      "admin()": {
+        "intent": "Review Admin transaction",
+        "fields": []
+      },
+      "changeAdmin(address)": {
+        "intent": "Review Change Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "implementation()": {
+        "intent": "Review Implementation transaction",
+        "fields": []
+      },
+      "upgradeTo(address)": {
+        "intent": "Review Upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "executeTransactionSimulation(uint256,address,address,uint256,uint256,uint256,uint256,bytes)": {
+        "intent": "Review Execute Transaction Simulation transaction",
+        "fields": [
+          {
+            "path": "index",
+            "label": "Index",
+            "format": "raw"
+          },
+          {
+            "path": "l2Sender",
+            "label": "L2 Sender",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "l2Block",
+            "label": "L2 Block",
+            "format": "raw"
+          },
+          {
+            "path": "l1Block",
+            "label": "L1 Block",
+            "format": "raw"
+          },
+          {
+            "path": "l2Timestamp",
+            "label": "L2 Timestamp",
+            "format": "raw"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "initialize(address)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_bridge",
+            "label": " bridge",
+            "format": "address"
+          }
+        ]
+      },
+      "postUpgradeInit()": {
+        "intent": "Review Post Upgrade Init transaction",
+        "fields": []
+      },
+      "updateRollupAddress()": {
+        "intent": "Review Update Rollup Address transaction",
+        "fields": []
+      },
+      "updateSendRoot(bytes32,bytes32)": {
+        "intent": "Review Update Send Root transaction",
+        "fields": [
+          {
+            "path": "root",
+            "label": "Root",
+            "format": "hex"
+          },
+          {
+            "path": "l2BlockHash",
+            "label": "L2 Block Hash",
+            "format": "hex"
+          }
+        ]
+      }
+    }
+  }
+}

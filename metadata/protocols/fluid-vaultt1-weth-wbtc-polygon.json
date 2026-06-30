@@ -1,0 +1,304 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xe16a6f5359abb1f61ce71e25dd0932e3e00b00eb",
+      "chainId": 137,
+      "name": "Fluid VaultT1_WETH_WBTC (polygon)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "operate",
+          "selector": "0x032d2276",
+          "inputs": [
+            {
+              "name": "nftId_",
+              "type": "uint256"
+            },
+            {
+              "name": "newCol_",
+              "type": "int256"
+            },
+            {
+              "name": "newDebt_",
+              "type": "int256"
+            },
+            {
+              "name": "to_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x6e553f65",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xb460af94",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "name": "owner_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "liquidate",
+          "selector": "0x8433ea22",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "debtAmt_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "colPerUnitDebt_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to_",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "absorb_",
+              "type": "bool"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "actualDebtAmt_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "actualColAmt_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "liquidityCallback",
+          "selector": "0xad207501",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data_",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "rebalance",
+          "selector": "0x7d7c2a1c",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "int256",
+              "name": "supplyAmt_",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "borrowAmt_",
+              "type": "int256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "updateExchangePricesOnStorage",
+          "selector": "0x02161887",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "liqSupplyExPrice_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "liqBorrowExPrice_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "vaultSupplyExPrice_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "vaultBorrowExPrice_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "operate(uint256,int256,int256,address)": {
+        "intent": "Manage Fluid vault position",
+        "fields": [
+          {
+            "path": "nftId_",
+            "label": "Position ID",
+            "format": "raw"
+          },
+          {
+            "path": "newCol_",
+            "label": "Collateral Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "newDebt_",
+            "label": "Debt Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "deposit(uint256,address)": {
+        "intent": "Deposit {assets_} to Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenAddress": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+              "decimals": 18
+            }
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Withdraw {assets_} from Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenAddress": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619",
+              "decimals": 18
+            }
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "owner_",
+            "label": "Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "liquidate(uint256,uint256,address,bool)": {
+        "intent": "Review Liquidate transaction",
+        "fields": [
+          {
+            "path": "debtAmt_",
+            "label": "Debt Amt ",
+            "format": "raw"
+          },
+          {
+            "path": "colPerUnitDebt_",
+            "label": "Col Per Unit Debt ",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "To ",
+            "format": "address"
+          },
+          {
+            "path": "absorb_",
+            "label": "Absorb ",
+            "format": "boolean"
+          }
+        ]
+      },
+      "liquidityCallback(address,uint256,bytes)": {
+        "intent": "Review Liquidity Callback transaction",
+        "fields": [
+          {
+            "path": "token_",
+            "label": "Token ",
+            "format": "address"
+          },
+          {
+            "path": "amount_",
+            "label": "Amount ",
+            "format": "raw"
+          },
+          {
+            "path": "data_",
+            "label": "Data ",
+            "format": "hex"
+          }
+        ]
+      },
+      "rebalance()": {
+        "intent": "Review Rebalance transaction",
+        "fields": []
+      },
+      "updateExchangePricesOnStorage()": {
+        "intent": "Review Update Exchange Prices On Storage transaction",
+        "fields": []
+      }
+    }
+  }
+}

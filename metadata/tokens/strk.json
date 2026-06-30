@@ -1,0 +1,533 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xca14007eff0db1f8135f4c25b34de49ab0d42766",
+      "chainId": 1,
+      "name": "Starknet",
+      "symbol": "STRK",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowance",
+          "selector": "0xa457c2d7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "delegate",
+          "selector": "0x5c19a95c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "delegatee",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "delegateBySig",
+          "selector": "0xc3cda520",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "delegatee",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "expiry",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "selector": "0x2f2ff15d",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowance",
+          "selector": "0x39509351",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "addedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x40c10f19",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "permit",
+          "selector": "0xd505accf",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "selector": "0x36568abe",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "selector": "0xd547741f",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} STRK",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "STRK"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} STRK",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "STRK"
+            }
+          }
+        ]
+      },
+      "decreaseAllowance(address,uint256)": {
+        "intent": "Review Decrease Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "subtractedValue",
+            "label": "Subtracted Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "delegate(address)": {
+        "intent": "Review Delegate transaction",
+        "fields": [
+          {
+            "path": "delegatee",
+            "label": "Delegatee",
+            "format": "address"
+          }
+        ]
+      },
+      "delegateBySig(address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Delegate By Sig transaction",
+        "fields": [
+          {
+            "path": "delegatee",
+            "label": "Delegatee",
+            "format": "address"
+          },
+          {
+            "path": "nonce",
+            "label": "Nonce",
+            "format": "raw"
+          },
+          {
+            "path": "expiry",
+            "label": "Expiry",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "grantRole(bytes32,address)": {
+        "intent": "Review Grant Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "increaseAllowance(address,uint256)": {
+        "intent": "Review Increase Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "addedValue",
+            "label": "Added Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "mint(address,uint256)": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Permit transaction",
+        "fields": [
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "renounceRole(bytes32,address)": {
+        "intent": "Review Renounce Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "revokeRole(bytes32,address)": {
+        "intent": "Review Revoke Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "Aave Token V3",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9" }
+      ],
+      "abi": "https://etherscan.io/address/0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9#code"
+    }
+  },
+  "metadata": {
+    "owner": "Aave DAO",
+    "info": { "legalName": "Aave Companies", "url": "https://aave.com/" }
+  },
+  "display": {
+    "formats": {
+      "delegate(address)": {
+        "intent": "Delegate Governance Power",
+        "fields": [
+          { "path": "#.delegatee", "label": "Delegate To", "format": "addressName", "params": { "types": ["eoa", "wallet", "contract"], "sources": ["local", "ens"] } }
+        ],
+        "required": ["#.delegatee"],
+        "excluded": []
+      },
+      "delegateByType(address,uint8)": {
+        "intent": "Delegate Specific Governance Power",
+        "fields": [
+          { "path": "#.delegatee", "label": "Delegate To", "format": "addressName", "params": { "types": ["eoa", "wallet", "contract"], "sources": ["local", "ens"] } },
+          { "path": "#.delegationType", "label": "Power Type (0=Voting 1=Proposition)", "format": "raw" }
+        ],
+        "required": ["#.delegatee", "#.delegationType"],
+        "excluded": []
+      },
+      "metaDelegate(address,address,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Gasless Delegate Governance Power",
+        "fields": [
+          { "path": "#.delegator", "label": "Delegator", "format": "addressName", "params": { "types": ["eoa", "wallet"], "sources": ["local", "ens"] } },
+          { "path": "#.delegatee", "label": "Delegate To", "format": "addressName", "params": { "types": ["eoa", "wallet", "contract"], "sources": ["local", "ens"] } },
+          { "path": "#.deadline", "label": "Deadline", "format": "date", "params": { "encoding": "timestamp" } }
+        ],
+        "required": ["#.delegator", "#.delegatee", "#.deadline"],
+        "excluded": []
+      },
+      "metaDelegateByType(address,address,uint8,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Gasless Delegate Specific Governance Power",
+        "fields": [
+          { "path": "#.delegator", "label": "Delegator", "format": "addressName", "params": { "types": ["eoa", "wallet"], "sources": ["local", "ens"] } },
+          { "path": "#.delegatee", "label": "Delegate To", "format": "addressName", "params": { "types": ["eoa", "wallet", "contract"], "sources": ["local", "ens"] } },
+          { "path": "#.delegationType", "label": "Power Type (0=Voting 1=Proposition)", "format": "raw" },
+          { "path": "#.deadline", "label": "Deadline", "format": "date", "params": { "encoding": "timestamp" } }
+        ],
+        "required": ["#.delegator", "#.delegatee", "#.delegationType", "#.deadline"],
+        "excluded": []
+      }
+    }
+  }
+}

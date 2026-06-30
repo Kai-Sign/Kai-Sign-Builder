@@ -1,0 +1,46 @@
+{
+  "context": {
+    "eip712": {
+      "domain": {
+        "name": "DelegateRegistry",
+        "version": "2",
+        "chainId": 1,
+        "verifyingContract": "0x00000000000000447e69651d841bd8d104bed493"
+      },
+      "primaryType": "Delegation",
+      "types": {
+        "EIP712Domain": [
+          { "name": "name", "type": "string" },
+          { "name": "version", "type": "string" },
+          { "name": "chainId", "type": "uint256" },
+          { "name": "verifyingContract", "type": "address" }
+        ],
+        "Delegation": [
+          { "name": "from", "type": "address" },
+          { "name": "to", "type": "address" },
+          { "name": "rights", "type": "bytes32" },
+          { "name": "enable", "type": "bool" },
+          { "name": "contract_", "type": "address" },
+          { "name": "tokenId", "type": "uint256" },
+          { "name": "amount", "type": "uint256" }
+        ]
+      },
+      "name": "Delegate.xyz V2 Delegation",
+      "description": "Sign a delegation in Delegate.xyz V2 registry to grant or revoke rights"
+    }
+  },
+  "display": {
+    "formats": {
+      "Delegation": {
+        "intent": "Delegate rights via Delegate.xyz V2",
+        "fields": [
+          { "path": "from", "label": "Delegator", "format": "address" },
+          { "path": "to", "label": "Delegate", "format": "address" },
+          { "path": "rights", "label": "Rights (bytes32)", "format": "raw" },
+          { "path": "enable", "label": "Enable Delegation", "format": "raw" },
+          { "path": "contract_", "label": "Contract (0x0 = all)", "format": "address" }
+        ]
+      }
+    }
+  }
+}

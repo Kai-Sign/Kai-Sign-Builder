@@ -1,0 +1,107 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "CompoundGovernorBravo",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0xc0da02939e1441f497fd74f78ce7decb17b66529" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/compound/abis/0xc0da02939e1441f497fd74f78ce7decb17b66529.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "Compound Finance",
+    "info": {
+      "legalName": "Compound Finance",
+      "url": "https://compound.finance"
+    },
+    "constants": {
+      "COMPaddress": "0xc00e94Cb662C3520282E6f5717214004A7f26888"
+    }
+  },
+  "display": {
+    "formats": {
+      "propose(address[],uint256[],string[],bytes[],string)": {
+        "intent": "Create governance proposal",
+        "fields": [
+          {
+            "path": "#.description",
+            "label": "Description",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.description"]
+      },
+      "castVote(uint256,uint8)": {
+        "intent": "Vote on proposal",
+        "fields": [
+          {
+            "path": "#.proposalId",
+            "label": "Proposal ID",
+            "format": "raw"
+          },
+          {
+            "path": "#.support",
+            "label": "Vote",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.proposalId", "#.support"]
+      },
+      "castVoteWithReason(uint256,uint8,string)": {
+        "intent": "Vote on proposal with reason",
+        "fields": [
+          {
+            "path": "#.proposalId",
+            "label": "Proposal ID",
+            "format": "raw"
+          },
+          {
+            "path": "#.support",
+            "label": "Vote",
+            "format": "raw"
+          },
+          {
+            "path": "#.reason",
+            "label": "Reason",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.proposalId", "#.support", "#.reason"]
+      },
+      "queue(uint256)": {
+        "intent": "Queue passed proposal",
+        "fields": [
+          {
+            "path": "#.proposalId",
+            "label": "Proposal ID",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.proposalId"]
+      },
+      "execute(uint256)": {
+        "intent": "Execute queued proposal",
+        "fields": [
+          {
+            "path": "#.proposalId",
+            "label": "Proposal ID",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.proposalId"]
+      },
+      "cancel(uint256)": {
+        "intent": "Cancel proposal",
+        "fields": [
+          {
+            "path": "#.proposalId",
+            "label": "Proposal ID",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.proposalId"]
+      }
+    }
+  }
+}

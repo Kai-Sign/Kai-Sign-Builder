@@ -1,0 +1,195 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x98711192e2be92302cb6263e6fcf99169146b9fb",
+      "chainId": 1,
+      "name": "Fluid VaultT1Secondary (mainnet)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "operate",
+          "selector": "0x032d2276",
+          "inputs": [
+            {
+              "name": "nftId_",
+              "type": "uint256"
+            },
+            {
+              "name": "newCol_",
+              "type": "int256"
+            },
+            {
+              "name": "newDebt_",
+              "type": "int256"
+            },
+            {
+              "name": "to_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x6e553f65",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xb460af94",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "name": "owner_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "absorb",
+          "selector": "0x9e3e4821",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "vaultVariables_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256",
+              "name": "maxTick_",
+              "type": "int256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "rebalance",
+          "selector": "0x7d7c2a1c",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "int256",
+              "name": "supplyAmt_",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "borrowAmt_",
+              "type": "int256"
+            }
+          ],
+          "stateMutability": "payable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "operate(uint256,int256,int256,address)": {
+        "intent": "Manage Fluid vault position",
+        "fields": [
+          {
+            "path": "nftId_",
+            "label": "Position ID",
+            "format": "raw"
+          },
+          {
+            "path": "newCol_",
+            "label": "Collateral Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "newDebt_",
+            "label": "Debt Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "deposit(uint256,address)": {
+        "intent": "Deposit {assets_} to Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Withdraw {assets_} from Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "owner_",
+            "label": "Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "absorb(uint256,int256)": {
+        "intent": "Review Absorb transaction",
+        "fields": [
+          {
+            "path": "vaultVariables_",
+            "label": "Vault Variables ",
+            "format": "raw"
+          },
+          {
+            "path": "maxTick_",
+            "label": "Max Tick ",
+            "format": "raw"
+          }
+        ]
+      },
+      "rebalance()": {
+        "intent": "Review Rebalance transaction",
+        "fields": []
+      }
+    }
+  }
+}

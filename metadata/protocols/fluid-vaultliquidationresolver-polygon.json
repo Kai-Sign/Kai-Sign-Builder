@@ -1,0 +1,1824 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xcf1d44ecdffa9cd070758c15cfd3b8633c3429c5",
+      "chainId": 137,
+      "name": "Fluid VaultLiquidationResolver (polygon)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "operate",
+          "selector": "0x032d2276",
+          "inputs": [
+            {
+              "name": "nftId_",
+              "type": "uint256"
+            },
+            {
+              "name": "newCol_",
+              "type": "int256"
+            },
+            {
+              "name": "newDebt_",
+              "type": "int256"
+            },
+            {
+              "name": "to_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x6e553f65",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xb460af94",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "name": "owner_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "approxOutput",
+          "selector": "0x65eb6bd4",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "tokenIn_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenOut_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "outAmt_",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "protocol",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapPath",
+                  "name": "path",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "inAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "outAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "withAbsorb",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratio",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapData",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Structs.Swap[]",
+              "name": "swaps_",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "inAmt_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "approxOutAmt_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "exactInput",
+          "selector": "0x404fcab2",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "tokenIn_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenOut_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "inAmt_",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "protocol",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapPath",
+                  "name": "path",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "inAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "outAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "withAbsorb",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratio",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapData",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Structs.Swap[]",
+              "name": "swaps_",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "actualInAmt_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "outAmt_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "filterToApproxOutAmt",
+          "selector": "0x8651d5ec",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "protocol",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapPath",
+                  "name": "path",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "inAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "outAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "withAbsorb",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratio",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapData",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Structs.Swap[]",
+              "name": "swaps_",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "targetApproxOutAmt_",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "protocol",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapPath",
+                  "name": "path",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "inAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "outAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "withAbsorb",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratio",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapData",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Structs.Swap[]",
+              "name": "filteredSwaps_",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "actualInAmt_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "approxOutAmt_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "filterToTargetInAmt",
+          "selector": "0x5e47ec03",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "protocol",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapPath",
+                  "name": "path",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "inAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "outAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "withAbsorb",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratio",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapData",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Structs.Swap[]",
+              "name": "swaps_",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "targetInAmt_",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "protocol",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapPath",
+                  "name": "path",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "inAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "outAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "withAbsorb",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratio",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapData",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Structs.Swap[]",
+              "name": "filteredSwaps_",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "actualInAmt_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "approxOutAmt_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "getAllVaultsSwap",
+          "selector": "0x21d3b7f4",
+          "inputs": [],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "protocol",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapPath",
+                  "name": "path",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "inAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "outAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "withAbsorb",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratio",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapData",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Structs.Swap[]",
+              "name": "swaps_",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "getAllVaultsSwapData",
+          "selector": "0x4296bdff",
+          "inputs": [],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "inAmt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "outAmt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "withAbsorb",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "ratio",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Structs.SwapData[]",
+              "name": "withoutAbsorb_",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "inAmt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "outAmt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "withAbsorb",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "ratio",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Structs.SwapData[]",
+              "name": "withAbsorb_",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "getAllVaultsSwapRaw",
+          "selector": "0xe979e874",
+          "inputs": [],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "protocol",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapPath",
+                  "name": "path",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "inAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "outAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "withAbsorb",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratio",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapData",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Structs.Swap[]",
+              "name": "swaps_",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "getAnySwaps",
+          "selector": "0xc5f8b2e5",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "tokensIn_",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokensOut_",
+              "type": "address[]"
+            }
+          ],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "protocol",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapPath",
+                  "name": "path",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "inAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "outAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "withAbsorb",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratio",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapData",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Structs.Swap[]",
+              "name": "swaps_",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "getAnySwapsRaw",
+          "selector": "0x6c855962",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "tokensIn_",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokensOut_",
+              "type": "address[]"
+            }
+          ],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "protocol",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapPath",
+                  "name": "path",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "inAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "outAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "withAbsorb",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratio",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapData",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Structs.Swap[]",
+              "name": "swaps_",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "getSwapForProtocol",
+          "selector": "0x9f5de875",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "protocol_",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "protocol",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapPath",
+                  "name": "path",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "inAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "outAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "withAbsorb",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratio",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapData",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Structs.Swap",
+              "name": "swap_",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "getSwaps",
+          "selector": "0x8011ba33",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "tokenIn_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenOut_",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "protocol",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapPath",
+                  "name": "path",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "inAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "outAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "withAbsorb",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratio",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapData",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Structs.Swap[]",
+              "name": "swaps_",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "getSwapsForPaths",
+          "selector": "0xed6bf8bc",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "protocol",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenOut",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct Structs.SwapPath[]",
+              "name": "paths_",
+              "type": "tuple[]"
+            }
+          ],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "protocol",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapPath",
+                  "name": "path",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "inAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "outAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "withAbsorb",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratio",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapData",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Structs.Swap[]",
+              "name": "swaps_",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "getSwapsForPathsRaw",
+          "selector": "0xe082bca2",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "protocol",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenOut",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct Structs.SwapPath[]",
+              "name": "paths_",
+              "type": "tuple[]"
+            }
+          ],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "protocol",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapPath",
+                  "name": "path",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "inAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "outAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "withAbsorb",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratio",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapData",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Structs.Swap[]",
+              "name": "swaps_",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "getSwapsRaw",
+          "selector": "0x838fef5c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "tokenIn_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenOut_",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "protocol",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapPath",
+                  "name": "path",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "inAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "outAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "withAbsorb",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratio",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapData",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Structs.Swap[]",
+              "name": "swaps_",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "getVaultSwapData",
+          "selector": "0x8953b9d6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "vault_",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "inAmt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "outAmt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "withAbsorb",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "ratio",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Structs.SwapData",
+              "name": "withoutAbsorb_",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "inAmt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "outAmt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "withAbsorb",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "ratio",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Structs.SwapData",
+              "name": "withAbsorb_",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "getVaultsSwap",
+          "selector": "0x7bfb86ff",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "vaults_",
+              "type": "address[]"
+            }
+          ],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "protocol",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapPath",
+                  "name": "path",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "inAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "outAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "withAbsorb",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratio",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapData",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Structs.Swap[]",
+              "name": "swaps_",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "getVaultsSwapData",
+          "selector": "0x4c6fdc1a",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "vaults_",
+              "type": "address[]"
+            }
+          ],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "inAmt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "outAmt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "withAbsorb",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "ratio",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Structs.SwapData[]",
+              "name": "withoutAbsorb_",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "inAmt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "outAmt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "withAbsorb",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "ratio",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Structs.SwapData[]",
+              "name": "withAbsorb_",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "getVaultsSwapRaw",
+          "selector": "0x7119484a",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "vaults_",
+              "type": "address[]"
+            }
+          ],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "protocol",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenIn",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "tokenOut",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapPath",
+                  "name": "path",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "inAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "outAmt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bool",
+                      "name": "withAbsorb",
+                      "type": "bool"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "ratio",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Structs.SwapData",
+                  "name": "data",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Structs.Swap[]",
+              "name": "swaps_",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "operate(uint256,int256,int256,address)": {
+        "intent": "Manage Fluid vault position",
+        "fields": [
+          {
+            "path": "nftId_",
+            "label": "Position ID",
+            "format": "raw"
+          },
+          {
+            "path": "newCol_",
+            "label": "Collateral Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "newDebt_",
+            "label": "Debt Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "deposit(uint256,address)": {
+        "intent": "Deposit {assets_} to Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Withdraw {assets_} from Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "owner_",
+            "label": "Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "approxOutput(address,address,uint256)": {
+        "intent": "Review Approx Output transaction",
+        "fields": [
+          {
+            "path": "tokenIn_",
+            "label": "Token In ",
+            "format": "address"
+          },
+          {
+            "path": "tokenOut_",
+            "label": "Token Out ",
+            "format": "address"
+          },
+          {
+            "path": "outAmt_",
+            "label": "Out Amt ",
+            "format": "raw"
+          }
+        ]
+      },
+      "exactInput(address,address,uint256)": {
+        "intent": "Review Exact Input transaction",
+        "fields": [
+          {
+            "path": "tokenIn_",
+            "label": "Token In ",
+            "format": "address"
+          },
+          {
+            "path": "tokenOut_",
+            "label": "Token Out ",
+            "format": "address"
+          },
+          {
+            "path": "inAmt_",
+            "label": "In Amt ",
+            "format": "raw"
+          }
+        ]
+      },
+      "filterToApproxOutAmt(((address,address,address),(uint256,uint256,bool,uint256))[],uint256)": {
+        "intent": "Review Filter To Approx Out Amt transaction",
+        "fields": [
+          {
+            "path": "swaps_",
+            "label": "Swaps ",
+            "format": "raw"
+          },
+          {
+            "path": "targetApproxOutAmt_",
+            "label": "Target Approx Out Amt ",
+            "format": "raw"
+          }
+        ]
+      },
+      "filterToTargetInAmt(((address,address,address),(uint256,uint256,bool,uint256))[],uint256)": {
+        "intent": "Review Filter To Target In Amt transaction",
+        "fields": [
+          {
+            "path": "swaps_",
+            "label": "Swaps ",
+            "format": "raw"
+          },
+          {
+            "path": "targetInAmt_",
+            "label": "Target In Amt ",
+            "format": "raw"
+          }
+        ]
+      },
+      "getAllVaultsSwap()": {
+        "intent": "Review Get All Vaults Swap transaction",
+        "fields": []
+      },
+      "getAllVaultsSwapData()": {
+        "intent": "Review Get All Vaults Swap Data transaction",
+        "fields": []
+      },
+      "getAllVaultsSwapRaw()": {
+        "intent": "Review Get All Vaults Swap Raw transaction",
+        "fields": []
+      },
+      "getAnySwaps(address[],address[])": {
+        "intent": "Review Get Any Swaps transaction",
+        "fields": [
+          {
+            "path": "tokensIn_",
+            "label": "Tokens In ",
+            "format": "raw"
+          },
+          {
+            "path": "tokensOut_",
+            "label": "Tokens Out ",
+            "format": "raw"
+          }
+        ]
+      },
+      "getAnySwapsRaw(address[],address[])": {
+        "intent": "Review Get Any Swaps Raw transaction",
+        "fields": [
+          {
+            "path": "tokensIn_",
+            "label": "Tokens In ",
+            "format": "raw"
+          },
+          {
+            "path": "tokensOut_",
+            "label": "Tokens Out ",
+            "format": "raw"
+          }
+        ]
+      },
+      "getSwapForProtocol(address)": {
+        "intent": "Review Get Swap For Protocol transaction",
+        "fields": [
+          {
+            "path": "protocol_",
+            "label": "Protocol ",
+            "format": "address"
+          }
+        ]
+      },
+      "getSwaps(address,address)": {
+        "intent": "Review Get Swaps transaction",
+        "fields": [
+          {
+            "path": "tokenIn_",
+            "label": "Token In ",
+            "format": "address"
+          },
+          {
+            "path": "tokenOut_",
+            "label": "Token Out ",
+            "format": "address"
+          }
+        ]
+      },
+      "getSwapsForPaths((address,address,address)[])": {
+        "intent": "Review Get Swaps For Paths transaction",
+        "fields": [
+          {
+            "path": "paths_",
+            "label": "Paths ",
+            "format": "raw"
+          }
+        ]
+      },
+      "getSwapsForPathsRaw((address,address,address)[])": {
+        "intent": "Review Get Swaps For Paths Raw transaction",
+        "fields": [
+          {
+            "path": "paths_",
+            "label": "Paths ",
+            "format": "raw"
+          }
+        ]
+      },
+      "getSwapsRaw(address,address)": {
+        "intent": "Review Get Swaps Raw transaction",
+        "fields": [
+          {
+            "path": "tokenIn_",
+            "label": "Token In ",
+            "format": "address"
+          },
+          {
+            "path": "tokenOut_",
+            "label": "Token Out ",
+            "format": "address"
+          }
+        ]
+      },
+      "getVaultSwapData(address)": {
+        "intent": "Review Get Vault Swap Data transaction",
+        "fields": [
+          {
+            "path": "vault_",
+            "label": "Vault ",
+            "format": "address"
+          }
+        ]
+      },
+      "getVaultsSwap(address[])": {
+        "intent": "Review Get Vaults Swap transaction",
+        "fields": [
+          {
+            "path": "vaults_",
+            "label": "Vaults ",
+            "format": "raw"
+          }
+        ]
+      },
+      "getVaultsSwapData(address[])": {
+        "intent": "Review Get Vaults Swap Data transaction",
+        "fields": [
+          {
+            "path": "vaults_",
+            "label": "Vaults ",
+            "format": "raw"
+          }
+        ]
+      },
+      "getVaultsSwapRaw(address[])": {
+        "intent": "Review Get Vaults Swap Raw transaction",
+        "fields": [
+          {
+            "path": "vaults_",
+            "label": "Vaults ",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

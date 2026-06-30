@@ -1,0 +1,1183 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xc36442b4a4522e871399cd717abdd847ab11fe88",
+      "chainId": 1,
+      "name": "Uniswap V3 NonfungiblePositionManager",
+      "abi": [
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x88316456",
+          "inputs": [
+            {
+              "name": "params",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "token0",
+                  "type": "address"
+                },
+                {
+                  "name": "token1",
+                  "type": "address"
+                },
+                {
+                  "name": "fee",
+                  "type": "uint24"
+                },
+                {
+                  "name": "tickLower",
+                  "type": "int24"
+                },
+                {
+                  "name": "tickUpper",
+                  "type": "int24"
+                },
+                {
+                  "name": "amount0Desired",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amount1Desired",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amount0Min",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amount1Min",
+                  "type": "uint256"
+                },
+                {
+                  "name": "recipient",
+                  "type": "address"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "increaseLiquidity",
+          "selector": "0x219f5d17",
+          "inputs": [
+            {
+              "name": "params",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "tokenId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amount0Desired",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amount1Desired",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amount0Min",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amount1Min",
+                  "type": "uint256"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "decreaseLiquidity",
+          "selector": "0x0c49ccbe",
+          "inputs": [
+            {
+              "name": "params",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "tokenId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "liquidity",
+                  "type": "uint128"
+                },
+                {
+                  "name": "amount0Min",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amount1Min",
+                  "type": "uint256"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "collect",
+          "selector": "0xfc6f7865",
+          "inputs": [
+            {
+              "name": "params",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "tokenId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "recipient",
+                  "type": "address"
+                },
+                {
+                  "name": "amount0Max",
+                  "type": "uint128"
+                },
+                {
+                  "name": "amount1Max",
+                  "type": "uint128"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "selector": "0x42966c68",
+          "inputs": [
+            {
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "createAndInitializePoolIfNecessary",
+          "selector": "0x13ead562",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token0",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "token1",
+              "type": "address"
+            },
+            {
+              "internalType": "uint24",
+              "name": "fee",
+              "type": "uint24"
+            },
+            {
+              "internalType": "uint160",
+              "name": "sqrtPriceX96",
+              "type": "uint160"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "pool",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "multicall",
+          "selector": "0xac9650d8",
+          "inputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "data",
+              "type": "bytes[]"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "results",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "permit",
+          "selector": "0x7ac2ff7b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "refundETH",
+          "selector": "0x12210e8a",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "safeTransferFrom",
+          "selector": "0x42842e0e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "safeTransferFrom",
+          "selector": "0xb88d4fde",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "selfPermit",
+          "selector": "0xf3995c67",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "selfPermitAllowed",
+          "selector": "0x4659a494",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "expiry",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "selfPermitAllowedIfNecessary",
+          "selector": "0xa4a78f0c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "expiry",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "selfPermitIfNecessary",
+          "selector": "0xc2e3140a",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "setApprovalForAll",
+          "selector": "0xa22cb465",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "operator",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "approved",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "sweepToken",
+          "selector": "0xdf2ab5bb",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountMinimum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "uniswapV3MintCallback",
+          "selector": "0xd3487997",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount0Owed",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount1Owed",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unwrapWETH9",
+          "selector": "0x49404b7c",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountMinimum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "mint(tuple)": {
+        "intent": "Create Uniswap V3 LP position",
+        "interpolatedIntent": "Create LP position for {params.token0}/{params.token1} pool",
+        "fields": [
+          {
+            "path": "params.token0",
+            "label": "Token 0",
+            "format": "addressName"
+          },
+          {
+            "path": "params.token1",
+            "label": "Token 1",
+            "format": "addressName"
+          },
+          {
+            "path": "params.fee",
+            "label": "Fee Tier",
+            "format": "raw"
+          },
+          {
+            "path": "params.amount0Desired",
+            "label": "Amount Token 0",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "params.token0"
+            }
+          },
+          {
+            "path": "params.amount1Desired",
+            "label": "Amount Token 1",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "params.token1"
+            }
+          },
+          {
+            "path": "params.amount0Min",
+            "label": "Min Amount Token 0",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "params.token0"
+            }
+          },
+          {
+            "path": "params.amount1Min",
+            "label": "Min Amount Token 1",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "params.token1"
+            }
+          },
+          {
+            "path": "params.recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "params.deadline",
+            "label": "Deadline",
+            "format": "timestamp"
+          }
+        ]
+      },
+      "increaseLiquidity(tuple)": {
+        "intent": "Increase Uniswap V3 LP position",
+        "interpolatedIntent": "Add liquidity to LP position #{params.tokenId}",
+        "fields": [
+          {
+            "path": "params.tokenId",
+            "label": "Position ID",
+            "format": "raw"
+          },
+          {
+            "path": "params.amount0Desired",
+            "label": "Amount Token 0",
+            "format": "raw"
+          },
+          {
+            "path": "params.amount1Desired",
+            "label": "Amount Token 1",
+            "format": "raw"
+          },
+          {
+            "path": "params.amount0Min",
+            "label": "Min Amount Token 0",
+            "format": "raw"
+          },
+          {
+            "path": "params.amount1Min",
+            "label": "Min Amount Token 1",
+            "format": "raw"
+          },
+          {
+            "path": "params.deadline",
+            "label": "Deadline",
+            "format": "timestamp"
+          }
+        ]
+      },
+      "decreaseLiquidity(tuple)": {
+        "intent": "Decrease Uniswap V3 LP position",
+        "interpolatedIntent": "Remove {params.liquidity} liquidity from LP position #{params.tokenId}",
+        "fields": [
+          {
+            "path": "params.tokenId",
+            "label": "Position ID",
+            "format": "raw"
+          },
+          {
+            "path": "params.liquidity",
+            "label": "Liquidity to Remove",
+            "format": "raw"
+          },
+          {
+            "path": "params.amount0Min",
+            "label": "Min Amount Token 0",
+            "format": "raw"
+          },
+          {
+            "path": "params.amount1Min",
+            "label": "Min Amount Token 1",
+            "format": "raw"
+          },
+          {
+            "path": "params.deadline",
+            "label": "Deadline",
+            "format": "timestamp"
+          }
+        ]
+      },
+      "collect(tuple)": {
+        "intent": "Collect Uniswap V3 LP fees",
+        "interpolatedIntent": "Collect fees from LP position #{params.tokenId}",
+        "fields": [
+          {
+            "path": "params.tokenId",
+            "label": "Position ID",
+            "format": "raw"
+          },
+          {
+            "path": "params.recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "burn(uint256)": {
+        "intent": "Burn empty Uniswap V3 LP position",
+        "interpolatedIntent": "Burn LP position NFT #{tokenId}",
+        "fields": [
+          {
+            "path": "tokenId",
+            "label": "Position ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Review Approve transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "createAndInitializePoolIfNecessary(address,address,uint24,uint160)": {
+        "intent": "Review Create And Initialize Pool If Necessary transaction",
+        "fields": [
+          {
+            "path": "token0",
+            "label": "Token0",
+            "format": "address"
+          },
+          {
+            "path": "token1",
+            "label": "Token1",
+            "format": "address"
+          },
+          {
+            "path": "fee",
+            "label": "Fee",
+            "format": "raw"
+          },
+          {
+            "path": "sqrtPriceX96",
+            "label": "Sqrt Price X96",
+            "format": "raw"
+          }
+        ]
+      },
+      "multicall(bytes[])": {
+        "intent": "Review Multicall transaction",
+        "fields": [
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "permit(address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Permit transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "refundETH()": {
+        "intent": "Review Refund ETH transaction",
+        "fields": []
+      },
+      "safeTransferFrom(address,address,uint256)": {
+        "intent": "Review Safe Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "safeTransferFrom(address,address,uint256,bytes)": {
+        "intent": "Review Safe Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          },
+          {
+            "path": "_data",
+            "label": " data",
+            "format": "hex"
+          }
+        ]
+      },
+      "selfPermit(address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Self Permit transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "selfPermitAllowed(address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Self Permit Allowed transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "nonce",
+            "label": "Nonce",
+            "format": "raw"
+          },
+          {
+            "path": "expiry",
+            "label": "Expiry",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "selfPermitAllowedIfNecessary(address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Self Permit Allowed If Necessary transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "nonce",
+            "label": "Nonce",
+            "format": "raw"
+          },
+          {
+            "path": "expiry",
+            "label": "Expiry",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "selfPermitIfNecessary(address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Self Permit If Necessary transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "setApprovalForAll(address,bool)": {
+        "intent": "Review Set Approval For All transaction",
+        "fields": [
+          {
+            "path": "operator",
+            "label": "Operator",
+            "format": "address"
+          },
+          {
+            "path": "approved",
+            "label": "Approved",
+            "format": "boolean"
+          }
+        ]
+      },
+      "sweepToken(address,uint256,address)": {
+        "intent": "Review Sweep Token transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "amountMinimum",
+            "label": "Amount Minimum",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "uniswapV3MintCallback(uint256,uint256,bytes)": {
+        "intent": "Review Uniswap V3 Mint Callback transaction",
+        "fields": [
+          {
+            "path": "amount0Owed",
+            "label": "Amount0 Owed",
+            "format": "raw"
+          },
+          {
+            "path": "amount1Owed",
+            "label": "Amount1 Owed",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "unwrapWETH9(uint256,address)": {
+        "intent": "Review Unwrap WETH9 transaction",
+        "fields": [
+          {
+            "path": "amountMinimum",
+            "label": "Amount Minimum",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "collect((uint256,address,uint128,uint128))": {
+        "intent": "Review Collect transaction",
+        "fields": [
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "decreaseLiquidity((uint256,uint128,uint256,uint256,uint256))": {
+        "intent": "Review Decrease Liquidity transaction",
+        "fields": [
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "increaseLiquidity((uint256,uint256,uint256,uint256,uint256,uint256))": {
+        "intent": "Review Increase Liquidity transaction",
+        "fields": [
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "mint((address,address,uint24,int24,int24,uint256,uint256,uint256,uint256,address,uint256))": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Uniswap Labs",
+    "info": {
+      "url": "https://app.uniswap.org/",
+      "legalName": "Uniswap Protocol",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

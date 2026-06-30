@@ -1,0 +1,77 @@
+{
+  "$schema": "../../specs/erc7730-v2.schema.json",
+  "context": {
+    "$id": "SquidRouterV2",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0xce16f69375520ab01377ce7b88f5ba8c48f8d666" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/squid/abis/0xce16f69375520ab01377ce7b88f5ba8c48f8d666.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "Squid",
+    "contractName": "Squid Router V2",
+    "info": { "url": "https://squidrouter.com" }
+  },
+  "display": {
+    "formats": {
+      "bridgeCall(string,bytes,uint256,(address,uint256,bytes),(address,bytes,bool,bool,address,bytes))": {
+        "interpolatedIntent": "Bridge {#.bridgeData.bridgeAmount} to {#.destinationChain}",
+        "fields": [
+          {
+            "path": "#.destinationChain",
+            "label": "Destination Chain",
+            "format": "raw",
+            "visible": "always"
+          },
+          {
+            "path": "#.bridgeData.token",
+            "label": "Bridge Token",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.bridgeData.amount",
+            "label": "Bridge Amount",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.bridgeData.token" },
+            "visible": "always"
+          },
+          {
+            "path": "#.callData.target",
+            "label": "Destination Contract",
+            "format": "raw",
+            "visible": "always"
+          }
+        ]
+      },
+      "callBridgeCall(address,uint256,(address,bytes,bool,bool,address,bytes),string,bytes,uint256,(address,uint256,bytes),(address,bytes,bool,bool,address,bytes))": {
+        "intent": "Swap, bridge, and call via Squid",
+        "fields": [
+          {
+            "path": "#.token",
+            "label": "Source Token",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.amount",
+            "label": "Source Amount",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.token" },
+            "visible": "always"
+          },
+          {
+            "path": "#.destinationChain",
+            "label": "Destination Chain",
+            "format": "raw",
+            "visible": "always"
+          }
+        ]
+      }
+    }
+  }
+}

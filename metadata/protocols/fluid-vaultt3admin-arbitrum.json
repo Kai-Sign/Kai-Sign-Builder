@@ -1,0 +1,501 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xf37f9bfe8d062be59e8e148d655253bac971354d",
+      "chainId": 42161,
+      "name": "Fluid VaultT3Admin (arbitrum)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "operate",
+          "selector": "0x032d2276",
+          "inputs": [
+            {
+              "name": "nftId_",
+              "type": "uint256"
+            },
+            {
+              "name": "newCol_",
+              "type": "int256"
+            },
+            {
+              "name": "newDebt_",
+              "type": "int256"
+            },
+            {
+              "name": "to_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x6e553f65",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xb460af94",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "name": "owner_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "absorbDustDebt",
+          "selector": "0xd61b93fe",
+          "inputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "nftIds_",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "rescueFunds",
+          "selector": "0xe53b2017",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateBorrowFee",
+          "selector": "0xb8244f5f",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "borrowFee_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateBorrowRate",
+          "selector": "0xa269e784",
+          "inputs": [
+            {
+              "internalType": "int256",
+              "name": "borrowRate_",
+              "type": "int256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateCollateralFactor",
+          "selector": "0x509c21a4",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "collateralFactor_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateCoreSettings",
+          "selector": "0xe9c07b0f",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "supplyRateMagnifier_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256",
+              "name": "borrowRate_",
+              "type": "int256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "collateralFactor_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "liquidationThreshold_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "liquidationMaxLimit_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "withdrawGap_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "liquidationPenalty_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "borrowFee_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateLiquidationMaxLimit",
+          "selector": "0x898e9628",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "liquidationMaxLimit_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateLiquidationPenalty",
+          "selector": "0x57917a11",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "liquidationPenalty_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateLiquidationThreshold",
+          "selector": "0xd3b5be1a",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "liquidationThreshold_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateOracle",
+          "selector": "0xc23c1c9f",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newOracleNonce_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateRebalancer",
+          "selector": "0xb046a449",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newRebalancer_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateSupplyRateMagnifier",
+          "selector": "0x4a138a71",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "supplyRateMagnifier_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateWithdrawGap",
+          "selector": "0x03f9923c",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "withdrawGap_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "operate(uint256,int256,int256,address)": {
+        "intent": "Manage Fluid vault position",
+        "fields": [
+          {
+            "path": "nftId_",
+            "label": "Position ID",
+            "format": "raw"
+          },
+          {
+            "path": "newCol_",
+            "label": "Collateral Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "newDebt_",
+            "label": "Debt Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "deposit(uint256,address)": {
+        "intent": "Deposit {assets_} to Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Withdraw {assets_} from Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "owner_",
+            "label": "Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "absorbDustDebt(uint256[])": {
+        "intent": "Review Absorb Dust Debt transaction",
+        "fields": [
+          {
+            "path": "nftIds_",
+            "label": "Nft Ids ",
+            "format": "raw"
+          }
+        ]
+      },
+      "rescueFunds(address)": {
+        "intent": "Review Rescue Funds transaction",
+        "fields": [
+          {
+            "path": "token_",
+            "label": "Token ",
+            "format": "address"
+          }
+        ]
+      },
+      "updateBorrowFee(uint256)": {
+        "intent": "Review Update Borrow Fee transaction",
+        "fields": [
+          {
+            "path": "borrowFee_",
+            "label": "Borrow Fee ",
+            "format": "raw"
+          }
+        ]
+      },
+      "updateBorrowRate(int256)": {
+        "intent": "Review Update Borrow Rate transaction",
+        "fields": [
+          {
+            "path": "borrowRate_",
+            "label": "Borrow Rate ",
+            "format": "raw"
+          }
+        ]
+      },
+      "updateCollateralFactor(uint256)": {
+        "intent": "Review Update Collateral Factor transaction",
+        "fields": [
+          {
+            "path": "collateralFactor_",
+            "label": "Collateral Factor ",
+            "format": "raw"
+          }
+        ]
+      },
+      "updateCoreSettings(uint256,int256,uint256,uint256,uint256,uint256,uint256,uint256)": {
+        "intent": "Review Update Core Settings transaction",
+        "fields": [
+          {
+            "path": "supplyRateMagnifier_",
+            "label": "Supply Rate Magnifier ",
+            "format": "raw"
+          },
+          {
+            "path": "borrowRate_",
+            "label": "Borrow Rate ",
+            "format": "raw"
+          },
+          {
+            "path": "collateralFactor_",
+            "label": "Collateral Factor ",
+            "format": "raw"
+          },
+          {
+            "path": "liquidationThreshold_",
+            "label": "Liquidation Threshold ",
+            "format": "raw"
+          },
+          {
+            "path": "liquidationMaxLimit_",
+            "label": "Liquidation Max Limit ",
+            "format": "raw"
+          },
+          {
+            "path": "withdrawGap_",
+            "label": "Withdraw Gap ",
+            "format": "raw"
+          },
+          {
+            "path": "liquidationPenalty_",
+            "label": "Liquidation Penalty ",
+            "format": "raw"
+          },
+          {
+            "path": "borrowFee_",
+            "label": "Borrow Fee ",
+            "format": "raw"
+          }
+        ]
+      },
+      "updateLiquidationMaxLimit(uint256)": {
+        "intent": "Review Update Liquidation Max Limit transaction",
+        "fields": [
+          {
+            "path": "liquidationMaxLimit_",
+            "label": "Liquidation Max Limit ",
+            "format": "raw"
+          }
+        ]
+      },
+      "updateLiquidationPenalty(uint256)": {
+        "intent": "Review Update Liquidation Penalty transaction",
+        "fields": [
+          {
+            "path": "liquidationPenalty_",
+            "label": "Liquidation Penalty ",
+            "format": "raw"
+          }
+        ]
+      },
+      "updateLiquidationThreshold(uint256)": {
+        "intent": "Review Update Liquidation Threshold transaction",
+        "fields": [
+          {
+            "path": "liquidationThreshold_",
+            "label": "Liquidation Threshold ",
+            "format": "raw"
+          }
+        ]
+      },
+      "updateOracle(uint256)": {
+        "intent": "Review Update Oracle transaction",
+        "fields": [
+          {
+            "path": "newOracleNonce_",
+            "label": "New Oracle Nonce ",
+            "format": "raw"
+          }
+        ]
+      },
+      "updateRebalancer(address)": {
+        "intent": "Review Update Rebalancer transaction",
+        "fields": [
+          {
+            "path": "newRebalancer_",
+            "label": "New Rebalancer ",
+            "format": "address"
+          }
+        ]
+      },
+      "updateSupplyRateMagnifier(uint256)": {
+        "intent": "Review Update Supply Rate Magnifier transaction",
+        "fields": [
+          {
+            "path": "supplyRateMagnifier_",
+            "label": "Supply Rate Magnifier ",
+            "format": "raw"
+          }
+        ]
+      },
+      "updateWithdrawGap(uint256)": {
+        "intent": "Review Update Withdraw Gap transaction",
+        "fields": [
+          {
+            "path": "withdrawGap_",
+            "label": "Withdraw Gap ",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

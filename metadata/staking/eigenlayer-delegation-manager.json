@@ -1,0 +1,57 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x39053d51b77dc0d36036fc1fcc8cb819df8ef37a"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Eigen Labs",
+    "contractName": "EigenLayer DelegationManager"
+  },
+  "display": {
+    "formats": {
+      "delegateTo(address operator,(bytes,uint256) approverSignatureAndExpiry,bytes32 approverSalt)": {
+        "intent": "Delegate to EigenLayer operator",
+        "interpolatedIntent": "Delegate all restaked assets to operator {operator}",
+        "fields": [
+          { "path": "operator", "label": "Operator", "format": "addressName" }
+        ]
+      },
+      "undelegate(address staker)": {
+        "intent": "Undelegate from EigenLayer operator",
+        "interpolatedIntent": "Undelegate {staker} from current operator and queue withdrawals",
+        "fields": [
+          { "path": "staker", "label": "Staker", "format": "addressName" }
+        ]
+      },
+      "redelegate(address newOperator,(bytes,uint256) newOperatorApproverSig,bytes32 approverSalt)": {
+        "intent": "Redelegate to new EigenLayer operator",
+        "interpolatedIntent": "Redelegate all restaked assets to new operator {newOperator}",
+        "fields": [
+          { "path": "newOperator", "label": "New Operator", "format": "addressName" }
+        ]
+      },
+      "queueWithdrawals((address[],uint256[],address)[] queuedWithdrawalParams)": {
+        "intent": "Queue EigenLayer withdrawals",
+        "interpolatedIntent": "Queue withdrawal of restaked shares from EigenLayer",
+        "fields": [
+          { "path": "queuedWithdrawalParams", "label": "Withdrawal Parameters", "format": "raw" }
+        ]
+      },
+      "completeQueuedWithdrawal((address,address,address,uint256,uint32,address[],uint256[]) withdrawal,address[] tokens,uint256 middlewareTimesIndex,bool receiveAsTokens)": {
+        "intent": "Complete EigenLayer withdrawal",
+        "interpolatedIntent": "Complete queued EigenLayer withdrawal",
+        "fields": [
+          { "path": "withdrawal", "label": "Withdrawal", "format": "raw" },
+          { "path": "receiveAsTokens", "label": "Receive as Tokens", "format": "integer" }
+        ]
+      }
+    }
+  }
+}

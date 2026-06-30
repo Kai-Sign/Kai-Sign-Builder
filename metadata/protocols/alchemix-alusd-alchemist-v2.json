@@ -1,0 +1,93 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x5c6374a2ac4ebc38dea0fc1f8716e5ea1add94dd"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Alchemix Finance",
+    "contractName": "Alchemix alUSD AlchemistV2"
+  },
+  "display": {
+    "formats": {
+      "deposit(address yieldToken,uint256 amount,address recipient)": {
+        "intent": "Deposit to Alchemix alUSD",
+        "interpolatedIntent": "Deposit {amount} of yield token {yieldToken} to Alchemix for {recipient}",
+        "fields": [
+          { "path": "yieldToken", "label": "Yield Token", "format": "addressName" },
+          { "path": "amount", "label": "Amount", "format": "tokenAmount", "params": { "tokenPath": "yieldToken" } },
+          { "path": "recipient", "label": "Recipient", "format": "addressName" }
+        ]
+      },
+      "depositUnderlying(address yieldToken,uint256 amount,address recipient,uint256 minimumAmountOut)": {
+        "intent": "Deposit underlying to Alchemix alUSD",
+        "interpolatedIntent": "Deposit {amount} underlying for {yieldToken} to Alchemix for {recipient}",
+        "fields": [
+          { "path": "yieldToken", "label": "Yield Token", "format": "addressName" },
+          { "path": "amount", "label": "Amount", "format": "raw" },
+          { "path": "recipient", "label": "Recipient", "format": "addressName" },
+          { "path": "minimumAmountOut", "label": "Min Amount Out", "format": "raw" }
+        ]
+      },
+      "withdraw(address yieldToken,uint256 shares,address recipient)": {
+        "intent": "Withdraw from Alchemix alUSD",
+        "interpolatedIntent": "Withdraw {shares} shares of {yieldToken} from Alchemix to {recipient}",
+        "fields": [
+          { "path": "yieldToken", "label": "Yield Token", "format": "addressName" },
+          { "path": "shares", "label": "Shares", "format": "raw" },
+          { "path": "recipient", "label": "Recipient", "format": "addressName" }
+        ]
+      },
+      "withdrawUnderlying(address yieldToken,uint256 shares,address recipient,uint256 minimumAmountOut)": {
+        "intent": "Withdraw underlying from Alchemix alUSD",
+        "interpolatedIntent": "Withdraw {shares} shares of {yieldToken} as underlying from Alchemix to {recipient}",
+        "fields": [
+          { "path": "yieldToken", "label": "Yield Token", "format": "addressName" },
+          { "path": "shares", "label": "Shares", "format": "raw" },
+          { "path": "recipient", "label": "Recipient", "format": "addressName" },
+          { "path": "minimumAmountOut", "label": "Min Amount Out", "format": "raw" }
+        ]
+      },
+      "mint(uint256 amount,address recipient)": {
+        "intent": "Mint alUSD from Alchemix",
+        "interpolatedIntent": "Mint {amount} alUSD to {recipient}",
+        "fields": [
+          { "path": "amount", "label": "alUSD Amount", "format": "amount", "params": { "decimals": 18, "symbol": "alUSD" } },
+          { "path": "recipient", "label": "Recipient", "format": "addressName" }
+        ]
+      },
+      "burn(uint256 amount,address recipient)": {
+        "intent": "Burn alUSD to reduce Alchemix debt",
+        "interpolatedIntent": "Burn {amount} alUSD to reduce debt for {recipient}",
+        "fields": [
+          { "path": "amount", "label": "alUSD Amount", "format": "amount", "params": { "decimals": 18, "symbol": "alUSD" } },
+          { "path": "recipient", "label": "Account", "format": "addressName" }
+        ]
+      },
+      "repay(address underlyingToken,uint256 amount,address recipient)": {
+        "intent": "Repay Alchemix alUSD debt",
+        "interpolatedIntent": "Repay {amount} of {underlyingToken} to reduce debt for {recipient}",
+        "fields": [
+          { "path": "underlyingToken", "label": "Underlying Token", "format": "addressName" },
+          { "path": "amount", "label": "Amount", "format": "tokenAmount", "params": { "tokenPath": "underlyingToken" } },
+          { "path": "recipient", "label": "Account", "format": "addressName" }
+        ]
+      },
+      "liquidate(address yieldToken,uint256 shares,uint256 minimumAmountOut)": {
+        "intent": "Self-liquidate Alchemix alUSD position",
+        "interpolatedIntent": "Liquidate {shares} shares of {yieldToken} from Alchemix",
+        "fields": [
+          { "path": "yieldToken", "label": "Yield Token", "format": "addressName" },
+          { "path": "shares", "label": "Shares", "format": "raw" },
+          { "path": "minimumAmountOut", "label": "Min Amount Out", "format": "raw" }
+        ]
+      }
+    }
+  }
+}

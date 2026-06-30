@@ -1,0 +1,45 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 10,
+          "address": "0xa420b2d1c0841415a695b81e5b867bcd07dff8c9"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Risk Labs",
+    "contractName": "Across V3 SpokePool (Optimism)"
+  },
+  "display": {
+    "formats": {
+      "depositV3(address depositor,address recipient,address inputToken,address outputToken,uint256 inputAmount,uint256 outputAmount,uint256 destinationChainId,address exclusiveRelayer,uint32 quoteTimestamp,uint32 fillDeadline,uint32 exclusivityDeadline,bytes message)": {
+        "intent": "Bridge tokens via Across",
+        "interpolatedIntent": "Bridge {inputAmount} tokens to chain {destinationChainId} via Across",
+        "fields": [
+          { "path": "inputToken", "label": "Input Token", "format": "addressName" },
+          { "path": "outputToken", "label": "Output Token", "format": "addressName" },
+          { "path": "inputAmount", "label": "Input Amount", "format": "tokenAmount", "params": { "tokenPath": "inputToken" } },
+          { "path": "outputAmount", "label": "Min Output Amount", "format": "raw" },
+          { "path": "destinationChainId", "label": "Destination Chain", "format": "integer" },
+          { "path": "recipient", "label": "Recipient", "format": "addressName" },
+          { "path": "depositor", "label": "Depositor", "format": "addressName" },
+          { "path": "fillDeadline", "label": "Fill Deadline", "format": "timestamp" }
+        ]
+      },
+      "speedUpV3Deposit(address depositor,uint32 depositId,uint256 updatedOutputAmount,address updatedRecipient,bytes updatedMessage,bytes depositorSignature)": {
+        "intent": "Speed up Across bridge deposit",
+        "interpolatedIntent": "Speed up deposit #{depositId} with new output {updatedOutputAmount}",
+        "fields": [
+          { "path": "depositor", "label": "Depositor", "format": "addressName" },
+          { "path": "depositId", "label": "Deposit ID", "format": "integer" },
+          { "path": "updatedOutputAmount", "label": "Updated Output Amount", "format": "raw" },
+          { "path": "updatedRecipient", "label": "Updated Recipient", "format": "addressName" }
+        ]
+      }
+    }
+  }
+}

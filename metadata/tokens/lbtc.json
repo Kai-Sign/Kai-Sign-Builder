@@ -1,0 +1,1032 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x8236a87084f8b84306f72007f36f2618a5634494",
+      "chainId": 1,
+      "name": "Lombard BTC",
+      "symbol": "LBTC",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "acceptDefaultAdminTransfer",
+          "selector": "0xcefc1429",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "batchMint",
+          "selector": "0x68573107",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "to",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amount",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "batchMint",
+          "selector": "0x9b914470",
+          "inputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "payload",
+              "type": "bytes[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "proof",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "batchMintWithFee",
+          "selector": "0x59aae4ba",
+          "inputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "mintPayload",
+              "type": "bytes[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "proof",
+              "type": "bytes[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "feePayload",
+              "type": "bytes[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "userSignature",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "beginDefaultAdminTransfer",
+          "selector": "0x634e93da",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "selector": "0x42966c68",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "selector": "0x9dc29fac",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "cancelDefaultAdminTransfer",
+          "selector": "0xd602b9fd",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeAssetRouter",
+          "selector": "0x4a09bd49",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newVal",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeDefaultAdminDelay",
+          "selector": "0x649a5ec7",
+          "inputs": [
+            {
+              "internalType": "uint48",
+              "name": "newDelay",
+              "type": "uint48"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeNameAndSymbol",
+          "selector": "0x089bb99a",
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "name_",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "symbol_",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeRedeemFee",
+          "selector": "0x94359200",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newVal",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeRedeemForBtcMinAmount",
+          "selector": "0xfe38ae87",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newVal",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeTreasuryAddress",
+          "selector": "0xa6f353f0",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newValue",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0xb6b55f25",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "selector": "0x2f2ff15d",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xce24af53",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "treasury",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "initialOwner",
+              "type": "address"
+            },
+            {
+              "internalType": "uint48",
+              "name": "initialOwnerDelay",
+              "type": "uint48"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "migrateToAccessControl",
+          "selector": "0xe47b0d5d",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "minters_",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "claimers_",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x40c10f19",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x6bc63893",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "rawPayload",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "proof",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintWithFee",
+          "selector": "0x06689495",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "mintPayload",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "proof",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "feePayload",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "userSignature",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pauseMintBurn",
+          "selector": "0x6daf7dbc",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pauseTransfers",
+          "selector": "0x47af9957",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "permit",
+          "selector": "0xd505accf",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redeem",
+          "selector": "0xdb006a75",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redeemForBtc",
+          "selector": "0x30b93d85",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "scriptPubkey",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "selector": "0x36568abe",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "selector": "0xd547741f",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "rollbackDefaultAdminDelay",
+          "selector": "0x0aa6220b",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "toggleRedeemsForBtc",
+          "selector": "0x7dea53c4",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unpauseMintBurn",
+          "selector": "0x2a309ef9",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unpauseTransfers",
+          "selector": "0x8936a91f",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} LBTC",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "LBTC"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} LBTC",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "LBTC"
+            }
+          }
+        ]
+      },
+      "acceptDefaultAdminTransfer()": {
+        "intent": "Review Accept Default Admin Transfer transaction",
+        "fields": []
+      },
+      "batchMint(address[],uint256[])": {
+        "intent": "Review Batch Mint transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "raw"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "batchMint(bytes[],bytes[])": {
+        "intent": "Review Batch Mint transaction",
+        "fields": [
+          {
+            "path": "payload",
+            "label": "Payload",
+            "format": "hex"
+          },
+          {
+            "path": "proof",
+            "label": "Proof",
+            "format": "hex"
+          }
+        ]
+      },
+      "batchMintWithFee(bytes[],bytes[],bytes[],bytes[])": {
+        "intent": "Review Batch Mint With Fee transaction",
+        "fields": [
+          {
+            "path": "mintPayload",
+            "label": "Mint Payload",
+            "format": "hex"
+          },
+          {
+            "path": "proof",
+            "label": "Proof",
+            "format": "hex"
+          },
+          {
+            "path": "feePayload",
+            "label": "Fee Payload",
+            "format": "hex"
+          },
+          {
+            "path": "userSignature",
+            "label": "User Signature",
+            "format": "hex"
+          }
+        ]
+      },
+      "beginDefaultAdminTransfer(address)": {
+        "intent": "Review Begin Default Admin Transfer transaction",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "burn(uint256)": {
+        "intent": "Review Burn transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "burn(address,uint256)": {
+        "intent": "Review Burn transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "cancelDefaultAdminTransfer()": {
+        "intent": "Review Cancel Default Admin Transfer transaction",
+        "fields": []
+      },
+      "changeAssetRouter(address)": {
+        "intent": "Review Change Asset Router transaction",
+        "fields": [
+          {
+            "path": "newVal",
+            "label": "New Val",
+            "format": "address"
+          }
+        ]
+      },
+      "changeDefaultAdminDelay(uint48)": {
+        "intent": "Review Change Default Admin Delay transaction",
+        "fields": [
+          {
+            "path": "newDelay",
+            "label": "New Delay",
+            "format": "raw"
+          }
+        ]
+      },
+      "changeNameAndSymbol(string,string)": {
+        "intent": "Review Change Name And Symbol transaction",
+        "fields": [
+          {
+            "path": "name_",
+            "label": "Name ",
+            "format": "raw"
+          },
+          {
+            "path": "symbol_",
+            "label": "Symbol ",
+            "format": "raw"
+          }
+        ]
+      },
+      "changeRedeemFee(uint256)": {
+        "intent": "Review Change Redeem Fee transaction",
+        "fields": [
+          {
+            "path": "newVal",
+            "label": "New Val",
+            "format": "raw"
+          }
+        ]
+      },
+      "changeRedeemForBtcMinAmount(uint256)": {
+        "intent": "Review Change Redeem For Btc Min Amount transaction",
+        "fields": [
+          {
+            "path": "newVal",
+            "label": "New Val",
+            "format": "raw"
+          }
+        ]
+      },
+      "changeTreasuryAddress(address)": {
+        "intent": "Review Change Treasury Address transaction",
+        "fields": [
+          {
+            "path": "newValue",
+            "label": "New Value",
+            "format": "address"
+          }
+        ]
+      },
+      "deposit(uint256)": {
+        "intent": "Review Deposit transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "grantRole(bytes32,address)": {
+        "intent": "Review Grant Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "initialize(address,address,uint48)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "treasury",
+            "label": "Treasury",
+            "format": "address"
+          },
+          {
+            "path": "initialOwner",
+            "label": "Initial Owner",
+            "format": "address"
+          },
+          {
+            "path": "initialOwnerDelay",
+            "label": "Initial Owner Delay",
+            "format": "raw"
+          }
+        ]
+      },
+      "migrateToAccessControl(address[],address[])": {
+        "intent": "Review Migrate To Access Control transaction",
+        "fields": [
+          {
+            "path": "minters_",
+            "label": "Minters ",
+            "format": "raw"
+          },
+          {
+            "path": "claimers_",
+            "label": "Claimers ",
+            "format": "raw"
+          }
+        ]
+      },
+      "mint(address,uint256)": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "mint(bytes,bytes)": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "rawPayload",
+            "label": "Raw Payload",
+            "format": "hex"
+          },
+          {
+            "path": "proof",
+            "label": "Proof",
+            "format": "hex"
+          }
+        ]
+      },
+      "mintWithFee(bytes,bytes,bytes,bytes)": {
+        "intent": "Review Mint With Fee transaction",
+        "fields": [
+          {
+            "path": "mintPayload",
+            "label": "Mint Payload",
+            "format": "hex"
+          },
+          {
+            "path": "proof",
+            "label": "Proof",
+            "format": "hex"
+          },
+          {
+            "path": "feePayload",
+            "label": "Fee Payload",
+            "format": "hex"
+          },
+          {
+            "path": "userSignature",
+            "label": "User Signature",
+            "format": "hex"
+          }
+        ]
+      },
+      "pauseMintBurn()": {
+        "intent": "Review Pause Mint Burn transaction",
+        "fields": []
+      },
+      "pauseTransfers()": {
+        "intent": "Review Pause Transfers transaction",
+        "fields": []
+      },
+      "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Permit transaction",
+        "fields": [
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "redeem(uint256)": {
+        "intent": "Review Redeem transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "redeemForBtc(bytes,uint256)": {
+        "intent": "Review Redeem For Btc transaction",
+        "fields": [
+          {
+            "path": "scriptPubkey",
+            "label": "Script Pubkey",
+            "format": "hex"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "renounceRole(bytes32,address)": {
+        "intent": "Review Renounce Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "revokeRole(bytes32,address)": {
+        "intent": "Review Revoke Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "rollbackDefaultAdminDelay()": {
+        "intent": "Review Rollback Default Admin Delay transaction",
+        "fields": []
+      },
+      "toggleRedeemsForBtc()": {
+        "intent": "Review Toggle Redeems For Btc transaction",
+        "fields": []
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "unpauseMintBurn()": {
+        "intent": "Review Unpause Mint Burn transaction",
+        "fields": []
+      },
+      "unpauseTransfers()": {
+        "intent": "Review Unpause Transfers transaction",
+        "fields": []
+      }
+    }
+  }
+}

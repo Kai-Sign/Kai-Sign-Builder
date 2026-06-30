@@ -1,0 +1,110 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x1f98431c8ad98523631ae4a59f267346ea31f984",
+      "chainId": 1,
+      "name": "Uniswap V3 Factory",
+      "abi": [
+        {
+          "type": "function",
+          "name": "createPool",
+          "selector": "0xa1671295",
+          "inputs": [
+            {
+              "name": "tokenA",
+              "type": "address"
+            },
+            {
+              "name": "tokenB",
+              "type": "address"
+            },
+            {
+              "name": "fee",
+              "type": "uint24"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "enableFeeAmount",
+          "selector": "0x8a7c195f",
+          "inputs": [
+            {
+              "internalType": "uint24",
+              "name": "fee",
+              "type": "uint24"
+            },
+            {
+              "internalType": "int24",
+              "name": "tickSpacing",
+              "type": "int24"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setOwner",
+          "selector": "0x13af4035",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "createPool(address,address,uint24)": {
+        "intent": "Create Uniswap V3 pool",
+        "fields": [
+          {
+            "path": "tokenA",
+            "label": "Token A",
+            "format": "address"
+          },
+          {
+            "path": "tokenB",
+            "label": "Token B",
+            "format": "address"
+          },
+          {
+            "path": "fee",
+            "label": "Fee Tier",
+            "format": "number"
+          }
+        ]
+      },
+      "enableFeeAmount(uint24,int24)": {
+        "intent": "Review Enable Fee Amount transaction",
+        "fields": [
+          {
+            "path": "fee",
+            "label": "Fee",
+            "format": "raw"
+          },
+          {
+            "path": "tickSpacing",
+            "label": "Tick Spacing",
+            "format": "raw"
+          }
+        ]
+      },
+      "setOwner(address)": {
+        "intent": "Review Set Owner transaction",
+        "fields": [
+          {
+            "path": "_owner",
+            "label": " owner",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,595 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x3432B6A60D23Ca0dFCa7761B7ab56459D9C964D0",
+      "chainId": 1,
+      "name": "Frax Share",
+      "symbol": "FXS",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "selector": "0x42966c68",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burnFrom",
+          "selector": "0x79cc6790",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowance",
+          "selector": "0xa457c2d7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "selector": "0x2f2ff15d",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowance",
+          "selector": "0x39509351",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "addedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x40c10f19",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pool_burn_from",
+          "selector": "0xa8a778ae",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "b_address",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "b_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pool_mint",
+          "selector": "0xb4f56b26",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "m_address",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "m_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "selector": "0x36568abe",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "selector": "0xd547741f",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFRAXAddress",
+          "selector": "0x4b3161c2",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "frax_contract_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFXSMinDAO",
+          "selector": "0x37a30bbc",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "min_FXS",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setOracle",
+          "selector": "0x7adbf973",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "new_oracle",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setOwner",
+          "selector": "0x13af4035",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_owner_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTimelock",
+          "selector": "0xbdacb303",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "new_timelock",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "toggleVotes",
+          "selector": "0x45791d19",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} FXS",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "FXS"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} FXS",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "FXS"
+            }
+          }
+        ]
+      },
+      "burn(uint256)": {
+        "intent": "Review Burn transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "burnFrom(address,uint256)": {
+        "intent": "Review Burn From transaction",
+        "fields": [
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "decreaseAllowance(address,uint256)": {
+        "intent": "Review Decrease Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "subtractedValue",
+            "label": "Subtracted Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "grantRole(bytes32,address)": {
+        "intent": "Review Grant Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "increaseAllowance(address,uint256)": {
+        "intent": "Review Increase Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "addedValue",
+            "label": "Added Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "mint(address,uint256)": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "pool_burn_from(address,uint256)": {
+        "intent": "Review Pool burn from transaction",
+        "fields": [
+          {
+            "path": "b_address",
+            "label": "B address",
+            "format": "address"
+          },
+          {
+            "path": "b_amount",
+            "label": "B amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "pool_mint(address,uint256)": {
+        "intent": "Review Pool mint transaction",
+        "fields": [
+          {
+            "path": "m_address",
+            "label": "M address",
+            "format": "address"
+          },
+          {
+            "path": "m_amount",
+            "label": "M amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "renounceRole(bytes32,address)": {
+        "intent": "Review Renounce Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "revokeRole(bytes32,address)": {
+        "intent": "Review Revoke Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "setFRAXAddress(address)": {
+        "intent": "Review Set FRAXAddress transaction",
+        "fields": [
+          {
+            "path": "frax_contract_address",
+            "label": "Frax contract address",
+            "format": "address"
+          }
+        ]
+      },
+      "setFXSMinDAO(uint256)": {
+        "intent": "Review Set FXSMin DAO transaction",
+        "fields": [
+          {
+            "path": "min_FXS",
+            "label": "Min FXS",
+            "format": "raw"
+          }
+        ]
+      },
+      "setOracle(address)": {
+        "intent": "Review Set Oracle transaction",
+        "fields": [
+          {
+            "path": "new_oracle",
+            "label": "New oracle",
+            "format": "address"
+          }
+        ]
+      },
+      "setOwner(address)": {
+        "intent": "Review Set Owner transaction",
+        "fields": [
+          {
+            "path": "_owner_address",
+            "label": " owner address",
+            "format": "address"
+          }
+        ]
+      },
+      "setTimelock(address)": {
+        "intent": "Review Set Timelock transaction",
+        "fields": [
+          {
+            "path": "new_timelock",
+            "label": "New timelock",
+            "format": "address"
+          }
+        ]
+      },
+      "toggleVotes()": {
+        "intent": "Review Toggle Votes transaction",
+        "fields": []
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "sender",
+            "label": "Sender",
+            "format": "address"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

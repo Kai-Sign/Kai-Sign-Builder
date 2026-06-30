@@ -1,0 +1,164 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xc2132d05d31c914a87c6611c10748aeb04b58e8f",
+      "chainId": 137,
+      "name": "Tether USD (Polygon)",
+      "symbol": "USDT",
+      "decimals": 6,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transferProxyOwnership",
+          "selector": "0xf1739cae",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateAndCall",
+          "selector": "0xd88ca2c8",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_newProxyTo",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "updateImplementation",
+          "selector": "0x025b22bc",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_newProxyTo",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} USDT",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 6,
+              "symbol": "USDT"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} USDT",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 6,
+              "symbol": "USDT"
+            }
+          }
+        ]
+      },
+      "transferProxyOwnership(address)": {
+        "intent": "Review Transfer Proxy Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "updateAndCall(address,bytes)": {
+        "intent": "Review Update And Call transaction",
+        "fields": [
+          {
+            "path": "_newProxyTo",
+            "label": " new Proxy To",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "updateImplementation(address)": {
+        "intent": "Review Update Implementation transaction",
+        "fields": [
+          {
+            "path": "_newProxyTo",
+            "label": " new Proxy To",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

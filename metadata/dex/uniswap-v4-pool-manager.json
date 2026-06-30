@@ -1,0 +1,122 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "UniswapV4PoolManager",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x000000000004444c5dc75cb358380d2e3de08a90" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/uniswap/abis/0x000000000004444c5dc75cb358380d2e3de08a90.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "Uniswap Labs",
+    "info": {
+      "legalName": "Uniswap Labs",
+      "url": "https://uniswap.org"
+    }
+  },
+  "display": {
+    "formats": {
+      "swap((address,address,uint24,int24,address),bool,int256,(bytes))": {
+        "intent": "Swap tokens",
+        "fields": [
+          {
+            "path": "#.key.currency0",
+            "label": "Token 0",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null }
+          },
+          {
+            "path": "#.key.currency1",
+            "label": "Token 1",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null }
+          },
+          {
+            "path": "#.key.fee",
+            "label": "Fee Tier",
+            "format": "raw"
+          },
+          {
+            "path": "#.zeroForOne",
+            "label": "Direction",
+            "format": "raw"
+          },
+          {
+            "path": "#.amountSpecified",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.key.currency0", "#.key.currency1", "#.key.fee", "#.zeroForOne", "#.amountSpecified"]
+      },
+      "modifyLiquidity((address,address,uint24,int24,address),int256,int256,int256,(bytes))": {
+        "intent": "Modify liquidity position",
+        "fields": [
+          {
+            "path": "#.key.currency0",
+            "label": "Token 0",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null }
+          },
+          {
+            "path": "#.key.currency1",
+            "label": "Token 1",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null }
+          },
+          {
+            "path": "#.key.fee",
+            "label": "Fee Tier",
+            "format": "raw"
+          },
+          {
+            "path": "#.liquidityDelta",
+            "label": "Liquidity Delta",
+            "format": "raw"
+          },
+          {
+            "path": "#.tickLower",
+            "label": "Lower Tick",
+            "format": "raw"
+          },
+          {
+            "path": "#.tickUpper",
+            "label": "Upper Tick",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.key.currency0", "#.key.currency1", "#.key.fee", "#.liquidityDelta", "#.tickLower", "#.tickUpper"]
+      },
+      "initialize((address,address,uint24,int24,address),uint160)": {
+        "intent": "Initialize pool",
+        "fields": [
+          {
+            "path": "#.key.currency0",
+            "label": "Token 0",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null }
+          },
+          {
+            "path": "#.key.currency1",
+            "label": "Token 1",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null }
+          },
+          {
+            "path": "#.key.fee",
+            "label": "Fee Tier",
+            "format": "raw"
+          },
+          {
+            "path": "#.sqrtPriceX96",
+            "label": "Initial Price",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.key.currency0", "#.key.currency1", "#.key.fee", "#.sqrtPriceX96"]
+      }
+    }
+  }
+}

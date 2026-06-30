@@ -1,0 +1,228 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x7d7327624bf9627fc11f6da240db8066c4beb3c8",
+      "chainId": 1,
+      "name": "Lyra V1",
+      "abi": [
+        {
+          "type": "function",
+          "name": "depositToLyra",
+          "selector": "0xf4e8cd69",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "market",
+              "type": "address"
+            },
+            {
+              "name": "isCall",
+              "type": "bool"
+            },
+            {
+              "name": "strikeId",
+              "type": "uint256"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "beneficiary",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "depositETHToLyra",
+          "selector": "0x23d8817a",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "socketVault",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "isSCW",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "gasLimit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "connector",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "recoverERC20",
+          "selector": "0x8980f11f",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "recoverETH",
+          "selector": "0xd3335553",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "depositToLyra(address,address,bool,uint256,uint256,address)": {
+        "intent": "Deposit to Lyra",
+        "interpolatedIntent": "Deposit {amount} to Lyra",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "addressName"
+          },
+          {
+            "path": "market",
+            "label": "Market",
+            "format": "addressName"
+          },
+          {
+            "path": "isCall",
+            "label": "Call Option",
+            "format": "raw"
+          },
+          {
+            "path": "strikeId",
+            "label": "Strike ID",
+            "format": "raw"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "asset"
+            }
+          },
+          {
+            "path": "beneficiary",
+            "label": "Beneficiary",
+            "format": "addressName"
+          }
+        ]
+      },
+      "depositETHToLyra(address,bool,uint256,address)": {
+        "intent": "Review Deposit ETHTo Lyra transaction",
+        "fields": [
+          {
+            "path": "socketVault",
+            "label": "Socket Vault",
+            "format": "address"
+          },
+          {
+            "path": "isSCW",
+            "label": "Is SCW",
+            "format": "boolean"
+          },
+          {
+            "path": "gasLimit",
+            "label": "Gas Limit",
+            "format": "raw"
+          },
+          {
+            "path": "connector",
+            "label": "Connector",
+            "format": "address"
+          }
+        ]
+      },
+      "recoverERC20(address,uint256)": {
+        "intent": "Review Recover ERC20 transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "recoverETH(uint256)": {
+        "intent": "Review Recover ETH transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

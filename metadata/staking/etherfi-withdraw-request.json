@@ -1,0 +1,36 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x7d5706f6ef3f89b3951e23e557cdfbc3239d4e2c"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "ether.fi",
+    "contractName": "ether.fi WithdrawRequestNFT"
+  },
+  "display": {
+    "formats": {
+      "requestWithdraw(uint96 amount,address owner)": {
+        "intent": "Request ether.fi eETH withdrawal",
+        "interpolatedIntent": "Request withdrawal of {amount} eETH for {owner}",
+        "fields": [
+          { "path": "amount", "label": "Amount", "format": "amount", "params": { "decimals": 18, "symbol": "eETH" } },
+          { "path": "owner", "label": "Owner", "format": "addressName" }
+        ]
+      },
+      "claimWithdraw(uint256 tokenId)": {
+        "intent": "Claim ether.fi withdrawal",
+        "interpolatedIntent": "Claim completed withdrawal #{tokenId}",
+        "fields": [
+          { "path": "tokenId", "label": "Request NFT ID", "format": "integer" }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 42161,
+          "address": "0x7c68c7866a64fa2160f78eeae12217ffbf871fa8"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "GMX",
+    "contractName": "GMX V2 Exchange Router (Arbitrum)"
+  },
+  "display": {
+    "formats": {
+      "multicall(bytes[] data)": {
+        "intent": "Execute GMX V2 operations",
+        "interpolatedIntent": "Execute batch operations on GMX V2",
+        "fields": [
+          { "path": "data", "label": "Calls", "format": "raw" }
+        ]
+      },
+      "createOrder((address[] addresses,uint256[] numbers,uint256 orderType,uint256 decreasePositionSwapType,bool isLong,bool shouldUnwrapNativeToken,bytes32 referralCode) params)": {
+        "intent": "Create GMX V2 order",
+        "interpolatedIntent": "Create order on GMX V2",
+        "fields": [
+          { "path": "params.orderType", "label": "Order Type", "format": "integer" },
+          { "path": "params.isLong", "label": "Is Long", "format": "integer" },
+          { "path": "params.referralCode", "label": "Referral Code", "format": "raw" }
+        ]
+      },
+      "cancelOrder(bytes32 key)": {
+        "intent": "Cancel GMX V2 order",
+        "interpolatedIntent": "Cancel GMX V2 order",
+        "fields": [
+          { "path": "key", "label": "Order Key", "format": "raw" }
+        ]
+      },
+      "createDeposit((address receiver,address callbackContract,address uiFeeReceiver,address market,address initialLongToken,address initialShortToken,address[] longTokenSwapPath,address[] shortTokenSwapPath,uint256 minMarketTokens,bool shouldUnwrapNativeToken,uint256 executionFee,uint256 callbackGasLimit) params)": {
+        "intent": "Deposit into GMX V2 market",
+        "interpolatedIntent": "Deposit into GMX V2 market {params.market}",
+        "fields": [
+          { "path": "params.market", "label": "Market", "format": "addressName" },
+          { "path": "params.initialLongToken", "label": "Long Token", "format": "addressName" },
+          { "path": "params.initialShortToken", "label": "Short Token", "format": "addressName" },
+          { "path": "params.minMarketTokens", "label": "Min Market Tokens", "format": "raw" },
+          { "path": "params.receiver", "label": "Receiver", "format": "addressName" }
+        ]
+      },
+      "createWithdrawal((address receiver,address callbackContract,address uiFeeReceiver,address market,address[] longTokenSwapPath,address[] shortTokenSwapPath,uint256 minLongTokenAmount,uint256 minShortTokenAmount,bool shouldUnwrapNativeToken,uint256 executionFee,uint256 callbackGasLimit) params)": {
+        "intent": "Withdraw from GMX V2 market",
+        "interpolatedIntent": "Withdraw from GMX V2 market {params.market}",
+        "fields": [
+          { "path": "params.market", "label": "Market", "format": "addressName" },
+          { "path": "params.minLongTokenAmount", "label": "Min Long Token Out", "format": "raw" },
+          { "path": "params.minShortTokenAmount", "label": "Min Short Token Out", "format": "raw" },
+          { "path": "params.receiver", "label": "Receiver", "format": "addressName" }
+        ]
+      }
+    }
+  }
+}

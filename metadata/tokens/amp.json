@@ -1,0 +1,658 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xff20817765cb7f73d4bde2e66e067e58d11095c2",
+      "chainId": 1,
+      "name": "Amp",
+      "symbol": "AMP",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "approveByPartition",
+          "selector": "0x14d1e62f",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "_partition",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "assumeOwnership",
+          "selector": "0xa2c1cae2",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "authorizeOperator",
+          "selector": "0x959b8c3f",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_operator",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "authorizeOperatorByPartition",
+          "selector": "0x103ef9e1",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "_partition",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "_operator",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "authorizeOwnershipTransfer",
+          "selector": "0x87f4427e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_authorizedAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowance",
+          "selector": "0xa457c2d7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowanceByPartition",
+          "selector": "0x1ff6442e",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "_partition",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowance",
+          "selector": "0x39509351",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_addedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowanceByPartition",
+          "selector": "0xc2f89a51",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "_partition",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_addedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "registerCollateralManager",
+          "selector": "0xb9d7b471",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revokeOperator",
+          "selector": "0xfad8b32a",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_operator",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revokeOperatorByPartition",
+          "selector": "0x168ecec5",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "_partition",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "_operator",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setPartitionStrategy",
+          "selector": "0xe30834e0",
+          "inputs": [
+            {
+              "internalType": "bytes4",
+              "name": "_prefix",
+              "type": "bytes4"
+            },
+            {
+              "internalType": "address",
+              "name": "_implementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swap",
+          "selector": "0x03438dd0",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_from",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferByPartition",
+          "selector": "0x2036a94d",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "_partition",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_data",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_operatorData",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} AMP",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "AMP"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} AMP",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "AMP"
+            }
+          }
+        ]
+      },
+      "approveByPartition(bytes32,address,uint256)": {
+        "intent": "Review Approve By Partition transaction",
+        "fields": [
+          {
+            "path": "_partition",
+            "label": " partition",
+            "format": "hex"
+          },
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          }
+        ]
+      },
+      "assumeOwnership()": {
+        "intent": "Review Assume Ownership transaction",
+        "fields": []
+      },
+      "authorizeOperator(address)": {
+        "intent": "Review Authorize Operator transaction",
+        "fields": [
+          {
+            "path": "_operator",
+            "label": " operator",
+            "format": "address"
+          }
+        ]
+      },
+      "authorizeOperatorByPartition(bytes32,address)": {
+        "intent": "Review Authorize Operator By Partition transaction",
+        "fields": [
+          {
+            "path": "_partition",
+            "label": " partition",
+            "format": "hex"
+          },
+          {
+            "path": "_operator",
+            "label": " operator",
+            "format": "address"
+          }
+        ]
+      },
+      "authorizeOwnershipTransfer(address)": {
+        "intent": "Review Authorize Ownership Transfer transaction",
+        "fields": [
+          {
+            "path": "_authorizedAddress",
+            "label": " authorized Address",
+            "format": "address"
+          }
+        ]
+      },
+      "decreaseAllowance(address,uint256)": {
+        "intent": "Review Decrease Allowance transaction",
+        "fields": [
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_subtractedValue",
+            "label": " subtracted Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "decreaseAllowanceByPartition(bytes32,address,uint256)": {
+        "intent": "Review Decrease Allowance By Partition transaction",
+        "fields": [
+          {
+            "path": "_partition",
+            "label": " partition",
+            "format": "hex"
+          },
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_subtractedValue",
+            "label": " subtracted Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "increaseAllowance(address,uint256)": {
+        "intent": "Review Increase Allowance transaction",
+        "fields": [
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_addedValue",
+            "label": " added Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "increaseAllowanceByPartition(bytes32,address,uint256)": {
+        "intent": "Review Increase Allowance By Partition transaction",
+        "fields": [
+          {
+            "path": "_partition",
+            "label": " partition",
+            "format": "hex"
+          },
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_addedValue",
+            "label": " added Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "registerCollateralManager()": {
+        "intent": "Review Register Collateral Manager transaction",
+        "fields": []
+      },
+      "revokeOperator(address)": {
+        "intent": "Review Revoke Operator transaction",
+        "fields": [
+          {
+            "path": "_operator",
+            "label": " operator",
+            "format": "address"
+          }
+        ]
+      },
+      "revokeOperatorByPartition(bytes32,address)": {
+        "intent": "Review Revoke Operator By Partition transaction",
+        "fields": [
+          {
+            "path": "_partition",
+            "label": " partition",
+            "format": "hex"
+          },
+          {
+            "path": "_operator",
+            "label": " operator",
+            "format": "address"
+          }
+        ]
+      },
+      "setPartitionStrategy(bytes4,address)": {
+        "intent": "Review Set Partition Strategy transaction",
+        "fields": [
+          {
+            "path": "_prefix",
+            "label": " prefix",
+            "format": "hex"
+          },
+          {
+            "path": "_implementation",
+            "label": " implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "swap(address)": {
+        "intent": "Review Swap transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          }
+        ]
+      },
+      "transferByPartition(bytes32,address,address,uint256,bytes,bytes)": {
+        "intent": "Review Transfer By Partition transaction",
+        "fields": [
+          {
+            "path": "_partition",
+            "label": " partition",
+            "format": "hex"
+          },
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          },
+          {
+            "path": "_data",
+            "label": " data",
+            "format": "hex"
+          },
+          {
+            "path": "_operatorData",
+            "label": " operator Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

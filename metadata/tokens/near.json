@@ -1,0 +1,421 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x85f17cf997934a597031b2e18a9ab6ebd4b9f6a4",
+      "chainId": 1,
+      "name": "NEAR Protocol",
+      "symbol": "NEAR",
+      "decimals": 24,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "adminDelegatecall",
+          "selector": "0xb8e9744c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "target",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "adminPause",
+          "selector": "0x2692c59f",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "flags",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "adminReceiveEth",
+          "selector": "0xf48ab4e0",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "adminSendEth",
+          "selector": "0x530208f2",
+          "inputs": [
+            {
+              "internalType": "address payable",
+              "name": "destination",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "adminSstore",
+          "selector": "0xbe831a2e",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "key",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowance",
+          "selector": "0xa457c2d7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "finaliseNearToEthTransfer",
+          "selector": "0x3a239bee",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "proofData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint64",
+              "name": "proofBlockHeight",
+              "type": "uint64"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowance",
+          "selector": "0x39509351",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "addedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferToNear",
+          "selector": "0xe3113e3b",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "_nearReceiverAccountId",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} NEAR",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 24,
+              "symbol": "NEAR"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} NEAR",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 24,
+              "symbol": "NEAR"
+            }
+          }
+        ]
+      },
+      "adminDelegatecall(address,bytes)": {
+        "intent": "Review Admin Delegatecall transaction",
+        "fields": [
+          {
+            "path": "target",
+            "label": "Target",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "adminPause(uint256)": {
+        "intent": "Review Admin Pause transaction",
+        "fields": [
+          {
+            "path": "flags",
+            "label": "Flags",
+            "format": "raw"
+          }
+        ]
+      },
+      "adminReceiveEth()": {
+        "intent": "Review Admin Receive Eth transaction",
+        "fields": []
+      },
+      "adminSendEth(address,uint256)": {
+        "intent": "Review Admin Send Eth transaction",
+        "fields": [
+          {
+            "path": "destination",
+            "label": "Destination",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "adminSstore(uint256,uint256)": {
+        "intent": "Review Admin Sstore transaction",
+        "fields": [
+          {
+            "path": "key",
+            "label": "Key",
+            "format": "raw"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "decreaseAllowance(address,uint256)": {
+        "intent": "Review Decrease Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "subtractedValue",
+            "label": "Subtracted Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "finaliseNearToEthTransfer(bytes,uint64)": {
+        "intent": "Review Finalise Near To Eth Transfer transaction",
+        "fields": [
+          {
+            "path": "proofData",
+            "label": "Proof Data",
+            "format": "hex"
+          },
+          {
+            "path": "proofBlockHeight",
+            "label": "Proof Block Height",
+            "format": "raw"
+          }
+        ]
+      },
+      "increaseAllowance(address,uint256)": {
+        "intent": "Review Increase Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "addedValue",
+            "label": "Added Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "sender",
+            "label": "Sender",
+            "format": "address"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferToNear(uint256,string)": {
+        "intent": "Review Transfer To Near transaction",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "_nearReceiverAccountId",
+            "label": " near Receiver Account Id",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

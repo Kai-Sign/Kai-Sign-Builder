@@ -1,0 +1,89 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "CompoundV2Comptroller",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x3d9819210a31b4961b30ef54be2aed79b9c9cd3b" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/compound/abis/0x3d9819210a31b4961b30ef54be2aed79b9c9cd3b.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "Compound Finance",
+    "info": {
+      "legalName": "Compound Finance",
+      "url": "https://compound.finance"
+    },
+    "constants": {
+      "COMPaddress": "0xc00e94Cb662C3520282E6f5717214004A7f26888"
+    }
+  },
+  "display": {
+    "formats": {
+      "enterMarkets(address[])": {
+        "intent": "Enable markets as collateral",
+        "fields": [
+          {
+            "path": "#.cTokens",
+            "label": "Markets",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.cTokens"]
+      },
+      "exitMarket(address)": {
+        "intent": "Disable market as collateral",
+        "fields": [
+          {
+            "path": "#.cTokenAddress",
+            "label": "Market",
+            "format": "addressName",
+            "params": { "types": ["contract"], "sources": ["local"] }
+          }
+        ],
+        "required": ["#.cTokenAddress"]
+      },
+      "claimComp(address)": {
+        "intent": "Claim COMP rewards",
+        "fields": [
+          {
+            "path": "#.holder",
+            "label": "Claimant",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] }
+          }
+        ],
+        "required": ["#.holder"]
+      },
+      "claimComp(address,address[])": {
+        "intent": "Claim COMP from markets",
+        "fields": [
+          {
+            "path": "#.holder",
+            "label": "Claimant",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] }
+          }
+        ],
+        "required": ["#.holder"]
+      },
+      "claimComp(address[],address[],bool,bool)": {
+        "intent": "Claim COMP (advanced)",
+        "fields": [
+          {
+            "path": "#.borrowers",
+            "label": "Borrowers",
+            "format": "raw"
+          },
+          {
+            "path": "#.suppliers",
+            "label": "Suppliers",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.borrowers", "#.suppliers"]
+      }
+    }
+  }
+}

@@ -1,0 +1,698 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x6985884c4392d348587b19cb9eaaf157f13271cd",
+      "chainId": 1,
+      "name": "LayerZero",
+      "symbol": "ZRO",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "lzReceive",
+          "selector": "0x13137d65",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "srcEid",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "sender",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "nonce",
+                  "type": "uint64"
+                }
+              ],
+              "internalType": "struct Origin",
+              "name": "_origin",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "_guid",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_message",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "_executor",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_extraData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "lzReceiveAndRevert",
+          "selector": "0xbd815db0",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "uint32",
+                      "name": "srcEid",
+                      "type": "uint32"
+                    },
+                    {
+                      "internalType": "bytes32",
+                      "name": "sender",
+                      "type": "bytes32"
+                    },
+                    {
+                      "internalType": "uint64",
+                      "name": "nonce",
+                      "type": "uint64"
+                    }
+                  ],
+                  "internalType": "struct Origin",
+                  "name": "origin",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "uint32",
+                  "name": "dstEid",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "address",
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "guid",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "value",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "executor",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "message",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct InboundPacket[]",
+              "name": "_packets",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "lzReceiveSimulate",
+          "selector": "0xd045a0dc",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "srcEid",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "sender",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "nonce",
+                  "type": "uint64"
+                }
+              ],
+              "internalType": "struct Origin",
+              "name": "_origin",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "_guid",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_message",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "_executor",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_extraData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "send",
+          "selector": "0xc7c7f5b3",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "dstEid",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "to",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountLD",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minAmountLD",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraOptions",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "composeMsg",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "oftCmd",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SendParam",
+              "name": "_sendParam",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "nativeFee",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "lzTokenFee",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct MessagingFee",
+              "name": "_fee",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "_refundAddress",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "components": [
+                {
+                  "internalType": "bytes32",
+                  "name": "guid",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "nonce",
+                  "type": "uint64"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "nativeFee",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "lzTokenFee",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct MessagingFee",
+                  "name": "fee",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct MessagingReceipt",
+              "name": "msgReceipt",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "amountSentLD",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountReceivedLD",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct OFTReceipt",
+              "name": "oftReceipt",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "setDelegate",
+          "selector": "0xca5eb5e1",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_delegate",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setEnforcedOptions",
+          "selector": "0xb98bd070",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "eid",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "uint16",
+                  "name": "msgType",
+                  "type": "uint16"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "options",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct EnforcedOptionParam[]",
+              "name": "_enforcedOptions",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMsgInspector",
+          "selector": "0x6fc1b31e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_msgInspector",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setPeer",
+          "selector": "0x3400288b",
+          "inputs": [
+            {
+              "internalType": "uint32",
+              "name": "_eid",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "_peer",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setPreCrime",
+          "selector": "0xd4243885",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_preCrime",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} ZRO",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "ZRO"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} ZRO",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "ZRO"
+            }
+          }
+        ]
+      },
+      "lzReceive((uint32,bytes32,uint64),bytes32,bytes,address,bytes)": {
+        "intent": "Review Lz Receive transaction",
+        "fields": [
+          {
+            "path": "_origin",
+            "label": " origin",
+            "format": "raw"
+          },
+          {
+            "path": "_guid",
+            "label": " guid",
+            "format": "hex"
+          },
+          {
+            "path": "_message",
+            "label": " message",
+            "format": "hex"
+          },
+          {
+            "path": "_executor",
+            "label": " executor",
+            "format": "address"
+          },
+          {
+            "path": "_extraData",
+            "label": " extra Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "lzReceiveAndRevert(((uint32,bytes32,uint64),uint32,address,bytes32,uint256,address,bytes,bytes)[])": {
+        "intent": "Review Lz Receive And Revert transaction",
+        "fields": [
+          {
+            "path": "_packets",
+            "label": " packets",
+            "format": "raw"
+          }
+        ]
+      },
+      "lzReceiveSimulate((uint32,bytes32,uint64),bytes32,bytes,address,bytes)": {
+        "intent": "Review Lz Receive Simulate transaction",
+        "fields": [
+          {
+            "path": "_origin",
+            "label": " origin",
+            "format": "raw"
+          },
+          {
+            "path": "_guid",
+            "label": " guid",
+            "format": "hex"
+          },
+          {
+            "path": "_message",
+            "label": " message",
+            "format": "hex"
+          },
+          {
+            "path": "_executor",
+            "label": " executor",
+            "format": "address"
+          },
+          {
+            "path": "_extraData",
+            "label": " extra Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "send((uint32,bytes32,uint256,uint256,bytes,bytes,bytes),(uint256,uint256),address)": {
+        "intent": "Review Send transaction",
+        "fields": [
+          {
+            "path": "_sendParam",
+            "label": " send Param",
+            "format": "raw"
+          },
+          {
+            "path": "_fee",
+            "label": " fee",
+            "format": "raw"
+          },
+          {
+            "path": "_refundAddress",
+            "label": " refund Address",
+            "format": "address"
+          }
+        ]
+      },
+      "setDelegate(address)": {
+        "intent": "Review Set Delegate transaction",
+        "fields": [
+          {
+            "path": "_delegate",
+            "label": " delegate",
+            "format": "address"
+          }
+        ]
+      },
+      "setEnforcedOptions((uint32,uint16,bytes)[])": {
+        "intent": "Review Set Enforced Options transaction",
+        "fields": [
+          {
+            "path": "_enforcedOptions",
+            "label": " enforced Options",
+            "format": "raw"
+          }
+        ]
+      },
+      "setMsgInspector(address)": {
+        "intent": "Review Set Msg Inspector transaction",
+        "fields": [
+          {
+            "path": "_msgInspector",
+            "label": " msg Inspector",
+            "format": "address"
+          }
+        ]
+      },
+      "setPeer(uint32,bytes32)": {
+        "intent": "Review Set Peer transaction",
+        "fields": [
+          {
+            "path": "_eid",
+            "label": " eid",
+            "format": "raw"
+          },
+          {
+            "path": "_peer",
+            "label": " peer",
+            "format": "hex"
+          }
+        ]
+      },
+      "setPreCrime(address)": {
+        "intent": "Review Set Pre Crime transaction",
+        "fields": [
+          {
+            "path": "_preCrime",
+            "label": " pre Crime",
+            "format": "address"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

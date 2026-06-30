@@ -1,0 +1,455 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x9f8f72aa9304c8b593d555f12ef6589cc3a579a2",
+      "chainId": 1,
+      "name": "Maker",
+      "symbol": "MKR",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "stop",
+          "selector": "0x07da68f5",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setOwner",
+          "selector": "0x13af4035",
+          "inputs": [
+            {
+              "name": "owner_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "src",
+              "type": "address"
+            },
+            {
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x40c10f19",
+          "inputs": [
+            {
+              "name": "guy",
+              "type": "address"
+            },
+            {
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "selector": "0x42966c68",
+          "inputs": [
+            {
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setName",
+          "selector": "0x5ac801fe",
+          "inputs": [
+            {
+              "name": "name_",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setAuthority",
+          "selector": "0x7a9e5e4b",
+          "inputs": [
+            {
+              "name": "authority_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "selector": "0x9dc29fac",
+          "inputs": [
+            {
+              "name": "guy",
+              "type": "address"
+            },
+            {
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0xa0712d68",
+          "inputs": [
+            {
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "push",
+          "selector": "0xb753a98c",
+          "inputs": [
+            {
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "move",
+          "selector": "0xbb35783b",
+          "inputs": [
+            {
+              "name": "src",
+              "type": "address"
+            },
+            {
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "start",
+          "selector": "0xbe9a6555",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0xdaea85c5",
+          "inputs": [
+            {
+              "name": "guy",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pull",
+          "selector": "0xf2d5d56b",
+          "inputs": [
+            {
+              "name": "src",
+              "type": "address"
+            },
+            {
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} MKR",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "MKR"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} MKR",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "MKR"
+            }
+          }
+        ]
+      },
+      "stop()": {
+        "intent": "Review Stop transaction",
+        "fields": []
+      },
+      "setOwner(address)": {
+        "intent": "Review Set Owner transaction",
+        "fields": [
+          {
+            "path": "owner_",
+            "label": "Owner ",
+            "format": "address"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "src",
+            "label": "Src",
+            "format": "address"
+          },
+          {
+            "path": "dst",
+            "label": "Dst",
+            "format": "address"
+          },
+          {
+            "path": "wad",
+            "label": "Wad",
+            "format": "raw"
+          }
+        ]
+      },
+      "mint(address,uint256)": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "guy",
+            "label": "Guy",
+            "format": "address"
+          },
+          {
+            "path": "wad",
+            "label": "Wad",
+            "format": "raw"
+          }
+        ]
+      },
+      "burn(uint256)": {
+        "intent": "Review Burn transaction",
+        "fields": [
+          {
+            "path": "wad",
+            "label": "Wad",
+            "format": "raw"
+          }
+        ]
+      },
+      "setName(bytes32)": {
+        "intent": "Review Set Name transaction",
+        "fields": [
+          {
+            "path": "name_",
+            "label": "Name ",
+            "format": "hex"
+          }
+        ]
+      },
+      "setAuthority(address)": {
+        "intent": "Review Set Authority transaction",
+        "fields": [
+          {
+            "path": "authority_",
+            "label": "Authority ",
+            "format": "address"
+          }
+        ]
+      },
+      "burn(address,uint256)": {
+        "intent": "Review Burn transaction",
+        "fields": [
+          {
+            "path": "guy",
+            "label": "Guy",
+            "format": "address"
+          },
+          {
+            "path": "wad",
+            "label": "Wad",
+            "format": "raw"
+          }
+        ]
+      },
+      "mint(uint256)": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "wad",
+            "label": "Wad",
+            "format": "raw"
+          }
+        ]
+      },
+      "push(address,uint256)": {
+        "intent": "Review Push transaction",
+        "fields": [
+          {
+            "path": "dst",
+            "label": "Dst",
+            "format": "address"
+          },
+          {
+            "path": "wad",
+            "label": "Wad",
+            "format": "raw"
+          }
+        ]
+      },
+      "move(address,address,uint256)": {
+        "intent": "Review Move transaction",
+        "fields": [
+          {
+            "path": "src",
+            "label": "Src",
+            "format": "address"
+          },
+          {
+            "path": "dst",
+            "label": "Dst",
+            "format": "address"
+          },
+          {
+            "path": "wad",
+            "label": "Wad",
+            "format": "raw"
+          }
+        ]
+      },
+      "start()": {
+        "intent": "Review Start transaction",
+        "fields": []
+      },
+      "approve(address)": {
+        "intent": "Review Approve transaction",
+        "fields": [
+          {
+            "path": "guy",
+            "label": "Guy",
+            "format": "address"
+          }
+        ]
+      },
+      "pull(address,uint256)": {
+        "intent": "Review Pull transaction",
+        "fields": [
+          {
+            "path": "src",
+            "label": "Src",
+            "format": "address"
+          },
+          {
+            "path": "wad",
+            "label": "Wad",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

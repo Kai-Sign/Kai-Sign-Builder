@@ -1,0 +1,68 @@
+{
+  "$schema": "../../specs/erc7730-v2.schema.json",
+  "context": {
+    "$id": "HashflowRouterV3",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0xb3999f658c0391d94a37f7ff328f3fec942bcadc" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/hashflow/abis/0xb3999f658c0391d94a37f7ff328f3fec942bcadc.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "Hashflow",
+    "contractName": "Hashflow Router V3",
+    "info": { "url": "https://hashflow.com" }
+  },
+  "display": {
+    "formats": {
+      "tradeSingleHop((address,address,address,address,address,uint256,uint256,uint256,bytes32,bytes))": {
+        "intent": "Trade on Hashflow (RFQ)",
+        "fields": [
+          {
+            "path": "#.quote.trader",
+            "label": "Trader",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.quote.baseToken",
+            "label": "Sell Token",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.quote.quoteToken",
+            "label": "Buy Token",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.quote.effectiveBaseTokenAmount",
+            "label": "Sell Amount",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.quote.baseToken" },
+            "visible": "always"
+          },
+          {
+            "path": "#.quote.maxBaseTokenAmount",
+            "label": "Max Sell Amount",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.quote.baseToken" },
+            "visible": "always"
+          },
+          {
+            "path": "#.quote.quoteTokenAmount",
+            "label": "Buy Amount",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.quote.quoteToken" },
+            "visible": "always"
+          }
+        ]
+      }
+    }
+  }
+}

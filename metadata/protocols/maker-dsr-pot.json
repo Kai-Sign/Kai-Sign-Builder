@@ -1,0 +1,213 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x197e90f9fad81970ba7976f33cbd77088e5d7cf7",
+      "chainId": 1,
+      "name": "MakerDAO Pot (DAI Savings Rate)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "join",
+          "selector": "0x049878f3",
+          "inputs": [
+            {
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "exit",
+          "selector": "0x7f8661a1",
+          "inputs": [
+            {
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "drip",
+          "selector": "0x9f678cca",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "cage",
+          "selector": "0x69245009",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "deny",
+          "selector": "0x9c52a7f1",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "guy",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "file",
+          "selector": "0x29ae8114",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "what",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "data",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "file",
+          "selector": "0xd4e8be83",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "what",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "addr",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "rely",
+          "selector": "0x65fae35e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "guy",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "join(uint256)": {
+        "intent": "Deposit DAI into MakerDAO Savings Rate",
+        "interpolatedIntent": "Deposit {wad} DAI to earn the DAI Savings Rate",
+        "fields": [
+          {
+            "path": "wad",
+            "label": "DAI Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "DAI"
+            }
+          }
+        ]
+      },
+      "exit(uint256)": {
+        "intent": "Withdraw DAI from MakerDAO Savings Rate",
+        "interpolatedIntent": "Withdraw {wad} DAI from the DAI Savings Rate",
+        "fields": [
+          {
+            "path": "wad",
+            "label": "DAI Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "DAI"
+            }
+          }
+        ]
+      },
+      "drip()": {
+        "intent": "Accrue DAI Savings Rate interest",
+        "interpolatedIntent": "Accrue pending DSR interest",
+        "fields": []
+      },
+      "cage()": {
+        "intent": "Review Cage transaction",
+        "fields": []
+      },
+      "deny(address)": {
+        "intent": "Review Deny transaction",
+        "fields": [
+          {
+            "path": "guy",
+            "label": "Guy",
+            "format": "address"
+          }
+        ]
+      },
+      "file(bytes32,uint256)": {
+        "intent": "Review File transaction",
+        "fields": [
+          {
+            "path": "what",
+            "label": "What",
+            "format": "hex"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "raw"
+          }
+        ]
+      },
+      "file(bytes32,address)": {
+        "intent": "Review File transaction",
+        "fields": [
+          {
+            "path": "what",
+            "label": "What",
+            "format": "hex"
+          },
+          {
+            "path": "addr",
+            "label": "Addr",
+            "format": "address"
+          }
+        ]
+      },
+      "rely(address)": {
+        "intent": "Review Rely transaction",
+        "fields": [
+          {
+            "path": "guy",
+            "label": "Guy",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "MakerDAO",
+    "info": {
+      "url": "https://app.sky.money/",
+      "legalName": "MakerDAO / Sky",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

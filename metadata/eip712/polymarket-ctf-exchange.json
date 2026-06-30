@@ -1,0 +1,53 @@
+{
+  "context": {
+    "eip712": {
+      "domain": {
+        "name": "ClobAuthDomain",
+        "version": "1",
+        "chainId": 137,
+        "verifyingContract": "0x4bfb41d5b3570defd03c39a9a4d8de6bd8b8982e"
+      },
+      "primaryType": "Order",
+      "types": {
+        "EIP712Domain": [
+          { "name": "name", "type": "string" },
+          { "name": "version", "type": "string" },
+          { "name": "chainId", "type": "uint256" },
+          { "name": "verifyingContract", "type": "address" }
+        ],
+        "Order": [
+          { "name": "salt", "type": "uint256" },
+          { "name": "maker", "type": "address" },
+          { "name": "signer", "type": "address" },
+          { "name": "taker", "type": "address" },
+          { "name": "tokenId", "type": "uint256" },
+          { "name": "makerAmount", "type": "uint256" },
+          { "name": "takerAmount", "type": "uint256" },
+          { "name": "expiration", "type": "uint256" },
+          { "name": "nonce", "type": "uint256" },
+          { "name": "feeRateBps", "type": "uint256" },
+          { "name": "side", "type": "uint8" },
+          { "name": "signatureType", "type": "uint8" }
+        ]
+      },
+      "name": "Polymarket CTF Exchange Order",
+      "description": "Off-chain order signature for Polymarket conditional token trading"
+    }
+  },
+  "display": {
+    "formats": {
+      "Order": {
+        "intent": "Sign Polymarket prediction market order",
+        "fields": [
+          { "path": "maker", "label": "Maker", "format": "address" },
+          { "path": "tokenId", "label": "Outcome Token ID", "format": "raw" },
+          { "path": "makerAmount", "label": "Maker Amount (USDC)", "format": "raw" },
+          { "path": "takerAmount", "label": "Taker Amount", "format": "raw" },
+          { "path": "side", "label": "Side (0=Buy, 1=Sell)", "format": "raw" },
+          { "path": "expiration", "label": "Expiry", "format": "timestamp" },
+          { "path": "feeRateBps", "label": "Fee Rate (bps)", "format": "raw" }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0xa1116930326D21fB917d5A27F1E9943A9595fb47"
+        }
+      ],
+      "abi": [
+        {"type": "function", "name": "stake", "selector": "0x00000000", "inputs": [{"name": "onBehalfOf", "type": "address"}, {"name": "amount", "type": "uint256"}]},
+        {"type": "function", "name": "redeem", "selector": "0x00000000", "inputs": [{"name": "to", "type": "address"}, {"name": "amount", "type": "uint256"}]},
+        {"type": "function", "name": "cooldown", "selector": "0x00000000", "inputs": []},
+        {"type": "function", "name": "claimRewards", "selector": "0x00000000", "inputs": [{"name": "to", "type": "address"}, {"name": "amount", "type": "uint256"}]}
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Staked ABPT (Aave Balancer Pool Token)",
+    "info": {
+      "website": "https://aave.com",
+      "docs": "https://docs.aave.com/ecosystem/safety-module"
+    }
+  },
+  "display": {
+    "formats": {
+      "stake(address,uint256)": {
+        "intent": "Stake {amount} ABPT in Safety Module",
+        "fields": [
+          {"path": "onBehalfOf", "label": "Stake For", "format": "addressName"},
+          {"path": "amount", "label": "Amount", "format": "amount", "params": {"decimals": 18, "symbol": "ABPT"}}
+        ]
+      },
+      "redeem(address,uint256)": {
+        "intent": "Redeem {amount} stkABPT",
+        "fields": [
+          {"path": "to", "label": "Recipient", "format": "addressName"},
+          {"path": "amount", "label": "Amount", "format": "amount", "params": {"decimals": 18, "symbol": "stkABPT"}}
+        ]
+      },
+      "cooldown()": {
+        "intent": "Activate Cooldown for Withdrawal",
+        "fields": []
+      },
+      "claimRewards(address,uint256)": {
+        "intent": "Claim {amount} Safety Module Rewards",
+        "fields": [
+          {"path": "to", "label": "Recipient", "format": "addressName"},
+          {"path": "amount", "label": "Amount", "format": "amount", "params": {"decimals": 18, "symbol": "AAVE"}}
+        ]
+      }
+    }
+  }
+}

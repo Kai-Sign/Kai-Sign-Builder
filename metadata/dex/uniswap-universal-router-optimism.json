@@ -1,0 +1,39 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "Uniswap Universal Router (Optimism)",
+    "contract": {
+      "deployments": [
+        { "chainId": 10, "address": "0xcb1355ff08ab38bbce60111f1bb2b784be25d7e8" }
+      ],
+      "abi": "https://github.com/Uniswap/universal-router/blob/main/artifacts/contracts/UniversalRouter.sol/UniversalRouter.json"
+    }
+  },
+  "metadata": {
+    "owner": "Uniswap",
+    "info": { "legalName": "Uniswap Labs", "url": "https://uniswap.org/" }
+  },
+  "display": {
+    "formats": {
+      "execute(bytes,bytes[])": {
+        "intent": "Execute Swap",
+        "fields": [
+          { "path": "#.commands", "label": "Commands", "format": "raw" },
+          { "path": "#.inputs", "label": "Inputs", "format": "raw" }
+        ],
+        "required": ["#.commands", "#.inputs"],
+        "excluded": []
+      },
+      "execute(bytes,bytes[],uint256)": {
+        "intent": "Execute Swap",
+        "fields": [
+          { "path": "#.commands", "label": "Commands", "format": "raw" },
+          { "path": "#.inputs", "label": "Inputs", "format": "raw" },
+          { "path": "#.deadline", "label": "Deadline", "format": "date", "params": { "encoding": "timestamp" } }
+        ],
+        "required": ["#.commands", "#.inputs", "#.deadline"],
+        "excluded": []
+      }
+    }
+  }
+}

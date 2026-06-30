@@ -1,0 +1,467 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x7777777f279eba3d3ad8f4e708545291a6fdba8b",
+      "chainId": 1,
+      "name": "Zora Protocol Rewards",
+      "abi": [
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0xf340fa01",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "depositBatch",
+          "selector": "0x19b88ba1",
+          "inputs": [
+            {
+              "name": "recipients",
+              "type": "address[]"
+            },
+            {
+              "name": "amounts",
+              "type": "uint256[]"
+            },
+            {
+              "name": "reasons",
+              "type": "bytes4[]"
+            },
+            {
+              "name": "comment",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xf3fef3a3",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawWithSig",
+          "selector": "0x4e1c1b78",
+          "inputs": [
+            {
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "name": "sig",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0xf7f8266f",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes4",
+              "name": "reason",
+              "type": "bytes4"
+            },
+            {
+              "internalType": "string",
+              "name": "comment",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "depositBatch",
+          "selector": "0x300def95",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "recipients",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "bytes4[]",
+              "name": "reasons",
+              "type": "bytes4[]"
+            },
+            {
+              "internalType": "string",
+              "name": "comment",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "depositRewards",
+          "selector": "0xfaa3516f",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "creator",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "creatorReward",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "createReferral",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "createReferralReward",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "mintReferral",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "mintReferralReward",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "firstMinter",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "firstMinterReward",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "zora",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "zoraReward",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawFor",
+          "selector": "0xdb518db2",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawWithSig",
+          "selector": "0xc27e9794",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "deposit(address)": {
+        "intent": "Deposit ETH rewards to Zora Protocol Rewards",
+        "interpolatedIntent": "Deposit ETH rewards for {to} on Zora",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Reward Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "depositBatch(address[],uint256[],bytes4[],string)": {
+        "intent": "Distribute ETH rewards to multiple Zora creators",
+        "fields": [
+          {
+            "path": "comment",
+            "label": "Comment",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdraw(address,uint256)": {
+        "intent": "Withdraw ETH rewards from Zora Protocol Rewards",
+        "interpolatedIntent": "Withdraw {amount} ETH rewards from Zora to {to}",
+        "fields": [
+          {
+            "path": "to",
+            "label": "ETH Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount (ETH)",
+            "format": "ethAmount"
+          }
+        ]
+      },
+      "withdrawWithSig(address,address,uint256,uint256,bytes)": {
+        "intent": "Withdraw Zora rewards on behalf (with signature)",
+        "interpolatedIntent": "Withdraw {amount} ETH rewards from {from} to {to} via signature",
+        "fields": [
+          {
+            "path": "from",
+            "label": "Rewards Owner",
+            "format": "addressName"
+          },
+          {
+            "path": "to",
+            "label": "ETH Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount (ETH)",
+            "format": "ethAmount"
+          },
+          {
+            "path": "deadline",
+            "label": "Signature Deadline",
+            "format": "timestamp"
+          }
+        ]
+      },
+      "deposit(address,bytes4,string)": {
+        "intent": "Review Deposit transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "reason",
+            "label": "Reason",
+            "format": "hex"
+          },
+          {
+            "path": "comment",
+            "label": "Comment",
+            "format": "raw"
+          }
+        ]
+      },
+      "depositRewards(address,uint256,address,uint256,address,uint256,address,uint256,address,uint256)": {
+        "intent": "Review Deposit Rewards transaction",
+        "fields": [
+          {
+            "path": "creator",
+            "label": "Creator",
+            "format": "address"
+          },
+          {
+            "path": "creatorReward",
+            "label": "Creator Reward",
+            "format": "raw"
+          },
+          {
+            "path": "createReferral",
+            "label": "Create Referral",
+            "format": "address"
+          },
+          {
+            "path": "createReferralReward",
+            "label": "Create Referral Reward",
+            "format": "raw"
+          },
+          {
+            "path": "mintReferral",
+            "label": "Mint Referral",
+            "format": "address"
+          },
+          {
+            "path": "mintReferralReward",
+            "label": "Mint Referral Reward",
+            "format": "raw"
+          },
+          {
+            "path": "firstMinter",
+            "label": "First Minter",
+            "format": "address"
+          },
+          {
+            "path": "firstMinterReward",
+            "label": "First Minter Reward",
+            "format": "raw"
+          },
+          {
+            "path": "zora",
+            "label": "Zora",
+            "format": "address"
+          },
+          {
+            "path": "zoraReward",
+            "label": "Zora Reward",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdrawFor(address,uint256)": {
+        "intent": "Review Withdraw For transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdrawWithSig(address,address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Withdraw With Sig transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Zora",
+    "info": {
+      "url": "https://zora.co/",
+      "legalName": "Zora Protocol",
+      "lastUpdate": "2026-03-27"
+    }
+  }
+}

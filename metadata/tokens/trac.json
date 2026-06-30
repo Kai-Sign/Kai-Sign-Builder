@@ -1,0 +1,368 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xaa7a9ca87d3694b5755f213b5d04094b8d0f0a6f",
+      "chainId": 1,
+      "name": "OriginTrail",
+      "symbol": "TRAC",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawTokenToFounders",
+          "selector": "0x241673e8",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintMany",
+          "selector": "0x4029a3ce",
+          "inputs": [
+            {
+              "name": "contributors",
+              "type": "address[]"
+            },
+            {
+              "name": "amounts",
+              "type": "uint256[]"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x40c10f19",
+          "inputs": [
+            {
+              "name": "contributor",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "decreaseApproval",
+          "selector": "0x66188463",
+          "inputs": [
+            {
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "name": "_subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "finishMinting",
+          "selector": "0x7d64bcb4",
+          "inputs": [],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseApproval",
+          "selector": "0xd73dd623",
+          "inputs": [
+            {
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "name": "_addedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawTokensToAdvisors",
+          "selector": "0xe844ca34",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "allocateRestOfTokens",
+          "selector": "0xee43d30f",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "endMinting",
+          "selector": "0xef70aebf",
+          "inputs": [],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} TRAC",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "TRAC"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} TRAC",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "TRAC"
+            }
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdrawTokenToFounders()": {
+        "intent": "Review Withdraw Token To Founders transaction",
+        "fields": []
+      },
+      "mintMany(address[],uint256[])": {
+        "intent": "Review Mint Many transaction",
+        "fields": [
+          {
+            "path": "contributors",
+            "label": "Contributors",
+            "format": "raw"
+          },
+          {
+            "path": "amounts",
+            "label": "Amounts",
+            "format": "raw"
+          }
+        ]
+      },
+      "mint(address,uint256)": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "contributor",
+            "label": "Contributor",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "decreaseApproval(address,uint256)": {
+        "intent": "Review Decrease Approval transaction",
+        "fields": [
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_subtractedValue",
+            "label": " subtracted Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "finishMinting()": {
+        "intent": "Review Finish Minting transaction",
+        "fields": []
+      },
+      "increaseApproval(address,uint256)": {
+        "intent": "Review Increase Approval transaction",
+        "fields": [
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_addedValue",
+            "label": " added Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdrawTokensToAdvisors()": {
+        "intent": "Review Withdraw Tokens To Advisors transaction",
+        "fields": []
+      },
+      "allocateRestOfTokens()": {
+        "intent": "Review Allocate Rest Of Tokens transaction",
+        "fields": []
+      },
+      "endMinting()": {
+        "intent": "Review End Minting transaction",
+        "fields": []
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

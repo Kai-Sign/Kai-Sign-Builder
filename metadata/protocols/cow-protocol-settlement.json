@@ -1,0 +1,478 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x9008D19f58AAbD9eD0D60971565AA8510560ab41",
+      "chainId": 1,
+      "name": "CoW Protocol GPv2 Settlement",
+      "abi": [
+        {
+          "type": "function",
+          "name": "settle",
+          "selector": "0x13d79a0b",
+          "inputs": [
+            {
+              "name": "tokens",
+              "type": "address[]"
+            },
+            {
+              "name": "clearingPrices",
+              "type": "uint256[]"
+            },
+            {
+              "name": "trades",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "sellTokenIndex",
+                  "type": "uint256"
+                },
+                {
+                  "name": "buyTokenIndex",
+                  "type": "uint256"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "sellAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "buyAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "validTo",
+                  "type": "uint32"
+                },
+                {
+                  "name": "appData",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "feeAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "flags",
+                  "type": "uint256"
+                },
+                {
+                  "name": "executedAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "signature",
+                  "type": "bytes"
+                }
+              ]
+            },
+            {
+              "name": "interactions",
+              "type": "tuple[][3]",
+              "components": [
+                {
+                  "name": "target",
+                  "type": "address"
+                },
+                {
+                  "name": "value",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setPreSignature",
+          "selector": "0xec6cb13f",
+          "inputs": [
+            {
+              "name": "orderUid",
+              "type": "bytes"
+            },
+            {
+              "name": "signed",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "invalidateOrder",
+          "selector": "0x2d9a3f24",
+          "inputs": [
+            {
+              "name": "orderUid",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "freeFilledAmountStorage",
+          "selector": "0xed9f35ce",
+          "inputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "orderUids",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "freePreSignatureStorage",
+          "selector": "0xa2a7d51b",
+          "inputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "orderUids",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "invalidateOrder",
+          "selector": "0x15337bc0",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "orderUid",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "simulateDelegatecall",
+          "selector": "0xf84436bd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "targetContract",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "calldataPayload",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "response",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "simulateDelegatecallInternal",
+          "selector": "0x43218e19",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "targetContract",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "calldataPayload",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "response",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swap",
+          "selector": "0x845a101f",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "bytes32",
+                  "name": "poolId",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "assetInIndex",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "assetOutIndex",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "userData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct IVault.BatchSwapStep[]",
+              "name": "swaps",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "contract IERC20[]",
+              "name": "tokens",
+              "type": "address[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "sellTokenIndex",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "buyTokenIndex",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "sellAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "buyAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint32",
+                  "name": "validTo",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "appData",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "feeAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "flags",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "executedAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct GPv2Trade.Data",
+              "name": "trade",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "settle(address[],uint256[],(uint256,uint256,address,uint256,uint256,uint32,bytes32,uint256,uint256,uint256,bytes)[],(address,uint256,bytes)[][3])": {
+        "intent": "Settle CoW batch auction",
+        "interpolatedIntent": "Settle batch with {trades.length} trades",
+        "fields": [
+          {
+            "path": "tokens",
+            "label": "Tokens",
+            "format": "array"
+          },
+          {
+            "path": "trades",
+            "label": "Trades",
+            "format": "array"
+          }
+        ]
+      },
+      "settle(address[],uint256[],tuple[],tuple[][3])": {
+        "intent": "Settle CoW batch auction",
+        "interpolatedIntent": "Settle batch with {trades.length} trades",
+        "fields": [
+          {
+            "path": "tokens",
+            "label": "Tokens",
+            "format": "array"
+          },
+          {
+            "path": "trades",
+            "label": "Trades",
+            "format": "array"
+          }
+        ]
+      },
+      "setPreSignature(bytes,bool)": {
+        "intent": "Authorize CoW order",
+        "fields": [
+          {
+            "path": "orderUid",
+            "label": "Order UID",
+            "format": "hex"
+          },
+          {
+            "path": "signed",
+            "label": "Signed",
+            "format": "boolean"
+          },
+          {
+            "path": "orderUid.[0:31]",
+            "label": "Order Digest",
+            "format": "hex"
+          },
+          {
+            "path": "orderUid.[32:51]",
+            "label": "Order Owner",
+            "format": "addressOrName"
+          },
+          {
+            "path": "orderUid.[52:55]",
+            "label": "Valid Until",
+            "format": "timestamp"
+          }
+        ]
+      },
+      "invalidateOrder(bytes)": {
+        "intent": "Cancel CoW order",
+        "fields": [
+          {
+            "path": "orderUid",
+            "label": "Order UID",
+            "format": "hex"
+          },
+          {
+            "path": "orderUid.[0:31]",
+            "label": "Order Digest",
+            "format": "hex"
+          },
+          {
+            "path": "orderUid.[32:51]",
+            "label": "Order Owner",
+            "format": "addressOrName"
+          },
+          {
+            "path": "orderUid.[52:55]",
+            "label": "Valid Until",
+            "format": "timestamp"
+          }
+        ]
+      },
+      "freeFilledAmountStorage(bytes[])": {
+        "intent": "Review Free Filled Amount Storage transaction",
+        "fields": [
+          {
+            "path": "orderUids",
+            "label": "Order Uids",
+            "format": "hex"
+          }
+        ]
+      },
+      "freePreSignatureStorage(bytes[])": {
+        "intent": "Review Free Pre Signature Storage transaction",
+        "fields": [
+          {
+            "path": "orderUids",
+            "label": "Order Uids",
+            "format": "hex"
+          }
+        ]
+      },
+      "simulateDelegatecall(address,bytes)": {
+        "intent": "Review Simulate Delegatecall transaction",
+        "fields": [
+          {
+            "path": "targetContract",
+            "label": "Target Contract",
+            "format": "address"
+          },
+          {
+            "path": "calldataPayload",
+            "label": "Calldata Payload",
+            "format": "hex"
+          }
+        ]
+      },
+      "simulateDelegatecallInternal(address,bytes)": {
+        "intent": "Review Simulate Delegatecall Internal transaction",
+        "fields": [
+          {
+            "path": "targetContract",
+            "label": "Target Contract",
+            "format": "address"
+          },
+          {
+            "path": "calldataPayload",
+            "label": "Calldata Payload",
+            "format": "hex"
+          }
+        ]
+      },
+      "swap((bytes32,uint256,uint256,uint256,bytes)[],address[],(uint256,uint256,address,uint256,uint256,uint32,bytes32,uint256,uint256,uint256,bytes))": {
+        "intent": "Review Swap transaction",
+        "fields": [
+          {
+            "path": "swaps",
+            "label": "Swaps",
+            "format": "raw"
+          },
+          {
+            "path": "tokens",
+            "label": "Tokens",
+            "format": "raw"
+          },
+          {
+            "path": "trade",
+            "label": "Trade",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,820 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xF403C135812408BFbE8713b5A23a04b3D48AAE31",
+      "chainId": 1,
+      "name": "Convex Booster",
+      "abi": [
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x43a0d066",
+          "inputs": [
+            {
+              "name": "_pid",
+              "type": "uint256"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_stake",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "depositAll",
+          "selector": "0x60759fce",
+          "inputs": [
+            {
+              "name": "_pid",
+              "type": "uint256"
+            },
+            {
+              "name": "_stake",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0x441a3e70",
+          "inputs": [
+            {
+              "name": "_pid",
+              "type": "uint256"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawAll",
+          "selector": "0x958e2d31",
+          "inputs": [
+            {
+              "name": "_pid",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addPool",
+          "selector": "0x7e29d6c2",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_lptoken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_gauge",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_stashVersion",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimRewards",
+          "selector": "0x6c7b69cb",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_pid",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_gauge",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "earmarkFees",
+          "selector": "0x22230b96",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "earmarkRewards",
+          "selector": "0xcc956f3f",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_pid",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "rewardClaimed",
+          "selector": "0x71192b17",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_pid",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_address",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setArbitrator",
+          "selector": "0xb0eefabe",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_arb",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFactories",
+          "selector": "0x7bd3b995",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_rfactory",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_sfactory",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_tfactory",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFeeInfo",
+          "selector": "0x5a4ae5ca",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFeeManager",
+          "selector": "0x472d35b9",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_feeM",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFees",
+          "selector": "0x6fcba377",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_lockFees",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_stakerFees",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_callerFees",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_platform",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setGaugeRedirect",
+          "selector": "0x9123d404",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_pid",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setOwner",
+          "selector": "0x13af4035",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setPoolManager",
+          "selector": "0x7aef6715",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_poolM",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setRewardContracts",
+          "selector": "0x95539a1d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_rewards",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_stakerRewards",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTreasury",
+          "selector": "0xf0f44260",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_treasury",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setVoteDelegate",
+          "selector": "0x74874323",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_voteDelegate",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "shutdownPool",
+          "selector": "0x60cafe84",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_pid",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "shutdownSystem",
+          "selector": "0x354af919",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "vote",
+          "selector": "0xe2cdd42a",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_voteId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_votingAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "_support",
+              "type": "bool"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "voteGaugeWeight",
+          "selector": "0xbfad96ba",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "_gauge",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_weight",
+              "type": "uint256[]"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawTo",
+          "selector": "0x14cd70e4",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_pid",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "deposit(uint256,uint256,bool)": {
+        "intent": "Deposit into Convex pool",
+        "interpolatedIntent": "Deposit {_amount} into Convex pool #{_pid}",
+        "fields": [
+          {
+            "path": "_pid",
+            "label": "Pool ID",
+            "format": "raw"
+          },
+          {
+            "path": "_amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "_stake",
+            "label": "Stake",
+            "format": "raw"
+          }
+        ]
+      },
+      "depositAll(uint256,bool)": {
+        "intent": "Deposit all into Convex pool",
+        "interpolatedIntent": "Deposit all into Convex pool #{_pid}",
+        "fields": [
+          {
+            "path": "_pid",
+            "label": "Pool ID",
+            "format": "raw"
+          },
+          {
+            "path": "_stake",
+            "label": "Stake",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdraw(uint256,uint256)": {
+        "intent": "Withdraw from Convex pool",
+        "interpolatedIntent": "Withdraw {_amount} from Convex pool #{_pid}",
+        "fields": [
+          {
+            "path": "_pid",
+            "label": "Pool ID",
+            "format": "raw"
+          },
+          {
+            "path": "_amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdrawAll(uint256)": {
+        "intent": "Withdraw all from Convex pool",
+        "interpolatedIntent": "Withdraw all from Convex pool #{_pid}",
+        "fields": [
+          {
+            "path": "_pid",
+            "label": "Pool ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "addPool(address,address,uint256)": {
+        "intent": "Review Add Pool transaction",
+        "fields": [
+          {
+            "path": "_lptoken",
+            "label": " lptoken",
+            "format": "address"
+          },
+          {
+            "path": "_gauge",
+            "label": " gauge",
+            "format": "address"
+          },
+          {
+            "path": "_stashVersion",
+            "label": " stash Version",
+            "format": "raw"
+          }
+        ]
+      },
+      "claimRewards(uint256,address)": {
+        "intent": "Review Claim Rewards transaction",
+        "fields": [
+          {
+            "path": "_pid",
+            "label": " pid",
+            "format": "raw"
+          },
+          {
+            "path": "_gauge",
+            "label": " gauge",
+            "format": "address"
+          }
+        ]
+      },
+      "earmarkFees()": {
+        "intent": "Review Earmark Fees transaction",
+        "fields": []
+      },
+      "earmarkRewards(uint256)": {
+        "intent": "Review Earmark Rewards transaction",
+        "fields": [
+          {
+            "path": "_pid",
+            "label": " pid",
+            "format": "raw"
+          }
+        ]
+      },
+      "rewardClaimed(uint256,address,uint256)": {
+        "intent": "Review Reward Claimed transaction",
+        "fields": [
+          {
+            "path": "_pid",
+            "label": " pid",
+            "format": "raw"
+          },
+          {
+            "path": "_address",
+            "label": " address",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "setArbitrator(address)": {
+        "intent": "Review Set Arbitrator transaction",
+        "fields": [
+          {
+            "path": "_arb",
+            "label": " arb",
+            "format": "address"
+          }
+        ]
+      },
+      "setFactories(address,address,address)": {
+        "intent": "Review Set Factories transaction",
+        "fields": [
+          {
+            "path": "_rfactory",
+            "label": " rfactory",
+            "format": "address"
+          },
+          {
+            "path": "_sfactory",
+            "label": " sfactory",
+            "format": "address"
+          },
+          {
+            "path": "_tfactory",
+            "label": " tfactory",
+            "format": "address"
+          }
+        ]
+      },
+      "setFeeInfo()": {
+        "intent": "Review Set Fee Info transaction",
+        "fields": []
+      },
+      "setFeeManager(address)": {
+        "intent": "Review Set Fee Manager transaction",
+        "fields": [
+          {
+            "path": "_feeM",
+            "label": " fee M",
+            "format": "address"
+          }
+        ]
+      },
+      "setFees(uint256,uint256,uint256,uint256)": {
+        "intent": "Review Set Fees transaction",
+        "fields": [
+          {
+            "path": "_lockFees",
+            "label": " lock Fees",
+            "format": "raw"
+          },
+          {
+            "path": "_stakerFees",
+            "label": " staker Fees",
+            "format": "raw"
+          },
+          {
+            "path": "_callerFees",
+            "label": " caller Fees",
+            "format": "raw"
+          },
+          {
+            "path": "_platform",
+            "label": " platform",
+            "format": "raw"
+          }
+        ]
+      },
+      "setGaugeRedirect(uint256)": {
+        "intent": "Review Set Gauge Redirect transaction",
+        "fields": [
+          {
+            "path": "_pid",
+            "label": " pid",
+            "format": "raw"
+          }
+        ]
+      },
+      "setOwner(address)": {
+        "intent": "Review Set Owner transaction",
+        "fields": [
+          {
+            "path": "_owner",
+            "label": " owner",
+            "format": "address"
+          }
+        ]
+      },
+      "setPoolManager(address)": {
+        "intent": "Review Set Pool Manager transaction",
+        "fields": [
+          {
+            "path": "_poolM",
+            "label": " pool M",
+            "format": "address"
+          }
+        ]
+      },
+      "setRewardContracts(address,address)": {
+        "intent": "Review Set Reward Contracts transaction",
+        "fields": [
+          {
+            "path": "_rewards",
+            "label": " rewards",
+            "format": "address"
+          },
+          {
+            "path": "_stakerRewards",
+            "label": " staker Rewards",
+            "format": "address"
+          }
+        ]
+      },
+      "setTreasury(address)": {
+        "intent": "Review Set Treasury transaction",
+        "fields": [
+          {
+            "path": "_treasury",
+            "label": " treasury",
+            "format": "address"
+          }
+        ]
+      },
+      "setVoteDelegate(address)": {
+        "intent": "Review Set Vote Delegate transaction",
+        "fields": [
+          {
+            "path": "_voteDelegate",
+            "label": " vote Delegate",
+            "format": "address"
+          }
+        ]
+      },
+      "shutdownPool(uint256)": {
+        "intent": "Review Shutdown Pool transaction",
+        "fields": [
+          {
+            "path": "_pid",
+            "label": " pid",
+            "format": "raw"
+          }
+        ]
+      },
+      "shutdownSystem()": {
+        "intent": "Review Shutdown System transaction",
+        "fields": []
+      },
+      "vote(uint256,address,bool)": {
+        "intent": "Review Vote transaction",
+        "fields": [
+          {
+            "path": "_voteId",
+            "label": " vote Id",
+            "format": "raw"
+          },
+          {
+            "path": "_votingAddress",
+            "label": " voting Address",
+            "format": "address"
+          },
+          {
+            "path": "_support",
+            "label": " support",
+            "format": "boolean"
+          }
+        ]
+      },
+      "voteGaugeWeight(address[],uint256[])": {
+        "intent": "Review Vote Gauge Weight transaction",
+        "fields": [
+          {
+            "path": "_gauge",
+            "label": " gauge",
+            "format": "raw"
+          },
+          {
+            "path": "_weight",
+            "label": " weight",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdrawTo(uint256,uint256,address)": {
+        "intent": "Review Withdraw To transaction",
+        "fields": [
+          {
+            "path": "_pid",
+            "label": " pid",
+            "format": "raw"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

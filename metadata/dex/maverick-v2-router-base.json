@@ -1,0 +1,52 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 8453,
+          "address": "0x5eded0d7e76c563ff081ca01d9d12d6b404df527"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Maverick Protocol",
+    "contractName": "Maverick V2 Router (Base)"
+  },
+  "display": {
+    "formats": {
+      "exactInputSingle(address tokenIn,address tokenOut,address pool,uint256 amountIn,uint256 amountOutMinimum,address recipient,uint256 deadline)": {
+        "intent": "Swap via Maverick V2",
+        "interpolatedIntent": "Swap {amountIn} tokens for at least {amountOutMinimum} via Maverick V2",
+        "fields": [
+          { "path": "tokenIn", "label": "Token In", "format": "addressName" },
+          { "path": "tokenOut", "label": "Token Out", "format": "addressName" },
+          { "path": "amountIn", "label": "Amount In", "format": "tokenAmount", "params": { "tokenPath": "tokenIn" } },
+          { "path": "amountOutMinimum", "label": "Min Amount Out", "format": "tokenAmount", "params": { "tokenPath": "tokenOut" } },
+          { "path": "recipient", "label": "Recipient", "format": "addressName" },
+          { "path": "deadline", "label": "Deadline", "format": "timestamp" }
+        ]
+      },
+      "exactOutputSingle(address tokenIn,address tokenOut,address pool,uint256 amountOut,uint256 amountInMaximum,address recipient,uint256 deadline)": {
+        "intent": "Swap via Maverick V2 (exact output)",
+        "interpolatedIntent": "Swap for exactly {amountOut} tokens via Maverick V2",
+        "fields": [
+          { "path": "tokenIn", "label": "Token In", "format": "addressName" },
+          { "path": "tokenOut", "label": "Token Out", "format": "addressName" },
+          { "path": "amountOut", "label": "Amount Out", "format": "tokenAmount", "params": { "tokenPath": "tokenOut" } },
+          { "path": "amountInMaximum", "label": "Max Amount In", "format": "tokenAmount", "params": { "tokenPath": "tokenIn" } },
+          { "path": "recipient", "label": "Recipient", "format": "addressName" },
+          { "path": "deadline", "label": "Deadline", "format": "timestamp" }
+        ]
+      },
+      "multicall(bytes[] data)": {
+        "intent": "Execute batch Maverick V2 operations",
+        "interpolatedIntent": "Execute batch operations on Maverick V2",
+        "fields": [
+          { "path": "data", "label": "Calls", "format": "raw" }
+        ]
+      }
+    }
+  }
+}

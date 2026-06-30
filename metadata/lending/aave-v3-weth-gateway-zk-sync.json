@@ -1,0 +1,54 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xae2b00d676130bdf22582781bbba8f4f21e8b0ff",
+      "chainId": 324,
+      "name": "Aave WETH Gateway (ZkSync)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "depositETH",
+          "selector": "0x474cf53d",
+          "inputs": [
+            {
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "name": "onBehalfOf",
+              "type": "address"
+            },
+            {
+              "name": "referralCode",
+              "type": "uint16"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "depositETH(address,address,uint16)": {
+        "intent": "Supply ETH to Aave",
+        "fields": [
+          {
+            "path": "pool",
+            "label": "Pool",
+            "format": "address"
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "number"
+          }
+        ]
+      }
+    }
+  }
+}

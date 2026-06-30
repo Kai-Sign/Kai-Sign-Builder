@@ -1,0 +1,355 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xba3cb449bd2b4adddbc894d8697f5170800eadec",
+      "chainId": 1,
+      "name": "CoW Swap ETH Flow",
+      "abi": [
+        {
+          "type": "function",
+          "name": "createOrder",
+          "selector": "0x322bba21",
+          "inputs": [
+            {
+              "name": "order",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "buyToken",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "sellAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "buyAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "appData",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "feeAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "validTo",
+                  "type": "uint32"
+                },
+                {
+                  "name": "partiallyFillable",
+                  "type": "bool"
+                },
+                {
+                  "name": "quoteId",
+                  "type": "int64"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "invalidateOrder",
+          "selector": "0x6dd33d2e",
+          "inputs": [
+            {
+              "name": "order",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "buyToken",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "sellAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "buyAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "appData",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "feeAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "validTo",
+                  "type": "uint32"
+                },
+                {
+                  "name": "partiallyFillable",
+                  "type": "bool"
+                },
+                {
+                  "name": "quoteId",
+                  "type": "int64"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "invalidateOrder",
+          "selector": "0x7bc41b96",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "contract IERC20",
+                  "name": "buyToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "sellAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "buyAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "appData",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "feeAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint32",
+                  "name": "validTo",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "partiallyFillable",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "int64",
+                  "name": "quoteId",
+                  "type": "int64"
+                }
+              ],
+              "internalType": "struct EthFlowOrder.Data",
+              "name": "order",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "invalidateOrdersIgnoringNotAllowed",
+          "selector": "0x4cb76498",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "contract IERC20",
+                  "name": "buyToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "sellAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "buyAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "appData",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "feeAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint32",
+                  "name": "validTo",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "partiallyFillable",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "int64",
+                  "name": "quoteId",
+                  "type": "int64"
+                }
+              ],
+              "internalType": "struct EthFlowOrder.Data[]",
+              "name": "orderArray",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unwrap",
+          "selector": "0xde0e9a3e",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "wrap",
+          "selector": "0xea598cb0",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "wrapAll",
+          "selector": "0x4c84c1c8",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "createOrder((address,address,uint256,uint256,bytes32,uint256,uint32,bool,int64))": {
+        "intent": "Sell ETH via CoW Swap",
+        "interpolatedIntent": "Sell {order.sellAmount} ETH for {order.buyAmount}",
+        "fields": [
+          {
+            "path": "order.buyToken",
+            "label": "Buy Token",
+            "format": "addressOrName"
+          },
+          {
+            "path": "order.receiver",
+            "label": "Receiver",
+            "format": "addressOrName"
+          },
+          {
+            "path": "order.sellAmount",
+            "label": "Sell Amount",
+            "format": "ethAmount"
+          },
+          {
+            "path": "order.buyAmount",
+            "label": "Min Buy Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "order.buyToken"
+            }
+          },
+          {
+            "path": "order.validTo",
+            "label": "Expires",
+            "format": "timestamp"
+          },
+          {
+            "path": "order.partiallyFillable",
+            "label": "Partial Fill",
+            "format": "boolean"
+          }
+        ]
+      },
+      "invalidateOrder((address,address,uint256,uint256,bytes32,uint256,uint32,bool,int64))": {
+        "intent": "Cancel CoW ETH Flow order",
+        "fields": [
+          {
+            "path": "order.buyToken",
+            "label": "Buy Token",
+            "format": "addressOrName"
+          },
+          {
+            "path": "order.sellAmount",
+            "label": "Sell Amount",
+            "format": "ethAmount"
+          }
+        ]
+      },
+      "invalidateOrdersIgnoringNotAllowed((address,address,uint256,uint256,bytes32,uint256,uint32,bool,int64)[])": {
+        "intent": "Review Invalidate Orders Ignoring Not Allowed transaction",
+        "fields": [
+          {
+            "path": "orderArray",
+            "label": "Order Array",
+            "format": "raw"
+          }
+        ]
+      },
+      "unwrap(uint256)": {
+        "intent": "Review Unwrap transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "wrap(uint256)": {
+        "intent": "Review Wrap transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "wrapAll()": {
+        "intent": "Review Wrap All transaction",
+        "fields": []
+      }
+    }
+  }
+}

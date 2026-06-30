@@ -1,0 +1,139 @@
+{
+  "$schema": "../../specs/erc7730-v2.schema.json",
+  "context": {
+    "$id": "PrismaFinanceTroveManager",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x97b6897aad7aba3861c04c0e6388fc02af1f227f" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/prisma/abis/0x97b6897aad7aba3861c04c0e6388fc02af1f227f.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "Prisma Finance",
+    "contractName": "Prisma Finance TroveManager",
+    "info": { "url": "https://prismafinance.com" },
+    "constants": {
+      "wstETHaddress": "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0",
+      "mkUSDaddress": "0x4591DBfF62656E7859Afe5e45f6f47D3669fBB28"
+    }
+  },
+  "display": {
+    "formats": {
+      "openTrove(address,uint256,uint256,uint256,address,address)": {
+        "intent": "Open Prisma trove",
+        "fields": [
+          {
+            "path": "#.account",
+            "label": "Account",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.collateralAmount",
+            "label": "Collateral",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.wstETHaddress" },
+            "visible": "always"
+          },
+          {
+            "path": "#.debtAmount",
+            "label": "mkUSD to Mint",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.mkUSDaddress" },
+            "visible": "always"
+          }
+        ]
+      },
+      "closeTrove(address,uint256)": {
+        "intent": "Close Prisma trove",
+        "fields": [
+          {
+            "path": "#.account",
+            "label": "Account",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          }
+        ]
+      },
+      "addColl(address,uint256,address,address)": {
+        "intent": "Add collateral to Prisma trove",
+        "fields": [
+          {
+            "path": "#.account",
+            "label": "Account",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.collateralAmount",
+            "label": "Collateral Added",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.wstETHaddress" },
+            "visible": "always"
+          }
+        ]
+      },
+      "withdrawColl(address,uint256,uint256,address,address)": {
+        "intent": "Withdraw collateral from Prisma trove",
+        "fields": [
+          {
+            "path": "#.account",
+            "label": "Account",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.collateralAmount",
+            "label": "Collateral Withdrawn",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.wstETHaddress" },
+            "visible": "always"
+          }
+        ]
+      },
+      "withdrawDebt(address,uint256,uint256,address,address)": {
+        "intent": "Borrow mkUSD from Prisma trove",
+        "fields": [
+          {
+            "path": "#.account",
+            "label": "Account",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.debtAmount",
+            "label": "mkUSD to Borrow",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.mkUSDaddress" },
+            "visible": "always"
+          }
+        ]
+      },
+      "repayDebt(address,uint256,address,address)": {
+        "intent": "Repay Prisma mkUSD debt",
+        "fields": [
+          {
+            "path": "#.account",
+            "label": "Account",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.debtAmount",
+            "label": "mkUSD Repaid",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.mkUSDaddress" },
+            "visible": "always"
+          }
+        ]
+      }
+    }
+  }
+}

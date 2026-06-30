@@ -1,0 +1,49 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0xd7852E139a7097E119623de0751AE53a61efb442"
+        }
+      ],
+      "abi": [
+        {"type": "function", "name": "swapAndRepay", "selector": "0x00000000", "inputs": [{"name": "collateralAsset", "type": "address"}, {"name": "debtAsset", "type": "address"}, {"name": "collateralAmount", "type": "uint256"}, {"name": "debtRepayAmount", "type": "uint256"}, {"name": "rateMode", "type": "uint256"}, {"name": "swapCalldata", "type": "bytes"}]},
+        {"type": "function", "name": "swapAndDeposit", "selector": "0x00000000", "inputs": [{"name": "assetToSwapFrom", "type": "address"}, {"name": "assetToSwapTo", "type": "address"}, {"name": "amountToSwap", "type": "uint256"}, {"name": "minAmountToReceive", "type": "uint256"}, {"name": "swapCalldata", "type": "bytes"}]}
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave V3 ParaSwapDebtSwapAdapter",
+    "info": {
+      "website": "https://aave.com"
+    }
+  },
+  "display": {
+    "formats": {
+      "swapAndRepay(address,address,uint256,uint256,uint256,bytes)": {
+        "intent": "Swap Collateral & Repay Debt",
+        "fields": [
+          {"path": "collateralAsset", "label": "Collateral Asset", "format": "tokenAmount"},
+          {"path": "debtAsset", "label": "Debt Asset", "format": "tokenAmount"},
+          {"path": "collateralAmount", "label": "Collateral Amount", "format": "amount"},
+          {"path": "debtRepayAmount", "label": "Repay Amount", "format": "amount"},
+          {"path": "rateMode", "label": "Rate Mode", "format": "raw"},
+          {"path": "swapCalldata", "label": "Swap Calldata", "format": "raw"}
+        ]
+      },
+      "swapAndDeposit(address,address,uint256,uint256,bytes)": {
+        "intent": "Swap & Deposit {amountToSwap}",
+        "fields": [
+          {"path": "assetToSwapFrom", "label": "Swap From", "format": "tokenAmount"},
+          {"path": "assetToSwapTo", "label": "Deposit To", "format": "tokenAmount"},
+          {"path": "amountToSwap", "label": "Amount", "format": "amount"},
+          {"path": "minAmountToReceive", "label": "Min Received", "format": "amount"},
+          {"path": "swapCalldata", "label": "Swap Calldata", "format": "raw"}
+        ]
+      }
+    }
+  }
+}

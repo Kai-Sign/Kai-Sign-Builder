@@ -1,0 +1,96 @@
+{
+  "$schema": "../../specs/erc7730-v2.schema.json",
+  "context": {
+    "$id": "HopProtocolBridge",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0xb8901acb165ed027e32754e0ffe830802919727f" },
+        { "chainId": 10, "address": "0x86ca30bef97fb651b8d866d45503684b90cb3312" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/hop/abis/0xb8901acb165ed027e32754e0ffe830802919727f.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "Hop Protocol",
+    "contractName": "Hop Protocol ETH Bridge",
+    "info": { "url": "https://hop.exchange" }
+  },
+  "display": {
+    "formats": {
+      "sendToL2(uint256,address,uint256,uint256,uint256,address,uint256)": {
+        "intent": "Bridge ETH via Hop Protocol",
+        "fields": [
+          {
+            "path": "#.chainId",
+            "label": "Destination Chain",
+            "format": "raw",
+            "visible": "always"
+          },
+          {
+            "path": "#.recipient",
+            "label": "Recipient",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.amount",
+            "label": "Amount",
+            "format": "amount",
+            "visible": "always"
+          },
+          {
+            "path": "#.amountOutMin",
+            "label": "Min Amount Out",
+            "format": "amount",
+            "visible": "always"
+          },
+          {
+            "path": "#.deadline",
+            "label": "Deadline",
+            "format": "date",
+            "params": { "encoding": "timestamp" },
+            "visible": "always"
+          }
+        ]
+      },
+      "swapAndSend(uint256,address,uint256,uint256,uint256,uint256,uint256,uint256)": {
+        "intent": "Swap and bridge via Hop Protocol",
+        "fields": [
+          {
+            "path": "#.chainId",
+            "label": "Destination Chain",
+            "format": "raw",
+            "visible": "always"
+          },
+          {
+            "path": "#.recipient",
+            "label": "Recipient",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.amount",
+            "label": "Amount",
+            "format": "amount",
+            "visible": "always"
+          },
+          {
+            "path": "#.amountOutMin",
+            "label": "Min Amount Out",
+            "format": "amount",
+            "visible": "always"
+          },
+          {
+            "path": "#.deadline",
+            "label": "Deadline",
+            "format": "date",
+            "params": { "encoding": "timestamp" },
+            "visible": "always"
+          }
+        ]
+      }
+    }
+  }
+}

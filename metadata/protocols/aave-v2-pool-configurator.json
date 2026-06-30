@@ -1,0 +1,61 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x311Bb771e4F8952E6Da169b425E7e92d6Ac45756"
+        }
+      ],
+      "abi": [
+        {"type": "function", "name": "setReserveBorrowing", "selector": "0x00000000", "inputs": [{"name": "asset", "type": "address"}, {"name": "enabled", "type": "bool"}]},
+        {"type": "function", "name": "configureReserveAsCollateral", "selector": "0x00000000", "inputs": [{"name": "asset", "type": "address"}, {"name": "ltv", "type": "uint256"}, {"name": "liquidationThreshold", "type": "uint256"}, {"name": "liquidationBonus", "type": "uint256"}]},
+        {"type": "function", "name": "setReserveStableRateBorrowing", "selector": "0x00000000", "inputs": [{"name": "asset", "type": "address"}, {"name": "enabled", "type": "bool"}]},
+        {"type": "function", "name": "setReserveFreeze", "selector": "0x00000000", "inputs": [{"name": "asset", "type": "address"}, {"name": "freeze", "type": "bool"}]}
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave V2 LendingPoolConfigurator",
+    "info": {
+      "website": "https://aave.com",
+      "docs": "https://docs.aave.com/developers/v2"
+    }
+  },
+  "display": {
+    "formats": {
+      "setReserveBorrowing(address,bool)": {
+        "intent": "{enabled,select,true{Enable} other{Disable}} Borrowing",
+        "fields": [
+          {"path": "asset", "label": "Asset", "format": "tokenAmount"},
+          {"path": "enabled", "label": "Enabled", "format": "raw"}
+        ]
+      },
+      "configureReserveAsCollateral(address,uint256,uint256,uint256)": {
+        "intent": "Configure Reserve as Collateral",
+        "fields": [
+          {"path": "asset", "label": "Asset", "format": "tokenAmount"},
+          {"path": "ltv", "label": "LTV", "format": "raw"},
+          {"path": "liquidationThreshold", "label": "Liq. Threshold", "format": "raw"},
+          {"path": "liquidationBonus", "label": "Liq. Bonus", "format": "raw"}
+        ]
+      },
+      "setReserveFreeze(address,bool)": {
+        "intent": "{freeze,select,true{Freeze} other{Unfreeze}} Reserve",
+        "fields": [
+          {"path": "asset", "label": "Asset", "format": "tokenAmount"},
+          {"path": "freeze", "label": "Freeze", "format": "raw"}
+        ]
+      },
+      "setReserveStableRateBorrowing(address,bool)": {
+        "intent": "{enabled,select,true{Enable} other{Disable}} Stable Rate Borrowing",
+        "fields": [
+          {"path": "asset", "label": "Asset", "format": "tokenAmount"},
+          {"path": "enabled", "label": "Enabled", "format": "raw"}
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,414 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x5979d7b546e38e414f7e9822514be443a4800529",
+      "chainId": 42161,
+      "name": "Wrapped liquid staked Ether 2.0 (Arbitrum)",
+      "symbol": "wstETH",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "proxy__changeAdmin",
+          "selector": "0x773f5be8",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "proxy__ossify",
+          "selector": "0xadcbc237",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "proxy__upgradeTo",
+          "selector": "0x3ebdd0eb",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "proxy__upgradeToAndCall",
+          "selector": "0xd2f6ed4d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation_",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "setupCalldata_",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bool",
+              "name": "forceCall_",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "bridgeBurn",
+          "selector": "0x74f4f547",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "account_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "bridgeMint",
+          "selector": "0x8c2a993e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "account_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowance",
+          "selector": "0xa457c2d7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "subtractedValue_",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowance",
+          "selector": "0x39509351",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "addedValue_",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0x4cd88b76",
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "name_",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "symbol_",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount_",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} wstETH",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "wstETH"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} wstETH",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "wstETH"
+            }
+          }
+        ]
+      },
+      "proxy__changeAdmin(address)": {
+        "intent": "Review Proxy change Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin_",
+            "label": "New Admin ",
+            "format": "address"
+          }
+        ]
+      },
+      "proxy__ossify()": {
+        "intent": "Review Proxy ossify transaction",
+        "fields": []
+      },
+      "proxy__upgradeTo(address)": {
+        "intent": "Review Proxy upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation_",
+            "label": "New Implementation ",
+            "format": "address"
+          }
+        ]
+      },
+      "proxy__upgradeToAndCall(address,bytes,bool)": {
+        "intent": "Review Proxy upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation_",
+            "label": "New Implementation ",
+            "format": "address"
+          },
+          {
+            "path": "setupCalldata_",
+            "label": "Setup Calldata ",
+            "format": "hex"
+          },
+          {
+            "path": "forceCall_",
+            "label": "Force Call ",
+            "format": "boolean"
+          }
+        ]
+      },
+      "bridgeBurn(address,uint256)": {
+        "intent": "Review Bridge Burn transaction",
+        "fields": [
+          {
+            "path": "account_",
+            "label": "Account ",
+            "format": "address"
+          },
+          {
+            "path": "amount_",
+            "label": "Amount ",
+            "format": "raw"
+          }
+        ]
+      },
+      "bridgeMint(address,uint256)": {
+        "intent": "Review Bridge Mint transaction",
+        "fields": [
+          {
+            "path": "account_",
+            "label": "Account ",
+            "format": "address"
+          },
+          {
+            "path": "amount_",
+            "label": "Amount ",
+            "format": "raw"
+          }
+        ]
+      },
+      "decreaseAllowance(address,uint256)": {
+        "intent": "Review Decrease Allowance transaction",
+        "fields": [
+          {
+            "path": "spender_",
+            "label": "Spender ",
+            "format": "address"
+          },
+          {
+            "path": "subtractedValue_",
+            "label": "Subtracted Value ",
+            "format": "raw"
+          }
+        ]
+      },
+      "increaseAllowance(address,uint256)": {
+        "intent": "Review Increase Allowance transaction",
+        "fields": [
+          {
+            "path": "spender_",
+            "label": "Spender ",
+            "format": "address"
+          },
+          {
+            "path": "addedValue_",
+            "label": "Added Value ",
+            "format": "raw"
+          }
+        ]
+      },
+      "initialize(string,string)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "name_",
+            "label": "Name ",
+            "format": "raw"
+          },
+          {
+            "path": "symbol_",
+            "label": "Symbol ",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from_",
+            "label": "From ",
+            "format": "address"
+          },
+          {
+            "path": "to_",
+            "label": "To ",
+            "format": "address"
+          },
+          {
+            "path": "amount_",
+            "label": "Amount ",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

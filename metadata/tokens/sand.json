@@ -1,0 +1,781 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x3845badAde8e6dFF049820680d1F14bD3903a5d0",
+      "chainId": 1,
+      "name": "The Sandbox",
+      "symbol": "SAND",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "changeExecutionAdmin",
+          "selector": "0x0819ba74",
+          "inputs": [
+            {
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burnFor",
+          "selector": "0x1dd319cb",
+          "inputs": [
+            {
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approveFor",
+          "selector": "0x2b991746",
+          "inputs": [
+            {
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addAllowanceIfNeeded",
+          "selector": "0x3b7b5a16",
+          "inputs": [
+            {
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amountNeeded",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "selector": "0x42966c68",
+          "inputs": [
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setExecutionOperator",
+          "selector": "0x699c834b",
+          "inputs": [
+            {
+              "name": "executionOperator",
+              "type": "address"
+            },
+            {
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approveAndExecuteWithSpecificGas",
+          "selector": "0x7dd711c4",
+          "inputs": [
+            {
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "gasLimit",
+              "type": "uint256"
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            },
+            {
+              "name": "returnData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeAdmin",
+          "selector": "0x8f283970",
+          "inputs": [
+            {
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setSuperOperator",
+          "selector": "0xac9fe421",
+          "inputs": [
+            {
+              "name": "superOperator",
+              "type": "address"
+            },
+            {
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "paidCall",
+          "selector": "0xbb1e23cb",
+          "inputs": [
+            {
+              "name": "target",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "approveAndCall",
+          "selector": "0xcae9ca51",
+          "inputs": [
+            {
+              "name": "target",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "approveAndExecuteWithSpecificGasAndChargeForIt",
+          "selector": "0xdc2173f3",
+          "inputs": [
+            {
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "gasLimit",
+              "type": "uint256"
+            },
+            {
+              "name": "tokenGasPrice",
+              "type": "uint256"
+            },
+            {
+              "name": "baseGasCharge",
+              "type": "uint256"
+            },
+            {
+              "name": "tokenReceiver",
+              "type": "address"
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            },
+            {
+              "name": "returnData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "executeWithSpecificGas",
+          "selector": "0xdcdf5158",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "gasLimit",
+              "type": "uint256"
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            },
+            {
+              "name": "returnData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferAndChargeForGas",
+          "selector": "0xe18aa335",
+          "inputs": [
+            {
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "gasLimit",
+              "type": "uint256"
+            },
+            {
+              "name": "tokenGasPrice",
+              "type": "uint256"
+            },
+            {
+              "name": "baseGasCharge",
+              "type": "uint256"
+            },
+            {
+              "name": "tokenReceiver",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} SAND",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "SAND"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} SAND",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "SAND"
+            }
+          }
+        ]
+      },
+      "changeExecutionAdmin(address)": {
+        "intent": "Review Change Execution Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "burnFor(address,uint256)": {
+        "intent": "Review Burn For transaction",
+        "fields": [
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "approveFor(address,address,uint256)": {
+        "intent": "Review Approve For transaction",
+        "fields": [
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "addAllowanceIfNeeded(address,address,uint256)": {
+        "intent": "Review Add Allowance If Needed transaction",
+        "fields": [
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amountNeeded",
+            "label": "Amount Needed",
+            "format": "raw"
+          }
+        ]
+      },
+      "burn(uint256)": {
+        "intent": "Review Burn transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "setExecutionOperator(address,bool)": {
+        "intent": "Review Set Execution Operator transaction",
+        "fields": [
+          {
+            "path": "executionOperator",
+            "label": "Execution Operator",
+            "format": "address"
+          },
+          {
+            "path": "enabled",
+            "label": "Enabled",
+            "format": "boolean"
+          }
+        ]
+      },
+      "approveAndExecuteWithSpecificGas(address,address,uint256,uint256,bytes)": {
+        "intent": "Review Approve And Execute With Specific Gas transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "gasLimit",
+            "label": "Gas Limit",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "changeAdmin(address)": {
+        "intent": "Review Change Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "setSuperOperator(address,bool)": {
+        "intent": "Review Set Super Operator transaction",
+        "fields": [
+          {
+            "path": "superOperator",
+            "label": "Super Operator",
+            "format": "address"
+          },
+          {
+            "path": "enabled",
+            "label": "Enabled",
+            "format": "boolean"
+          }
+        ]
+      },
+      "paidCall(address,uint256,bytes)": {
+        "intent": "Review Paid Call transaction",
+        "fields": [
+          {
+            "path": "target",
+            "label": "Target",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "approveAndCall(address,uint256,bytes)": {
+        "intent": "Review Approve And Call transaction",
+        "fields": [
+          {
+            "path": "target",
+            "label": "Target",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "approveAndExecuteWithSpecificGasAndChargeForIt(address,address,uint256,uint256,uint256,uint256,address,bytes)": {
+        "intent": "Review Approve And Execute With Specific Gas And Charge For It transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "gasLimit",
+            "label": "Gas Limit",
+            "format": "raw"
+          },
+          {
+            "path": "tokenGasPrice",
+            "label": "Token Gas Price",
+            "format": "raw"
+          },
+          {
+            "path": "baseGasCharge",
+            "label": "Base Gas Charge",
+            "format": "raw"
+          },
+          {
+            "path": "tokenReceiver",
+            "label": "Token Receiver",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "executeWithSpecificGas(address,uint256,bytes)": {
+        "intent": "Review Execute With Specific Gas transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "gasLimit",
+            "label": "Gas Limit",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "transferAndChargeForGas(address,address,uint256,uint256,uint256,uint256,address)": {
+        "intent": "Review Transfer And Charge For Gas transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "gasLimit",
+            "label": "Gas Limit",
+            "format": "raw"
+          },
+          {
+            "path": "tokenGasPrice",
+            "label": "Token Gas Price",
+            "format": "raw"
+          },
+          {
+            "path": "baseGasCharge",
+            "label": "Base Gas Charge",
+            "format": "raw"
+          },
+          {
+            "path": "tokenReceiver",
+            "label": "Token Receiver",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

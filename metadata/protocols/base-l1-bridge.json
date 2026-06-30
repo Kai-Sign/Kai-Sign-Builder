@@ -1,0 +1,61 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "Base L1 Standard Bridge",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x3154cf16ccdb4c6d922629664174b904d80f2c35" }
+      ],
+      "abi": "https://etherscan.io/address/0x3154cf16ccdb4c6d922629664174b904d80f2c35#code"
+    }
+  },
+  "metadata": {
+    "owner": "Base",
+    "info": { "legalName": "Coinbase, Inc.", "url": "https://base.org/" }
+  },
+  "display": {
+    "formats": {
+      "depositETH(uint32,bytes)": {
+        "intent": "Bridge ETH to Base",
+        "fields": [
+          { "path": "#._minGasLimit", "label": "Min Gas Limit", "format": "raw" },
+          { "path": "#._extraData", "label": "Extra Data", "format": "raw" }
+        ],
+        "required": ["#._minGasLimit"],
+        "excluded": []
+      },
+      "depositERC20(address,address,uint256,uint32,bytes)": {
+        "intent": "Bridge ERC-20 to Base",
+        "fields": [
+          { "path": "#._l1Token", "label": "L1 Token", "format": "addressName", "params": { "types": ["token"], "sources": null } },
+          { "path": "#._l2Token", "label": "L2 Token", "format": "addressName", "params": { "types": ["token"], "sources": null } },
+          { "path": "#._amount", "label": "Amount", "format": "tokenAmount", "params": { "tokenPath": "_l1Token" } },
+          { "path": "#._minGasLimit", "label": "Min Gas Limit", "format": "raw" }
+        ],
+        "required": ["#._l1Token", "#._l2Token", "#._amount", "#._minGasLimit"],
+        "excluded": []
+      },
+      "depositETHTo(address,uint32,bytes)": {
+        "intent": "Bridge ETH to Address on Base",
+        "fields": [
+          { "path": "#._to", "label": "Recipient on Base", "format": "addressName", "params": { "types": ["eoa", "wallet"], "sources": ["local", "ens"] } },
+          { "path": "#._minGasLimit", "label": "Min Gas Limit", "format": "raw" }
+        ],
+        "required": ["#._to", "#._minGasLimit"],
+        "excluded": []
+      },
+      "depositERC20To(address,address,address,uint256,uint32,bytes)": {
+        "intent": "Bridge ERC-20 to Address on Base",
+        "fields": [
+          { "path": "#._l1Token", "label": "L1 Token", "format": "addressName", "params": { "types": ["token"], "sources": null } },
+          { "path": "#._l2Token", "label": "L2 Token", "format": "addressName", "params": { "types": ["token"], "sources": null } },
+          { "path": "#._to", "label": "Recipient on Base", "format": "addressName", "params": { "types": ["eoa", "wallet"], "sources": ["local", "ens"] } },
+          { "path": "#._amount", "label": "Amount", "format": "tokenAmount", "params": { "tokenPath": "_l1Token" } },
+          { "path": "#._minGasLimit", "label": "Min Gas Limit", "format": "raw" }
+        ],
+        "required": ["#._l1Token", "#._l2Token", "#._to", "#._amount", "#._minGasLimit"],
+        "excluded": []
+      }
+    }
+  }
+}

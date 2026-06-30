@@ -1,0 +1,46 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x78F8Bd884C3D738B74B420540659c82f392820e0"
+        }
+      ],
+      "abi": [
+        {"type": "function", "name": "swapAndWithdraw", "selector": "0x00000000", "inputs": [{"name": "asset", "type": "address"}, {"name": "amount", "type": "uint256"}, {"name": "swapCalldata", "type": "bytes"}]},
+        {"type": "function", "name": "swapAndRepay", "selector": "0x00000000", "inputs": [{"name": "asset", "type": "address"}, {"name": "debtAsset", "type": "address"}, {"name": "amount", "type": "uint256"}, {"name": "rateMode", "type": "uint256"}, {"name": "swapCalldata", "type": "bytes"}]}
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave V3 WithdrawSwapAdapter",
+    "info": {
+      "website": "https://aave.com"
+    }
+  },
+  "display": {
+    "formats": {
+      "swapAndWithdraw(address,uint256,bytes)": {
+        "intent": "Swap & Withdraw {amount}",
+        "fields": [
+          {"path": "asset", "label": "Asset to Withdraw", "format": "tokenAmount"},
+          {"path": "amount", "label": "Amount", "format": "amount"},
+          {"path": "swapCalldata", "label": "Swap Calldata", "format": "raw"}
+        ]
+      },
+      "swapAndRepay(address,address,uint256,uint256,bytes)": {
+        "intent": "Swap & Repay {amount}",
+        "fields": [
+          {"path": "asset", "label": "Collateral Asset", "format": "tokenAmount"},
+          {"path": "debtAsset", "label": "Debt Asset", "format": "tokenAmount"},
+          {"path": "amount", "label": "Amount", "format": "amount"},
+          {"path": "rateMode", "label": "Rate Mode", "format": "raw"},
+          {"path": "swapCalldata", "label": "Swap Calldata", "format": "raw"}
+        ]
+      }
+    }
+  }
+}

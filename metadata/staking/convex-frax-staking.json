@@ -1,0 +1,47 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "Convex Frax Staking",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x8a53ee42fb458d4897e15cc7dea3f75d0f1c3475" }
+      ],
+      "abi": "https://etherscan.io/address/0x8a53ee42fb458d4897e15cc7dea3f75d0f1c3475#code"
+    }
+  },
+  "metadata": {
+    "owner": "Convex Finance",
+    "info": { "legalName": "Convex Finance", "url": "https://www.convexfinance.com/" },
+    "constants": {
+      "cvxFXS": "0xFEEf77d3f69374f66429C91d732A244f074bdf74"
+    }
+  },
+  "display": {
+    "formats": {
+      "stake(uint256)": {
+        "intent": "Stake cvxFXS",
+        "fields": [
+          { "path": "#._amount", "label": "cvxFXS Amount", "format": "tokenAmount", "params": { "token": "$.metadata.constants.cvxFXS" } }
+        ],
+        "required": ["#._amount"],
+        "excluded": []
+      },
+      "withdraw(uint256)": {
+        "intent": "Withdraw Staked cvxFXS",
+        "fields": [
+          { "path": "#._amount", "label": "cvxFXS Amount", "format": "tokenAmount", "params": { "token": "$.metadata.constants.cvxFXS" } }
+        ],
+        "required": ["#._amount"],
+        "excluded": []
+      },
+      "getReward(bool)": {
+        "intent": "Claim Staking Rewards",
+        "fields": [
+          { "path": "#._stake", "label": "Restake Rewards", "format": "raw" }
+        ],
+        "required": ["#._stake"],
+        "excluded": []
+      }
+    }
+  }
+}

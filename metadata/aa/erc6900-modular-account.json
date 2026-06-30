@@ -1,0 +1,794 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x0046000000000151008789797b54fdb500E2a61e",
+      "chainId": 1,
+      "name": "ERC-6900 Modular Smart Account",
+      "abi": [
+        {
+          "type": "function",
+          "name": "execute",
+          "selector": "0xb61d27f6",
+          "inputs": [
+            {
+              "name": "target",
+              "type": "address"
+            },
+            {
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "executeBatch",
+          "selector": "0x34fcd5be",
+          "inputs": [
+            {
+              "name": "calls",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "target",
+                  "type": "address"
+                },
+                {
+                  "name": "value",
+                  "type": "uint256"
+                },
+                {
+                  "name": "data",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "installModule",
+          "selector": "0x9f303a24",
+          "inputs": [
+            {
+              "name": "moduleTypeId",
+              "type": "uint32"
+            },
+            {
+              "name": "module",
+              "type": "address"
+            },
+            {
+              "name": "initData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "uninstallModule",
+          "selector": "0x3f509020",
+          "inputs": [
+            {
+              "name": "moduleTypeId",
+              "type": "uint32"
+            },
+            {
+              "name": "module",
+              "type": "address"
+            },
+            {
+              "name": "deInitData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "executeFromPlugin",
+          "selector": "0x94ed11e7",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "returnData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "executeFromPluginExternal",
+          "selector": "0x38997b11",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "target",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xe69e24a8",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "plugins",
+              "type": "address[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "pluginInitData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "installPlugin",
+          "selector": "0xc5f0e8d1",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "plugin",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "manifestHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "pluginInstallData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "FunctionReference[]",
+              "name": "dependencies",
+              "type": "bytes21[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "onERC1155BatchReceived",
+          "selector": "0xbc197c81",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "operator",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "ids",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "values",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes4",
+              "name": "selector",
+              "type": "bytes4"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "onERC1155Received",
+          "selector": "0xf23a6e61",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "operator",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes4",
+              "name": "selector",
+              "type": "bytes4"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "onERC721Received",
+          "selector": "0x150b7a02",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "operator",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes4",
+              "name": "selector",
+              "type": "bytes4"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "tokensReceived",
+          "selector": "0x0023de29",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "operator",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "userData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "operatorData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "uninstallPlugin",
+          "selector": "0xc1a221f3",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "plugin",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "config",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "pluginUninstallData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "validateUserOp",
+          "selector": "0x3a871cdd",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "sender",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "initCode",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "callGasLimit",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "verificationGasLimit",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "preVerificationGas",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "maxFeePerGas",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "maxPriorityFeePerGas",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "paymasterAndData",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct UserOperation",
+              "name": "userOp",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "userOpHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "missingAccountFunds",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "validationData",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "execute(address,uint256,bytes)": {
+        "intent": "Execute transaction via ERC-6900 modular smart account",
+        "interpolatedIntent": "Execute call to {target} via modular smart account",
+        "fields": [
+          {
+            "path": "target",
+            "label": "To",
+            "format": "addressName"
+          },
+          {
+            "path": "value",
+            "label": "Value (ETH)",
+            "format": "ethAmount"
+          }
+        ]
+      },
+      "executeBatch(tuple[])": {
+        "intent": "Execute batch transactions via ERC-6900 modular account",
+        "fields": []
+      },
+      "installModule(uint32,address,bytes)": {
+        "intent": "Install module on ERC-6900 smart account",
+        "interpolatedIntent": "Install module {module} (type {moduleTypeId}) on smart account",
+        "fields": [
+          {
+            "path": "moduleTypeId",
+            "label": "Module Type ID",
+            "format": "raw"
+          },
+          {
+            "path": "module",
+            "label": "Module Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "uninstallModule(uint32,address,bytes)": {
+        "intent": "Uninstall module from ERC-6900 smart account",
+        "interpolatedIntent": "Uninstall module {module} (type {moduleTypeId}) from smart account",
+        "fields": [
+          {
+            "path": "moduleTypeId",
+            "label": "Module Type ID",
+            "format": "raw"
+          },
+          {
+            "path": "module",
+            "label": "Module Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "executeFromPlugin(bytes)": {
+        "intent": "Review Execute From Plugin transaction",
+        "fields": [
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "executeFromPluginExternal(address,uint256,bytes)": {
+        "intent": "Review Execute From Plugin External transaction",
+        "fields": [
+          {
+            "path": "target",
+            "label": "Target",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "initialize(address[],bytes)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "plugins",
+            "label": "Plugins",
+            "format": "raw"
+          },
+          {
+            "path": "pluginInitData",
+            "label": "Plugin Init Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "installPlugin(address,bytes32,bytes,bytes21[])": {
+        "intent": "Review Install Plugin transaction",
+        "fields": [
+          {
+            "path": "plugin",
+            "label": "Plugin",
+            "format": "address"
+          },
+          {
+            "path": "manifestHash",
+            "label": "Manifest Hash",
+            "format": "hex"
+          },
+          {
+            "path": "pluginInstallData",
+            "label": "Plugin Install Data",
+            "format": "hex"
+          },
+          {
+            "path": "dependencies",
+            "label": "Dependencies",
+            "format": "hex"
+          }
+        ]
+      },
+      "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)": {
+        "intent": "Review On ERC1155 Batch Received transaction",
+        "fields": [
+          {
+            "path": "operator",
+            "label": "Operator",
+            "format": "address"
+          },
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "ids",
+            "label": "Ids",
+            "format": "raw"
+          },
+          {
+            "path": "values",
+            "label": "Values",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "onERC1155Received(address,address,uint256,uint256,bytes)": {
+        "intent": "Review On ERC1155 Received transaction",
+        "fields": [
+          {
+            "path": "operator",
+            "label": "Operator",
+            "format": "address"
+          },
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "id",
+            "label": "Id",
+            "format": "raw"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "onERC721Received(address,address,uint256,bytes)": {
+        "intent": "Review On ERC721 Received transaction",
+        "fields": [
+          {
+            "path": "operator",
+            "label": "Operator",
+            "format": "address"
+          },
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "tokensReceived(address,address,address,uint256,bytes,bytes)": {
+        "intent": "Review Tokens Received transaction",
+        "fields": [
+          {
+            "path": "operator",
+            "label": "Operator",
+            "format": "address"
+          },
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "userData",
+            "label": "User Data",
+            "format": "hex"
+          },
+          {
+            "path": "operatorData",
+            "label": "Operator Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "uninstallPlugin(address,bytes,bytes)": {
+        "intent": "Review Uninstall Plugin transaction",
+        "fields": [
+          {
+            "path": "plugin",
+            "label": "Plugin",
+            "format": "address"
+          },
+          {
+            "path": "config",
+            "label": "Config",
+            "format": "hex"
+          },
+          {
+            "path": "pluginUninstallData",
+            "label": "Plugin Uninstall Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "validateUserOp((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),bytes32,uint256)": {
+        "intent": "Review Validate User Op transaction",
+        "fields": [
+          {
+            "path": "userOp",
+            "label": "User Op",
+            "format": "raw"
+          },
+          {
+            "path": "userOpHash",
+            "label": "User Op Hash",
+            "format": "hex"
+          },
+          {
+            "path": "missingAccountFunds",
+            "label": "Missing Account Funds",
+            "format": "raw"
+          }
+        ]
+      },
+      "executeBatch((address,uint256,bytes)[])": {
+        "intent": "Review Execute Batch transaction",
+        "fields": [
+          {
+            "path": "calls",
+            "label": "Calls",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "ERC-6900 Reference Implementation",
+    "info": {
+      "url": "https://eips.ethereum.org/EIPS/eip-6900",
+      "legalName": "ERC-6900 Authors",
+      "lastUpdate": "2026-03-27"
+    }
+  }
+}

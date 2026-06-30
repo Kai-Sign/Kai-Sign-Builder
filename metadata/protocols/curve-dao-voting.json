@@ -1,0 +1,49 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "Curve DAO Aragon Voting",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0xe478de485ad2fe566d49342cbd03e49ed7db3356" }
+      ],
+      "abi": "https://etherscan.io/address/0xe478de485ad2fe566d49342cbd03e49ed7db3356#code"
+    }
+  },
+  "metadata": {
+    "owner": "Curve DAO",
+    "info": { "legalName": "Curve DAO", "url": "https://curve.fi/" }
+  },
+  "display": {
+    "formats": {
+      "vote(uint256,bool,bool)": {
+        "intent": "Vote on Curve Governance Proposal",
+        "fields": [
+          { "path": "#._voteId", "label": "Vote ID", "format": "raw" },
+          { "path": "#._supports", "label": "Support", "format": "raw" },
+          { "path": "#._executesIfDecided", "label": "Execute if Passes", "format": "raw" }
+        ],
+        "required": ["#._voteId", "#._supports"],
+        "excluded": []
+      },
+      "newVote(bytes,string,bool,bool)": {
+        "intent": "Create Curve Governance Proposal",
+        "fields": [
+          { "path": "#._executionScript", "label": "Execution Script", "format": "raw" },
+          { "path": "#._metadata", "label": "Proposal Description", "format": "raw" },
+          { "path": "#._castVote", "label": "Cast Vote Now", "format": "raw" },
+          { "path": "#._executesIfDecided", "label": "Execute if Passes", "format": "raw" }
+        ],
+        "required": ["#._metadata", "#._castVote"],
+        "excluded": []
+      },
+      "executeVote(uint256)": {
+        "intent": "Execute Passed Curve Vote",
+        "fields": [
+          { "path": "#._voteId", "label": "Vote ID", "format": "raw" }
+        ],
+        "required": ["#._voteId"],
+        "excluded": []
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "Maverick V2 Router",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0xbbf1ee38152e9d8e3470dc47947eaa65dca94913" }
+      ],
+      "abi": "https://etherscan.io/address/0x7a6902af7c4b46e7a8f60c86a7f6d0faf2440e50#code"
+    }
+  },
+  "metadata": {
+    "owner": "Maverick Protocol",
+    "info": { "legalName": "Maverick Protocol", "url": "https://v2.mav.xyz/" }
+  },
+  "display": {
+    "formats": {
+      "exactInputSingle((address,address,address,uint256,uint256,uint256))": {
+        "intent": "Swap Exact Input",
+        "fields": [
+          {
+            "path": "#.params",
+            "fields": [
+              { "path": "tokenIn", "label": "Token In", "format": "addressName", "params": { "types": ["token"], "sources": null } },
+              { "path": "tokenOut", "label": "Token Out", "format": "addressName", "params": { "types": ["token"], "sources": null } },
+              { "path": "pool", "label": "Pool", "format": "addressName", "params": { "types": ["contract"], "sources": null } },
+              { "path": "recipient", "label": "Recipient", "format": "addressName", "params": { "types": ["eoa", "wallet"], "sources": ["local", "ens"] } },
+              { "path": "deadline", "label": "Deadline", "format": "date", "params": { "encoding": "timestamp" } },
+              { "path": "amountIn", "label": "Amount In", "format": "tokenAmount", "params": { "tokenPath": "params.tokenIn" } },
+              { "path": "amountOutMinimum", "label": "Minimum Received", "format": "tokenAmount", "params": { "tokenPath": "params.tokenOut" } }
+            ]
+          }
+        ],
+        "required": ["#.params.tokenIn", "#.params.tokenOut", "#.params.amountIn", "#.params.amountOutMinimum", "#.params.recipient"],
+        "excluded": []
+      },
+      "exactOutputSingle((address,address,address,uint256,uint256,uint256))": {
+        "intent": "Swap Exact Output",
+        "fields": [
+          {
+            "path": "#.params",
+            "fields": [
+              { "path": "tokenIn", "label": "Token In", "format": "addressName", "params": { "types": ["token"], "sources": null } },
+              { "path": "tokenOut", "label": "Token Out", "format": "addressName", "params": { "types": ["token"], "sources": null } },
+              { "path": "pool", "label": "Pool", "format": "addressName", "params": { "types": ["contract"], "sources": null } },
+              { "path": "recipient", "label": "Recipient", "format": "addressName", "params": { "types": ["eoa", "wallet"], "sources": ["local", "ens"] } },
+              { "path": "deadline", "label": "Deadline", "format": "date", "params": { "encoding": "timestamp" } },
+              { "path": "amountOut", "label": "Amount Out", "format": "tokenAmount", "params": { "tokenPath": "params.tokenOut" } },
+              { "path": "amountInMaximum", "label": "Maximum Sent", "format": "tokenAmount", "params": { "tokenPath": "params.tokenIn" } }
+            ]
+          }
+        ],
+        "required": ["#.params.tokenIn", "#.params.tokenOut", "#.params.amountOut", "#.params.amountInMaximum", "#.params.recipient"],
+        "excluded": []
+      }
+    }
+  }
+}

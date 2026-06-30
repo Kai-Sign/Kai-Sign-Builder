@@ -1,0 +1,437 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xdb25f211ab05b1c97d595516f45794528a807ad8",
+      "chainId": 1,
+      "name": "STASIS Euro",
+      "symbol": "EURS",
+      "decimals": 2,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "freezeTransfers",
+          "selector": "0x01502460",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "setOwner",
+          "selector": "0x13af4035",
+          "inputs": [
+            {
+              "name": "_newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "unfreezeTransfers",
+          "selector": "0x31c420d4",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "burnTokens",
+          "selector": "0x6d1b229d",
+          "inputs": [
+            {
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "createTokens",
+          "selector": "0x7e1f2bb8",
+          "inputs": [
+            {
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "setFeeCollector",
+          "selector": "0xa42dce80",
+          "inputs": [
+            {
+              "name": "_newFeeCollector",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "setFlags",
+          "selector": "0xaddd9cef",
+          "inputs": [
+            {
+              "name": "_address",
+              "type": "address"
+            },
+            {
+              "name": "_flags",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "delegatedTransfer",
+          "selector": "0xc97e8480",
+          "inputs": [
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_value",
+              "type": "uint256"
+            },
+            {
+              "name": "_fee",
+              "type": "uint256"
+            },
+            {
+              "name": "_nonce",
+              "type": "uint256"
+            },
+            {
+              "name": "_v",
+              "type": "uint8"
+            },
+            {
+              "name": "_r",
+              "type": "bytes32"
+            },
+            {
+              "name": "_s",
+              "type": "bytes32"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "setDelegate",
+          "selector": "0xca5eb5e1",
+          "inputs": [
+            {
+              "name": "_delegate",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFeeParameters",
+          "selector": "0xd5bf2dbe",
+          "inputs": [
+            {
+              "name": "_fixedFee",
+              "type": "uint256"
+            },
+            {
+              "name": "_minVariableFee",
+              "type": "uint256"
+            },
+            {
+              "name": "_maxVariableFee",
+              "type": "uint256"
+            },
+            {
+              "name": "_variableFeeNumerator",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} EURS",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 2,
+              "symbol": "EURS"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} EURS",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 2,
+              "symbol": "EURS"
+            }
+          }
+        ]
+      },
+      "freezeTransfers()": {
+        "intent": "Review Freeze Transfers transaction",
+        "fields": []
+      },
+      "setOwner(address)": {
+        "intent": "Review Set Owner transaction",
+        "fields": [
+          {
+            "path": "_newOwner",
+            "label": " new Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          }
+        ]
+      },
+      "unfreezeTransfers()": {
+        "intent": "Review Unfreeze Transfers transaction",
+        "fields": []
+      },
+      "burnTokens(uint256)": {
+        "intent": "Review Burn Tokens transaction",
+        "fields": [
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          }
+        ]
+      },
+      "createTokens(uint256)": {
+        "intent": "Review Create Tokens transaction",
+        "fields": [
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          }
+        ]
+      },
+      "setFeeCollector(address)": {
+        "intent": "Review Set Fee Collector transaction",
+        "fields": [
+          {
+            "path": "_newFeeCollector",
+            "label": " new Fee Collector",
+            "format": "address"
+          }
+        ]
+      },
+      "setFlags(address,uint256)": {
+        "intent": "Review Set Flags transaction",
+        "fields": [
+          {
+            "path": "_address",
+            "label": " address",
+            "format": "address"
+          },
+          {
+            "path": "_flags",
+            "label": " flags",
+            "format": "raw"
+          }
+        ]
+      },
+      "delegatedTransfer(address,uint256,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Delegated Transfer transaction",
+        "fields": [
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          },
+          {
+            "path": "_fee",
+            "label": " fee",
+            "format": "raw"
+          },
+          {
+            "path": "_nonce",
+            "label": " nonce",
+            "format": "raw"
+          },
+          {
+            "path": "_v",
+            "label": " v",
+            "format": "raw"
+          },
+          {
+            "path": "_r",
+            "label": " r",
+            "format": "hex"
+          },
+          {
+            "path": "_s",
+            "label": " s",
+            "format": "hex"
+          }
+        ]
+      },
+      "setDelegate(address)": {
+        "intent": "Review Set Delegate transaction",
+        "fields": [
+          {
+            "path": "_delegate",
+            "label": " delegate",
+            "format": "address"
+          }
+        ]
+      },
+      "setFeeParameters(uint256,uint256,uint256,uint256)": {
+        "intent": "Review Set Fee Parameters transaction",
+        "fields": [
+          {
+            "path": "_fixedFee",
+            "label": " fixed Fee",
+            "format": "raw"
+          },
+          {
+            "path": "_minVariableFee",
+            "label": " min Variable Fee",
+            "format": "raw"
+          },
+          {
+            "path": "_maxVariableFee",
+            "label": " max Variable Fee",
+            "format": "raw"
+          },
+          {
+            "path": "_variableFeeNumerator",
+            "label": " variable Fee Numerator",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0xADC0A53095A0af87F3aa29FE0715B5c28016364e"
+        }
+      ],
+      "abi": [
+        {"type": "function", "name": "swapAndDeposit", "selector": "0x00000000", "inputs": [{"name": "assetToSwapFrom", "type": "address"}, {"name": "assetToSwapTo", "type": "address"}, {"name": "amountToSwap", "type": "uint256"}, {"name": "minAmountToReceive", "type": "uint256"}, {"name": "swapCalldata", "type": "bytes"}]}
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave V3 ParaSwapCollateralSwapAdapter",
+    "info": {
+      "website": "https://aave.com"
+    }
+  },
+  "display": {
+    "formats": {
+      "swapAndDeposit(address,address,uint256,uint256,bytes)": {
+        "intent": "Swap Collateral & Deposit",
+        "fields": [
+          {"path": "assetToSwapFrom", "label": "Swap From", "format": "tokenAmount"},
+          {"path": "assetToSwapTo", "label": "Deposit As", "format": "tokenAmount"},
+          {"path": "amountToSwap", "label": "Amount", "format": "amount"},
+          {"path": "minAmountToReceive", "label": "Min Received", "format": "amount"},
+          {"path": "swapCalldata", "label": "Swap Calldata", "format": "raw"}
+        ]
+      }
+    }
+  }
+}

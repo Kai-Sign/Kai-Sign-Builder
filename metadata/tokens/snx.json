@@ -1,0 +1,275 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xc011a73ee8576fb46f5e1c5751ca3b9fe0af2a6f",
+      "chainId": 1,
+      "name": "Synthetix",
+      "symbol": "SNX",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "nominateNewOwner",
+          "selector": "0x1627540c",
+          "inputs": [
+            {
+              "name": "_owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTarget",
+          "selector": "0x776d1a01",
+          "inputs": [
+            {
+              "name": "_target",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "acceptOwnership",
+          "selector": "0x79ba5097",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "_emit",
+          "selector": "0x907dff97",
+          "inputs": [
+            {
+              "name": "callData",
+              "type": "bytes"
+            },
+            {
+              "name": "numTopics",
+              "type": "uint256"
+            },
+            {
+              "name": "topic1",
+              "type": "bytes32"
+            },
+            {
+              "name": "topic2",
+              "type": "bytes32"
+            },
+            {
+              "name": "topic3",
+              "type": "bytes32"
+            },
+            {
+              "name": "topic4",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setUseDELEGATECALL",
+          "selector": "0xbefff6af",
+          "inputs": [
+            {
+              "name": "value",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} SNX",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "SNX"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} SNX",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "SNX"
+            }
+          }
+        ]
+      },
+      "nominateNewOwner(address)": {
+        "intent": "Review Nominate New Owner transaction",
+        "fields": [
+          {
+            "path": "_owner",
+            "label": " owner",
+            "format": "address"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "setTarget(address)": {
+        "intent": "Review Set Target transaction",
+        "fields": [
+          {
+            "path": "_target",
+            "label": " target",
+            "format": "address"
+          }
+        ]
+      },
+      "acceptOwnership()": {
+        "intent": "Review Accept Ownership transaction",
+        "fields": []
+      },
+      "_emit(bytes,uint256,bytes32,bytes32,bytes32,bytes32)": {
+        "intent": "Review emit transaction",
+        "fields": [
+          {
+            "path": "callData",
+            "label": "Call Data",
+            "format": "hex"
+          },
+          {
+            "path": "numTopics",
+            "label": "Num Topics",
+            "format": "raw"
+          },
+          {
+            "path": "topic1",
+            "label": "Topic1",
+            "format": "hex"
+          },
+          {
+            "path": "topic2",
+            "label": "Topic2",
+            "format": "hex"
+          },
+          {
+            "path": "topic3",
+            "label": "Topic3",
+            "format": "hex"
+          },
+          {
+            "path": "topic4",
+            "label": "Topic4",
+            "format": "hex"
+          }
+        ]
+      },
+      "setUseDELEGATECALL(bool)": {
+        "intent": "Review Set Use DELEGATECALL transaction",
+        "fields": [
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "boolean"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,794 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xde4ee8057785a7e8e800db58f9784845a5c2cbd6",
+      "chainId": 1,
+      "name": "DeXe Protocol",
+      "symbol": "DEXE",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "addToWhitelist",
+          "selector": "0x214405fc",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_address",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_limit",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "selector": "0x42966c68",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burnFrom",
+          "selector": "0x79cc6790",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowance",
+          "selector": "0xa457c2d7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "depositETH",
+          "selector": "0xf6326fb3",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "depositUSDC",
+          "selector": "0xf688bcfb",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "depositUSDT",
+          "selector": "0xe7c80f17",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "forceReleaseStaking",
+          "selector": "0xdc110eee",
+          "inputs": [
+            {
+              "internalType": "enum Dexe.ForceReleaseType",
+              "name": "_forceReleaseType",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowance",
+          "selector": "0x39509351",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "addedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "launchProduct",
+          "selector": "0xd4fd4f2b",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "prepareDistribution",
+          "selector": "0x9e1379b6",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_round",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "prepareDistributionPrecise",
+          "selector": "0x5c32a441",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_round",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_botPriceLimit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_topPriceLimit",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "receiveAll",
+          "selector": "0x792459d9",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "releaseLock",
+          "selector": "0x812a6dbd",
+          "inputs": [
+            {
+              "internalType": "enum Dexe.LockType",
+              "name": "_lock",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeFromWhitelist",
+          "selector": "0x8ab1d681",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setDEXEFeed",
+          "selector": "0xdfce7942",
+          "inputs": [
+            {
+              "internalType": "contract IPriceFeed",
+              "name": "_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setETHFeed",
+          "selector": "0x7aa6636a",
+          "inputs": [
+            {
+              "internalType": "contract IPriceFeed",
+              "name": "_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTreasury",
+          "selector": "0xf0f44260",
+          "inputs": [
+            {
+              "internalType": "address payable",
+              "name": "_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setUSDCTokenAddress",
+          "selector": "0x653a908d",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setUSDTFeed",
+          "selector": "0x4d1567e8",
+          "inputs": [
+            {
+              "internalType": "contract IPriceFeed",
+              "name": "_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setUSDTTokenAddress",
+          "selector": "0x52173ba8",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferLock",
+          "selector": "0x245bde3e",
+          "inputs": [
+            {
+              "internalType": "enum Dexe.LockType",
+              "name": "_lockType",
+              "type": "uint8"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateAndGetCurrentPrice",
+          "selector": "0x466db44c",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawLocked",
+          "selector": "0x042ee426",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "_token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} DEXE",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "DEXE"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} DEXE",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "DEXE"
+            }
+          }
+        ]
+      },
+      "addToWhitelist(address,uint256)": {
+        "intent": "Review Add To Whitelist transaction",
+        "fields": [
+          {
+            "path": "_address",
+            "label": " address",
+            "format": "address"
+          },
+          {
+            "path": "_limit",
+            "label": " limit",
+            "format": "raw"
+          }
+        ]
+      },
+      "burn(uint256)": {
+        "intent": "Review Burn transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "burnFrom(address,uint256)": {
+        "intent": "Review Burn From transaction",
+        "fields": [
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "decreaseAllowance(address,uint256)": {
+        "intent": "Review Decrease Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "subtractedValue",
+            "label": "Subtracted Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "depositETH()": {
+        "intent": "Review Deposit ETH transaction",
+        "fields": []
+      },
+      "depositUSDC(uint256)": {
+        "intent": "Review Deposit USDC transaction",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "depositUSDT(uint256)": {
+        "intent": "Review Deposit USDT transaction",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "forceReleaseStaking(uint8)": {
+        "intent": "Review Force Release Staking transaction",
+        "fields": [
+          {
+            "path": "_forceReleaseType",
+            "label": " force Release Type",
+            "format": "raw"
+          }
+        ]
+      },
+      "increaseAllowance(address,uint256)": {
+        "intent": "Review Increase Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "addedValue",
+            "label": "Added Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "launchProduct()": {
+        "intent": "Review Launch Product transaction",
+        "fields": []
+      },
+      "prepareDistribution(uint256)": {
+        "intent": "Review Prepare Distribution transaction",
+        "fields": [
+          {
+            "path": "_round",
+            "label": " round",
+            "format": "raw"
+          }
+        ]
+      },
+      "prepareDistributionPrecise(uint256,uint256,uint256)": {
+        "intent": "Review Prepare Distribution Precise transaction",
+        "fields": [
+          {
+            "path": "_round",
+            "label": " round",
+            "format": "raw"
+          },
+          {
+            "path": "_botPriceLimit",
+            "label": " bot Price Limit",
+            "format": "raw"
+          },
+          {
+            "path": "_topPriceLimit",
+            "label": " top Price Limit",
+            "format": "raw"
+          }
+        ]
+      },
+      "receiveAll()": {
+        "intent": "Review Receive All transaction",
+        "fields": []
+      },
+      "releaseLock(uint8)": {
+        "intent": "Review Release Lock transaction",
+        "fields": [
+          {
+            "path": "_lock",
+            "label": " lock",
+            "format": "raw"
+          }
+        ]
+      },
+      "removeFromWhitelist(address)": {
+        "intent": "Review Remove From Whitelist transaction",
+        "fields": [
+          {
+            "path": "_address",
+            "label": " address",
+            "format": "address"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "setDEXEFeed(address)": {
+        "intent": "Review Set DEXEFeed transaction",
+        "fields": [
+          {
+            "path": "_address",
+            "label": " address",
+            "format": "address"
+          }
+        ]
+      },
+      "setETHFeed(address)": {
+        "intent": "Review Set ETHFeed transaction",
+        "fields": [
+          {
+            "path": "_address",
+            "label": " address",
+            "format": "address"
+          }
+        ]
+      },
+      "setTreasury(address)": {
+        "intent": "Review Set Treasury transaction",
+        "fields": [
+          {
+            "path": "_address",
+            "label": " address",
+            "format": "address"
+          }
+        ]
+      },
+      "setUSDCTokenAddress(address)": {
+        "intent": "Review Set USDCToken Address transaction",
+        "fields": [
+          {
+            "path": "_address",
+            "label": " address",
+            "format": "address"
+          }
+        ]
+      },
+      "setUSDTFeed(address)": {
+        "intent": "Review Set USDTFeed transaction",
+        "fields": [
+          {
+            "path": "_address",
+            "label": " address",
+            "format": "address"
+          }
+        ]
+      },
+      "setUSDTTokenAddress(address)": {
+        "intent": "Review Set USDTToken Address transaction",
+        "fields": [
+          {
+            "path": "_address",
+            "label": " address",
+            "format": "address"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "sender",
+            "label": "Sender",
+            "format": "address"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferLock(uint8,address,uint256)": {
+        "intent": "Review Transfer Lock transaction",
+        "fields": [
+          {
+            "path": "_lockType",
+            "label": " lock Type",
+            "format": "raw"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "updateAndGetCurrentPrice()": {
+        "intent": "Review Update And Get Current Price transaction",
+        "fields": []
+      },
+      "withdrawLocked(address,address,uint256)": {
+        "intent": "Review Withdraw Locked transaction",
+        "fields": [
+          {
+            "path": "_token",
+            "label": " token",
+            "format": "address"
+          },
+          {
+            "path": "_receiver",
+            "label": " receiver",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

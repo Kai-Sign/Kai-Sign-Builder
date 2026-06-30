@@ -1,0 +1,484 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xa1290d69c65a6fe4df752f95823fae25cb99e5a7",
+      "chainId": 1,
+      "name": "Kelp DAO Restaked ETH",
+      "symbol": "rsETH",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "addPermanentExemptions",
+          "selector": "0xbb1fda59",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "accounts",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "blockUserTransfers",
+          "selector": "0xfa91e4c1",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "accounts",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burnFrom",
+          "selector": "0x79cc6790",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowance",
+          "selector": "0xa457c2d7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowance",
+          "selector": "0x39509351",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "addedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0x485cc955",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "admin",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "lrtConfigAddr",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x40c10f19",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pause",
+          "selector": "0x8456cb59",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "recoverFrozenFunds",
+          "selector": "0x21cdc338",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "reinitialize",
+          "selector": "0x4f31ad9d",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_periodStartTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_custodyAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setCustodyAddress",
+          "selector": "0xc8ae5d86",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newCustodyAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMaxMintAmountPerDay",
+          "selector": "0xca2b6c10",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_maxMintAmountPerDay",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unpause",
+          "selector": "0x3f4ba83a",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} rsETH",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "rsETH"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} rsETH",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "rsETH"
+            }
+          }
+        ]
+      },
+      "addPermanentExemptions(address[])": {
+        "intent": "Review Add Permanent Exemptions transaction",
+        "fields": [
+          {
+            "path": "accounts",
+            "label": "Accounts",
+            "format": "raw"
+          }
+        ]
+      },
+      "blockUserTransfers(address[])": {
+        "intent": "Review Block User Transfers transaction",
+        "fields": [
+          {
+            "path": "accounts",
+            "label": "Accounts",
+            "format": "raw"
+          }
+        ]
+      },
+      "burnFrom(address,uint256)": {
+        "intent": "Review Burn From transaction",
+        "fields": [
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "decreaseAllowance(address,uint256)": {
+        "intent": "Review Decrease Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "subtractedValue",
+            "label": "Subtracted Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "increaseAllowance(address,uint256)": {
+        "intent": "Review Increase Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "addedValue",
+            "label": "Added Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "initialize(address,address)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "admin",
+            "label": "Admin",
+            "format": "address"
+          },
+          {
+            "path": "lrtConfigAddr",
+            "label": "Lrt Config Addr",
+            "format": "address"
+          }
+        ]
+      },
+      "mint(address,uint256)": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "pause()": {
+        "intent": "Review Pause transaction",
+        "fields": []
+      },
+      "recoverFrozenFunds(address)": {
+        "intent": "Review Recover Frozen Funds transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          }
+        ]
+      },
+      "reinitialize(uint256,address)": {
+        "intent": "Review Reinitialize transaction",
+        "fields": [
+          {
+            "path": "_periodStartTime",
+            "label": " period Start Time",
+            "format": "raw"
+          },
+          {
+            "path": "_custodyAddress",
+            "label": " custody Address",
+            "format": "address"
+          }
+        ]
+      },
+      "setCustodyAddress(address)": {
+        "intent": "Review Set Custody Address transaction",
+        "fields": [
+          {
+            "path": "newCustodyAddress",
+            "label": "New Custody Address",
+            "format": "address"
+          }
+        ]
+      },
+      "setMaxMintAmountPerDay(uint256)": {
+        "intent": "Review Set Max Mint Amount Per Day transaction",
+        "fields": [
+          {
+            "path": "_maxMintAmountPerDay",
+            "label": " max Mint Amount Per Day",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "unpause()": {
+        "intent": "Review Unpause transaction",
+        "fields": []
+      }
+    }
+  }
+}

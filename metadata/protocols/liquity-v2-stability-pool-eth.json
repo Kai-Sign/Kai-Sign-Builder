@@ -1,0 +1,164 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xf69eb8c0d95d4094c16686769460f678727393cf",
+      "chainId": 1,
+      "name": "Liquity V2 Stability Pool (ETH)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "provideToSP",
+          "selector": "0xaeb4b970",
+          "inputs": [
+            {
+              "name": "_topUp",
+              "type": "uint256"
+            },
+            {
+              "name": "_doClaim",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawFromSP",
+          "selector": "0xcfddf5f5",
+          "inputs": [
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_doClaim",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimAllCollGains",
+          "selector": "0x9288902d",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "offset",
+          "selector": "0x335525ad",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_debtToOffset",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_collToAdd",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "triggerBoldRewards",
+          "selector": "0xaffb4669",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_boldYield",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "provideToSP(uint256,bool)": {
+        "intent": "Deposit BOLD to Liquity V2 Stability Pool",
+        "interpolatedIntent": "Deposit {_topUp} BOLD to Liquity V2 Stability Pool (ETH)",
+        "fields": [
+          {
+            "path": "_topUp",
+            "label": "BOLD Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "BOLD"
+            }
+          },
+          {
+            "path": "_doClaim",
+            "label": "Claim Gains",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdrawFromSP(uint256,bool)": {
+        "intent": "Withdraw BOLD from Liquity V2 Stability Pool",
+        "interpolatedIntent": "Withdraw {_amount} BOLD from Liquity V2 Stability Pool (ETH)",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": "BOLD Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "BOLD"
+            }
+          },
+          {
+            "path": "_doClaim",
+            "label": "Claim Gains",
+            "format": "raw"
+          }
+        ]
+      },
+      "claimAllCollGains()": {
+        "intent": "Claim collateral gains from Liquity V2 Stability Pool",
+        "interpolatedIntent": "Claim all collateral gains from Liquity V2 Stability Pool (ETH)",
+        "fields": []
+      },
+      "offset(uint256,uint256)": {
+        "intent": "Review Offset transaction",
+        "fields": [
+          {
+            "path": "_debtToOffset",
+            "label": " debt To Offset",
+            "format": "raw"
+          },
+          {
+            "path": "_collToAdd",
+            "label": " coll To Add",
+            "format": "raw"
+          }
+        ]
+      },
+      "triggerBoldRewards(uint256)": {
+        "intent": "Review Trigger Bold Rewards transaction",
+        "fields": [
+          {
+            "path": "_boldYield",
+            "label": " bold Yield",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Liquity",
+    "info": {
+      "url": "https://www.liquity.org/",
+      "legalName": "Liquity Protocol V2",
+      "lastUpdate": "2026-04-03"
+    }
+  }
+}

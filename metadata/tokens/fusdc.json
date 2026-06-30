@@ -1,0 +1,1379 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x9fb7b4477576fe5b32be4c1843afb1e55f251b33",
+      "chainId": 1,
+      "name": "Fluid USDC",
+      "symbol": "fUSDC",
+      "decimals": 6,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowance",
+          "selector": "0xa457c2d7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x6e553f65",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver_",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0xbc157ac1",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minAmountOut_",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "depositWithSignature",
+          "selector": "0x635c31c2",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minAmountOut_",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "token",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint160",
+                      "name": "amount",
+                      "type": "uint160"
+                    },
+                    {
+                      "internalType": "uint48",
+                      "name": "expiration",
+                      "type": "uint48"
+                    },
+                    {
+                      "internalType": "uint48",
+                      "name": "nonce",
+                      "type": "uint48"
+                    }
+                  ],
+                  "internalType": "struct IAllowanceTransfer.PermitDetails",
+                  "name": "details",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "address",
+                  "name": "spender",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "sigDeadline",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IAllowanceTransfer.PermitSingle",
+              "name": "permit_",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature_",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "depositWithSignatureEIP2612",
+          "selector": "0xe083be22",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minAmountOut_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature_",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowance",
+          "selector": "0x39509351",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "addedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "liquidityCallback",
+          "selector": "0xad207501",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data_",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x836a1040",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxAssets_",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "assets_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x94bf804d",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver_",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "assets_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintWithSignature",
+          "selector": "0x8c87483a",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxAssets_",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "token",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint160",
+                      "name": "amount",
+                      "type": "uint160"
+                    },
+                    {
+                      "internalType": "uint48",
+                      "name": "expiration",
+                      "type": "uint48"
+                    },
+                    {
+                      "internalType": "uint48",
+                      "name": "nonce",
+                      "type": "uint48"
+                    }
+                  ],
+                  "internalType": "struct IAllowanceTransfer.PermitDetails",
+                  "name": "details",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "address",
+                  "name": "spender",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "sigDeadline",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IAllowanceTransfer.PermitSingle",
+              "name": "permit_",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature_",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "assets_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintWithSignatureEIP2612",
+          "selector": "0x3f4c0930",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxAssets_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature_",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "assets_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "permit",
+          "selector": "0xd505accf",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "rebalance",
+          "selector": "0x7d7c2a1c",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "assets_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "redeem",
+          "selector": "0x9f40a7b3",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "owner_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minAmountOut_",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "assets_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redeem",
+          "selector": "0xba087652",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "owner_",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "assets_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redeemWithSignature",
+          "selector": "0x740c955e",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "owner_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minAmountOut_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature_",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "assets_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "rescueFunds",
+          "selector": "0xe53b2017",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateRates",
+          "selector": "0x3c3821f4",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenExchangePrice_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "liquidityExchangePrice_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateRebalancer",
+          "selector": "0xb046a449",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newRebalancer_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateRewards",
+          "selector": "0x5fd61965",
+          "inputs": [
+            {
+              "internalType": "contract IFluidLendingRewardsRateModel",
+              "name": "rewardsRateModel_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xa318c1a4",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "owner_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxSharesBurn_",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xb460af94",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "owner_",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawWithSignature",
+          "selector": "0x50cc0f8f",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "sharesToPermit_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "owner_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxSharesBurn_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature_",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} fUSDC",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 6,
+              "symbol": "fUSDC"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} fUSDC",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 6,
+              "symbol": "fUSDC"
+            }
+          }
+        ]
+      },
+      "decreaseAllowance(address,uint256)": {
+        "intent": "Review Decrease Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "subtractedValue",
+            "label": "Subtracted Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "deposit(uint256,address)": {
+        "intent": "Review Deposit transaction",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Assets ",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver ",
+            "format": "address"
+          }
+        ]
+      },
+      "deposit(uint256,address,uint256)": {
+        "intent": "Review Deposit transaction",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Assets ",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver ",
+            "format": "address"
+          },
+          {
+            "path": "minAmountOut_",
+            "label": "Min Amount Out ",
+            "format": "raw"
+          }
+        ]
+      },
+      "depositWithSignature(uint256,address,uint256,((address,uint160,uint48,uint48),address,uint256),bytes)": {
+        "intent": "Review Deposit With Signature transaction",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Assets ",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver ",
+            "format": "address"
+          },
+          {
+            "path": "minAmountOut_",
+            "label": "Min Amount Out ",
+            "format": "raw"
+          },
+          {
+            "path": "permit_",
+            "label": "Permit ",
+            "format": "raw"
+          },
+          {
+            "path": "signature_",
+            "label": "Signature ",
+            "format": "hex"
+          }
+        ]
+      },
+      "depositWithSignatureEIP2612(uint256,address,uint256,uint256,bytes)": {
+        "intent": "Review Deposit With Signature EIP2612 transaction",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Assets ",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver ",
+            "format": "address"
+          },
+          {
+            "path": "minAmountOut_",
+            "label": "Min Amount Out ",
+            "format": "raw"
+          },
+          {
+            "path": "deadline_",
+            "label": "Deadline ",
+            "format": "raw"
+          },
+          {
+            "path": "signature_",
+            "label": "Signature ",
+            "format": "hex"
+          }
+        ]
+      },
+      "increaseAllowance(address,uint256)": {
+        "intent": "Review Increase Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "addedValue",
+            "label": "Added Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "liquidityCallback(address,uint256,bytes)": {
+        "intent": "Review Liquidity Callback transaction",
+        "fields": [
+          {
+            "path": "token_",
+            "label": "Token ",
+            "format": "address"
+          },
+          {
+            "path": "amount_",
+            "label": "Amount ",
+            "format": "raw"
+          },
+          {
+            "path": "data_",
+            "label": "Data ",
+            "format": "hex"
+          }
+        ]
+      },
+      "mint(uint256,address,uint256)": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "shares_",
+            "label": "Shares ",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver ",
+            "format": "address"
+          },
+          {
+            "path": "maxAssets_",
+            "label": "Max Assets ",
+            "format": "raw"
+          }
+        ]
+      },
+      "mint(uint256,address)": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "shares_",
+            "label": "Shares ",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver ",
+            "format": "address"
+          }
+        ]
+      },
+      "mintWithSignature(uint256,address,uint256,((address,uint160,uint48,uint48),address,uint256),bytes)": {
+        "intent": "Review Mint With Signature transaction",
+        "fields": [
+          {
+            "path": "shares_",
+            "label": "Shares ",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver ",
+            "format": "address"
+          },
+          {
+            "path": "maxAssets_",
+            "label": "Max Assets ",
+            "format": "raw"
+          },
+          {
+            "path": "permit_",
+            "label": "Permit ",
+            "format": "raw"
+          },
+          {
+            "path": "signature_",
+            "label": "Signature ",
+            "format": "hex"
+          }
+        ]
+      },
+      "mintWithSignatureEIP2612(uint256,address,uint256,uint256,bytes)": {
+        "intent": "Review Mint With Signature EIP2612 transaction",
+        "fields": [
+          {
+            "path": "shares_",
+            "label": "Shares ",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver ",
+            "format": "address"
+          },
+          {
+            "path": "maxAssets_",
+            "label": "Max Assets ",
+            "format": "raw"
+          },
+          {
+            "path": "deadline_",
+            "label": "Deadline ",
+            "format": "raw"
+          },
+          {
+            "path": "signature_",
+            "label": "Signature ",
+            "format": "hex"
+          }
+        ]
+      },
+      "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Permit transaction",
+        "fields": [
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "rebalance()": {
+        "intent": "Review Rebalance transaction",
+        "fields": []
+      },
+      "redeem(uint256,address,address,uint256)": {
+        "intent": "Review Redeem transaction",
+        "fields": [
+          {
+            "path": "shares_",
+            "label": "Shares ",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver ",
+            "format": "address"
+          },
+          {
+            "path": "owner_",
+            "label": "Owner ",
+            "format": "address"
+          },
+          {
+            "path": "minAmountOut_",
+            "label": "Min Amount Out ",
+            "format": "raw"
+          }
+        ]
+      },
+      "redeem(uint256,address,address)": {
+        "intent": "Review Redeem transaction",
+        "fields": [
+          {
+            "path": "shares_",
+            "label": "Shares ",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver ",
+            "format": "address"
+          },
+          {
+            "path": "owner_",
+            "label": "Owner ",
+            "format": "address"
+          }
+        ]
+      },
+      "redeemWithSignature(uint256,address,address,uint256,uint256,bytes)": {
+        "intent": "Review Redeem With Signature transaction",
+        "fields": [
+          {
+            "path": "shares_",
+            "label": "Shares ",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver ",
+            "format": "address"
+          },
+          {
+            "path": "owner_",
+            "label": "Owner ",
+            "format": "address"
+          },
+          {
+            "path": "minAmountOut_",
+            "label": "Min Amount Out ",
+            "format": "raw"
+          },
+          {
+            "path": "deadline_",
+            "label": "Deadline ",
+            "format": "raw"
+          },
+          {
+            "path": "signature_",
+            "label": "Signature ",
+            "format": "hex"
+          }
+        ]
+      },
+      "rescueFunds(address)": {
+        "intent": "Review Rescue Funds transaction",
+        "fields": [
+          {
+            "path": "token_",
+            "label": "Token ",
+            "format": "address"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "updateRates()": {
+        "intent": "Review Update Rates transaction",
+        "fields": []
+      },
+      "updateRebalancer(address)": {
+        "intent": "Review Update Rebalancer transaction",
+        "fields": [
+          {
+            "path": "newRebalancer_",
+            "label": "New Rebalancer ",
+            "format": "address"
+          }
+        ]
+      },
+      "updateRewards(address)": {
+        "intent": "Review Update Rewards transaction",
+        "fields": [
+          {
+            "path": "rewardsRateModel_",
+            "label": "Rewards Rate Model ",
+            "format": "address"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address,uint256)": {
+        "intent": "Review Withdraw transaction",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Assets ",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver ",
+            "format": "address"
+          },
+          {
+            "path": "owner_",
+            "label": "Owner ",
+            "format": "address"
+          },
+          {
+            "path": "maxSharesBurn_",
+            "label": "Max Shares Burn ",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Review Withdraw transaction",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Assets ",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver ",
+            "format": "address"
+          },
+          {
+            "path": "owner_",
+            "label": "Owner ",
+            "format": "address"
+          }
+        ]
+      },
+      "withdrawWithSignature(uint256,uint256,address,address,uint256,uint256,bytes)": {
+        "intent": "Review Withdraw With Signature transaction",
+        "fields": [
+          {
+            "path": "sharesToPermit_",
+            "label": "Shares To Permit ",
+            "format": "raw"
+          },
+          {
+            "path": "assets_",
+            "label": "Assets ",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver ",
+            "format": "address"
+          },
+          {
+            "path": "owner_",
+            "label": "Owner ",
+            "format": "address"
+          },
+          {
+            "path": "maxSharesBurn_",
+            "label": "Max Shares Burn ",
+            "format": "raw"
+          },
+          {
+            "path": "deadline_",
+            "label": "Deadline ",
+            "format": "raw"
+          },
+          {
+            "path": "signature_",
+            "label": "Signature ",
+            "format": "hex"
+          }
+        ]
+      }
+    }
+  }
+}

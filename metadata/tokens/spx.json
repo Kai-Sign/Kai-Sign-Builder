@@ -1,0 +1,225 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xe0f63a424a4439cbe457d80e4f4b51ad25b2c56c",
+      "chainId": 1,
+      "name": "SPX6900",
+      "symbol": "SPX",
+      "decimals": 8,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "addBots",
+          "selector": "0xd34628cc",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "bots_",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "delBots",
+          "selector": "0x31c2d847",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "notbot",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "manualSwap",
+          "selector": "0x51bc3c85",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeLimits",
+          "selector": "0x751039fc",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "runitturbo",
+          "selector": "0x5941cdc7",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} SPX",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 8,
+              "symbol": "SPX"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} SPX",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 8,
+              "symbol": "SPX"
+            }
+          }
+        ]
+      },
+      "addBots(address[])": {
+        "intent": "Review Add Bots transaction",
+        "fields": [
+          {
+            "path": "bots_",
+            "label": "Bots ",
+            "format": "raw"
+          }
+        ]
+      },
+      "delBots(address[])": {
+        "intent": "Review Del Bots transaction",
+        "fields": [
+          {
+            "path": "notbot",
+            "label": "Notbot",
+            "format": "raw"
+          }
+        ]
+      },
+      "manualSwap()": {
+        "intent": "Review Manual Swap transaction",
+        "fields": []
+      },
+      "removeLimits()": {
+        "intent": "Review Remove Limits transaction",
+        "fields": []
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "runitturbo()": {
+        "intent": "Review Runitturbo transaction",
+        "fields": []
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "sender",
+            "label": "Sender",
+            "format": "address"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

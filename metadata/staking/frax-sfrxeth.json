@@ -1,0 +1,112 @@
+{
+  "$schema": "../../specs/erc7730-v2.schema.json",
+  "context": {
+    "$id": "FraxSfrxETH",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0xac3e018457b222d93114458476f3e3416abbe38f" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/frax/abis/0xac3e018457b222d93114458476f3e3416abbe38f.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "Frax Finance",
+    "contractName": "Frax sfrxETH (Staked frxETH)",
+    "info": { "url": "https://frax.finance" },
+    "constants": {
+      "frxETHaddress": "0x5E8422345238F34275888049021821E8E08CAa1f"
+    }
+  },
+  "display": {
+    "formats": {
+      "deposit(uint256,address)": {
+        "intent": "Deposit frxETH into sfrxETH",
+        "fields": [
+          {
+            "path": "#.assets",
+            "label": "frxETH Amount",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.frxETHaddress" },
+            "visible": "always"
+          },
+          {
+            "path": "#.receiver",
+            "label": "Receiver",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          }
+        ]
+      },
+      "mint(uint256,address)": {
+        "intent": "Mint sfrxETH shares",
+        "fields": [
+          {
+            "path": "#.shares",
+            "label": "Shares",
+            "format": "raw",
+            "visible": "always"
+          },
+          {
+            "path": "#.receiver",
+            "label": "Receiver",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Withdraw frxETH from sfrxETH",
+        "fields": [
+          {
+            "path": "#.assets",
+            "label": "frxETH Amount",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.frxETHaddress" },
+            "visible": "always"
+          },
+          {
+            "path": "#.receiver",
+            "label": "Receiver",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.owner",
+            "label": "Owner",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          }
+        ]
+      },
+      "redeem(uint256,address,address)": {
+        "intent": "Redeem sfrxETH for frxETH",
+        "fields": [
+          {
+            "path": "#.shares",
+            "label": "sfrxETH Shares",
+            "format": "raw",
+            "visible": "always"
+          },
+          {
+            "path": "#.receiver",
+            "label": "Receiver",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.owner",
+            "label": "Owner",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          }
+        ]
+      }
+    }
+  }
+}

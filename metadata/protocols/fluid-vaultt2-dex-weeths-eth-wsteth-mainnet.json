@@ -1,0 +1,716 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x153a0d021aed5d20d9e59e8b9ecc9e3e9276f6c3",
+      "chainId": 1,
+      "name": "Fluid VaultT2_DEX-weETHs-ETH_wstETH (mainnet)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "operate",
+          "selector": "0x032d2276",
+          "inputs": [
+            {
+              "name": "nftId_",
+              "type": "uint256"
+            },
+            {
+              "name": "newCol_",
+              "type": "int256"
+            },
+            {
+              "name": "newDebt_",
+              "type": "int256"
+            },
+            {
+              "name": "to_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x6e553f65",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xb460af94",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "name": "owner_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "dexCallback",
+          "selector": "0x9410ae88",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "liquidate",
+          "selector": "0x7bae3361",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "debtAmt_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "colPerUnitDebt_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "token0ColAmtPerUnitShares_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "token1ColAmtPerUnitShares_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to_",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "absorb_",
+              "type": "bool"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "actualDebt_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "actualColShares_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "token0Col_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "token1Col_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "liquidatePerfect",
+          "selector": "0xf4e7bfd1",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "debtAmt_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "colPerUnitDebt_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "token0ColAmtPerUnitShares_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "token1ColAmtPerUnitShares_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to_",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "absorb_",
+              "type": "bool"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "actualDebt_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "actualColShares_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "token0Col_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "token1Col_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "liquidityCallback",
+          "selector": "0xad207501",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data_",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "operate",
+          "selector": "0x10259f26",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "nftId_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256",
+              "name": "newColToken0_",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "newColToken1_",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "colSharesMinMax_",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "newDebt_",
+              "type": "int256"
+            },
+            {
+              "internalType": "address",
+              "name": "to_",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256",
+              "name": "",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "",
+              "type": "int256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "operatePerfect",
+          "selector": "0x0931bf2d",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "nftId_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256",
+              "name": "perfectColShares_",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "colToken0MinMax_",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "colToken1MinMax_",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "newDebt_",
+              "type": "int256"
+            },
+            {
+              "internalType": "address",
+              "name": "to_",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256[]",
+              "name": "r_",
+              "type": "int256[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "rebalance",
+          "selector": "0x1593a34b",
+          "inputs": [
+            {
+              "internalType": "int256",
+              "name": "",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "",
+              "type": "int256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "int256",
+              "name": "supplyAmt_",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "borrowAmt_",
+              "type": "int256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "simulateLiquidate",
+          "selector": "0x3202937e",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "debtAmt_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "absorb_",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateExchangePricesOnStorage",
+          "selector": "0x02161887",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "liqSupplyExPrice_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "liqBorrowExPrice_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "vaultSupplyExPrice_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "vaultBorrowExPrice_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "operate(uint256,int256,int256,address)": {
+        "intent": "Manage Fluid vault position",
+        "fields": [
+          {
+            "path": "nftId_",
+            "label": "Position ID",
+            "format": "raw"
+          },
+          {
+            "path": "newCol_",
+            "label": "Collateral Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "newDebt_",
+            "label": "Debt Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "deposit(uint256,address)": {
+        "intent": "Deposit {assets_} to Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenAddress": {
+                "token0": "0x917ceE801a67f933F2e6b33fC0cD1ED2d5909D88",
+                "token1": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+              }
+            }
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Withdraw {assets_} from Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenAddress": {
+                "token0": "0x917ceE801a67f933F2e6b33fC0cD1ED2d5909D88",
+                "token1": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+              }
+            }
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "owner_",
+            "label": "Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "dexCallback(address,uint256)": {
+        "intent": "Review Dex Callback transaction",
+        "fields": [
+          {
+            "path": "token_",
+            "label": "Token ",
+            "format": "address"
+          },
+          {
+            "path": "amount_",
+            "label": "Amount ",
+            "format": "raw"
+          }
+        ]
+      },
+      "liquidate(uint256,uint256,uint256,uint256,address,bool)": {
+        "intent": "Review Liquidate transaction",
+        "fields": [
+          {
+            "path": "debtAmt_",
+            "label": "Debt Amt ",
+            "format": "raw"
+          },
+          {
+            "path": "colPerUnitDebt_",
+            "label": "Col Per Unit Debt ",
+            "format": "raw"
+          },
+          {
+            "path": "token0ColAmtPerUnitShares_",
+            "label": "Token0 Col Amt Per Unit Shares ",
+            "format": "raw"
+          },
+          {
+            "path": "token1ColAmtPerUnitShares_",
+            "label": "Token1 Col Amt Per Unit Shares ",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "To ",
+            "format": "address"
+          },
+          {
+            "path": "absorb_",
+            "label": "Absorb ",
+            "format": "boolean"
+          }
+        ]
+      },
+      "liquidatePerfect(uint256,uint256,uint256,uint256,address,bool)": {
+        "intent": "Review Liquidate Perfect transaction",
+        "fields": [
+          {
+            "path": "debtAmt_",
+            "label": "Debt Amt ",
+            "format": "raw"
+          },
+          {
+            "path": "colPerUnitDebt_",
+            "label": "Col Per Unit Debt ",
+            "format": "raw"
+          },
+          {
+            "path": "token0ColAmtPerUnitShares_",
+            "label": "Token0 Col Amt Per Unit Shares ",
+            "format": "raw"
+          },
+          {
+            "path": "token1ColAmtPerUnitShares_",
+            "label": "Token1 Col Amt Per Unit Shares ",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "To ",
+            "format": "address"
+          },
+          {
+            "path": "absorb_",
+            "label": "Absorb ",
+            "format": "boolean"
+          }
+        ]
+      },
+      "liquidityCallback(address,uint256,bytes)": {
+        "intent": "Review Liquidity Callback transaction",
+        "fields": [
+          {
+            "path": "token_",
+            "label": "Token ",
+            "format": "address"
+          },
+          {
+            "path": "amount_",
+            "label": "Amount ",
+            "format": "raw"
+          },
+          {
+            "path": "data_",
+            "label": "Data ",
+            "format": "hex"
+          }
+        ]
+      },
+      "operate(uint256,int256,int256,int256,int256,address)": {
+        "intent": "Review Operate transaction",
+        "fields": [
+          {
+            "path": "nftId_",
+            "label": "Nft Id ",
+            "format": "raw"
+          },
+          {
+            "path": "newColToken0_",
+            "label": "New Col Token0 ",
+            "format": "raw"
+          },
+          {
+            "path": "newColToken1_",
+            "label": "New Col Token1 ",
+            "format": "raw"
+          },
+          {
+            "path": "colSharesMinMax_",
+            "label": "Col Shares Min Max ",
+            "format": "raw"
+          },
+          {
+            "path": "newDebt_",
+            "label": "New Debt ",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "To ",
+            "format": "address"
+          }
+        ]
+      },
+      "operatePerfect(uint256,int256,int256,int256,int256,address)": {
+        "intent": "Review Operate Perfect transaction",
+        "fields": [
+          {
+            "path": "nftId_",
+            "label": "Nft Id ",
+            "format": "raw"
+          },
+          {
+            "path": "perfectColShares_",
+            "label": "Perfect Col Shares ",
+            "format": "raw"
+          },
+          {
+            "path": "colToken0MinMax_",
+            "label": "Col Token0 Min Max ",
+            "format": "raw"
+          },
+          {
+            "path": "colToken1MinMax_",
+            "label": "Col Token1 Min Max ",
+            "format": "raw"
+          },
+          {
+            "path": "newDebt_",
+            "label": "New Debt ",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "To ",
+            "format": "address"
+          }
+        ]
+      },
+      "rebalance(int256,int256,int256,int256)": {
+        "intent": "Review Rebalance transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "raw"
+          },
+          {
+            "path": "param1",
+            "label": "Param1",
+            "format": "raw"
+          },
+          {
+            "path": "param2",
+            "label": "Param2",
+            "format": "raw"
+          },
+          {
+            "path": "param3",
+            "label": "Param3",
+            "format": "raw"
+          }
+        ]
+      },
+      "simulateLiquidate(uint256,bool)": {
+        "intent": "Review Simulate Liquidate transaction",
+        "fields": [
+          {
+            "path": "debtAmt_",
+            "label": "Debt Amt ",
+            "format": "raw"
+          },
+          {
+            "path": "absorb_",
+            "label": "Absorb ",
+            "format": "boolean"
+          }
+        ]
+      },
+      "updateExchangePricesOnStorage()": {
+        "intent": "Review Update Exchange Prices On Storage transaction",
+        "fields": []
+      }
+    }
+  }
+}

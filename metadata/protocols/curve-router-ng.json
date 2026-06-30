@@ -1,0 +1,109 @@
+{
+  "context": {
+    "$id": "Curve Router NG",
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x45312ea0eff7e09c83cbe249fa1d7598c4c8cd4e"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "exchange",
+          "selector": "0x5c9c18e2",
+          "inputs": [
+            { "name": "_route", "type": "address[11]" },
+            { "name": "_swap_params", "type": "uint256[5][5]" },
+            { "name": "_amount", "type": "uint256" },
+            { "name": "_min_dy", "type": "uint256" },
+            { "name": "_pools", "type": "address[5]" }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "get_dy",
+          "selector": "0xc5765261",
+          "inputs": [
+            { "name": "_route", "type": "address[11]" },
+            { "name": "_swap_params", "type": "uint256[5][5]" },
+            { "name": "_amount", "type": "uint256" },
+            { "name": "_pools", "type": "address[5]" }
+          ],
+          "stateMutability": "view"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Curve Finance",
+    "constants": {
+      "nativeCurrencyAddress": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+    }
+  },
+  "display": {
+    "formats": {
+      "exchange(address[11] _route,uint256[5][5] _swap_params,uint256 _amount,uint256 _min_dy,address[5] _pools)": {
+        "intent": "Swap via Curve Router",
+        "interpolatedIntent": "Swap {_amount} for at least {_min_dy} via Curve Router",
+        "fields": [
+          {
+            "path": "_route.[0]",
+            "label": "From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "_route.[2]",
+            "label": "To Token",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_route.[0]",
+              "nativeCurrencyAddress": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+            }
+          },
+          {
+            "path": "_min_dy",
+            "label": "Minimum Output",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_route.[2]",
+              "nativeCurrencyAddress": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+            }
+          }
+        ]
+      },
+      "get_dy(address[11] _route,uint256[5][5] _swap_params,uint256 _amount,address[5] _pools)": {
+        "intent": "Get swap quote via Curve Router",
+        "interpolatedIntent": "Quote {_amount} via Curve Router",
+        "fields": [
+          {
+            "path": "_route.[0]",
+            "label": "From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "_route.[2]",
+            "label": "To Token",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_route.[0]",
+              "nativeCurrencyAddress": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

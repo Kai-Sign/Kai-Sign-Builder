@@ -1,0 +1,376 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x5283beced7adf6d003225c13896e536f2d4264ff",
+      "chainId": 42161,
+      "name": "Aave WETH Gateway (Arbitrum)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "depositETH",
+          "selector": "0x474cf53d",
+          "inputs": [
+            {
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "name": "onBehalfOf",
+              "type": "address"
+            },
+            {
+              "name": "referralCode",
+              "type": "uint16"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "borrowETH",
+          "selector": "0xe74f7b85",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint16",
+              "name": "referralCode",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "emergencyEtherTransfer",
+          "selector": "0xeed88b8d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "emergencyTokenTransfer",
+          "selector": "0xa3d5b255",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "repayETH",
+          "selector": "0xbcc3c255",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "onBehalfOf",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawETH",
+          "selector": "0x80500d20",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawETHWithPermit",
+          "selector": "0xd4c40b6c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "permitV",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "permitR",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "permitS",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "depositETH(address,address,uint16)": {
+        "intent": "Supply ETH to Aave",
+        "fields": [
+          {
+            "path": "pool",
+            "label": "Pool",
+            "format": "address"
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "number"
+          }
+        ]
+      },
+      "borrowETH(address,uint256,uint16)": {
+        "intent": "Review Borrow ETH transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "raw"
+          }
+        ]
+      },
+      "emergencyEtherTransfer(address,uint256)": {
+        "intent": "Review Emergency Ether Transfer transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "emergencyTokenTransfer(address,address,uint256)": {
+        "intent": "Review Emergency Token Transfer transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "repayETH(address,uint256,address)": {
+        "intent": "Review Repay ETH transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "withdrawETH(address,uint256,address)": {
+        "intent": "Review Withdraw ETH transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          }
+        ]
+      },
+      "withdrawETHWithPermit(address,uint256,address,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Withdraw ETHWith Permit transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "permitV",
+            "label": "Permit V",
+            "format": "raw"
+          },
+          {
+            "path": "permitR",
+            "label": "Permit R",
+            "format": "hex"
+          },
+          {
+            "path": "permitS",
+            "label": "Permit S",
+            "format": "hex"
+          }
+        ]
+      }
+    }
+  }
+}

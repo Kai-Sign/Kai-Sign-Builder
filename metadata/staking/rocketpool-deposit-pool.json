@@ -1,0 +1,178 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xdd3f50f8a6cafbe9b31a427582963f465e745af8",
+      "chainId": 1,
+      "name": "RocketPool Deposit Pool",
+      "abi": [
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0xd0e30db0",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "assignDeposits",
+          "selector": "0x27c8f193",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "maybeAssignDeposits",
+          "selector": "0x3b36f592",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "nodeCreditWithdrawal",
+          "selector": "0x606b6497",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "nodeDeposit",
+          "selector": "0x22b1751d",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_totalAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "receiveVaultWithdrawalETH",
+          "selector": "0xc095415d",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "recycleDissolvedDeposit",
+          "selector": "0x72f5158d",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "recycleExcessCollateral",
+          "selector": "0xdb82047b",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "recycleLiquidatedStake",
+          "selector": "0x1b7dd4c0",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawExcessBalance",
+          "selector": "0x63a5db9e",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "deposit()": {
+        "intent": "Stake ETH via RocketPool",
+        "interpolatedIntent": "Stake ETH to receive rETH via RocketPool",
+        "fields": []
+      },
+      "assignDeposits()": {
+        "intent": "Review Assign Deposits transaction",
+        "fields": []
+      },
+      "maybeAssignDeposits()": {
+        "intent": "Review Maybe Assign Deposits transaction",
+        "fields": []
+      },
+      "nodeCreditWithdrawal(uint256)": {
+        "intent": "Review Node Credit Withdrawal transaction",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "nodeDeposit(uint256)": {
+        "intent": "Review Node Deposit transaction",
+        "fields": [
+          {
+            "path": "_totalAmount",
+            "label": " total Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "receiveVaultWithdrawalETH()": {
+        "intent": "Review Receive Vault Withdrawal ETH transaction",
+        "fields": []
+      },
+      "recycleDissolvedDeposit()": {
+        "intent": "Review Recycle Dissolved Deposit transaction",
+        "fields": []
+      },
+      "recycleExcessCollateral()": {
+        "intent": "Review Recycle Excess Collateral transaction",
+        "fields": []
+      },
+      "recycleLiquidatedStake()": {
+        "intent": "Review Recycle Liquidated Stake transaction",
+        "fields": []
+      },
+      "withdrawExcessBalance(uint256)": {
+        "intent": "Review Withdraw Excess Balance transaction",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Rocket Pool Pty Ltd",
+    "info": {
+      "url": "https://rocketpool.net/",
+      "legalName": "Rocket Pool Protocol",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

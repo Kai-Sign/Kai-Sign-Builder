@@ -1,0 +1,68 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x929d9a1435662357f54adcf64dcee4d6b867a6f9"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Sky (MakerDAO)",
+    "contractName": "Sky Governance Chief V3"
+  },
+  "display": {
+    "formats": {
+      "lock(uint256 wad)": {
+        "intent": "Lock SKY for governance voting",
+        "interpolatedIntent": "Lock {wad} SKY for governance voting",
+        "fields": [
+          { "path": "wad", "label": "SKY Amount", "format": "amount", "params": { "decimals": 18, "symbol": "SKY" } }
+        ]
+      },
+      "free(uint256 wad)": {
+        "intent": "Unlock SKY from governance",
+        "interpolatedIntent": "Unlock {wad} SKY from governance",
+        "fields": [
+          { "path": "wad", "label": "SKY Amount", "format": "amount", "params": { "decimals": 18, "symbol": "SKY" } }
+        ]
+      },
+      "vote(address[] yays)": {
+        "intent": "Vote on Sky governance proposals",
+        "interpolatedIntent": "Vote for candidates {yays}",
+        "fields": [
+          { "path": "yays", "label": "Candidates", "format": "raw" }
+        ]
+      },
+      "vote(bytes32 slate)": {
+        "intent": "Vote using existing Sky governance slate",
+        "interpolatedIntent": "Vote for slate {slate}",
+        "fields": [
+          { "path": "slate", "label": "Slate Hash", "format": "raw" }
+        ]
+      },
+      "etch(address[] yays)": {
+        "intent": "Create Sky governance vote slate",
+        "interpolatedIntent": "Create vote slate from candidates {yays}",
+        "fields": [
+          { "path": "yays", "label": "Candidates", "format": "raw" }
+        ]
+      },
+      "lift(address whom)": {
+        "intent": "Promote address to Sky hat",
+        "interpolatedIntent": "Promote {whom} to governance authority",
+        "fields": [
+          { "path": "whom", "label": "Candidate", "format": "addressName" }
+        ]
+      },
+      "launch()": {
+        "intent": "Launch Sky governance system",
+        "interpolatedIntent": "Launch Sky governance system",
+        "fields": []
+      }
+    }
+  }
+}

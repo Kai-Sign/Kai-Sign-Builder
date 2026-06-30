@@ -1,0 +1,874 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xd1d2eb1b1e90b638588728b4130137d262c87cae",
+      "chainId": 1,
+      "name": "Gala Games",
+      "symbol": "GALA",
+      "decimals": 8,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "addBlocklister",
+          "selector": "0x6025eb4a",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addMinter",
+          "selector": "0x983b2d56",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addUpgrader",
+          "selector": "0xe5110158",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "blocklist",
+          "selector": "0xe5c7160b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "selector": "0x42966c68",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burnFrom",
+          "selector": "0x79cc6790",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowance",
+          "selector": "0xa457c2d7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_decrement",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "selector": "0x2f2ff15d",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowance",
+          "selector": "0x39509351",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_increment",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xdb0ed6a0",
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "_name",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "_symbol",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "_minter",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_upgrader",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_blocklister",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x40c10f19",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintBulk",
+          "selector": "0x7fd30df0",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "_accounts",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_amounts",
+              "type": "uint256[]"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pause",
+          "selector": "0x8456cb59",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "permit",
+          "selector": "0xd505accf",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "_v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "_r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "_s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeBlocklister",
+          "selector": "0x670e4be3",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeMinter",
+          "selector": "0x3092afd5",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeUpgrader",
+          "selector": "0xd264a803",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "selector": "0x36568abe",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "selector": "0xd547741f",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferAdmin",
+          "selector": "0x75829def",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unBlocklist",
+          "selector": "0x31b23020",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unpause",
+          "selector": "0x3f4ba83a",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x3659cfe6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} GALA",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 8,
+              "symbol": "GALA"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} GALA",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 8,
+              "symbol": "GALA"
+            }
+          }
+        ]
+      },
+      "addBlocklister(address)": {
+        "intent": "Review Add Blocklister transaction",
+        "fields": [
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          }
+        ]
+      },
+      "addMinter(address)": {
+        "intent": "Review Add Minter transaction",
+        "fields": [
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          }
+        ]
+      },
+      "addUpgrader(address)": {
+        "intent": "Review Add Upgrader transaction",
+        "fields": [
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          }
+        ]
+      },
+      "blocklist(address)": {
+        "intent": "Review Blocklist transaction",
+        "fields": [
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          }
+        ]
+      },
+      "burn(uint256)": {
+        "intent": "Review Burn transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "burnFrom(address,uint256)": {
+        "intent": "Review Burn From transaction",
+        "fields": [
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "decreaseAllowance(address,uint256)": {
+        "intent": "Review Decrease Allowance transaction",
+        "fields": [
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_decrement",
+            "label": " decrement",
+            "format": "raw"
+          }
+        ]
+      },
+      "grantRole(bytes32,address)": {
+        "intent": "Review Grant Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          }
+        ]
+      },
+      "increaseAllowance(address,uint256)": {
+        "intent": "Review Increase Allowance transaction",
+        "fields": [
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_increment",
+            "label": " increment",
+            "format": "raw"
+          }
+        ]
+      },
+      "initialize(string,string,address,address,address)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_name",
+            "label": " name",
+            "format": "raw"
+          },
+          {
+            "path": "_symbol",
+            "label": " symbol",
+            "format": "raw"
+          },
+          {
+            "path": "_minter",
+            "label": " minter",
+            "format": "address"
+          },
+          {
+            "path": "_upgrader",
+            "label": " upgrader",
+            "format": "address"
+          },
+          {
+            "path": "_blocklister",
+            "label": " blocklister",
+            "format": "address"
+          }
+        ]
+      },
+      "mint(address,uint256)": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "mintBulk(address[],uint256[])": {
+        "intent": "Review Mint Bulk transaction",
+        "fields": [
+          {
+            "path": "_accounts",
+            "label": " accounts",
+            "format": "raw"
+          },
+          {
+            "path": "_amounts",
+            "label": " amounts",
+            "format": "raw"
+          }
+        ]
+      },
+      "pause()": {
+        "intent": "Review Pause transaction",
+        "fields": []
+      },
+      "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Permit transaction",
+        "fields": [
+          {
+            "path": "_owner",
+            "label": " owner",
+            "format": "address"
+          },
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          },
+          {
+            "path": "_deadline",
+            "label": " deadline",
+            "format": "raw"
+          },
+          {
+            "path": "_v",
+            "label": " v",
+            "format": "raw"
+          },
+          {
+            "path": "_r",
+            "label": " r",
+            "format": "hex"
+          },
+          {
+            "path": "_s",
+            "label": " s",
+            "format": "hex"
+          }
+        ]
+      },
+      "removeBlocklister(address)": {
+        "intent": "Review Remove Blocklister transaction",
+        "fields": [
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          }
+        ]
+      },
+      "removeMinter(address)": {
+        "intent": "Review Remove Minter transaction",
+        "fields": [
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          }
+        ]
+      },
+      "removeUpgrader(address)": {
+        "intent": "Review Remove Upgrader transaction",
+        "fields": [
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          }
+        ]
+      },
+      "renounceRole(bytes32,address)": {
+        "intent": "Review Renounce Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "revokeRole(bytes32,address)": {
+        "intent": "Review Revoke Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          }
+        ]
+      },
+      "transferAdmin(address)": {
+        "intent": "Review Transfer Admin transaction",
+        "fields": [
+          {
+            "path": "_newOwner",
+            "label": " new Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "unBlocklist(address)": {
+        "intent": "Review Un Blocklist transaction",
+        "fields": [
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          }
+        ]
+      },
+      "unpause()": {
+        "intent": "Review Unpause transaction",
+        "fields": []
+      },
+      "upgradeTo(address)": {
+        "intent": "Review Upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      }
+    }
+  }
+}

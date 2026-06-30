@@ -1,0 +1,185 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xa0c68c638235ee32657e8f720a23cec1bfc77c77",
+      "chainId": 1,
+      "name": "Polygon PoS Root Chain Manager",
+      "abi": [
+        {
+          "type": "function",
+          "name": "depositEtherFor",
+          "selector": "0x4faa8a26",
+          "inputs": [
+            {
+              "name": "user",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "depositFor",
+          "selector": "0xe3dec8fb",
+          "inputs": [
+            {
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "name": "rootToken",
+              "type": "address"
+            },
+            {
+              "name": "depositData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "exit",
+          "selector": "0x3805550f",
+          "inputs": [
+            {
+              "name": "inputData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferProxyOwnership",
+          "selector": "0xf1739cae",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateAndCall",
+          "selector": "0xd88ca2c8",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_newProxyTo",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "updateImplementation",
+          "selector": "0x025b22bc",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_newProxyTo",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "depositEtherFor(address)": {
+        "intent": "Bridge ETH to Polygon PoS",
+        "interpolatedIntent": "Bridge ETH to Polygon PoS for {user}",
+        "fields": [
+          {
+            "path": "user",
+            "label": "Polygon Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "depositFor(address,address,bytes)": {
+        "intent": "Bridge ERC-20 tokens to Polygon PoS",
+        "interpolatedIntent": "Bridge {rootToken} to Polygon PoS for {user}",
+        "fields": [
+          {
+            "path": "user",
+            "label": "Polygon Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "rootToken",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          }
+        ]
+      },
+      "exit(bytes)": {
+        "intent": "Claim tokens from Polygon PoS back to Ethereum",
+        "interpolatedIntent": "Finalize Polygon PoS withdrawal to Ethereum",
+        "fields": [
+          {
+            "path": "inputData",
+            "label": "Exit Proof Data",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferProxyOwnership(address)": {
+        "intent": "Review Transfer Proxy Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "updateAndCall(address,bytes)": {
+        "intent": "Review Update And Call transaction",
+        "fields": [
+          {
+            "path": "_newProxyTo",
+            "label": " new Proxy To",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "updateImplementation(address)": {
+        "intent": "Review Update Implementation transaction",
+        "fields": [
+          {
+            "path": "_newProxyTo",
+            "label": " new Proxy To",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Polygon",
+    "info": {
+      "url": "https://wallet.polygon.technology/polygon/bridge/deposit",
+      "legalName": "Polygon Technology",
+      "lastUpdate": "2026-03-27"
+    }
+  }
+}

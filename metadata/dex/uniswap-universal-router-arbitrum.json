@@ -1,0 +1,361 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x5e325eda8064b456f4781070c0738d849c824258",
+      "chainId": 42161,
+      "name": "Uniswap Universal Router (Arbitrum)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "execute",
+          "selector": "0x3593564c",
+          "inputs": [
+            {
+              "name": "commands",
+              "type": "bytes"
+            },
+            {
+              "name": "inputs",
+              "type": "bytes[]"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "collectRewards",
+          "selector": "0x709a1cc2",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "looksRareClaim",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "execute",
+          "selector": "0x24856bc3",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "commands",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "inputs",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "uniswapV3SwapCallback",
+          "selector": "0xfa461e33",
+          "inputs": [
+            {
+              "internalType": "int256",
+              "name": "amount0Delta",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "amount1Delta",
+              "type": "int256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "commandRegistries": {
+    "universalRouterCommands": {
+      "0x00": {
+        "name": "V3_SWAP_EXACT_IN",
+        "intent": "Swap {amountIn} for min {amountOutMin}",
+        "inputs": [
+          {
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "name": "amountIn",
+            "type": "uint256",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "path.[0:19]"
+            }
+          },
+          {
+            "name": "amountOutMin",
+            "type": "uint256",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "path.[-20:-1]"
+            }
+          },
+          {
+            "name": "path",
+            "type": "bytes"
+          },
+          {
+            "name": "payerIsUser",
+            "type": "bool"
+          }
+        ]
+      },
+      "0x01": {
+        "name": "V3_SWAP_EXACT_OUT",
+        "intent": "Swap for exactly {amountOut}",
+        "inputs": [
+          {
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "name": "amountOut",
+            "type": "uint256",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "path.[0:19]"
+            }
+          },
+          {
+            "name": "amountInMax",
+            "type": "uint256",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "path.[-20:-1]"
+            }
+          },
+          {
+            "name": "path",
+            "type": "bytes"
+          },
+          {
+            "name": "payerIsUser",
+            "type": "bool"
+          }
+        ]
+      },
+      "0x08": {
+        "name": "V2_SWAP_EXACT_IN",
+        "intent": "Swap {amountIn} via V2 for min {amountOutMin}",
+        "inputs": [
+          {
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "name": "amountIn",
+            "type": "uint256",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "path.[0]"
+            }
+          },
+          {
+            "name": "amountOutMin",
+            "type": "uint256",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "path.[-1]"
+            }
+          },
+          {
+            "name": "path",
+            "type": "address[]"
+          },
+          {
+            "name": "payerIsUser",
+            "type": "bool"
+          }
+        ]
+      },
+      "0x09": {
+        "name": "V2_SWAP_EXACT_OUT",
+        "intent": "Swap via V2 for exactly {amountOut}",
+        "inputs": [
+          {
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "name": "amountOut",
+            "type": "uint256",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "path.[-1]"
+            }
+          },
+          {
+            "name": "amountInMax",
+            "type": "uint256",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "path.[0]"
+            }
+          },
+          {
+            "name": "path",
+            "type": "address[]"
+          },
+          {
+            "name": "payerIsUser",
+            "type": "bool"
+          }
+        ]
+      },
+      "0x0b": {
+        "name": "WRAP_ETH",
+        "intent": "Wrap {amountMin} to WETH",
+        "inputs": [
+          {
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "name": "amountMin",
+            "type": "uint256",
+            "format": "ethAmount"
+          }
+        ]
+      },
+      "0x0c": {
+        "name": "UNWRAP_WETH",
+        "intent": "Unwrap {amountMin} to ETH",
+        "inputs": [
+          {
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "name": "amountMin",
+            "type": "uint256",
+            "format": "ethAmount"
+          }
+        ]
+      },
+      "0x04": {
+        "name": "SWEEP",
+        "intent": "Sweep {token} to recipient",
+        "inputs": [
+          {
+            "name": "token",
+            "type": "address",
+            "format": "tokenSymbol"
+          },
+          {
+            "name": "recipient",
+            "type": "address"
+          },
+          {
+            "name": "amountMin",
+            "type": "uint256"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "formats": {
+      "execute(bytes,bytes[],uint256)": {
+        "intent": {
+          "type": "composite",
+          "source": "commands",
+          "separator": " + ",
+          "registry": "universalRouterCommands"
+        },
+        "fields": [
+          {
+            "path": "commands",
+            "label": "Commands",
+            "nestedEncoding": {
+              "type": "commandArray",
+              "registry": "universalRouterCommands",
+              "decodeWith": "inputs"
+            }
+          },
+          {
+            "path": "inputs",
+            "label": "Inputs",
+            "format": "hidden"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "timestamp"
+          }
+        ]
+      },
+      "collectRewards(bytes)": {
+        "intent": "Review Collect Rewards transaction",
+        "fields": [
+          {
+            "path": "looksRareClaim",
+            "label": "Looks Rare Claim",
+            "format": "hex"
+          }
+        ]
+      },
+      "execute(bytes,bytes[])": {
+        "intent": "Review Execute transaction",
+        "fields": [
+          {
+            "path": "commands",
+            "label": "Commands",
+            "format": "hex"
+          },
+          {
+            "path": "inputs",
+            "label": "Inputs",
+            "format": "hex"
+          }
+        ]
+      },
+      "uniswapV3SwapCallback(int256,int256,bytes)": {
+        "intent": "Review Uniswap V3 Swap Callback transaction",
+        "fields": [
+          {
+            "path": "amount0Delta",
+            "label": "Amount0 Delta",
+            "format": "raw"
+          },
+          {
+            "path": "amount1Delta",
+            "label": "Amount1 Delta",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Uniswap Labs",
+    "info": {
+      "url": "https://app.uniswap.org/",
+      "legalName": "Uniswap Protocol",
+      "lastUpdate": "2026-03-27"
+    }
+  }
+}

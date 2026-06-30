@@ -1,0 +1,69 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0xEC568fffba86c094cf06b22134B23074DFE2252c"
+        }
+      ],
+      "abi": [
+        {"type": "function", "name": "submitVote", "selector": "0x00000000", "inputs": [{"name": "proposalId", "type": "uint256"}, {"name": "support", "type": "bool"}]},
+        {"type": "function", "name": "create", "selector": "0x00000000", "inputs": [{"name": "executor", "type": "address"}, {"name": "targets", "type": "address[]"}, {"name": "values", "type": "uint256[]"}, {"name": "signatures", "type": "string[]"}, {"name": "calldatas", "type": "bytes[]"}, {"name": "withDelegatecalls", "type": "bool[]"}, {"name": "ipfsHash", "type": "bytes"}]},
+        {"type": "function", "name": "cancel", "selector": "0x00000000", "inputs": [{"name": "proposalId", "type": "uint256"}]},
+        {"type": "function", "name": "queue", "selector": "0x00000000", "inputs": [{"name": "proposalId", "type": "uint256"}]},
+        {"type": "function", "name": "execute", "selector": "0x00000000", "inputs": [{"name": "proposalId", "type": "uint256"}]}
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave Governance V2",
+    "info": {
+      "website": "https://aave.com",
+      "docs": "https://docs.aave.com/governance"
+    }
+  },
+  "display": {
+    "formats": {
+      "submitVote(uint256,bool)": {
+        "intent": "{support,select,true{Vote FOR} other{Vote AGAINST}} Proposal #{proposalId}",
+        "fields": [
+          {"path": "proposalId", "label": "Proposal ID", "format": "raw"},
+          {"path": "support", "label": "Support", "format": "raw"}
+        ]
+      },
+      "create(address,address[],uint256[],string[],bytes[],bool[],bytes)": {
+        "intent": "Create Governance Proposal",
+        "fields": [
+          {"path": "executor", "label": "Executor", "format": "addressName"},
+          {"path": "targets", "label": "Targets", "format": "raw"},
+          {"path": "values", "label": "ETH Values", "format": "raw"},
+          {"path": "signatures", "label": "Signatures", "format": "raw"},
+          {"path": "calldatas", "label": "Calldatas", "format": "raw"},
+          {"path": "withDelegatecalls", "label": "Delegatecalls", "format": "raw"},
+          {"path": "ipfsHash", "label": "IPFS Hash", "format": "raw"}
+        ]
+      },
+      "cancel(uint256)": {
+        "intent": "Cancel Proposal #{proposalId}",
+        "fields": [
+          {"path": "proposalId", "label": "Proposal ID", "format": "raw"}
+        ]
+      },
+      "queue(uint256)": {
+        "intent": "Queue Proposal #{proposalId}",
+        "fields": [
+          {"path": "proposalId", "label": "Proposal ID", "format": "raw"}
+        ]
+      },
+      "execute(uint256)": {
+        "intent": "Execute Proposal #{proposalId}",
+        "fields": [
+          {"path": "proposalId", "label": "Proposal ID", "format": "raw"}
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,1131 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xef4fb24ad0916217251f553c0596f8edc630eb66",
+      "chainId": 1,
+      "name": "deBridge DLN Source",
+      "abi": [
+        {
+          "type": "function",
+          "name": "createOrder",
+          "selector": "0x9bc8b50f",
+          "inputs": [
+            {
+              "name": "orderCreation",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "giveTokenAddress",
+                  "type": "address"
+                },
+                {
+                  "name": "giveAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "takeChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "takeTokenAddress",
+                  "type": "bytes"
+                },
+                {
+                  "name": "takeAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "receiverDst",
+                  "type": "bytes"
+                },
+                {
+                  "name": "givePatchAuthoritySrc",
+                  "type": "address"
+                },
+                {
+                  "name": "orderAuthorityAddressDst",
+                  "type": "bytes"
+                },
+                {
+                  "name": "allowedTakerDst",
+                  "type": "bytes"
+                },
+                {
+                  "name": "externalCall",
+                  "type": "bytes"
+                },
+                {
+                  "name": "allowedCancelBeneficiarySrc",
+                  "type": "bytes"
+                }
+              ]
+            },
+            {
+              "name": "affiliateFee",
+              "type": "bytes"
+            },
+            {
+              "name": "referralCode",
+              "type": "uint32"
+            },
+            {
+              "name": "permitEnvelope",
+              "type": "bytes"
+            },
+            {
+              "name": "metadata",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "cancelOrder",
+          "selector": "0x394e1d20",
+          "inputs": [
+            {
+              "name": "order",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "makerOrderNonce",
+                  "type": "uint64"
+                },
+                {
+                  "name": "makerSrc",
+                  "type": "bytes"
+                },
+                {
+                  "name": "giveChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "giveTokenAddress",
+                  "type": "bytes"
+                },
+                {
+                  "name": "giveAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "takeChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "takeTokenAddress",
+                  "type": "bytes"
+                },
+                {
+                  "name": "takeAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "receiverDst",
+                  "type": "bytes"
+                },
+                {
+                  "name": "givePatchAuthoritySrc",
+                  "type": "bytes"
+                },
+                {
+                  "name": "orderAuthorityAddressDst",
+                  "type": "bytes"
+                },
+                {
+                  "name": "allowedTakerDst",
+                  "type": "bytes"
+                },
+                {
+                  "name": "allowedCancelBeneficiarySrc",
+                  "type": "bytes"
+                },
+                {
+                  "name": "externalCall",
+                  "type": "bytes"
+                }
+              ]
+            },
+            {
+              "name": "cancelBeneficiary",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "admin",
+          "selector": "0xf851a440",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "admin_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeAdmin",
+          "selector": "0x8f283970",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "implementation",
+          "selector": "0x5c60da1b",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "implementation_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x3659cfe6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "claimBatchCancel",
+          "selector": "0x924a062c",
+          "inputs": [
+            {
+              "internalType": "bytes32[]",
+              "name": "_orderIds",
+              "type": "bytes32[]"
+            },
+            {
+              "internalType": "address",
+              "name": "_beneficiary",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimBatchUnlock",
+          "selector": "0x6abd4ea7",
+          "inputs": [
+            {
+              "internalType": "bytes32[]",
+              "name": "_orderIds",
+              "type": "bytes32[]"
+            },
+            {
+              "internalType": "address",
+              "name": "_beneficiary",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimCancel",
+          "selector": "0xd48b0146",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "_orderId",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "_beneficiary",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimUnlock",
+          "selector": "0x5886d8d2",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "_orderId",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "_beneficiary",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "createOrder",
+          "selector": "0xfbe16ca7",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "giveTokenAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "giveAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "takeTokenAddress",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "takeAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "takeChainId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "receiverDst",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "address",
+                  "name": "givePatchAuthoritySrc",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "orderAuthorityAddressDst",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "allowedTakerDst",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "externalCall",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "allowedCancelBeneficiarySrc",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct DlnOrderLib.OrderCreation",
+              "name": "_orderCreation",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_affiliateFee",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint32",
+              "name": "_referralCode",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_permitEnvelope",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "createSaltedOrder",
+          "selector": "0xb9303701",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "giveTokenAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "giveAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "takeTokenAddress",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "takeAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "takeChainId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "receiverDst",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "address",
+                  "name": "givePatchAuthoritySrc",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "orderAuthorityAddressDst",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "allowedTakerDst",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "externalCall",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "allowedCancelBeneficiarySrc",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct DlnOrderLib.OrderCreation",
+              "name": "_orderCreation",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint64",
+              "name": "_salt",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_affiliateFee",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint32",
+              "name": "_referralCode",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_permitEnvelope",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_metadata",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "createSaltedOrderForIntent",
+          "selector": "0xafbfe366",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "giveTokenAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "giveAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "takeTokenAddress",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "takeAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "takeChainId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "receiverDst",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "address",
+                  "name": "givePatchAuthoritySrc",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "orderAuthorityAddressDst",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "allowedTakerDst",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "externalCall",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "allowedCancelBeneficiarySrc",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct DlnOrderLib.OrderCreation",
+              "name": "_orderCreation",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint64",
+              "name": "_salt",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint32",
+              "name": "_referralCode",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_giveTokenFeeAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_metadata",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "selector": "0x2f2ff15d",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0x8f4cce57",
+          "inputs": [
+            {
+              "internalType": "uint88",
+              "name": "_globalFixedNativeFee",
+              "type": "uint88"
+            },
+            {
+              "internalType": "uint16",
+              "name": "_globalTransferFeeBps",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pause",
+          "selector": "0x8456cb59",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "selector": "0x36568abe",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "selector": "0xd547741f",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setDlnDestinationAddress",
+          "selector": "0x30bb0911",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_chainIdTo",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_dlnDestinationAddress",
+              "type": "bytes"
+            },
+            {
+              "internalType": "enum DlnOrderLib.ChainEngine",
+              "name": "_chainEngine",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unpause",
+          "selector": "0x3f4ba83a",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateGlobalFee",
+          "selector": "0x6ac89fa2",
+          "inputs": [
+            {
+              "internalType": "uint88",
+              "name": "_globalFixedNativeFee",
+              "type": "uint88"
+            },
+            {
+              "internalType": "uint16",
+              "name": "_globalTransferFeeBps",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawCollectedFees",
+          "selector": "0x169770cb",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "_tokens",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawUnclaimedAffiliateFees",
+          "selector": "0x1c8de947",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "_tokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address",
+              "name": "_beneficiary",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "createOrder(tuple,bytes,uint32,bytes,bytes)": {
+        "intent": "Create deBridge DLN cross-chain order",
+        "interpolatedIntent": "Bridge {orderCreation.giveAmount} {orderCreation.giveTokenAddress} to chain {orderCreation.takeChainId} via deBridge DLN",
+        "fields": [
+          {
+            "path": "orderCreation.giveTokenAddress",
+            "label": "Give Token",
+            "format": "addressName"
+          },
+          {
+            "path": "orderCreation.giveAmount",
+            "label": "Give Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "orderCreation.giveTokenAddress"
+            }
+          },
+          {
+            "path": "orderCreation.takeChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "orderCreation.takeAmount",
+            "label": "Minimum Receive Amount",
+            "format": "raw"
+          },
+          {
+            "path": "orderCreation.givePatchAuthoritySrc",
+            "label": "Patch Authority",
+            "format": "addressName"
+          }
+        ]
+      },
+      "cancelOrder(tuple,address)": {
+        "intent": "Cancel deBridge DLN order",
+        "interpolatedIntent": "Cancel DLN cross-chain order and refund to {cancelBeneficiary}",
+        "fields": [
+          {
+            "path": "cancelBeneficiary",
+            "label": "Refund Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "admin()": {
+        "intent": "Review Admin transaction",
+        "fields": []
+      },
+      "changeAdmin(address)": {
+        "intent": "Review Change Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "implementation()": {
+        "intent": "Review Implementation transaction",
+        "fields": []
+      },
+      "upgradeTo(address)": {
+        "intent": "Review Upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "claimBatchCancel(bytes32[],address)": {
+        "intent": "Review Claim Batch Cancel transaction",
+        "fields": [
+          {
+            "path": "_orderIds",
+            "label": " order Ids",
+            "format": "hex"
+          },
+          {
+            "path": "_beneficiary",
+            "label": " beneficiary",
+            "format": "address"
+          }
+        ]
+      },
+      "claimBatchUnlock(bytes32[],address)": {
+        "intent": "Review Claim Batch Unlock transaction",
+        "fields": [
+          {
+            "path": "_orderIds",
+            "label": " order Ids",
+            "format": "hex"
+          },
+          {
+            "path": "_beneficiary",
+            "label": " beneficiary",
+            "format": "address"
+          }
+        ]
+      },
+      "claimCancel(bytes32,address)": {
+        "intent": "Review Claim Cancel transaction",
+        "fields": [
+          {
+            "path": "_orderId",
+            "label": " order Id",
+            "format": "hex"
+          },
+          {
+            "path": "_beneficiary",
+            "label": " beneficiary",
+            "format": "address"
+          }
+        ]
+      },
+      "claimUnlock(bytes32,address)": {
+        "intent": "Review Claim Unlock transaction",
+        "fields": [
+          {
+            "path": "_orderId",
+            "label": " order Id",
+            "format": "hex"
+          },
+          {
+            "path": "_beneficiary",
+            "label": " beneficiary",
+            "format": "address"
+          }
+        ]
+      },
+      "createOrder((address,uint256,bytes,uint256,uint256,bytes,address,bytes,bytes,bytes,bytes),bytes,uint32,bytes)": {
+        "intent": "Review Create Order transaction",
+        "fields": [
+          {
+            "path": "_orderCreation",
+            "label": " order Creation",
+            "format": "raw"
+          },
+          {
+            "path": "_affiliateFee",
+            "label": " affiliate Fee",
+            "format": "hex"
+          },
+          {
+            "path": "_referralCode",
+            "label": " referral Code",
+            "format": "raw"
+          },
+          {
+            "path": "_permitEnvelope",
+            "label": " permit Envelope",
+            "format": "hex"
+          }
+        ]
+      },
+      "createSaltedOrder((address,uint256,bytes,uint256,uint256,bytes,address,bytes,bytes,bytes,bytes),uint64,bytes,uint32,bytes,bytes)": {
+        "intent": "Review Create Salted Order transaction",
+        "fields": [
+          {
+            "path": "_orderCreation",
+            "label": " order Creation",
+            "format": "raw"
+          },
+          {
+            "path": "_salt",
+            "label": " salt",
+            "format": "raw"
+          },
+          {
+            "path": "_affiliateFee",
+            "label": " affiliate Fee",
+            "format": "hex"
+          },
+          {
+            "path": "_referralCode",
+            "label": " referral Code",
+            "format": "raw"
+          },
+          {
+            "path": "_permitEnvelope",
+            "label": " permit Envelope",
+            "format": "hex"
+          },
+          {
+            "path": "_metadata",
+            "label": " metadata",
+            "format": "hex"
+          }
+        ]
+      },
+      "createSaltedOrderForIntent((address,uint256,bytes,uint256,uint256,bytes,address,bytes,bytes,bytes,bytes),uint64,uint32,uint256,bytes)": {
+        "intent": "Review Create Salted Order For Intent transaction",
+        "fields": [
+          {
+            "path": "_orderCreation",
+            "label": " order Creation",
+            "format": "raw"
+          },
+          {
+            "path": "_salt",
+            "label": " salt",
+            "format": "raw"
+          },
+          {
+            "path": "_referralCode",
+            "label": " referral Code",
+            "format": "raw"
+          },
+          {
+            "path": "_giveTokenFeeAmount",
+            "label": " give Token Fee Amount",
+            "format": "raw"
+          },
+          {
+            "path": "_metadata",
+            "label": " metadata",
+            "format": "hex"
+          }
+        ]
+      },
+      "grantRole(bytes32,address)": {
+        "intent": "Review Grant Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "initialize(uint88,uint16)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_globalFixedNativeFee",
+            "label": " global Fixed Native Fee",
+            "format": "raw"
+          },
+          {
+            "path": "_globalTransferFeeBps",
+            "label": " global Transfer Fee Bps",
+            "format": "raw"
+          }
+        ]
+      },
+      "pause()": {
+        "intent": "Review Pause transaction",
+        "fields": []
+      },
+      "renounceRole(bytes32,address)": {
+        "intent": "Review Renounce Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "revokeRole(bytes32,address)": {
+        "intent": "Review Revoke Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "setDlnDestinationAddress(uint256,bytes,uint8)": {
+        "intent": "Review Set Dln Destination Address transaction",
+        "fields": [
+          {
+            "path": "_chainIdTo",
+            "label": " chain Id To",
+            "format": "raw"
+          },
+          {
+            "path": "_dlnDestinationAddress",
+            "label": " dln Destination Address",
+            "format": "hex"
+          },
+          {
+            "path": "_chainEngine",
+            "label": " chain Engine",
+            "format": "raw"
+          }
+        ]
+      },
+      "unpause()": {
+        "intent": "Review Unpause transaction",
+        "fields": []
+      },
+      "updateGlobalFee(uint88,uint16)": {
+        "intent": "Review Update Global Fee transaction",
+        "fields": [
+          {
+            "path": "_globalFixedNativeFee",
+            "label": " global Fixed Native Fee",
+            "format": "raw"
+          },
+          {
+            "path": "_globalTransferFeeBps",
+            "label": " global Transfer Fee Bps",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdrawCollectedFees(address[])": {
+        "intent": "Review Withdraw Collected Fees transaction",
+        "fields": [
+          {
+            "path": "_tokens",
+            "label": " tokens",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdrawUnclaimedAffiliateFees(address[],address)": {
+        "intent": "Review Withdraw Unclaimed Affiliate Fees transaction",
+        "fields": [
+          {
+            "path": "_tokens",
+            "label": " tokens",
+            "format": "raw"
+          },
+          {
+            "path": "_beneficiary",
+            "label": " beneficiary",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "deBridge Finance",
+    "info": {
+      "url": "https://app.debridge.finance/",
+      "legalName": "deBridge Protocol",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

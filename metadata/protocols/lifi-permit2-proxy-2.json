@@ -1,0 +1,340 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x89c6340b1a1f4b25d36cd8b063d49045caf3f818",
+      "chainId": 1,
+      "name": "LI.FI: Permit2 Proxy 2",
+      "abi": [
+        {
+          "type": "function",
+          "name": "callDiamondWithEIP2612Signature",
+          "selector": "0xd7a08473",
+          "inputs": [
+            {
+              "name": "tokenAddress",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "name": "s",
+              "type": "bytes32"
+            },
+            {
+              "name": "diamondCalldata",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "callDiamondWithPermit2",
+          "selector": "0x0193b9fc",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "_diamondCalldata",
+              "type": "bytes"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "token",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct ISignatureTransfer.TokenPermissions",
+                  "name": "permitted",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ISignatureTransfer.PermitTransferFrom",
+              "name": "_permit",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_signature",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "callDiamondWithPermit2Witness",
+          "selector": "0x4561136e",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "_diamondCalldata",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "_signer",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "token",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct ISignatureTransfer.TokenPermissions",
+                  "name": "permitted",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ISignatureTransfer.PermitTransferFrom",
+              "name": "_permit",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_signature",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "cancelOwnershipTransfer",
+          "selector": "0x23452b9c",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "confirmOwnershipTransfer",
+          "selector": "0x7200b829",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawToken",
+          "selector": "0x01e33667",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "assetId",
+              "type": "address"
+            },
+            {
+              "internalType": "address payable",
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "callDiamondWithEIP2612Signature(address,uint256,uint256,uint8,bytes32,bytes32,bytes)": {
+        "intent": "Approve {amount} and execute a LI.FI transaction",
+        "fields": [
+          {
+            "path": "tokenAddress",
+            "label": "Token",
+            "format": "addressName",
+            "params": {
+              "types": [
+                "token"
+              ],
+              "sources": null
+            }
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "tokenAddress"
+            }
+          },
+          {
+            "path": "deadline",
+            "label": "Permit Deadline",
+            "format": "timestamp"
+          },
+          {
+            "path": "diamondCalldata",
+            "label": "LI.FI Calldata",
+            "format": "hex"
+          }
+        ]
+      },
+      "callDiamondWithPermit2(bytes,((address,uint256),uint256,uint256),bytes)": {
+        "intent": "Review Call Diamond With Permit2 transaction",
+        "fields": [
+          {
+            "path": "_diamondCalldata",
+            "label": " diamond Calldata",
+            "format": "hex"
+          },
+          {
+            "path": "_permit",
+            "label": " permit",
+            "format": "raw"
+          },
+          {
+            "path": "_signature",
+            "label": " signature",
+            "format": "hex"
+          }
+        ]
+      },
+      "callDiamondWithPermit2Witness(bytes,address,((address,uint256),uint256,uint256),bytes)": {
+        "intent": "Review Call Diamond With Permit2 Witness transaction",
+        "fields": [
+          {
+            "path": "_diamondCalldata",
+            "label": " diamond Calldata",
+            "format": "hex"
+          },
+          {
+            "path": "_signer",
+            "label": " signer",
+            "format": "address"
+          },
+          {
+            "path": "_permit",
+            "label": " permit",
+            "format": "raw"
+          },
+          {
+            "path": "_signature",
+            "label": " signature",
+            "format": "hex"
+          }
+        ]
+      },
+      "cancelOwnershipTransfer()": {
+        "intent": "Review Cancel Ownership Transfer transaction",
+        "fields": []
+      },
+      "confirmOwnershipTransfer()": {
+        "intent": "Review Confirm Ownership Transfer transaction",
+        "fields": []
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "_newOwner",
+            "label": " new Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "withdrawToken(address,address,uint256)": {
+        "intent": "Review Withdraw Token transaction",
+        "fields": [
+          {
+            "path": "assetId",
+            "label": "Asset Id",
+            "format": "address"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

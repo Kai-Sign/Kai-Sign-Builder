@@ -1,0 +1,1710 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xcF77a3Ba9A5CA399B7c97c74d54e5b1Beb874E43",
+      "chainId": 8453,
+      "name": "Aerodrome Router on Base",
+      "abi": [
+        {
+          "type": "function",
+          "name": "swapExactTokensForTokens",
+          "selector": "0x3d615d39",
+          "inputs": [
+            {
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "name": "amountOutMin",
+              "type": "uint256"
+            },
+            {
+              "name": "routes",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "from",
+                  "type": "address"
+                },
+                {
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "name": "stable",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "swapTokensForExactTokens",
+          "selector": "0x4aa06652",
+          "inputs": [
+            {
+              "name": "amountOut",
+              "type": "uint256"
+            },
+            {
+              "name": "amountInMax",
+              "type": "uint256"
+            },
+            {
+              "name": "routes",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "from",
+                  "type": "address"
+                },
+                {
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "name": "stable",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "addLiquidity",
+          "selector": "0xfc6bb091",
+          "inputs": [
+            {
+              "name": "tokenA",
+              "type": "address"
+            },
+            {
+              "name": "tokenB",
+              "type": "address"
+            },
+            {
+              "name": "stable",
+              "type": "bool"
+            },
+            {
+              "name": "amountADesired",
+              "type": "uint256"
+            },
+            {
+              "name": "amountBDesired",
+              "type": "uint256"
+            },
+            {
+              "name": "amountAMin",
+              "type": "uint256"
+            },
+            {
+              "name": "amountBMin",
+              "type": "uint256"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "removeLiquidity",
+          "selector": "0xd1adc4cd",
+          "inputs": [
+            {
+              "name": "tokenA",
+              "type": "address"
+            },
+            {
+              "name": "tokenB",
+              "type": "address"
+            },
+            {
+              "name": "stable",
+              "type": "bool"
+            },
+            {
+              "name": "liquidity",
+              "type": "uint256"
+            },
+            {
+              "name": "amountAMin",
+              "type": "uint256"
+            },
+            {
+              "name": "amountBMin",
+              "type": "uint256"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "UNSAFE_swapExactTokensForTokens",
+          "selector": "0x4111d597",
+          "inputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "from",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "stable",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "factory",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct IRouter.Route[]",
+              "name": "routes",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addLiquidity",
+          "selector": "0x5a47ddc3",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "tokenA",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenB",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "stable",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountADesired",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountBDesired",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountAMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountBMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountA",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountB",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "liquidity",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addLiquidityETH",
+          "selector": "0xb7e0d4c0",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "stable",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountTokenDesired",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountTokenMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountETHMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountToken",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountETH",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "liquidity",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "removeLiquidity",
+          "selector": "0x0dede6c4",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "tokenA",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenB",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "stable",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "liquidity",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountAMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountBMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountA",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountB",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeLiquidityETH",
+          "selector": "0xd7b0e0a5",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "stable",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "liquidity",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountTokenMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountETHMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountToken",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountETH",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeLiquidityETHSupportingFeeOnTransferTokens",
+          "selector": "0xfe411f14",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "stable",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "liquidity",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountTokenMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountETHMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountETH",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapExactETHForTokens",
+          "selector": "0x903638a4",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOutMin",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "from",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "stable",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "factory",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct IRouter.Route[]",
+              "name": "routes",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swapExactETHForTokensSupportingFeeOnTransferTokens",
+          "selector": "0x3da5acba",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOutMin",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "from",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "stable",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "factory",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct IRouter.Route[]",
+              "name": "routes",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swapExactTokensForETH",
+          "selector": "0xc6b7f1b6",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOutMin",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "from",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "stable",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "factory",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct IRouter.Route[]",
+              "name": "routes",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapExactTokensForETHSupportingFeeOnTransferTokens",
+          "selector": "0x12bc3aca",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOutMin",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "from",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "stable",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "factory",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct IRouter.Route[]",
+              "name": "routes",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapExactTokensForTokens",
+          "selector": "0xcac88ea9",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOutMin",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "from",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "stable",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "factory",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct IRouter.Route[]",
+              "name": "routes",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapExactTokensForTokensSupportingFeeOnTransferTokens",
+          "selector": "0x88cd821e",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOutMin",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "from",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "stable",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "factory",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct IRouter.Route[]",
+              "name": "routes",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "zapIn",
+          "selector": "0xfb49bafd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "tokenIn",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountInA",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountInB",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "tokenA",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenB",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "stable",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "factory",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountOutMinA",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountOutMinB",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountAMin",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountBMin",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IRouter.Zap",
+              "name": "zapInPool",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "from",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "stable",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "factory",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct IRouter.Route[]",
+              "name": "routesA",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "from",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "stable",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "factory",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct IRouter.Route[]",
+              "name": "routesB",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "stake",
+              "type": "bool"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "liquidity",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "zapOut",
+          "selector": "0xa81b9159",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "tokenOut",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "liquidity",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "tokenA",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenB",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "stable",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "factory",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountOutMinA",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountOutMinB",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountAMin",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountBMin",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IRouter.Zap",
+              "name": "zapOutPool",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "from",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "stable",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "factory",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct IRouter.Route[]",
+              "name": "routesA",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "from",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "stable",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "factory",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct IRouter.Route[]",
+              "name": "routesB",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "swapExactTokensForTokens(uint256,uint256,tuple[],address,uint256)": {
+        "intent": "Swap via Aerodrome",
+        "interpolatedIntent": "Swap {amountIn} for at least {amountOutMin}",
+        "fields": [
+          {
+            "path": "routes[0].from",
+            "label": "From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "routes[-1].to",
+            "label": "To Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "routes[0].from"
+            }
+          },
+          {
+            "path": "amountOutMin",
+            "label": "Min Amount Out",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "routes[-1].to"
+            }
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "swapTokensForExactTokens(uint256,uint256,tuple[],address,uint256)": {
+        "intent": "Swap via Aerodrome for exact output",
+        "interpolatedIntent": "Swap for exactly {amountOut}",
+        "fields": [
+          {
+            "path": "routes[0].from",
+            "label": "From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "routes[-1].to",
+            "label": "To Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amountInMax",
+            "label": "Max Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "routes[0].from"
+            }
+          },
+          {
+            "path": "amountOut",
+            "label": "Exact Amount Out",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "routes[-1].to"
+            }
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "addLiquidity(address,address,bool,uint256,uint256,uint256,uint256,address,uint256)": {
+        "intent": "Add liquidity to Aerodrome pool",
+        "interpolatedIntent": "Add {amountADesired} and {amountBDesired} to liquidity pool",
+        "fields": [
+          {
+            "path": "tokenA",
+            "label": "Token A",
+            "format": "addressName"
+          },
+          {
+            "path": "tokenB",
+            "label": "Token B",
+            "format": "addressName"
+          },
+          {
+            "path": "stable",
+            "label": "Pool Type",
+            "format": "raw"
+          },
+          {
+            "path": "amountADesired",
+            "label": "Amount A Desired",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "tokenA"
+            }
+          },
+          {
+            "path": "amountBDesired",
+            "label": "Amount B Desired",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "tokenB"
+            }
+          },
+          {
+            "path": "amountAMin",
+            "label": "Amount A Min",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "tokenA"
+            }
+          },
+          {
+            "path": "amountBMin",
+            "label": "Amount B Min",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "tokenB"
+            }
+          },
+          {
+            "path": "to",
+            "label": "LP Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "removeLiquidity(address,address,bool,uint256,uint256,uint256,address,uint256)": {
+        "intent": "Remove liquidity from Aerodrome pool",
+        "interpolatedIntent": "Remove {liquidity} LP tokens from pool",
+        "fields": [
+          {
+            "path": "tokenA",
+            "label": "Token A",
+            "format": "addressName"
+          },
+          {
+            "path": "tokenB",
+            "label": "Token B",
+            "format": "addressName"
+          },
+          {
+            "path": "stable",
+            "label": "Pool Type",
+            "format": "raw"
+          },
+          {
+            "path": "liquidity",
+            "label": "LP Tokens",
+            "format": "raw"
+          },
+          {
+            "path": "amountAMin",
+            "label": "Min Amount A",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "tokenA"
+            }
+          },
+          {
+            "path": "amountBMin",
+            "label": "Min Amount B",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "tokenB"
+            }
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "UNSAFE_swapExactTokensForTokens(uint256[],(address,address,bool,address)[],address,uint256)": {
+        "intent": "Review UNSAFE swap Exact Tokens For Tokens transaction",
+        "fields": [
+          {
+            "path": "amounts",
+            "label": "Amounts",
+            "format": "raw"
+          },
+          {
+            "path": "routes",
+            "label": "Routes",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "addLiquidityETH(address,bool,uint256,uint256,uint256,address,uint256)": {
+        "intent": "Review Add Liquidity ETH transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "stable",
+            "label": "Stable",
+            "format": "boolean"
+          },
+          {
+            "path": "amountTokenDesired",
+            "label": "Amount Token Desired",
+            "format": "raw"
+          },
+          {
+            "path": "amountTokenMin",
+            "label": "Amount Token Min",
+            "format": "raw"
+          },
+          {
+            "path": "amountETHMin",
+            "label": "Amount ETHMin",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "removeLiquidityETH(address,bool,uint256,uint256,uint256,address,uint256)": {
+        "intent": "Review Remove Liquidity ETH transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "stable",
+            "label": "Stable",
+            "format": "boolean"
+          },
+          {
+            "path": "liquidity",
+            "label": "Liquidity",
+            "format": "raw"
+          },
+          {
+            "path": "amountTokenMin",
+            "label": "Amount Token Min",
+            "format": "raw"
+          },
+          {
+            "path": "amountETHMin",
+            "label": "Amount ETHMin",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "removeLiquidityETHSupportingFeeOnTransferTokens(address,bool,uint256,uint256,uint256,address,uint256)": {
+        "intent": "Review Remove Liquidity ETHSupporting Fee On Transfer Tokens transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "stable",
+            "label": "Stable",
+            "format": "boolean"
+          },
+          {
+            "path": "liquidity",
+            "label": "Liquidity",
+            "format": "raw"
+          },
+          {
+            "path": "amountTokenMin",
+            "label": "Amount Token Min",
+            "format": "raw"
+          },
+          {
+            "path": "amountETHMin",
+            "label": "Amount ETHMin",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapExactETHForTokens(uint256,(address,address,bool,address)[],address,uint256)": {
+        "intent": "Review Swap Exact ETHFor Tokens transaction",
+        "fields": [
+          {
+            "path": "amountOutMin",
+            "label": "Amount Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "routes",
+            "label": "Routes",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapExactETHForTokensSupportingFeeOnTransferTokens(uint256,(address,address,bool,address)[],address,uint256)": {
+        "intent": "Review Swap Exact ETHFor Tokens Supporting Fee On Transfer Tokens transaction",
+        "fields": [
+          {
+            "path": "amountOutMin",
+            "label": "Amount Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "routes",
+            "label": "Routes",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapExactTokensForETH(uint256,uint256,(address,address,bool,address)[],address,uint256)": {
+        "intent": "Review Swap Exact Tokens For ETH transaction",
+        "fields": [
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "amountOutMin",
+            "label": "Amount Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "routes",
+            "label": "Routes",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapExactTokensForETHSupportingFeeOnTransferTokens(uint256,uint256,(address,address,bool,address)[],address,uint256)": {
+        "intent": "Review Swap Exact Tokens For ETHSupporting Fee On Transfer Tokens transaction",
+        "fields": [
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "amountOutMin",
+            "label": "Amount Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "routes",
+            "label": "Routes",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapExactTokensForTokens(uint256,uint256,(address,address,bool,address)[],address,uint256)": {
+        "intent": "Review Swap Exact Tokens For Tokens transaction",
+        "fields": [
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "amountOutMin",
+            "label": "Amount Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "routes",
+            "label": "Routes",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapExactTokensForTokensSupportingFeeOnTransferTokens(uint256,uint256,(address,address,bool,address)[],address,uint256)": {
+        "intent": "Review Swap Exact Tokens For Tokens Supporting Fee On Transfer Tokens transaction",
+        "fields": [
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "amountOutMin",
+            "label": "Amount Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "routes",
+            "label": "Routes",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "zapIn(address,uint256,uint256,(address,address,bool,address,uint256,uint256,uint256,uint256),(address,address,bool,address)[],(address,address,bool,address)[],address,bool)": {
+        "intent": "Review Zap In transaction",
+        "fields": [
+          {
+            "path": "tokenIn",
+            "label": "Token In",
+            "format": "address"
+          },
+          {
+            "path": "amountInA",
+            "label": "Amount In A",
+            "format": "raw"
+          },
+          {
+            "path": "amountInB",
+            "label": "Amount In B",
+            "format": "raw"
+          },
+          {
+            "path": "zapInPool",
+            "label": "Zap In Pool",
+            "format": "raw"
+          },
+          {
+            "path": "routesA",
+            "label": "Routes A",
+            "format": "raw"
+          },
+          {
+            "path": "routesB",
+            "label": "Routes B",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "stake",
+            "label": "Stake",
+            "format": "boolean"
+          }
+        ]
+      },
+      "zapOut(address,uint256,(address,address,bool,address,uint256,uint256,uint256,uint256),(address,address,bool,address)[],(address,address,bool,address)[])": {
+        "intent": "Review Zap Out transaction",
+        "fields": [
+          {
+            "path": "tokenOut",
+            "label": "Token Out",
+            "format": "address"
+          },
+          {
+            "path": "liquidity",
+            "label": "Liquidity",
+            "format": "raw"
+          },
+          {
+            "path": "zapOutPool",
+            "label": "Zap Out Pool",
+            "format": "raw"
+          },
+          {
+            "path": "routesA",
+            "label": "Routes A",
+            "format": "raw"
+          },
+          {
+            "path": "routesB",
+            "label": "Routes B",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Aerodrome Finance",
+    "info": {
+      "url": "https://aerodrome.finance/",
+      "legalName": "Aerodrome Finance",
+      "lastUpdate": "2026-02-03"
+    }
+  }
+}

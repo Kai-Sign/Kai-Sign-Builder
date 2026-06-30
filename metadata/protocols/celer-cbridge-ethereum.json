@@ -1,0 +1,987 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x5427fefa711eff984124bfbb1ab6fbf5e3da1820",
+      "chainId": 1,
+      "name": "Celer cBridge (Ethereum)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "send",
+          "selector": "0x95d2ee9b",
+          "inputs": [
+            {
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "name": "_token",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_dstChainId",
+              "type": "uint64"
+            },
+            {
+              "name": "_nonce",
+              "type": "uint64"
+            },
+            {
+              "name": "_maxSlippage",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "sendNative",
+          "selector": "0x1eb00986",
+          "inputs": [
+            {
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_dstChainId",
+              "type": "uint64"
+            },
+            {
+              "name": "_nonce",
+              "type": "uint64"
+            },
+            {
+              "name": "_maxSlippage",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "addLiquidity",
+          "selector": "0x43c15a1f",
+          "inputs": [
+            {
+              "name": "_token",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addGovernor",
+          "selector": "0x3c4a25d0",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addLiquidity",
+          "selector": "0x56688700",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addNativeLiquidity",
+          "selector": "0x7044c89e",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "addPauser",
+          "selector": "0x82dc1ec4",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "executeDelayedTransfer",
+          "selector": "0x9e25fc5c",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseNoticePeriod",
+          "selector": "0xf20c922a",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "period",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "notifyResetSigners",
+          "selector": "0x25c38b9f",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pause",
+          "selector": "0x8456cb59",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "relay",
+          "selector": "0xcdd1b25d",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "_relayRequest",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "_sigs",
+              "type": "bytes[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "_signers",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_powers",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeGovernor",
+          "selector": "0xeecdac88",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removePauser",
+          "selector": "0x6b2c0f55",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceGovernor",
+          "selector": "0xe026049c",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renouncePauser",
+          "selector": "0x6ef8d66d",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "resetSigners",
+          "selector": "0xa7bdf45a",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "_signers",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_powers",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "send",
+          "selector": "0xa5977fbb",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint64",
+              "name": "_dstChainId",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "_nonce",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint32",
+              "name": "_maxSlippage",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "sendNative",
+          "selector": "0x3f2e5fc3",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint64",
+              "name": "_dstChainId",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "_nonce",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint32",
+              "name": "_maxSlippage",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "setDelayPeriod",
+          "selector": "0x3d572107",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_period",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setDelayThresholds",
+          "selector": "0x17bdbae5",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "_tokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_thresholds",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setEpochLength",
+          "selector": "0x54eea796",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_length",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setEpochVolumeCaps",
+          "selector": "0x47b16c6c",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "_tokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_caps",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMaxSend",
+          "selector": "0x878fe1ce",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "_tokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_amounts",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMinAdd",
+          "selector": "0xe999e5f4",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "_tokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_amounts",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMinSend",
+          "selector": "0x08992741",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "_tokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_amounts",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMinimalMaxSlippage",
+          "selector": "0x48234126",
+          "inputs": [
+            {
+              "internalType": "uint32",
+              "name": "_minimalMaxSlippage",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setWrap",
+          "selector": "0x9ff9001a",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_weth",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unpause",
+          "selector": "0x3f4ba83a",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateSigners",
+          "selector": "0xba2cb25c",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_triggerTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address[]",
+              "name": "_newSigners",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_newPowers",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "_sigs",
+              "type": "bytes[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "_curSigners",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_curPowers",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xa21a9280",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "_wdmsg",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "_sigs",
+              "type": "bytes[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "_signers",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_powers",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "send(address,address,uint256,uint64,uint64,uint32)": {
+        "intent": "Bridge tokens via Celer cBridge to another chain",
+        "interpolatedIntent": "Bridge {_amount} {_token} to chain {_dstChainId} via Celer",
+        "fields": [
+          {
+            "path": "_token",
+            "label": "Token",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_token"
+            }
+          },
+          {
+            "path": "_dstChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "_receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "_maxSlippage",
+            "label": "Max Slippage (x1e6)",
+            "format": "raw"
+          }
+        ]
+      },
+      "sendNative(address,uint256,uint64,uint64,uint32)": {
+        "intent": "Bridge native ETH via Celer cBridge",
+        "interpolatedIntent": "Bridge {_amount} ETH to chain {_dstChainId} via Celer",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": "Amount (ETH)",
+            "format": "ethAmount"
+          },
+          {
+            "path": "_dstChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "_receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "_maxSlippage",
+            "label": "Max Slippage (x1e6)",
+            "format": "raw"
+          }
+        ]
+      },
+      "addLiquidity(address,uint256)": {
+        "intent": "Add liquidity to Celer cBridge pool",
+        "interpolatedIntent": "Add {_amount} {_token} liquidity to Celer cBridge",
+        "fields": [
+          {
+            "path": "_token",
+            "label": "Token",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_token"
+            }
+          }
+        ]
+      },
+      "addGovernor(address)": {
+        "intent": "Review Add Governor transaction",
+        "fields": [
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          }
+        ]
+      },
+      "addNativeLiquidity(uint256)": {
+        "intent": "Review Add Native Liquidity transaction",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "addPauser(address)": {
+        "intent": "Review Add Pauser transaction",
+        "fields": [
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "executeDelayedTransfer(bytes32)": {
+        "intent": "Review Execute Delayed Transfer transaction",
+        "fields": [
+          {
+            "path": "id",
+            "label": "Id",
+            "format": "hex"
+          }
+        ]
+      },
+      "increaseNoticePeriod(uint256)": {
+        "intent": "Review Increase Notice Period transaction",
+        "fields": [
+          {
+            "path": "period",
+            "label": "Period",
+            "format": "raw"
+          }
+        ]
+      },
+      "notifyResetSigners()": {
+        "intent": "Review Notify Reset Signers transaction",
+        "fields": []
+      },
+      "pause()": {
+        "intent": "Review Pause transaction",
+        "fields": []
+      },
+      "relay(bytes,bytes[],address[],uint256[])": {
+        "intent": "Review Relay transaction",
+        "fields": [
+          {
+            "path": "_relayRequest",
+            "label": " relay Request",
+            "format": "hex"
+          },
+          {
+            "path": "_sigs",
+            "label": " sigs",
+            "format": "hex"
+          },
+          {
+            "path": "_signers",
+            "label": " signers",
+            "format": "raw"
+          },
+          {
+            "path": "_powers",
+            "label": " powers",
+            "format": "raw"
+          }
+        ]
+      },
+      "removeGovernor(address)": {
+        "intent": "Review Remove Governor transaction",
+        "fields": [
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          }
+        ]
+      },
+      "removePauser(address)": {
+        "intent": "Review Remove Pauser transaction",
+        "fields": [
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "renounceGovernor()": {
+        "intent": "Review Renounce Governor transaction",
+        "fields": []
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "renouncePauser()": {
+        "intent": "Review Renounce Pauser transaction",
+        "fields": []
+      },
+      "resetSigners(address[],uint256[])": {
+        "intent": "Review Reset Signers transaction",
+        "fields": [
+          {
+            "path": "_signers",
+            "label": " signers",
+            "format": "raw"
+          },
+          {
+            "path": "_powers",
+            "label": " powers",
+            "format": "raw"
+          }
+        ]
+      },
+      "setDelayPeriod(uint256)": {
+        "intent": "Review Set Delay Period transaction",
+        "fields": [
+          {
+            "path": "_period",
+            "label": " period",
+            "format": "raw"
+          }
+        ]
+      },
+      "setDelayThresholds(address[],uint256[])": {
+        "intent": "Review Set Delay Thresholds transaction",
+        "fields": [
+          {
+            "path": "_tokens",
+            "label": " tokens",
+            "format": "raw"
+          },
+          {
+            "path": "_thresholds",
+            "label": " thresholds",
+            "format": "raw"
+          }
+        ]
+      },
+      "setEpochLength(uint256)": {
+        "intent": "Review Set Epoch Length transaction",
+        "fields": [
+          {
+            "path": "_length",
+            "label": " length",
+            "format": "raw"
+          }
+        ]
+      },
+      "setEpochVolumeCaps(address[],uint256[])": {
+        "intent": "Review Set Epoch Volume Caps transaction",
+        "fields": [
+          {
+            "path": "_tokens",
+            "label": " tokens",
+            "format": "raw"
+          },
+          {
+            "path": "_caps",
+            "label": " caps",
+            "format": "raw"
+          }
+        ]
+      },
+      "setMaxSend(address[],uint256[])": {
+        "intent": "Review Set Max Send transaction",
+        "fields": [
+          {
+            "path": "_tokens",
+            "label": " tokens",
+            "format": "raw"
+          },
+          {
+            "path": "_amounts",
+            "label": " amounts",
+            "format": "raw"
+          }
+        ]
+      },
+      "setMinAdd(address[],uint256[])": {
+        "intent": "Review Set Min Add transaction",
+        "fields": [
+          {
+            "path": "_tokens",
+            "label": " tokens",
+            "format": "raw"
+          },
+          {
+            "path": "_amounts",
+            "label": " amounts",
+            "format": "raw"
+          }
+        ]
+      },
+      "setMinSend(address[],uint256[])": {
+        "intent": "Review Set Min Send transaction",
+        "fields": [
+          {
+            "path": "_tokens",
+            "label": " tokens",
+            "format": "raw"
+          },
+          {
+            "path": "_amounts",
+            "label": " amounts",
+            "format": "raw"
+          }
+        ]
+      },
+      "setMinimalMaxSlippage(uint32)": {
+        "intent": "Review Set Minimal Max Slippage transaction",
+        "fields": [
+          {
+            "path": "_minimalMaxSlippage",
+            "label": " minimal Max Slippage",
+            "format": "raw"
+          }
+        ]
+      },
+      "setWrap(address)": {
+        "intent": "Review Set Wrap transaction",
+        "fields": [
+          {
+            "path": "_weth",
+            "label": " weth",
+            "format": "address"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "unpause()": {
+        "intent": "Review Unpause transaction",
+        "fields": []
+      },
+      "updateSigners(uint256,address[],uint256[],bytes[],address[],uint256[])": {
+        "intent": "Review Update Signers transaction",
+        "fields": [
+          {
+            "path": "_triggerTime",
+            "label": " trigger Time",
+            "format": "raw"
+          },
+          {
+            "path": "_newSigners",
+            "label": " new Signers",
+            "format": "raw"
+          },
+          {
+            "path": "_newPowers",
+            "label": " new Powers",
+            "format": "raw"
+          },
+          {
+            "path": "_sigs",
+            "label": " sigs",
+            "format": "hex"
+          },
+          {
+            "path": "_curSigners",
+            "label": " cur Signers",
+            "format": "raw"
+          },
+          {
+            "path": "_curPowers",
+            "label": " cur Powers",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdraw(bytes,bytes[],address[],uint256[])": {
+        "intent": "Review Withdraw transaction",
+        "fields": [
+          {
+            "path": "_wdmsg",
+            "label": " wdmsg",
+            "format": "hex"
+          },
+          {
+            "path": "_sigs",
+            "label": " sigs",
+            "format": "hex"
+          },
+          {
+            "path": "_signers",
+            "label": " signers",
+            "format": "raw"
+          },
+          {
+            "path": "_powers",
+            "label": " powers",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Celer Network",
+    "info": {
+      "url": "https://cbridge.celer.network/",
+      "legalName": "Celer Network",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

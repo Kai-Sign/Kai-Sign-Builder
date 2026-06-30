@@ -1,0 +1,41 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0xaaaaaaaaa24eeeb8d57d431224f73832bc34f688"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Ambient Finance",
+    "contractName": "Ambient CrocSwapDex"
+  },
+  "display": {
+    "formats": {
+      "swap(address base,address quote,uint256 poolIdx,bool isBuy,bool inBaseQty,uint128 qty,uint16 tip,uint128 limitPrice,uint128 minOut,uint8 reserveFlags)": {
+        "intent": "Swap via Ambient Finance",
+        "interpolatedIntent": "Swap {qty} tokens via Ambient Finance",
+        "fields": [
+          { "path": "base", "label": "Base Token", "format": "addressName" },
+          { "path": "quote", "label": "Quote Token", "format": "addressName" },
+          { "path": "qty", "label": "Quantity", "format": "raw" },
+          { "path": "minOut", "label": "Minimum Output", "format": "raw" },
+          { "path": "isBuy", "label": "Is Buy", "format": "integer" },
+          { "path": "limitPrice", "label": "Limit Price", "format": "raw" }
+        ]
+      },
+      "userCmd(uint16 callpath,bytes cmd)": {
+        "intent": "Execute Ambient user command",
+        "interpolatedIntent": "Execute Ambient command on callpath {callpath}",
+        "fields": [
+          { "path": "callpath", "label": "Command Path", "format": "integer" },
+          { "path": "cmd", "label": "Command Data", "format": "raw" }
+        ]
+      }
+    }
+  }
+}

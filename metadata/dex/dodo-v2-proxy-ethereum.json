@@ -1,0 +1,53 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "DODO V2 Proxy",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0xa356867fdcea8e71aeaf87805808803806231fdc" }
+      ],
+      "abi": "https://etherscan.io/address/0xa356867fdcea8e71aeaf87805808803806231fdc#code"
+    }
+  },
+  "metadata": {
+    "owner": "DODO",
+    "info": { "legalName": "DODO", "url": "https://dodoex.io/" }
+  },
+  "display": {
+    "formats": {
+      "dodoSwapV2ETHToToken(address,uint256,address[],address[],uint256,bool,uint256)": {
+        "intent": "Swap ETH to Token",
+        "fields": [
+          { "path": "#.toToken", "label": "Token Received", "format": "addressName", "params": { "types": ["token"], "sources": null } },
+          { "path": "#.minReturnAmount", "label": "Minimum Received", "format": "tokenAmount", "params": { "tokenPath": "toToken" } },
+          { "path": "#.deadLine", "label": "Deadline", "format": "date", "params": { "encoding": "timestamp" } }
+        ],
+        "required": ["#.toToken", "#.minReturnAmount", "#.deadLine"],
+        "excluded": []
+      },
+      "dodoSwapV2TokenToETH(address,uint256,uint256,address[],address[],uint256,bool,uint256)": {
+        "intent": "Swap Token to ETH",
+        "fields": [
+          { "path": "#.fromToken", "label": "Token Sent", "format": "addressName", "params": { "types": ["token"], "sources": null } },
+          { "path": "#.fromTokenAmount", "label": "Amount Sent", "format": "tokenAmount", "params": { "tokenPath": "fromToken" } },
+          { "path": "#.minReturnAmount", "label": "Minimum ETH Received", "format": "raw" },
+          { "path": "#.deadLine", "label": "Deadline", "format": "date", "params": { "encoding": "timestamp" } }
+        ],
+        "required": ["#.fromToken", "#.fromTokenAmount", "#.minReturnAmount", "#.deadLine"],
+        "excluded": []
+      },
+      "dodoSwapV2TokenToToken(address,address,uint256,uint256,address[],address[],uint256,bool,uint256)": {
+        "intent": "Swap Token to Token",
+        "fields": [
+          { "path": "#.fromToken", "label": "Token Sent", "format": "addressName", "params": { "types": ["token"], "sources": null } },
+          { "path": "#.toToken", "label": "Token Received", "format": "addressName", "params": { "types": ["token"], "sources": null } },
+          { "path": "#.fromTokenAmount", "label": "Amount Sent", "format": "tokenAmount", "params": { "tokenPath": "fromToken" } },
+          { "path": "#.minReturnAmount", "label": "Minimum Received", "format": "tokenAmount", "params": { "tokenPath": "toToken" } },
+          { "path": "#.deadLine", "label": "Deadline", "format": "date", "params": { "encoding": "timestamp" } }
+        ],
+        "required": ["#.fromToken", "#.toToken", "#.fromTokenAmount", "#.minReturnAmount", "#.deadLine"],
+        "excluded": []
+      }
+    }
+  }
+}

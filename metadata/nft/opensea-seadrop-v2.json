@@ -1,0 +1,105 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "OpenSeaSeaDropV2",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x00000000000001ad428e4906ae43d8f9852d0dd6" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/opensea/abis/0x00000000000001ad428e4906ae43d8f9852d0dd6.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "OpenSea",
+    "info": {
+      "legalName": "Ozone Networks, Inc.",
+      "url": "https://opensea.io"
+    }
+  },
+  "display": {
+    "formats": {
+      "mintPublic(address,address,address,uint256)": {
+        "intent": "Mint NFT (public sale)",
+        "fields": [
+          {
+            "path": "#.nftContract",
+            "label": "NFT Contract",
+            "format": "addressName",
+            "params": { "types": ["collection"], "sources": null }
+          },
+          {
+            "path": "#.feeRecipient",
+            "label": "Fee Recipient",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] }
+          },
+          {
+            "path": "#.minterIfNotPayer",
+            "label": "Minter",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] }
+          },
+          {
+            "path": "#.quantity",
+            "label": "Quantity",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.nftContract", "#.feeRecipient", "#.minterIfNotPayer", "#.quantity"]
+      },
+      "mintAllowList(address,address,address,uint256,(uint256,uint256,uint256,bytes32,uint256,address,uint64)[],bytes32[])": {
+        "intent": "Mint NFT (allowlist)",
+        "fields": [
+          {
+            "path": "#.nftContract",
+            "label": "NFT Contract",
+            "format": "addressName",
+            "params": { "types": ["collection"], "sources": null }
+          },
+          {
+            "path": "#.feeRecipient",
+            "label": "Fee Recipient",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] }
+          },
+          {
+            "path": "#.minterIfNotPayer",
+            "label": "Minter",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] }
+          },
+          {
+            "path": "#.quantity",
+            "label": "Quantity",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.nftContract", "#.feeRecipient", "#.minterIfNotPayer", "#.quantity"]
+      },
+      "mintAllowedTokenHolder(address,address,address,uint256[])": {
+        "intent": "Mint NFT (token-gated)",
+        "fields": [
+          {
+            "path": "#.nftContract",
+            "label": "NFT Contract",
+            "format": "addressName",
+            "params": { "types": ["collection"], "sources": null }
+          },
+          {
+            "path": "#.feeRecipient",
+            "label": "Fee Recipient",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] }
+          },
+          {
+            "path": "#.minterIfNotPayer",
+            "label": "Minter",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] }
+          }
+        ],
+        "required": ["#.nftContract", "#.feeRecipient", "#.minterIfNotPayer"]
+      }
+    }
+  }
+}

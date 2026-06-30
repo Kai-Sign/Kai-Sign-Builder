@@ -1,0 +1,91 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "AxelarGateway",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x4f4495243837681061c4743b74b3eedf548d56a5" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/axelar/abis/0x4f4495243837681061c4743b74b3eedf548d56a5.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "Axelar Network",
+    "info": {
+      "legalName": "Axelar Network",
+      "url": "https://axelar.network"
+    }
+  },
+  "display": {
+    "formats": {
+      "sendToken(string,string,string,uint256)": {
+        "intent": "Bridge token via Axelar",
+        "fields": [
+          {
+            "path": "#.destinationChain",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#.destinationAddress",
+            "label": "Destination Address",
+            "format": "raw"
+          },
+          {
+            "path": "#.symbol",
+            "label": "Token Symbol",
+            "format": "raw"
+          },
+          {
+            "path": "#.amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.destinationChain", "#.destinationAddress", "#.symbol", "#.amount"]
+      },
+      "callContractWithToken(string,string,string,bytes,string,uint256)": {
+        "intent": "Bridge token and call contract via Axelar",
+        "fields": [
+          {
+            "path": "#.destinationChain",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#.contractAddress",
+            "label": "Contract Address",
+            "format": "raw"
+          },
+          {
+            "path": "#.symbol",
+            "label": "Token Symbol",
+            "format": "raw"
+          },
+          {
+            "path": "#.amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.destinationChain", "#.contractAddress", "#.symbol", "#.amount"]
+      },
+      "callContract(string,string,bytes)": {
+        "intent": "Call contract via Axelar",
+        "fields": [
+          {
+            "path": "#.destinationChain",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#.contractAddress",
+            "label": "Contract Address",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.destinationChain", "#.contractAddress"]
+      }
+    }
+  }
+}

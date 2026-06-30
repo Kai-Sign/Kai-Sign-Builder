@@ -1,0 +1,96 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "MagicEdenMarketplace",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x0000000000e655fae4d56241588680f86e3b2377" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/magiceden/abis/0x0000000000e655fae4d56241588680f86e3b2377.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "Magic Eden",
+    "info": {
+      "legalName": "Magic Eden",
+      "url": "https://magiceden.io"
+    }
+  },
+  "display": {
+    "formats": {
+      "buyERC721(address,uint256,bytes)": {
+        "intent": "Buy NFT on Magic Eden",
+        "fields": [
+          {
+            "path": "#.nftContract",
+            "label": "NFT Contract",
+            "format": "addressName",
+            "params": { "types": ["collection"], "sources": null }
+          },
+          {
+            "path": "#.tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.nftContract", "#.tokenId"]
+      },
+      "buyERC1155(address,uint256,uint256,bytes)": {
+        "intent": "Buy ERC-1155 NFT on Magic Eden",
+        "fields": [
+          {
+            "path": "#.nftContract",
+            "label": "NFT Contract",
+            "format": "addressName",
+            "params": { "types": ["collection"], "sources": null }
+          },
+          {
+            "path": "#.tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          },
+          {
+            "path": "#.amount",
+            "label": "Quantity",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.nftContract", "#.tokenId", "#.amount"]
+      },
+      "cancelERC721Ask(address,uint256)": {
+        "intent": "Cancel NFT listing on Magic Eden",
+        "fields": [
+          {
+            "path": "#.nftContract",
+            "label": "NFT Contract",
+            "format": "addressName",
+            "params": { "types": ["collection"], "sources": null }
+          },
+          {
+            "path": "#.tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.nftContract", "#.tokenId"]
+      },
+      "cancelERC1155Ask(address,uint256)": {
+        "intent": "Cancel ERC-1155 listing on Magic Eden",
+        "fields": [
+          {
+            "path": "#.nftContract",
+            "label": "NFT Contract",
+            "format": "addressName",
+            "params": { "types": ["collection"], "sources": null }
+          },
+          {
+            "path": "#.tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.nftContract", "#.tokenId"]
+      }
+    }
+  }
+}

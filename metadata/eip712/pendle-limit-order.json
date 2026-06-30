@@ -1,0 +1,106 @@
+{
+  "context": {
+    "eip712": {
+      "deployments": [
+        { "chainId": 1, "address": "0x00000000005bbb0ef59571e58418f9a4357b68a0" }
+      ],
+      "domain": {
+        "name": "Pendle",
+        "version": "1",
+        "chainId": 1,
+        "verifyingContract": "0x00000000005bbb0ef59571e58418f9a4357b68a0"
+      },
+      "schemas": [
+        {
+          "primaryType": "Order",
+          "types": {
+            "Order": [
+              { "name": "salt", "type": "uint256" },
+              { "name": "expiry", "type": "uint256" },
+              { "name": "nonce", "type": "uint256" },
+              { "name": "orderType", "type": "uint8" },
+              { "name": "token", "type": "address" },
+              { "name": "YT", "type": "address" },
+              { "name": "maker", "type": "address" },
+              { "name": "receiver", "type": "address" },
+              { "name": "makingAmount", "type": "uint256" },
+              { "name": "lnImpliedRate", "type": "uint256" },
+              { "name": "failSafeRate", "type": "uint256" },
+              { "name": "permit", "type": "bytes" }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "Order": {
+        "intent": "Sign Pendle limit order",
+        "fields": [
+          {
+            "path": "#.maker",
+            "label": "Maker",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.token",
+            "label": "Token",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.YT",
+            "label": "Yield Token (YT)",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.orderType",
+            "label": "Order Type",
+            "format": "enum",
+            "params": { "$ref": "$.display.formats.Order.metadata.orderTypeEnum" },
+            "visible": "always"
+          },
+          {
+            "path": "#.makingAmount",
+            "label": "Making Amount",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.token" },
+            "visible": "always"
+          },
+          {
+            "path": "#.receiver",
+            "label": "Receiver",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.expiry",
+            "label": "Expires",
+            "format": "date",
+            "params": { "encoding": "timestamp" },
+            "visible": "always"
+          },
+          {
+            "path": "#.nonce",
+            "label": "Nonce",
+            "format": "raw",
+            "visible": "never"
+          },
+          {
+            "path": "#.salt",
+            "label": "Salt",
+            "format": "raw",
+            "visible": "never"
+          }
+        ]
+      }
+    }
+  }
+}

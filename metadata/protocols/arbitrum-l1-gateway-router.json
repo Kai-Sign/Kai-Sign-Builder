@@ -1,0 +1,45 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "Arbitrum L1 Gateway Router",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x72ce9c846789fdb6fc1f34ac4ad25dd9ef7031ef" }
+      ],
+      "abi": "https://etherscan.io/address/0x72ce9c846789fdb6fc1f34ac4ad25dd9ef7031ef#code"
+    }
+  },
+  "metadata": {
+    "owner": "Arbitrum",
+    "info": { "legalName": "Offchain Labs", "url": "https://arbitrum.io/" }
+  },
+  "display": {
+    "formats": {
+      "outboundTransfer(address,address,uint256,uint256,uint256,bytes)": {
+        "intent": "Bridge ERC-20 to Arbitrum",
+        "fields": [
+          { "path": "#._token", "label": "Token", "format": "addressName", "params": { "types": ["token"], "sources": null } },
+          { "path": "#._to", "label": "Recipient on Arbitrum", "format": "addressName", "params": { "types": ["eoa", "wallet"], "sources": ["local", "ens"] } },
+          { "path": "#._amount", "label": "Amount", "format": "tokenAmount", "params": { "tokenPath": "_token" } },
+          { "path": "#._maxGas", "label": "Max Gas on L2", "format": "raw" },
+          { "path": "#._gasPriceBid", "label": "Gas Price Bid", "format": "raw" }
+        ],
+        "required": ["#._token", "#._to", "#._amount", "#._maxGas", "#._gasPriceBid"],
+        "excluded": []
+      },
+      "outboundTransferCustomRefund(address,address,address,uint256,uint256,uint256,bytes)": {
+        "intent": "Bridge ERC-20 to Arbitrum (Custom Refund)",
+        "fields": [
+          { "path": "#._token", "label": "Token", "format": "addressName", "params": { "types": ["token"], "sources": null } },
+          { "path": "#._refundTo", "label": "Gas Refund Address", "format": "addressName", "params": { "types": ["eoa", "wallet"], "sources": ["local", "ens"] } },
+          { "path": "#._to", "label": "Recipient on Arbitrum", "format": "addressName", "params": { "types": ["eoa", "wallet"], "sources": ["local", "ens"] } },
+          { "path": "#._amount", "label": "Amount", "format": "tokenAmount", "params": { "tokenPath": "_token" } },
+          { "path": "#._maxGas", "label": "Max Gas on L2", "format": "raw" },
+          { "path": "#._gasPriceBid", "label": "Gas Price Bid", "format": "raw" }
+        ],
+        "required": ["#._token", "#._refundTo", "#._to", "#._amount", "#._maxGas", "#._gasPriceBid"],
+        "excluded": []
+      }
+    }
+  }
+}

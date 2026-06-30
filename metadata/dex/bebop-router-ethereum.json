@@ -1,0 +1,75 @@
+{
+  "$schema": "../../specs/erc7730-v2.schema.json",
+  "context": {
+    "$id": "BebopRouter",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0xbeb09000fa59627dc02bb55448ac1893eaa501a5" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/bebop/abis/0xbeb09000fa59627dc02bb55448ac1893eaa501a5.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "Bebop",
+    "contractName": "Bebop DEX Router",
+    "info": { "url": "https://bebop.xyz" }
+  },
+  "display": {
+    "formats": {
+      "swapSingle(uint256,(address,address,uint256,uint256,address,address,uint256,bytes))": {
+        "interpolatedIntent": "Swap {#.order.takerToken} for {#.order.makerToken}",
+        "fields": [
+          {
+            "path": "#.order.taker",
+            "label": "Taker",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.order.takerToken",
+            "label": "Sell Token",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.order.makerToken",
+            "label": "Buy Token",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.order.takerAmount",
+            "label": "Sell Amount",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.order.takerToken" },
+            "visible": "always"
+          },
+          {
+            "path": "#.order.makerAmount",
+            "label": "Buy Amount",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.order.makerToken" },
+            "visible": "always"
+          },
+          {
+            "path": "#.order.receiver",
+            "label": "Receiver",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.order.expiry",
+            "label": "Expires",
+            "format": "date",
+            "params": { "encoding": "timestamp" },
+            "visible": "always"
+          }
+        ]
+      }
+    }
+  }
+}

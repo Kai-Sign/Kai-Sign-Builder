@@ -1,0 +1,635 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xa052883ebee7354fc2aa0f9c727e657fdeca744a",
+      "chainId": 1,
+      "name": "Neutrl Router",
+      "abi": [
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x52555702",
+          "inputs": [
+            {
+              "name": "_beneficiary",
+              "type": "address"
+            },
+            {
+              "name": "_collateralAsset",
+              "type": "address"
+            },
+            {
+              "name": "_collateralAmount",
+              "type": "uint256"
+            },
+            {
+              "name": "_minNusdAmount",
+              "type": "uint256"
+            },
+            {
+              "name": "_additionalData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redeem",
+          "selector": "0xfb51c178",
+          "inputs": [
+            {
+              "name": "_beneficiary",
+              "type": "address"
+            },
+            {
+              "name": "_collateralAsset",
+              "type": "address"
+            },
+            {
+              "name": "_nusdAmount",
+              "type": "uint256"
+            },
+            {
+              "name": "_minCollateralAmount",
+              "type": "uint256"
+            },
+            {
+              "name": "_additionalData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "cancelExpiredMintRequest",
+          "selector": "0x9d915638",
+          "inputs": [
+            {
+              "name": "_requestId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "cancelExpiredRedemptionRequest",
+          "selector": "0xce13bec1",
+          "inputs": [
+            {
+              "name": "_requestId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "acceptAdmin",
+          "selector": "0x0e18b681",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "cancelMintRequest",
+          "selector": "0x3638419b",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_requestId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "cancelRedemptionRequest",
+          "selector": "0xc6c7d143",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_requestId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "configureAsset",
+          "selector": "0x109eddf8",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_collateralAsset",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_minter",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_redeemer",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "selector": "0x2f2ff15d",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pause",
+          "selector": "0x8456cb59",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "selector": "0x36568abe",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "selector": "0xd547741f",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "serveMintRequest",
+          "selector": "0xf480096b",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_requestId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "serveRedemptionRequest",
+          "selector": "0x352b0c57",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_requestId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setAssetReserve",
+          "selector": "0xc574eebc",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_assetReserve",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMintWhitelistEnforcement",
+          "selector": "0x836819c0",
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "_enabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMintWhitelisted",
+          "selector": "0x218a1b53",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "_whitelisted",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setOrderWaitingPeriod",
+          "selector": "0x76914345",
+          "inputs": [
+            {
+              "internalType": "uint24",
+              "name": "_orderWaitingPeriod",
+              "type": "uint24"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setRedeemWhitelistEnforcement",
+          "selector": "0x35e7d9f9",
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "_enabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setRedeemWhitelisted",
+          "selector": "0xc72c1398",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "_whitelisted",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferAdmin",
+          "selector": "0x75829def",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unpause",
+          "selector": "0x3f4ba83a",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "mint(address,address,uint256,uint256,bytes)": {
+        "intent": "Mint NUSD via Neutrl",
+        "interpolatedIntent": "Mint at least {_minNusdAmount} NUSD by depositing {_collateralAmount} collateral for {_beneficiary}",
+        "fields": [
+          {
+            "path": "_beneficiary",
+            "label": "Beneficiary",
+            "format": "addressName"
+          },
+          {
+            "path": "_collateralAsset",
+            "label": "Collateral Asset",
+            "format": "addressName"
+          },
+          {
+            "path": "_collateralAmount",
+            "label": "Collateral Amount",
+            "format": "raw"
+          },
+          {
+            "path": "_minNusdAmount",
+            "label": "Min NUSD Out",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "NUSD"
+            }
+          },
+          {
+            "path": "_additionalData",
+            "label": "Additional Data",
+            "format": "raw"
+          }
+        ]
+      },
+      "redeem(address,address,uint256,uint256,bytes)": {
+        "intent": "Redeem NUSD via Neutrl",
+        "interpolatedIntent": "Redeem {_nusdAmount} NUSD for at least {_minCollateralAmount} collateral to {_beneficiary}",
+        "fields": [
+          {
+            "path": "_beneficiary",
+            "label": "Beneficiary",
+            "format": "addressName"
+          },
+          {
+            "path": "_collateralAsset",
+            "label": "Collateral Asset",
+            "format": "addressName"
+          },
+          {
+            "path": "_nusdAmount",
+            "label": "NUSD Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "NUSD"
+            }
+          },
+          {
+            "path": "_minCollateralAmount",
+            "label": "Min Collateral Out",
+            "format": "raw"
+          },
+          {
+            "path": "_additionalData",
+            "label": "Additional Data",
+            "format": "raw"
+          }
+        ]
+      },
+      "cancelExpiredMintRequest(uint256)": {
+        "intent": "Cancel expired Neutrl mint request",
+        "interpolatedIntent": "Cancel expired mint request #{_requestId}",
+        "fields": [
+          {
+            "path": "_requestId",
+            "label": "Request ID",
+            "format": "integer"
+          }
+        ]
+      },
+      "cancelExpiredRedemptionRequest(uint256)": {
+        "intent": "Cancel expired Neutrl redemption request",
+        "interpolatedIntent": "Cancel expired redemption request #{_requestId}",
+        "fields": [
+          {
+            "path": "_requestId",
+            "label": "Request ID",
+            "format": "integer"
+          }
+        ]
+      },
+      "acceptAdmin()": {
+        "intent": "Review Accept Admin transaction",
+        "fields": []
+      },
+      "cancelMintRequest(uint256)": {
+        "intent": "Review Cancel Mint Request transaction",
+        "fields": [
+          {
+            "path": "_requestId",
+            "label": " request Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "cancelRedemptionRequest(uint256)": {
+        "intent": "Review Cancel Redemption Request transaction",
+        "fields": [
+          {
+            "path": "_requestId",
+            "label": " request Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "configureAsset(address,address,address)": {
+        "intent": "Review Configure Asset transaction",
+        "fields": [
+          {
+            "path": "_collateralAsset",
+            "label": " collateral Asset",
+            "format": "address"
+          },
+          {
+            "path": "_minter",
+            "label": " minter",
+            "format": "address"
+          },
+          {
+            "path": "_redeemer",
+            "label": " redeemer",
+            "format": "address"
+          }
+        ]
+      },
+      "grantRole(bytes32,address)": {
+        "intent": "Review Grant Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "pause()": {
+        "intent": "Review Pause transaction",
+        "fields": []
+      },
+      "renounceRole(bytes32,address)": {
+        "intent": "Review Renounce Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "revokeRole(bytes32,address)": {
+        "intent": "Review Revoke Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "serveMintRequest(uint256)": {
+        "intent": "Review Serve Mint Request transaction",
+        "fields": [
+          {
+            "path": "_requestId",
+            "label": " request Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "serveRedemptionRequest(uint256)": {
+        "intent": "Review Serve Redemption Request transaction",
+        "fields": [
+          {
+            "path": "_requestId",
+            "label": " request Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "setAssetReserve(address)": {
+        "intent": "Review Set Asset Reserve transaction",
+        "fields": [
+          {
+            "path": "_assetReserve",
+            "label": " asset Reserve",
+            "format": "address"
+          }
+        ]
+      },
+      "setMintWhitelistEnforcement(bool)": {
+        "intent": "Review Set Mint Whitelist Enforcement transaction",
+        "fields": [
+          {
+            "path": "_enabled",
+            "label": " enabled",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setMintWhitelisted(address,bool)": {
+        "intent": "Review Set Mint Whitelisted transaction",
+        "fields": [
+          {
+            "path": "_user",
+            "label": " user",
+            "format": "address"
+          },
+          {
+            "path": "_whitelisted",
+            "label": " whitelisted",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setOrderWaitingPeriod(uint24)": {
+        "intent": "Review Set Order Waiting Period transaction",
+        "fields": [
+          {
+            "path": "_orderWaitingPeriod",
+            "label": " order Waiting Period",
+            "format": "raw"
+          }
+        ]
+      },
+      "setRedeemWhitelistEnforcement(bool)": {
+        "intent": "Review Set Redeem Whitelist Enforcement transaction",
+        "fields": [
+          {
+            "path": "_enabled",
+            "label": " enabled",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setRedeemWhitelisted(address,bool)": {
+        "intent": "Review Set Redeem Whitelisted transaction",
+        "fields": [
+          {
+            "path": "_user",
+            "label": " user",
+            "format": "address"
+          },
+          {
+            "path": "_whitelisted",
+            "label": " whitelisted",
+            "format": "boolean"
+          }
+        ]
+      },
+      "transferAdmin(address)": {
+        "intent": "Review Transfer Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "unpause()": {
+        "intent": "Review Unpause transaction",
+        "fields": []
+      }
+    }
+  }
+}

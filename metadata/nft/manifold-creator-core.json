@@ -1,0 +1,1417 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x5133522ea5A0494EcB83F26311A095DDD7a9D4b6",
+      "chainId": 1,
+      "name": "Manifold Creator Core V2",
+      "abi": [
+        {
+          "type": "function",
+          "name": "mintBase",
+          "selector": "0x5e3bef74",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "uri",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintBaseBatch",
+          "selector": "0x63b7fbcb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "uris",
+              "type": "string[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintExtension",
+          "selector": "0x2b4d1e30",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "uri",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setApproveTransfer",
+          "selector": "0x71e3b0b7",
+          "inputs": [
+            {
+              "name": "extension",
+              "type": "address"
+            },
+            {
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "registerExtension",
+          "selector": "0x7d4d7a6a",
+          "inputs": [
+            {
+              "name": "extension",
+              "type": "address"
+            },
+            {
+              "name": "baseURI",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approveAdmin",
+          "selector": "0x6d73e669",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "admin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "blacklistExtension",
+          "selector": "0x02e7afb7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "extension",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "selector": "0x42966c68",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0x4cd88b76",
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "_name",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "_symbol",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintBase",
+          "selector": "0x72ff03d3",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintBase",
+          "selector": "0x7884af44",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "uri",
+              "type": "string"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintBaseBatch",
+          "selector": "0x7aa15f16",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "string[]",
+              "name": "uris",
+              "type": "string[]"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "tokenIds",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintBaseBatch",
+          "selector": "0xad2d0ddd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint16",
+              "name": "count",
+              "type": "uint16"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "tokenIds",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintExtension",
+          "selector": "0x2928ca58",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintExtension",
+          "selector": "0xd3973719",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint80",
+              "name": "data",
+              "type": "uint80"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintExtension",
+          "selector": "0xfe2e1f58",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "uri",
+              "type": "string"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintExtensionBatch",
+          "selector": "0x38e52e78",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "string[]",
+              "name": "uris",
+              "type": "string[]"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "tokenIds",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintExtensionBatch",
+          "selector": "0x4278330e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint80[]",
+              "name": "data",
+              "type": "uint80[]"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "tokenIds",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintExtensionBatch",
+          "selector": "0xe00aab4b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint16",
+              "name": "count",
+              "type": "uint16"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "tokenIds",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "registerExtension",
+          "selector": "0x3071a0f9",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "extension",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "baseURI",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "registerExtension",
+          "selector": "0x3f0f37f6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "extension",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "baseURI",
+              "type": "string"
+            },
+            {
+              "internalType": "bool",
+              "name": "baseURIIdentical",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revokeAdmin",
+          "selector": "0x2d345670",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "admin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "safeTransferFrom",
+          "selector": "0x42842e0e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "safeTransferFrom",
+          "selector": "0xb88d4fde",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setApprovalForAll",
+          "selector": "0xa22cb465",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "operator",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "approved",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setApproveTransfer",
+          "selector": "0x596798ad",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "extension",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setApproveTransferExtension",
+          "selector": "0xac0c8cfa",
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setBaseTokenURI",
+          "selector": "0x30176e13",
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "uri",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setBaseTokenURIExtension",
+          "selector": "0x3e6134b8",
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "uri",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setBaseTokenURIExtension",
+          "selector": "0x82dcc0c8",
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "uri",
+              "type": "string"
+            },
+            {
+              "internalType": "bool",
+              "name": "identical",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMintPermissions",
+          "selector": "0xf0cdc499",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "extension",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "permissions",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setRoyalties",
+          "selector": "0x20e4afe2",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable[]",
+              "name": "receivers",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "basisPoints",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setRoyalties",
+          "selector": "0x332dd1ae",
+          "inputs": [
+            {
+              "internalType": "address payable[]",
+              "name": "receivers",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "basisPoints",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setRoyaltiesExtension",
+          "selector": "0xb0fe87c9",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "extension",
+              "type": "address"
+            },
+            {
+              "internalType": "address payable[]",
+              "name": "receivers",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "basisPoints",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTokenURI",
+          "selector": "0x162094c4",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "uri",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTokenURI",
+          "selector": "0xaafb2d44",
+          "inputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "tokenIds",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "string[]",
+              "name": "uris",
+              "type": "string[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTokenURIExtension",
+          "selector": "0x61e5bc6b",
+          "inputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "tokenIds",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "string[]",
+              "name": "uris",
+              "type": "string[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTokenURIExtension",
+          "selector": "0xe92a89f6",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "uri",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTokenURIPrefix",
+          "selector": "0x99e0dd7c",
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "prefix",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTokenURIPrefixExtension",
+          "selector": "0x66d1e9d0",
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "prefix",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unregisterExtension",
+          "selector": "0xce8aee9d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "extension",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "mintBase(address,string)": {
+        "intent": "Mint Manifold creator NFT",
+        "interpolatedIntent": "Mint NFT with URI to {to} via Manifold Creator Core",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "uri",
+            "label": "Token URI",
+            "format": "raw"
+          }
+        ]
+      },
+      "mintBaseBatch(address,string[])": {
+        "intent": "Batch mint Manifold creator NFTs",
+        "interpolatedIntent": "Batch mint NFTs to {to} via Manifold Creator Core",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "mintExtension(address,string)": {
+        "intent": "Mint Manifold NFT via extension",
+        "interpolatedIntent": "Mint NFT via extension to {to} on Manifold",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "uri",
+            "label": "Token URI",
+            "format": "raw"
+          }
+        ]
+      },
+      "setApproveTransfer(address,bool)": {
+        "intent": "Configure Manifold transfer approval",
+        "interpolatedIntent": "Set transfer approval for extension {extension} to {enabled}",
+        "fields": [
+          {
+            "path": "extension",
+            "label": "Extension",
+            "format": "addressName"
+          },
+          {
+            "path": "enabled",
+            "label": "Enabled",
+            "format": "raw"
+          }
+        ]
+      },
+      "registerExtension(address,string)": {
+        "intent": "Register extension with Manifold Creator Core",
+        "interpolatedIntent": "Register extension {extension} on Manifold Creator Core",
+        "fields": [
+          {
+            "path": "extension",
+            "label": "Extension Address",
+            "format": "addressName"
+          },
+          {
+            "path": "baseURI",
+            "label": "Base URI",
+            "format": "raw"
+          }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Review Approve transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "approveAdmin(address)": {
+        "intent": "Review Approve Admin transaction",
+        "fields": [
+          {
+            "path": "admin",
+            "label": "Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "blacklistExtension(address)": {
+        "intent": "Review Blacklist Extension transaction",
+        "fields": [
+          {
+            "path": "extension",
+            "label": "Extension",
+            "format": "address"
+          }
+        ]
+      },
+      "burn(uint256)": {
+        "intent": "Review Burn transaction",
+        "fields": [
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "initialize(string,string)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_name",
+            "label": " name",
+            "format": "raw"
+          },
+          {
+            "path": "_symbol",
+            "label": " symbol",
+            "format": "raw"
+          }
+        ]
+      },
+      "mintBase(address)": {
+        "intent": "Review Mint Base transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          }
+        ]
+      },
+      "mintBaseBatch(address,uint16)": {
+        "intent": "Review Mint Base Batch transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "count",
+            "label": "Count",
+            "format": "raw"
+          }
+        ]
+      },
+      "mintExtension(address)": {
+        "intent": "Review Mint Extension transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          }
+        ]
+      },
+      "mintExtension(address,uint80)": {
+        "intent": "Review Mint Extension transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "raw"
+          }
+        ]
+      },
+      "mintExtensionBatch(address,string[])": {
+        "intent": "Review Mint Extension Batch transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "uris",
+            "label": "Uris",
+            "format": "raw"
+          }
+        ]
+      },
+      "mintExtensionBatch(address,uint80[])": {
+        "intent": "Review Mint Extension Batch transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "raw"
+          }
+        ]
+      },
+      "mintExtensionBatch(address,uint16)": {
+        "intent": "Review Mint Extension Batch transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "count",
+            "label": "Count",
+            "format": "raw"
+          }
+        ]
+      },
+      "registerExtension(address,string,bool)": {
+        "intent": "Review Register Extension transaction",
+        "fields": [
+          {
+            "path": "extension",
+            "label": "Extension",
+            "format": "address"
+          },
+          {
+            "path": "baseURI",
+            "label": "Base URI",
+            "format": "raw"
+          },
+          {
+            "path": "baseURIIdentical",
+            "label": "Base URIIdentical",
+            "format": "boolean"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "revokeAdmin(address)": {
+        "intent": "Review Revoke Admin transaction",
+        "fields": [
+          {
+            "path": "admin",
+            "label": "Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "safeTransferFrom(address,address,uint256)": {
+        "intent": "Review Safe Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "safeTransferFrom(address,address,uint256,bytes)": {
+        "intent": "Review Safe Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "setApprovalForAll(address,bool)": {
+        "intent": "Review Set Approval For All transaction",
+        "fields": [
+          {
+            "path": "operator",
+            "label": "Operator",
+            "format": "address"
+          },
+          {
+            "path": "approved",
+            "label": "Approved",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setApproveTransfer(address)": {
+        "intent": "Review Set Approve Transfer transaction",
+        "fields": [
+          {
+            "path": "extension",
+            "label": "Extension",
+            "format": "address"
+          }
+        ]
+      },
+      "setApproveTransferExtension(bool)": {
+        "intent": "Review Set Approve Transfer Extension transaction",
+        "fields": [
+          {
+            "path": "enabled",
+            "label": "Enabled",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setBaseTokenURI(string)": {
+        "intent": "Review Set Base Token URI transaction",
+        "fields": [
+          {
+            "path": "uri",
+            "label": "Uri",
+            "format": "raw"
+          }
+        ]
+      },
+      "setBaseTokenURIExtension(string)": {
+        "intent": "Review Set Base Token URIExtension transaction",
+        "fields": [
+          {
+            "path": "uri",
+            "label": "Uri",
+            "format": "raw"
+          }
+        ]
+      },
+      "setBaseTokenURIExtension(string,bool)": {
+        "intent": "Review Set Base Token URIExtension transaction",
+        "fields": [
+          {
+            "path": "uri",
+            "label": "Uri",
+            "format": "raw"
+          },
+          {
+            "path": "identical",
+            "label": "Identical",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setMintPermissions(address,address)": {
+        "intent": "Review Set Mint Permissions transaction",
+        "fields": [
+          {
+            "path": "extension",
+            "label": "Extension",
+            "format": "address"
+          },
+          {
+            "path": "permissions",
+            "label": "Permissions",
+            "format": "address"
+          }
+        ]
+      },
+      "setRoyalties(uint256,address[],uint256[])": {
+        "intent": "Review Set Royalties transaction",
+        "fields": [
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          },
+          {
+            "path": "receivers",
+            "label": "Receivers",
+            "format": "raw"
+          },
+          {
+            "path": "basisPoints",
+            "label": "Basis Points",
+            "format": "raw"
+          }
+        ]
+      },
+      "setRoyalties(address[],uint256[])": {
+        "intent": "Review Set Royalties transaction",
+        "fields": [
+          {
+            "path": "receivers",
+            "label": "Receivers",
+            "format": "raw"
+          },
+          {
+            "path": "basisPoints",
+            "label": "Basis Points",
+            "format": "raw"
+          }
+        ]
+      },
+      "setRoyaltiesExtension(address,address[],uint256[])": {
+        "intent": "Review Set Royalties Extension transaction",
+        "fields": [
+          {
+            "path": "extension",
+            "label": "Extension",
+            "format": "address"
+          },
+          {
+            "path": "receivers",
+            "label": "Receivers",
+            "format": "raw"
+          },
+          {
+            "path": "basisPoints",
+            "label": "Basis Points",
+            "format": "raw"
+          }
+        ]
+      },
+      "setTokenURI(uint256,string)": {
+        "intent": "Review Set Token URI transaction",
+        "fields": [
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          },
+          {
+            "path": "uri",
+            "label": "Uri",
+            "format": "raw"
+          }
+        ]
+      },
+      "setTokenURI(uint256[],string[])": {
+        "intent": "Review Set Token URI transaction",
+        "fields": [
+          {
+            "path": "tokenIds",
+            "label": "Token Ids",
+            "format": "raw"
+          },
+          {
+            "path": "uris",
+            "label": "Uris",
+            "format": "raw"
+          }
+        ]
+      },
+      "setTokenURIExtension(uint256[],string[])": {
+        "intent": "Review Set Token URIExtension transaction",
+        "fields": [
+          {
+            "path": "tokenIds",
+            "label": "Token Ids",
+            "format": "raw"
+          },
+          {
+            "path": "uris",
+            "label": "Uris",
+            "format": "raw"
+          }
+        ]
+      },
+      "setTokenURIExtension(uint256,string)": {
+        "intent": "Review Set Token URIExtension transaction",
+        "fields": [
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          },
+          {
+            "path": "uri",
+            "label": "Uri",
+            "format": "raw"
+          }
+        ]
+      },
+      "setTokenURIPrefix(string)": {
+        "intent": "Review Set Token URIPrefix transaction",
+        "fields": [
+          {
+            "path": "prefix",
+            "label": "Prefix",
+            "format": "raw"
+          }
+        ]
+      },
+      "setTokenURIPrefixExtension(string)": {
+        "intent": "Review Set Token URIPrefix Extension transaction",
+        "fields": [
+          {
+            "path": "prefix",
+            "label": "Prefix",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "unregisterExtension(address)": {
+        "intent": "Review Unregister Extension transaction",
+        "fields": [
+          {
+            "path": "extension",
+            "label": "Extension",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Manifold",
+    "info": {
+      "url": "https://manifold.xyz/",
+      "legalName": "Manifold",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

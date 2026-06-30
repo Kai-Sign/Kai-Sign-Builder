@@ -46,7 +46,9 @@ An open-source tool for building, visualizing, and managing **ERC7730** transact
 
 ## Contract Addresses (Sepolia Testnet)
 
-- **KaiSign Contract**: `0x4dFEA0C2B472a14cD052a8f9DF9f19fa5CF03719`
+- **KaiSign Registry (Sepolia)**: `0x655084b6A0f2Ee600bd31A71820b5E068b7870d0`
+
+See [MERKLE.md](MERKLE.md) to rebuild the complete metadata set locally and verify it against the on-chain Merkle root. This works without trusting or running the KaiSign backend; users can consume the verified metadata from `metadata/`, `../kaisign-extension`, MCP, or any other client.
 
 ## Getting Started
 

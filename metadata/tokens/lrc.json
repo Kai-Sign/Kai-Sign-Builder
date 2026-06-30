@@ -1,0 +1,307 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xbbbbca6a901c926f240b89eacb641d8aec7aeafd",
+      "chainId": 1,
+      "name": "Loopring",
+      "symbol": "LRC",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "selector": "0x42966c68",
+          "inputs": [
+            {
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "decreaseApproval",
+          "selector": "0x66188463",
+          "inputs": [
+            {
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "name": "_subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burnFrom",
+          "selector": "0x79cc6790",
+          "inputs": [
+            {
+              "name": "_owner",
+              "type": "address"
+            },
+            {
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "batchTransfer",
+          "selector": "0x88d695b2",
+          "inputs": [
+            {
+              "name": "accounts",
+              "type": "address[]"
+            },
+            {
+              "name": "amounts",
+              "type": "uint256[]"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseApproval",
+          "selector": "0xd73dd623",
+          "inputs": [
+            {
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "name": "_addedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} LRC",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "LRC"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} LRC",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "LRC"
+            }
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          }
+        ]
+      },
+      "burn(uint256)": {
+        "intent": "Review Burn transaction",
+        "fields": [
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          }
+        ]
+      },
+      "decreaseApproval(address,uint256)": {
+        "intent": "Review Decrease Approval transaction",
+        "fields": [
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_subtractedValue",
+            "label": " subtracted Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "burnFrom(address,uint256)": {
+        "intent": "Review Burn From transaction",
+        "fields": [
+          {
+            "path": "_owner",
+            "label": " owner",
+            "format": "address"
+          },
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          }
+        ]
+      },
+      "batchTransfer(address[],uint256[])": {
+        "intent": "Review Batch Transfer transaction",
+        "fields": [
+          {
+            "path": "accounts",
+            "label": "Accounts",
+            "format": "raw"
+          },
+          {
+            "path": "amounts",
+            "label": "Amounts",
+            "format": "raw"
+          }
+        ]
+      },
+      "increaseApproval(address,uint256)": {
+        "intent": "Review Increase Approval transaction",
+        "fields": [
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_addedValue",
+            "label": " added Value",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

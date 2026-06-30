@@ -1,0 +1,1 @@
+/Users/muhammadaushijri/Desktop/git/kaisign/CLAUDE.md

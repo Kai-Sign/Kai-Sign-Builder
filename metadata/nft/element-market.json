@@ -1,0 +1,129 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x20f780a973856b93f63670377900c1d2a50a77c4",
+      "chainId": 1,
+      "name": "Element Market (Ethereum)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "buyFromListingWithERC20",
+          "selector": "0x78fbb2e6",
+          "inputs": [
+            {
+              "name": "params",
+              "type": "tuple",
+              "components": [
+                { "name": "maker", "type": "address" },
+                { "name": "taker", "type": "address" },
+                { "name": "expiry", "type": "uint256" },
+                { "name": "nonce", "type": "uint256" },
+                { "name": "erc20Token", "type": "address" },
+                { "name": "erc20TokenAmount", "type": "uint256" },
+                { "name": "nftToken", "type": "address" },
+                { "name": "nftTokenId", "type": "uint256" },
+                { "name": "nftTokenAmount", "type": "uint128" },
+                { "name": "hashNonce", "type": "uint256" }
+              ]
+            },
+            { "name": "signature", "type": "bytes" }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "buyFromListingWithETH",
+          "selector": "0x5b34b966",
+          "inputs": [
+            {
+              "name": "params",
+              "type": "tuple",
+              "components": [
+                { "name": "maker", "type": "address" },
+                { "name": "taker", "type": "address" },
+                { "name": "expiry", "type": "uint256" },
+                { "name": "nonce", "type": "uint256" },
+                { "name": "erc20Token", "type": "address" },
+                { "name": "erc20TokenAmount", "type": "uint256" },
+                { "name": "nftToken", "type": "address" },
+                { "name": "nftTokenId", "type": "uint256" },
+                { "name": "nftTokenAmount", "type": "uint128" },
+                { "name": "hashNonce", "type": "uint256" }
+              ]
+            },
+            { "name": "signature", "type": "bytes" }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "cancelOrder",
+          "selector": "0xe2ad025a",
+          "inputs": [
+            {
+              "name": "order",
+              "type": "tuple",
+              "components": [
+                { "name": "maker", "type": "address" },
+                { "name": "taker", "type": "address" },
+                { "name": "expiry", "type": "uint256" },
+                { "name": "nonce", "type": "uint256" },
+                { "name": "erc20Token", "type": "address" },
+                { "name": "erc20TokenAmount", "type": "uint256" },
+                { "name": "nftToken", "type": "address" },
+                { "name": "nftTokenId", "type": "uint256" },
+                { "name": "nftTokenAmount", "type": "uint128" },
+                { "name": "hashNonce", "type": "uint256" }
+              ]
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "buyFromListingWithERC20(tuple,bytes)": {
+        "intent": "Buy NFT on Element Market with ERC-20",
+        "interpolatedIntent": "Buy token #{params.nftTokenId} from {params.nftToken} for {params.erc20TokenAmount} {params.erc20Token} on Element",
+        "fields": [
+          { "path": "params.nftToken", "label": "NFT Contract", "format": "addressName" },
+          { "path": "params.nftTokenId", "label": "Token ID", "format": "raw" },
+          { "path": "params.erc20Token", "label": "Payment Token", "format": "addressName" },
+          { "path": "params.erc20TokenAmount", "label": "Price", "format": "tokenAmount", "params": { "tokenPath": "params.erc20Token" } },
+          { "path": "params.maker", "label": "Seller", "format": "addressName" },
+          { "path": "params.expiry", "label": "Listing Expiry", "format": "timestamp" }
+        ]
+      },
+      "buyFromListingWithETH(tuple,bytes)": {
+        "intent": "Buy NFT on Element Market with ETH",
+        "interpolatedIntent": "Buy token #{params.nftTokenId} from {params.nftToken} on Element Market",
+        "fields": [
+          { "path": "params.nftToken", "label": "NFT Contract", "format": "addressName" },
+          { "path": "params.nftTokenId", "label": "Token ID", "format": "raw" },
+          { "path": "params.erc20TokenAmount", "label": "Price (ETH)", "format": "ethAmount" },
+          { "path": "params.maker", "label": "Seller", "format": "addressName" },
+          { "path": "params.expiry", "label": "Listing Expiry", "format": "timestamp" }
+        ]
+      },
+      "cancelOrder(tuple)": {
+        "intent": "Cancel Element Market NFT listing",
+        "interpolatedIntent": "Cancel Element Market listing for token #{order.nftTokenId}",
+        "fields": [
+          { "path": "order.nftToken", "label": "NFT Contract", "format": "addressName" },
+          { "path": "order.nftTokenId", "label": "Token ID", "format": "raw" }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Element Market",
+    "info": {
+      "url": "https://element.market/",
+      "legalName": "Element Market",
+      "lastUpdate": "2026-03-27"
+    }
+  }
+}

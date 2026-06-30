@@ -1,0 +1,307 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x7de38680f321ee4ba378a9f484f6e2e6439c441a",
+      "chainId": 1,
+      "name": "Fluid VaultT2_DEX-WBTC-cbBTC_USDC_Operate (mainnet)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "operate",
+          "selector": "0x032d2276",
+          "inputs": [
+            {
+              "name": "nftId_",
+              "type": "uint256"
+            },
+            {
+              "name": "newCol_",
+              "type": "int256"
+            },
+            {
+              "name": "newDebt_",
+              "type": "int256"
+            },
+            {
+              "name": "to_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x6e553f65",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xb460af94",
+          "inputs": [
+            {
+              "name": "assets_",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver_",
+              "type": "address"
+            },
+            {
+              "name": "owner_",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "operate",
+          "selector": "0x10259f26",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "nftId_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256",
+              "name": "newColToken0_",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "newColToken1_",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "colSharesMinMax_",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "newDebt_",
+              "type": "int256"
+            },
+            {
+              "internalType": "address",
+              "name": "to_",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256",
+              "name": "",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "",
+              "type": "int256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "operatePerfect",
+          "selector": "0x0931bf2d",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "nftId_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256",
+              "name": "perfectColShares_",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "colToken0MinMax_",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "colToken1MinMax_",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "newDebt_",
+              "type": "int256"
+            },
+            {
+              "internalType": "address",
+              "name": "to_",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256[]",
+              "name": "r_",
+              "type": "int256[]"
+            }
+          ],
+          "stateMutability": "payable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "operate(uint256,int256,int256,address)": {
+        "intent": "Manage Fluid vault position",
+        "fields": [
+          {
+            "path": "nftId_",
+            "label": "Position ID",
+            "format": "raw"
+          },
+          {
+            "path": "newCol_",
+            "label": "Collateral Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "newDebt_",
+            "label": "Debt Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "deposit(uint256,address)": {
+        "intent": "Deposit {assets_} to Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Withdraw {assets_} from Fluid",
+        "fields": [
+          {
+            "path": "assets_",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "receiver_",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "owner_",
+            "label": "Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "operate(uint256,int256,int256,int256,int256,address)": {
+        "intent": "Review Operate transaction",
+        "fields": [
+          {
+            "path": "nftId_",
+            "label": "Nft Id ",
+            "format": "raw"
+          },
+          {
+            "path": "newColToken0_",
+            "label": "New Col Token0 ",
+            "format": "raw"
+          },
+          {
+            "path": "newColToken1_",
+            "label": "New Col Token1 ",
+            "format": "raw"
+          },
+          {
+            "path": "colSharesMinMax_",
+            "label": "Col Shares Min Max ",
+            "format": "raw"
+          },
+          {
+            "path": "newDebt_",
+            "label": "New Debt ",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "To ",
+            "format": "address"
+          }
+        ]
+      },
+      "operatePerfect(uint256,int256,int256,int256,int256,address)": {
+        "intent": "Review Operate Perfect transaction",
+        "fields": [
+          {
+            "path": "nftId_",
+            "label": "Nft Id ",
+            "format": "raw"
+          },
+          {
+            "path": "perfectColShares_",
+            "label": "Perfect Col Shares ",
+            "format": "raw"
+          },
+          {
+            "path": "colToken0MinMax_",
+            "label": "Col Token0 Min Max ",
+            "format": "raw"
+          },
+          {
+            "path": "colToken1MinMax_",
+            "label": "Col Token1 Min Max ",
+            "format": "raw"
+          },
+          {
+            "path": "newDebt_",
+            "label": "New Debt ",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "To ",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

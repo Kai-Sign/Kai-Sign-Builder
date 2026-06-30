@@ -1,0 +1,75 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "GoldfinchSeniorPool",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x8481a6EbAf5c7DABc3F7e09e44A89531fd31F822" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/goldfinch/abis/0x8481a6ebaa5038d1bf22b01ce4c70a1b5c2c4f0.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "Goldfinch",
+    "info": {
+      "legalName": "Goldfinch Finance",
+      "url": "https://goldfinch.finance"
+    },
+    "constants": {
+      "USDCaddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "FIDUaddress": "0x6a445E9F40e0b97c92d0b8a3366cEF1d67F700BF",
+      "GFIaddress": "0xdab396cCF3d84Cf2D07C4454e10C8A6F5b008D2b"
+    }
+  },
+  "display": {
+    "formats": {
+      "deposit(uint256)": {
+        "intent": "Deposit USDC to Goldfinch Senior Pool",
+        "fields": [
+          {
+            "path": "#.amount",
+            "label": "USDC Amount",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.USDCaddress" }
+          }
+        ],
+        "required": ["#.amount"]
+      },
+      "requestWithdrawal(uint256)": {
+        "intent": "Request FIDU withdrawal",
+        "fields": [
+          {
+            "path": "#.fiduAmount",
+            "label": "FIDU Amount",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.FIDUaddress" }
+          }
+        ],
+        "required": ["#.fiduAmount"]
+      },
+      "claimWithdrawalRequest(uint256)": {
+        "intent": "Claim withdrawal request",
+        "fields": [
+          {
+            "path": "#.tokenId",
+            "label": "Request Token ID",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.tokenId"]
+      },
+      "withdrawInFidu(uint256)": {
+        "intent": "Withdraw in FIDU",
+        "fields": [
+          {
+            "path": "#.fiduAmount",
+            "label": "FIDU Amount",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.FIDUaddress" }
+          }
+        ],
+        "required": ["#.fiduAmount"]
+      }
+    }
+  }
+}

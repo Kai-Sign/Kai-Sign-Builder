@@ -1,0 +1,94 @@
+{
+  "context": {
+    "eip712": {
+      "deployments": [
+        { "chainId": 1, "address": "0x9008d19f58aabd9ed0d60971565aa8510560ab41" }
+      ],
+      "domain": {
+        "name": "Gnosis Protocol",
+        "version": "v2",
+        "chainId": 1,
+        "verifyingContract": "0x9008D19f58AAbD9eD0D60971565AA8510560ab41"
+      },
+      "schemas": [
+        {
+          "primaryType": "Order",
+          "types": {
+            "Order": [
+              { "name": "sellToken", "type": "address" },
+              { "name": "buyToken", "type": "address" },
+              { "name": "receiver", "type": "address" },
+              { "name": "sellAmount", "type": "uint256" },
+              { "name": "buyAmount", "type": "uint256" },
+              { "name": "validTo", "type": "uint32" },
+              { "name": "appData", "type": "bytes32" },
+              { "name": "feeAmount", "type": "uint256" },
+              { "name": "kind", "type": "bytes32" },
+              { "name": "partiallyFillable", "type": "bool" },
+              { "name": "sellTokenBalance", "type": "bytes32" },
+              { "name": "buyTokenBalance", "type": "bytes32" }
+            ]
+          },
+          "hash": "0xd5a25ba2e97094ad7d83dc28a6572da797d6b3e7fc6663bd93efb789fc17e489"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "Order": {
+        "intent": "Sign CoW Protocol order",
+        "fields": [
+          {
+            "path": "#.sellToken",
+            "label": "Sell Token",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null }
+          },
+          {
+            "path": "#.buyToken",
+            "label": "Buy Token",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null }
+          },
+          {
+            "path": "#.receiver",
+            "label": "Receiver",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] }
+          },
+          {
+            "path": "#.sellAmount",
+            "label": "Sell Amount",
+            "format": "tokenAmount",
+            "params": { "token": "#.sellToken" }
+          },
+          {
+            "path": "#.buyAmount",
+            "label": "Buy Amount",
+            "format": "tokenAmount",
+            "params": { "token": "#.buyToken" }
+          },
+          {
+            "path": "#.feeAmount",
+            "label": "Fee Amount",
+            "format": "tokenAmount",
+            "params": { "token": "#.sellToken" }
+          },
+          {
+            "path": "#.validTo",
+            "label": "Valid Until",
+            "format": "date",
+            "params": { "encoding": "timestamp" }
+          },
+          {
+            "path": "#.partiallyFillable",
+            "label": "Partially Fillable",
+            "format": "raw"
+          }
+        ],
+        "required": ["#.sellToken", "#.buyToken", "#.receiver", "#.sellAmount", "#.buyAmount", "#.feeAmount", "#.validTo", "#.partiallyFillable"]
+      }
+    }
+  }
+}

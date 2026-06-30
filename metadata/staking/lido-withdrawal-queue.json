@@ -1,0 +1,936 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x889edc2edab5f40e902b864ad4d7ade8e412f9b1",
+      "chainId": 1,
+      "name": "Lido Withdrawal Queue",
+      "abi": [
+        {
+          "type": "function",
+          "name": "requestWithdrawals",
+          "selector": "0xd6681042",
+          "inputs": [
+            {
+              "name": "_amounts",
+              "type": "uint256[]"
+            },
+            {
+              "name": "_owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "requestWithdrawalsWstETH",
+          "selector": "0x19aa6257",
+          "inputs": [
+            {
+              "name": "_amounts",
+              "type": "uint256[]"
+            },
+            {
+              "name": "_owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimWithdrawals",
+          "selector": "0xe3afe0a3",
+          "inputs": [
+            {
+              "name": "_requestIds",
+              "type": "uint256[]"
+            },
+            {
+              "name": "_hints",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimWithdrawal",
+          "selector": "0xf8444436",
+          "inputs": [
+            {
+              "name": "_requestId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "proxy__changeAdmin",
+          "selector": "0x773f5be8",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "proxy__ossify",
+          "selector": "0xadcbc237",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "proxy__upgradeTo",
+          "selector": "0x3ebdd0eb",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "proxy__upgradeToAndCall",
+          "selector": "0xd2f6ed4d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation_",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "setupCalldata_",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bool",
+              "name": "forceCall_",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_requestId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimWithdrawalsTo",
+          "selector": "0x5e7eead9",
+          "inputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "_requestIds",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_hints",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "address",
+              "name": "_recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "finalize",
+          "selector": "0xb6013cef",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_lastRequestIdToBeFinalized",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_maxShareRate",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "selector": "0x2f2ff15d",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xc4d66de8",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_admin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "onOracleReport",
+          "selector": "0x96992fed",
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "_isBunkerModeNow",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_bunkerStartTimestamp",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_currentReportTimestamp",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pauseFor",
+          "selector": "0xf3f449c7",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_duration",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pauseUntil",
+          "selector": "0xabe9cfc8",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_pauseUntilInclusive",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "selector": "0x36568abe",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "requestWithdrawalsWithPermit",
+          "selector": "0xacf41e4d",
+          "inputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "_amounts",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "address",
+              "name": "_owner",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "value",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "s",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct WithdrawalQueue.PermitInput",
+              "name": "_permit",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "requestIds",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "requestWithdrawalsWstETHWithPermit",
+          "selector": "0x7951b76f",
+          "inputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "_amounts",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "address",
+              "name": "_owner",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "value",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "s",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct WithdrawalQueue.PermitInput",
+              "name": "_permit",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "requestIds",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "resume",
+          "selector": "0x046f7da2",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "selector": "0xd547741f",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "safeTransferFrom",
+          "selector": "0x42842e0e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_requestId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "safeTransferFrom",
+          "selector": "0xb88d4fde",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_requestId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setApprovalForAll",
+          "selector": "0xa22cb465",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_operator",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "_approved",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setBaseURI",
+          "selector": "0x55f804b3",
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "_baseURI",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setNFTDescriptorAddress",
+          "selector": "0x92b18a47",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_nftDescriptorAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_requestId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "requestWithdrawals(uint256[],address)": {
+        "intent": "Request stETH withdrawal from Lido",
+        "interpolatedIntent": "Request stETH withdrawal from Lido for {_owner}",
+        "fields": [
+          {
+            "path": "_amounts",
+            "label": "Withdrawal Amounts",
+            "format": "raw"
+          },
+          {
+            "path": "_owner",
+            "label": "Owner",
+            "format": "addressName"
+          }
+        ]
+      },
+      "requestWithdrawalsWstETH(uint256[],address)": {
+        "intent": "Request wstETH withdrawal from Lido",
+        "interpolatedIntent": "Request wstETH withdrawal from Lido for {_owner}",
+        "fields": [
+          {
+            "path": "_amounts",
+            "label": "Withdrawal Amounts",
+            "format": "raw"
+          },
+          {
+            "path": "_owner",
+            "label": "Owner",
+            "format": "addressName"
+          }
+        ]
+      },
+      "claimWithdrawals(uint256[],uint256[])": {
+        "intent": "Claim Lido withdrawals",
+        "fields": [
+          {
+            "path": "_requestIds",
+            "label": "Request IDs",
+            "format": "raw"
+          },
+          {
+            "path": "_hints",
+            "label": "Hints",
+            "format": "raw"
+          }
+        ]
+      },
+      "claimWithdrawal(uint256)": {
+        "intent": "Claim Lido withdrawal",
+        "interpolatedIntent": "Claim Lido withdrawal #{_requestId}",
+        "fields": [
+          {
+            "path": "_requestId",
+            "label": "Request ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "proxy__changeAdmin(address)": {
+        "intent": "Review Proxy change Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin_",
+            "label": "New Admin ",
+            "format": "address"
+          }
+        ]
+      },
+      "proxy__ossify()": {
+        "intent": "Review Proxy ossify transaction",
+        "fields": []
+      },
+      "proxy__upgradeTo(address)": {
+        "intent": "Review Proxy upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation_",
+            "label": "New Implementation ",
+            "format": "address"
+          }
+        ]
+      },
+      "proxy__upgradeToAndCall(address,bytes,bool)": {
+        "intent": "Review Proxy upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation_",
+            "label": "New Implementation ",
+            "format": "address"
+          },
+          {
+            "path": "setupCalldata_",
+            "label": "Setup Calldata ",
+            "format": "hex"
+          },
+          {
+            "path": "forceCall_",
+            "label": "Force Call ",
+            "format": "boolean"
+          }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Review Approve transaction",
+        "fields": [
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_requestId",
+            "label": " request Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "claimWithdrawalsTo(uint256[],uint256[],address)": {
+        "intent": "Review Claim Withdrawals To transaction",
+        "fields": [
+          {
+            "path": "_requestIds",
+            "label": " request Ids",
+            "format": "raw"
+          },
+          {
+            "path": "_hints",
+            "label": " hints",
+            "format": "raw"
+          },
+          {
+            "path": "_recipient",
+            "label": " recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "finalize(uint256,uint256)": {
+        "intent": "Review Finalize transaction",
+        "fields": [
+          {
+            "path": "_lastRequestIdToBeFinalized",
+            "label": " last Request Id To Be Finalized",
+            "format": "raw"
+          },
+          {
+            "path": "_maxShareRate",
+            "label": " max Share Rate",
+            "format": "raw"
+          }
+        ]
+      },
+      "grantRole(bytes32,address)": {
+        "intent": "Review Grant Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "initialize(address)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_admin",
+            "label": " admin",
+            "format": "address"
+          }
+        ]
+      },
+      "onOracleReport(bool,uint256,uint256)": {
+        "intent": "Review On Oracle Report transaction",
+        "fields": [
+          {
+            "path": "_isBunkerModeNow",
+            "label": " is Bunker Mode Now",
+            "format": "boolean"
+          },
+          {
+            "path": "_bunkerStartTimestamp",
+            "label": " bunker Start Timestamp",
+            "format": "raw"
+          },
+          {
+            "path": "_currentReportTimestamp",
+            "label": " current Report Timestamp",
+            "format": "raw"
+          }
+        ]
+      },
+      "pauseFor(uint256)": {
+        "intent": "Review Pause For transaction",
+        "fields": [
+          {
+            "path": "_duration",
+            "label": " duration",
+            "format": "raw"
+          }
+        ]
+      },
+      "pauseUntil(uint256)": {
+        "intent": "Review Pause Until transaction",
+        "fields": [
+          {
+            "path": "_pauseUntilInclusive",
+            "label": " pause Until Inclusive",
+            "format": "raw"
+          }
+        ]
+      },
+      "renounceRole(bytes32,address)": {
+        "intent": "Review Renounce Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "requestWithdrawalsWithPermit(uint256[],address,(uint256,uint256,uint8,bytes32,bytes32))": {
+        "intent": "Review Request Withdrawals With Permit transaction",
+        "fields": [
+          {
+            "path": "_amounts",
+            "label": " amounts",
+            "format": "raw"
+          },
+          {
+            "path": "_owner",
+            "label": " owner",
+            "format": "address"
+          },
+          {
+            "path": "_permit",
+            "label": " permit",
+            "format": "raw"
+          }
+        ]
+      },
+      "requestWithdrawalsWstETHWithPermit(uint256[],address,(uint256,uint256,uint8,bytes32,bytes32))": {
+        "intent": "Review Request Withdrawals Wst ETHWith Permit transaction",
+        "fields": [
+          {
+            "path": "_amounts",
+            "label": " amounts",
+            "format": "raw"
+          },
+          {
+            "path": "_owner",
+            "label": " owner",
+            "format": "address"
+          },
+          {
+            "path": "_permit",
+            "label": " permit",
+            "format": "raw"
+          }
+        ]
+      },
+      "resume()": {
+        "intent": "Review Resume transaction",
+        "fields": []
+      },
+      "revokeRole(bytes32,address)": {
+        "intent": "Review Revoke Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "safeTransferFrom(address,address,uint256)": {
+        "intent": "Review Safe Transfer From transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_requestId",
+            "label": " request Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "safeTransferFrom(address,address,uint256,bytes)": {
+        "intent": "Review Safe Transfer From transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_requestId",
+            "label": " request Id",
+            "format": "raw"
+          },
+          {
+            "path": "_data",
+            "label": " data",
+            "format": "hex"
+          }
+        ]
+      },
+      "setApprovalForAll(address,bool)": {
+        "intent": "Review Set Approval For All transaction",
+        "fields": [
+          {
+            "path": "_operator",
+            "label": " operator",
+            "format": "address"
+          },
+          {
+            "path": "_approved",
+            "label": " approved",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setBaseURI(string)": {
+        "intent": "Review Set Base URI transaction",
+        "fields": [
+          {
+            "path": "_baseURI",
+            "label": " base URI",
+            "format": "raw"
+          }
+        ]
+      },
+      "setNFTDescriptorAddress(address)": {
+        "intent": "Review Set NFTDescriptor Address transaction",
+        "fields": [
+          {
+            "path": "_nftDescriptorAddress",
+            "label": " nft Descriptor Address",
+            "format": "address"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_requestId",
+            "label": " request Id",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

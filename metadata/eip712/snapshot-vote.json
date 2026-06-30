@@ -1,0 +1,44 @@
+{
+  "context": {
+    "eip712": {
+      "domain": {
+        "name": "snapshot",
+        "version": "0.1.4"
+      },
+      "primaryType": "Vote",
+      "types": {
+        "EIP712Domain": [
+          { "name": "name", "type": "string" },
+          { "name": "version", "type": "string" }
+        ],
+        "Vote": [
+          { "name": "from", "type": "address" },
+          { "name": "space", "type": "string" },
+          { "name": "timestamp", "type": "uint64" },
+          { "name": "proposal", "type": "bytes32" },
+          { "name": "choice", "type": "uint32" },
+          { "name": "reason", "type": "string" },
+          { "name": "app", "type": "string" },
+          { "name": "metadata", "type": "string" }
+        ]
+      },
+      "name": "Snapshot Vote",
+      "description": "Off-chain governance vote via Snapshot"
+    }
+  },
+  "display": {
+    "formats": {
+      "Vote": {
+        "intent": "Cast off-chain governance vote via Snapshot",
+        "fields": [
+          { "path": "from", "label": "Voter", "format": "address" },
+          { "path": "space", "label": "Space", "format": "raw" },
+          { "path": "proposal", "label": "Proposal", "format": "raw" },
+          { "path": "choice", "label": "Choice", "format": "raw" },
+          { "path": "reason", "label": "Reason", "format": "raw" },
+          { "path": "timestamp", "label": "Timestamp", "format": "timestamp" }
+        ]
+      }
+    }
+  }
+}

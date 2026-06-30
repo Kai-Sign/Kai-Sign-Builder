@@ -1,0 +1,46 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "Sky USDS Farm",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x0650caf159c5a49f711e8169d4336ecb9b950275" }
+      ],
+      "abi": "https://etherscan.io/address/0x0650caf159c5a49f711e8169d4336ecb9b950275#code"
+    }
+  },
+  "metadata": {
+    "owner": "Sky Protocol",
+    "info": { "legalName": "Sky Protocol (formerly MakerDAO)", "url": "https://sky.money/" },
+    "constants": {
+      "SKY": "0x56072C95FAA701256059aa122697B133aDEd9279",
+      "USDS": "0xdC035D45d973E3EC169d2276DDab16f1e407384F"
+    }
+  },
+  "display": {
+    "formats": {
+      "stake(uint256)": {
+        "intent": "Stake SKY for USDS Rewards",
+        "fields": [
+          { "path": "#.wad", "label": "SKY Amount", "format": "tokenAmount", "params": { "token": "$.metadata.constants.SKY" } }
+        ],
+        "required": ["#.wad"],
+        "excluded": []
+      },
+      "withdraw(uint256)": {
+        "intent": "Withdraw Staked SKY",
+        "fields": [
+          { "path": "#.wad", "label": "SKY Amount", "format": "tokenAmount", "params": { "token": "$.metadata.constants.SKY" } }
+        ],
+        "required": ["#.wad"],
+        "excluded": []
+      },
+      "getReward()": {
+        "intent": "Claim USDS Rewards",
+        "fields": [],
+        "required": [],
+        "excluded": []
+      }
+    }
+  }
+}

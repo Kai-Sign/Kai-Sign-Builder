@@ -1,0 +1,234 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x61ffe014ba17989e743c5f6cb21bf9697530b21e",
+      "chainId": 1,
+      "name": "Uniswap Quoter V2",
+      "abi": [
+        {
+          "type": "function",
+          "name": "quoteExactInputSingle",
+          "selector": "0xc6a5026a",
+          "inputs": [
+            {
+              "name": "params",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "name": "tokenOut",
+                  "type": "address"
+                },
+                {
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "name": "fee",
+                  "type": "uint24"
+                },
+                {
+                  "name": "sqrtPriceLimitX96",
+                  "type": "uint160"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "quoteExactInput",
+          "selector": "0xcdca1753",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "path",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint160[]",
+              "name": "sqrtPriceX96AfterList",
+              "type": "uint160[]"
+            },
+            {
+              "internalType": "uint32[]",
+              "name": "initializedTicksCrossedList",
+              "type": "uint32[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "gasEstimate",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "quoteExactOutput",
+          "selector": "0x2f80bb1d",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "path",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint160[]",
+              "name": "sqrtPriceX96AfterList",
+              "type": "uint160[]"
+            },
+            {
+              "internalType": "uint32[]",
+              "name": "initializedTicksCrossedList",
+              "type": "uint32[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "gasEstimate",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "quoteExactOutputSingle",
+          "selector": "0xbd21704a",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenOut",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint24",
+                  "name": "fee",
+                  "type": "uint24"
+                },
+                {
+                  "internalType": "uint160",
+                  "name": "sqrtPriceLimitX96",
+                  "type": "uint160"
+                }
+              ],
+              "internalType": "struct IQuoterV2.QuoteExactOutputSingleParams",
+              "name": "params",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint160",
+              "name": "sqrtPriceX96After",
+              "type": "uint160"
+            },
+            {
+              "internalType": "uint32",
+              "name": "initializedTicksCrossed",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "gasEstimate",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "quoteExactInputSingle((address,address,uint256,uint24,uint160))": {
+        "intent": "Quote exact input swap",
+        "fields": []
+      },
+      "quoteExactInput(bytes,uint256)": {
+        "intent": "Review Quote Exact Input transaction",
+        "fields": [
+          {
+            "path": "path",
+            "label": "Path",
+            "format": "hex"
+          },
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          }
+        ]
+      },
+      "quoteExactOutput(bytes,uint256)": {
+        "intent": "Review Quote Exact Output transaction",
+        "fields": [
+          {
+            "path": "path",
+            "label": "Path",
+            "format": "hex"
+          },
+          {
+            "path": "amountOut",
+            "label": "Amount Out",
+            "format": "raw"
+          }
+        ]
+      },
+      "quoteExactOutputSingle((address,address,uint256,uint24,uint160))": {
+        "intent": "Review Quote Exact Output Single transaction",
+        "fields": [
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

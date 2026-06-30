@@ -1,0 +1,128 @@
+{
+  "$schema": "../../specs/erc7730-v2.schema.json",
+  "context": {
+    "$id": "QuickSwapV3Router",
+    "contract": {
+      "deployments": [
+        { "chainId": 137, "address": "0xf5b509bb0909a69b1c207e495f687a596c168e12" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/quickswap/abis/0xf5b509bb0909a69b1c207e495f687a596c168e12.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "QuickSwap",
+    "contractName": "QuickSwap V3 Smart Router",
+    "info": { "url": "https://quickswap.exchange" },
+    "constants": {
+      "WMATICaddress": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270"
+    }
+  },
+  "display": {
+    "formats": {
+      "exactInputSingle((address,address,address,uint256,uint256,uint160))": {
+        "intent": "Swap exact input on QuickSwap V3",
+        "fields": [
+          {
+            "path": "#.params.tokenIn",
+            "label": "Token In",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.params.tokenOut",
+            "label": "Token Out",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.params.amountIn",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.params.tokenIn" },
+            "visible": "always"
+          },
+          {
+            "path": "#.params.amountOutMinimum",
+            "label": "Min Amount Out",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.params.tokenOut" },
+            "visible": "always"
+          },
+          {
+            "path": "#.params.recipient",
+            "label": "Recipient",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          }
+        ]
+      },
+      "exactInput((bytes,address,uint256,uint256))": {
+        "intent": "Swap exact input multi-hop on QuickSwap V3",
+        "fields": [
+          {
+            "path": "#.params.recipient",
+            "label": "Recipient",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.params.amountIn",
+            "label": "Amount In",
+            "format": "raw",
+            "visible": "always"
+          },
+          {
+            "path": "#.params.amountOutMinimum",
+            "label": "Min Amount Out",
+            "format": "raw",
+            "visible": "always"
+          }
+        ]
+      },
+      "exactOutputSingle((address,address,address,uint256,uint256,uint160))": {
+        "intent": "Swap exact output on QuickSwap V3",
+        "fields": [
+          {
+            "path": "#.params.tokenIn",
+            "label": "Token In",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.params.tokenOut",
+            "label": "Token Out",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.params.amountOut",
+            "label": "Amount Out",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.params.tokenOut" },
+            "visible": "always"
+          },
+          {
+            "path": "#.params.amountInMaximum",
+            "label": "Max Amount In",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.params.tokenIn" },
+            "visible": "always"
+          },
+          {
+            "path": "#.params.recipient",
+            "label": "Recipient",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          }
+        ]
+      }
+    }
+  }
+}

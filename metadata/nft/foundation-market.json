@@ -1,0 +1,788 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xcda72070e455bb31c7690a170224ce43623d0b6f",
+      "chainId": 1,
+      "name": "Foundation NFT Market",
+      "abi": [
+        {
+          "type": "function",
+          "name": "setBuyPrice",
+          "selector": "0xaa56f926",
+          "inputs": [
+            {
+              "name": "nftContract",
+              "type": "address"
+            },
+            {
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "name": "price",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "buyV2",
+          "selector": "0x1ec5c2e0",
+          "inputs": [
+            {
+              "name": "nftContract",
+              "type": "address"
+            },
+            {
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "name": "maxPrice",
+              "type": "uint256"
+            },
+            {
+              "name": "referrer",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "makeOfferV2",
+          "selector": "0x83e57b3a",
+          "inputs": [
+            {
+              "name": "nftContract",
+              "type": "address"
+            },
+            {
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "name": "duration",
+              "type": "uint256"
+            },
+            {
+              "name": "referrer",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "cancelBuyPrice",
+          "selector": "0x5f6fcf26",
+          "inputs": [
+            {
+              "name": "nftContract",
+              "type": "address"
+            },
+            {
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "createAuction",
+          "selector": "0x612e0227",
+          "inputs": [
+            {
+              "name": "nftContract",
+              "type": "address"
+            },
+            {
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "name": "reservePrice",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "placeBid",
+          "selector": "0x598647f8",
+          "inputs": [
+            {
+              "name": "auctionId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "admin",
+          "selector": "0xf851a440",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeAdmin",
+          "selector": "0x8f283970",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "implementation",
+          "selector": "0x5c60da1b",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x3659cfe6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "acceptOffer",
+          "selector": "0x29e0e160",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "nftContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "offerFrom",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "buyV2",
+          "selector": "0xb01ef608",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "nftContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxPrice",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable",
+              "name": "referrer",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "cancelBuyPrice",
+          "selector": "0x21561935",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "nftContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "cancelReserveAuction",
+          "selector": "0x21506fff",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "auctionId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "createReserveAuction",
+          "selector": "0xb3a4074e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "nftContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "reservePrice",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "duration",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "auctionId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "finalizeReserveAuction",
+          "selector": "0x7430e0c6",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "auctionId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xfe4b84df",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "networkAuctionIdOffset",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "makeOfferV2",
+          "selector": "0x614b151c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "nftContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable",
+              "name": "referrer",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "expiration",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "placeBidV2",
+          "selector": "0xb6aff8c1",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "auctionId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable",
+              "name": "referrer",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "setBuyPrice",
+          "selector": "0x798bac8d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "nftContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "price",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setSaleStartsAt",
+          "selector": "0x4eb12317",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "nftContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "saleStartsAt",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateReserveAuction",
+          "selector": "0x03ec16d7",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "auctionId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "reservePrice",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "setBuyPrice(address,uint256,uint256)": {
+        "intent": "List NFT on Foundation",
+        "interpolatedIntent": "List NFT #{tokenId} from {nftContract} for {price} ETH",
+        "fields": [
+          {
+            "path": "nftContract",
+            "label": "NFT Contract",
+            "format": "addressName"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          },
+          {
+            "path": "price",
+            "label": "Price",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "ETH"
+            }
+          }
+        ]
+      },
+      "buyV2(address,uint256,uint256,address)": {
+        "intent": "Buy NFT on Foundation",
+        "interpolatedIntent": "Buy NFT #{tokenId} from {nftContract} for up to {maxPrice} ETH",
+        "fields": [
+          {
+            "path": "nftContract",
+            "label": "NFT Contract",
+            "format": "addressName"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          },
+          {
+            "path": "maxPrice",
+            "label": "Max Price",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "ETH"
+            }
+          },
+          {
+            "path": "referrer",
+            "label": "Referrer",
+            "format": "addressName"
+          }
+        ]
+      },
+      "makeOfferV2(address,uint256,uint256,address)": {
+        "intent": "Make offer on Foundation NFT",
+        "interpolatedIntent": "Make offer on NFT #{tokenId} from {nftContract}",
+        "fields": [
+          {
+            "path": "nftContract",
+            "label": "NFT Contract",
+            "format": "addressName"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          },
+          {
+            "path": "duration",
+            "label": "Duration (seconds)",
+            "format": "raw"
+          }
+        ]
+      },
+      "cancelBuyPrice(address,uint256)": {
+        "intent": "Cancel Foundation NFT listing",
+        "interpolatedIntent": "Cancel listing for NFT #{tokenId} from {nftContract}",
+        "fields": [
+          {
+            "path": "nftContract",
+            "label": "NFT Contract",
+            "format": "addressName"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "createAuction(address,uint256,uint256)": {
+        "intent": "Create Foundation NFT auction",
+        "interpolatedIntent": "Auction NFT #{tokenId} from {nftContract} with reserve {reservePrice} ETH",
+        "fields": [
+          {
+            "path": "nftContract",
+            "label": "NFT Contract",
+            "format": "addressName"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          },
+          {
+            "path": "reservePrice",
+            "label": "Reserve Price",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "ETH"
+            }
+          }
+        ]
+      },
+      "placeBid(uint256)": {
+        "intent": "Bid on Foundation NFT auction",
+        "interpolatedIntent": "Place bid on Foundation auction #{auctionId}",
+        "fields": [
+          {
+            "path": "auctionId",
+            "label": "Auction ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "admin()": {
+        "intent": "Review Admin transaction",
+        "fields": []
+      },
+      "changeAdmin(address)": {
+        "intent": "Review Change Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "implementation()": {
+        "intent": "Review Implementation transaction",
+        "fields": []
+      },
+      "upgradeTo(address)": {
+        "intent": "Review Upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "acceptOffer(address,uint256,address,uint256)": {
+        "intent": "Review Accept Offer transaction",
+        "fields": [
+          {
+            "path": "nftContract",
+            "label": "Nft Contract",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          },
+          {
+            "path": "offerFrom",
+            "label": "Offer From",
+            "format": "address"
+          },
+          {
+            "path": "minAmount",
+            "label": "Min Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "cancelReserveAuction(uint256)": {
+        "intent": "Review Cancel Reserve Auction transaction",
+        "fields": [
+          {
+            "path": "auctionId",
+            "label": "Auction Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "createReserveAuction(address,uint256,uint256,uint256)": {
+        "intent": "Review Create Reserve Auction transaction",
+        "fields": [
+          {
+            "path": "nftContract",
+            "label": "Nft Contract",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          },
+          {
+            "path": "reservePrice",
+            "label": "Reserve Price",
+            "format": "raw"
+          },
+          {
+            "path": "duration",
+            "label": "Duration",
+            "format": "raw"
+          }
+        ]
+      },
+      "finalizeReserveAuction(uint256)": {
+        "intent": "Review Finalize Reserve Auction transaction",
+        "fields": [
+          {
+            "path": "auctionId",
+            "label": "Auction Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "initialize(uint256)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "networkAuctionIdOffset",
+            "label": "Network Auction Id Offset",
+            "format": "raw"
+          }
+        ]
+      },
+      "placeBidV2(uint256,uint256,address)": {
+        "intent": "Review Place Bid V2 transaction",
+        "fields": [
+          {
+            "path": "auctionId",
+            "label": "Auction Id",
+            "format": "raw"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "referrer",
+            "label": "Referrer",
+            "format": "address"
+          }
+        ]
+      },
+      "setSaleStartsAt(address,uint256,uint256)": {
+        "intent": "Review Set Sale Starts At transaction",
+        "fields": [
+          {
+            "path": "nftContract",
+            "label": "Nft Contract",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          },
+          {
+            "path": "saleStartsAt",
+            "label": "Sale Starts At",
+            "format": "raw"
+          }
+        ]
+      },
+      "updateReserveAuction(uint256,uint256)": {
+        "intent": "Review Update Reserve Auction transaction",
+        "fields": [
+          {
+            "path": "auctionId",
+            "label": "Auction Id",
+            "format": "raw"
+          },
+          {
+            "path": "reservePrice",
+            "label": "Reserve Price",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Foundation",
+    "info": {
+      "url": "https://foundation.app/",
+      "legalName": "Foundation Marketplace",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

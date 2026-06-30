@@ -1,0 +1,62 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "Spark sDAI",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x83f20f44975d03b1b09e64809b757c47f942beea" }
+      ],
+      "abi": "https://etherscan.io/address/0x83f20f44975d03b1b09e64809b757c47f942beea#code"
+    }
+  },
+  "metadata": {
+    "owner": "Spark Protocol",
+    "info": { "legalName": "Spark Protocol", "url": "https://spark.fi/" },
+    "constants": {
+      "DAI": "0x6B175474E89094C44Da98b954EedeAC495271d0F",
+      "sDAI": "0x83F20F44975D03b1b09e64809B757c47f942BEeA"
+    }
+  },
+  "display": {
+    "formats": {
+      "deposit(uint256,address)": {
+        "intent": "Deposit DAI into sDAI Vault",
+        "fields": [
+          { "path": "#.assets", "label": "DAI Amount", "format": "tokenAmount", "params": { "token": "$.metadata.constants.DAI" } },
+          { "path": "#.receiver", "label": "Recipient", "format": "addressName", "params": { "types": ["eoa", "wallet"], "sources": ["local", "ens"] } }
+        ],
+        "required": ["#.assets", "#.receiver"],
+        "excluded": []
+      },
+      "mint(uint256,address)": {
+        "intent": "Mint sDAI Shares",
+        "fields": [
+          { "path": "#.shares", "label": "sDAI Shares", "format": "tokenAmount", "params": { "token": "$.metadata.constants.sDAI" } },
+          { "path": "#.receiver", "label": "Recipient", "format": "addressName", "params": { "types": ["eoa", "wallet"], "sources": ["local", "ens"] } }
+        ],
+        "required": ["#.shares", "#.receiver"],
+        "excluded": []
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Withdraw DAI from sDAI Vault",
+        "fields": [
+          { "path": "#.assets", "label": "DAI Amount", "format": "tokenAmount", "params": { "token": "$.metadata.constants.DAI" } },
+          { "path": "#.receiver", "label": "Recipient", "format": "addressName", "params": { "types": ["eoa", "wallet"], "sources": ["local", "ens"] } },
+          { "path": "#.owner", "label": "Owner", "format": "addressName", "params": { "types": ["eoa", "wallet"], "sources": ["local", "ens"] } }
+        ],
+        "required": ["#.assets", "#.receiver", "#.owner"],
+        "excluded": []
+      },
+      "redeem(uint256,address,address)": {
+        "intent": "Redeem sDAI Shares",
+        "fields": [
+          { "path": "#.shares", "label": "sDAI Shares", "format": "tokenAmount", "params": { "token": "$.metadata.constants.sDAI" } },
+          { "path": "#.receiver", "label": "Recipient", "format": "addressName", "params": { "types": ["eoa", "wallet"], "sources": ["local", "ens"] } },
+          { "path": "#.owner", "label": "Owner", "format": "addressName", "params": { "types": ["eoa", "wallet"], "sources": ["local", "ens"] } }
+        ],
+        "required": ["#.shares", "#.receiver", "#.owner"],
+        "excluded": []
+      }
+    }
+  }
+}

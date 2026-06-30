@@ -1,0 +1,4714 @@
+{
+  "$schema": "https://erc7730.org/schema/v1",
+  "context": {
+    "contract": {
+      "abi": [
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaStargate",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_stargateData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "assetId",
+                  "type": "uint16"
+                },
+                {
+                  "name": "sendParams",
+                  "type": "tuple",
+                  "components": [
+                    {
+                      "name": "dstEid",
+                      "type": "uint32"
+                    },
+                    {
+                      "name": "to",
+                      "type": "bytes32"
+                    },
+                    {
+                      "name": "amountLD",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "minAmountLD",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "extraOptions",
+                      "type": "bytes"
+                    },
+                    {
+                      "name": "composeMsg",
+                      "type": "bytes"
+                    },
+                    {
+                      "name": "oftCmd",
+                      "type": "bytes"
+                    }
+                  ]
+                },
+                {
+                  "name": "fee",
+                  "type": "tuple",
+                  "components": [
+                    {
+                      "name": "nativeFee",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "lzTokenFee",
+                      "type": "uint256"
+                    }
+                  ]
+                },
+                {
+                  "name": "refundAddress",
+                  "type": "address"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x7cccba6d"
+        },
+        {
+          "type": "function",
+          "name": "swapAndStartBridgeTokensViaStargate",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_stargateData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "assetId",
+                  "type": "uint16"
+                },
+                {
+                  "name": "sendParams",
+                  "type": "tuple",
+                  "components": [
+                    {
+                      "name": "dstEid",
+                      "type": "uint32"
+                    },
+                    {
+                      "name": "to",
+                      "type": "bytes32"
+                    },
+                    {
+                      "name": "amountLD",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "minAmountLD",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "extraOptions",
+                      "type": "bytes"
+                    },
+                    {
+                      "name": "composeMsg",
+                      "type": "bytes"
+                    },
+                    {
+                      "name": "oftCmd",
+                      "type": "bytes"
+                    }
+                  ]
+                },
+                {
+                  "name": "fee",
+                  "type": "tuple",
+                  "components": [
+                    {
+                      "name": "nativeFee",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "lzTokenFee",
+                      "type": "uint256"
+                    }
+                  ]
+                },
+                {
+                  "name": "refundAddress",
+                  "type": "address"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x4bd751a8"
+        },
+        {
+          "type": "function",
+          "name": "swapTokensSingleV3ERC20ToERC20",
+          "inputs": [
+            {
+              "name": "_transactionId",
+              "type": "bytes32"
+            },
+            {
+              "name": "_integrator",
+              "type": "string"
+            },
+            {
+              "name": "_referrer",
+              "type": "string"
+            },
+            {
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "name": "_minAmountOut",
+              "type": "uint256"
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x4666fc80"
+        },
+        {
+          "type": "function",
+          "name": "swapTokensSingleV3ERC20ToNative",
+          "inputs": [
+            {
+              "name": "_transactionId",
+              "type": "bytes32"
+            },
+            {
+              "name": "_integrator",
+              "type": "string"
+            },
+            {
+              "name": "_referrer",
+              "type": "string"
+            },
+            {
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "name": "_minAmountOut",
+              "type": "uint256"
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xcc41fe54"
+        },
+        {
+          "type": "function",
+          "name": "swapTokensSingleV3NativeToERC20",
+          "inputs": [
+            {
+              "name": "_transactionId",
+              "type": "bytes32"
+            },
+            {
+              "name": "_integrator",
+              "type": "string"
+            },
+            {
+              "name": "_referrer",
+              "type": "string"
+            },
+            {
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "name": "_minAmountOut",
+              "type": "uint256"
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x808d859c"
+        },
+        {
+          "type": "function",
+          "name": "swapTokensMultipleV3ERC20ToERC20",
+          "inputs": [
+            {
+              "name": "_transactionId",
+              "type": "bytes32"
+            },
+            {
+              "name": "_integrator",
+              "type": "string"
+            },
+            {
+              "name": "_referrer",
+              "type": "string"
+            },
+            {
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "name": "_minAmountOut",
+              "type": "uint256"
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xdd081734"
+        },
+        {
+          "type": "function",
+          "name": "swapTokensMultipleV3ERC20ToNative",
+          "inputs": [
+            {
+              "name": "_transactionId",
+              "type": "bytes32"
+            },
+            {
+              "name": "_integrator",
+              "type": "string"
+            },
+            {
+              "name": "_referrer",
+              "type": "string"
+            },
+            {
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "name": "_minAmountOut",
+              "type": "uint256"
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x2c57e884"
+        },
+        {
+          "type": "function",
+          "name": "swapTokensMultipleV3NativeToERC20",
+          "inputs": [
+            {
+              "name": "_transactionId",
+              "type": "bytes32"
+            },
+            {
+              "name": "_integrator",
+              "type": "string"
+            },
+            {
+              "name": "_referrer",
+              "type": "string"
+            },
+            {
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "name": "_minAmountOut",
+              "type": "uint256"
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xcd48728d"
+        },
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaAllBridge",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_allBridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "fees",
+                  "type": "uint256"
+                },
+                {
+                  "name": "recipient",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "receiveToken",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "name": "messenger",
+                  "type": "uint8"
+                },
+                {
+                  "name": "payFeeWithSendingAsset",
+                  "type": "bool"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x5df39dde"
+        },
+        {
+          "type": "function",
+          "name": "swapAndStartBridgeTokensViaAllBridge",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_allBridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "fees",
+                  "type": "uint256"
+                },
+                {
+                  "name": "recipient",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "receiveToken",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "name": "messenger",
+                  "type": "uint8"
+                },
+                {
+                  "name": "payFeeWithSendingAsset",
+                  "type": "bool"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x9f5e58f5"
+        },
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaGasZip",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_gasZipData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "gasZipChainId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "gasZipAmount",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xfc5f1003"
+        },
+        {
+          "type": "function",
+          "name": "swapAndStartBridgeTokensViaGasZip",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_gasZipData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "gasZipChainId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "gasZipAmount",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x606326ff"
+        },
+        {
+          "type": "function",
+          "name": "facetAddress",
+          "inputs": [
+            {
+              "name": "_functionSelector",
+              "type": "bytes4"
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xcdffacc6"
+        },
+        {
+          "type": "function",
+          "name": "facetAddresses",
+          "inputs": [],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x52ef6b2c"
+        },
+        {
+          "type": "function",
+          "name": "facetFunctionSelectors",
+          "inputs": [
+            {
+              "name": "_facet",
+              "type": "address"
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xadfca15e"
+        },
+        {
+          "type": "function",
+          "name": "facets",
+          "inputs": [],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x7a0ed627"
+        },
+        {
+          "type": "function",
+          "name": "supportsInterface",
+          "inputs": [
+            {
+              "name": "_interfaceId",
+              "type": "bytes4"
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x01ffc9a7"
+        },
+        {
+          "type": "function",
+          "name": "cancelOwnershipTransfer",
+          "inputs": [],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x23452b9c"
+        },
+        {
+          "type": "function",
+          "name": "confirmOwnershipTransfer",
+          "inputs": [],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x7200b829"
+        },
+        {
+          "type": "function",
+          "name": "owner",
+          "inputs": [],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x8da5cb5b"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "inputs": [
+            {
+              "name": "_newOwner",
+              "type": "address"
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xf2fde38b"
+        },
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaDeBridgeDln",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_deBridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "receivingAssetId",
+                  "type": "bytes"
+                },
+                {
+                  "name": "receiver",
+                  "type": "bytes"
+                },
+                {
+                  "name": "minAmountOut",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xae0b91e5"
+        },
+        {
+          "type": "function",
+          "name": "swapAndStartBridgeTokensViaDeBridgeDln",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_deBridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "receivingAssetId",
+                  "type": "bytes"
+                },
+                {
+                  "name": "receiver",
+                  "type": "bytes"
+                },
+                {
+                  "name": "minAmountOut",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x482c6a85"
+        },
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaSquid",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_squidData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "routeType",
+                  "type": "uint8"
+                },
+                {
+                  "name": "destinationChain",
+                  "type": "string"
+                },
+                {
+                  "name": "destinationAddress",
+                  "type": "string"
+                },
+                {
+                  "name": "bridgedTokenSymbol",
+                  "type": "string"
+                },
+                {
+                  "name": "depositAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "sourceCalls",
+                  "type": "tuple[]",
+                  "components": [
+                    {
+                      "name": "callType",
+                      "type": "uint8"
+                    },
+                    {
+                      "name": "target",
+                      "type": "address"
+                    },
+                    {
+                      "name": "value",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "callData",
+                      "type": "bytes"
+                    },
+                    {
+                      "name": "payload",
+                      "type": "bytes"
+                    }
+                  ]
+                },
+                {
+                  "name": "destinationCalls",
+                  "type": "bytes"
+                },
+                {
+                  "name": "fee",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xb94289bb"
+        },
+        {
+          "type": "function",
+          "name": "swapAndStartBridgeTokensViaSquid",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_squidData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "routeType",
+                  "type": "uint8"
+                },
+                {
+                  "name": "destinationChain",
+                  "type": "string"
+                },
+                {
+                  "name": "destinationAddress",
+                  "type": "string"
+                },
+                {
+                  "name": "bridgedTokenSymbol",
+                  "type": "string"
+                },
+                {
+                  "name": "depositAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "sourceCalls",
+                  "type": "tuple[]",
+                  "components": [
+                    {
+                      "name": "callType",
+                      "type": "uint8"
+                    },
+                    {
+                      "name": "target",
+                      "type": "address"
+                    },
+                    {
+                      "name": "value",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "callData",
+                      "type": "bytes"
+                    },
+                    {
+                      "name": "payload",
+                      "type": "bytes"
+                    }
+                  ]
+                },
+                {
+                  "name": "destinationCalls",
+                  "type": "bytes"
+                },
+                {
+                  "name": "fee",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xa8f66666"
+        },
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaMayan",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_mayanData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "mayanProtocol",
+                  "type": "address"
+                },
+                {
+                  "name": "protocolData",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xdecb09d7"
+        },
+        {
+          "type": "function",
+          "name": "swapAndStartBridgeTokensViaMayan",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_mayanData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "mayanProtocol",
+                  "type": "address"
+                },
+                {
+                  "name": "protocolData",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xce8a97a5"
+        },
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaHop",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_hopData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "bonderFee",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amountOutMin",
+                  "type": "uint256"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationAmountOutMin",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationDeadline",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hopBridge",
+                  "type": "address"
+                },
+                {
+                  "name": "relayer",
+                  "type": "address"
+                },
+                {
+                  "name": "relayerFee",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x612ad9cb"
+        },
+        {
+          "type": "function",
+          "name": "swapAndStartBridgeTokensViaHop",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_hopData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "bonderFee",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amountOutMin",
+                  "type": "uint256"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationAmountOutMin",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationDeadline",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hopBridge",
+                  "type": "address"
+                },
+                {
+                  "name": "relayer",
+                  "type": "address"
+                },
+                {
+                  "name": "relayerFee",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xa4c3366e"
+        },
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaSymbiosis",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_symbiosisData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "firstSwapCalldata",
+                  "type": "bytes"
+                },
+                {
+                  "name": "secondSwapCalldata",
+                  "type": "bytes"
+                },
+                {
+                  "name": "intermediateToken",
+                  "type": "address"
+                },
+                {
+                  "name": "firstDexRouter",
+                  "type": "address"
+                },
+                {
+                  "name": "secondDexRouter",
+                  "type": "address"
+                },
+                {
+                  "name": "approvedTokens",
+                  "type": "address[]"
+                },
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x3f313808"
+        },
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaRelayDepository",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_relayDepositoryData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "orderId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "depositorAddress",
+                  "type": "address"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x092e8fa4"
+        },
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaAcrossV3",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_acrossData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "receiverAddress",
+                  "type": "address"
+                },
+                {
+                  "name": "refundAddress",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "outputAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "exclusiveRelayer",
+                  "type": "address"
+                },
+                {
+                  "name": "quoteTimestamp",
+                  "type": "uint32"
+                },
+                {
+                  "name": "fillDeadline",
+                  "type": "uint32"
+                },
+                {
+                  "name": "exclusivityDeadline",
+                  "type": "uint32"
+                },
+                {
+                  "name": "message",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xf66fe519"
+        },
+        {
+          "type": "function",
+          "name": "swapAndStartBridgeTokensViaAcrossV3",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_acrossData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "receiverAddress",
+                  "type": "address"
+                },
+                {
+                  "name": "refundAddress",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "outputAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "exclusiveRelayer",
+                  "type": "address"
+                },
+                {
+                  "name": "quoteTimestamp",
+                  "type": "uint32"
+                },
+                {
+                  "name": "fillDeadline",
+                  "type": "uint32"
+                },
+                {
+                  "name": "exclusivityDeadline",
+                  "type": "uint32"
+                },
+                {
+                  "name": "message",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x7bf96e0a"
+        },
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaCBridge",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_cBridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "maxSlippage",
+                  "type": "uint32"
+                },
+                {
+                  "name": "nonce",
+                  "type": "uint64"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xc9851d0b"
+        },
+        {
+          "type": "function",
+          "name": "swapAndStartBridgeTokensViaCBridge",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_cBridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "maxSlippage",
+                  "type": "uint32"
+                },
+                {
+                  "name": "nonce",
+                  "type": "uint64"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x3cc9517b"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "inputs": [
+            {
+              "name": "_assetAddress",
+              "type": "address"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xd9caed12"
+        },
+        {
+          "type": "function",
+          "name": "diamondCut",
+          "inputs": [
+            {
+              "name": "_diamondCut",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "facetAddress",
+                  "type": "address"
+                },
+                {
+                  "name": "action",
+                  "type": "uint8"
+                },
+                {
+                  "name": "functionSelectors",
+                  "type": "bytes4[]"
+                }
+              ]
+            },
+            {
+              "name": "_init",
+              "type": "address"
+            },
+            {
+              "name": "_calldata",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x1f931c1c"
+        },
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaNEARIntents",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_nearData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "nonEVMReceiver",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "depositAddress",
+                  "type": "address"
+                },
+                {
+                  "name": "quoteId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "name": "minAmountOut",
+                  "type": "uint256"
+                },
+                {
+                  "name": "refundRecipient",
+                  "type": "address"
+                },
+                {
+                  "name": "signature",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x5cf8113b"
+        },
+        {
+          "type": "function",
+          "name": "swapAndStartBridgeTokensViaNEARIntents",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_nearData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "nonEVMReceiver",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "depositAddress",
+                  "type": "address"
+                },
+                {
+                  "name": "quoteId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "name": "minAmountOut",
+                  "type": "uint256"
+                },
+                {
+                  "name": "refundRecipient",
+                  "type": "address"
+                },
+                {
+                  "name": "signature",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x3110c7b9"
+        },
+        {
+          "type": "function",
+          "name": "startBridgeTokensViaRelay",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_relayData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "requestId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "nonEVMReceiver",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "signature",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xae328590"
+        },
+        {
+          "type": "function",
+          "name": "swapAndStartBridgeTokensViaRelay",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_relayData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "requestId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "nonEVMReceiver",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "signature",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0x25d374e8"
+        },
+        {
+          "type": "function",
+          "name": "swapAndStartBridgeTokensViaRelayDepository",
+          "inputs": [
+            {
+              "name": "_bridgeData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "transactionId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "bridge",
+                  "type": "string"
+                },
+                {
+                  "name": "integrator",
+                  "type": "string"
+                },
+                {
+                  "name": "referrer",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "minAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "destinationChainId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "hasSourceSwaps",
+                  "type": "bool"
+                },
+                {
+                  "name": "hasDestinationCall",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_swapData",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "callTo",
+                  "type": "address"
+                },
+                {
+                  "name": "approveTo",
+                  "type": "address"
+                },
+                {
+                  "name": "sendingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "receivingAssetId",
+                  "type": "address"
+                },
+                {
+                  "name": "fromAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "name": "requiresDeposit",
+                  "type": "bool"
+                }
+              ]
+            },
+            {
+              "name": "_relayDepositoryData",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "orderId",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "depositorAddress",
+                  "type": "address"
+                }
+              ]
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "payable",
+          "selector": "0xa3443faa"
+        }
+      ],
+      "deployments": {
+        "mainnet": {
+          "address": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+          "chainId": 1
+        },
+
+        "polygon": {
+          "address": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+          "chainId": 137
+        },
+        "arbitrum": {
+          "address": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+          "chainId": 42161
+        },
+        "optimism": {
+          "address": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+          "chainId": 10
+        },
+        "base": {
+          "address": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+          "chainId": 8453
+        },
+        "bsc": {
+          "address": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+          "chainId": 56
+        },
+        "avalanche": {
+          "address": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+          "chainId": 43114
+        },
+        "fantom": {
+          "address": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+          "chainId": 250
+        },
+        "gnosis": {
+          "address": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+          "chainId": 100
+        },
+
+        "scroll": {
+          "address": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+          "chainId": 534352
+        },
+        "blast": {
+          "address": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+          "chainId": 81457
+        },
+        "mode": {
+          "address": "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+          "chainId": 34443
+        }
+      }
+    }
+  },
+  "metadata": {
+    "owner": "LI.FI",
+    "info": {
+      "url": "https://li.fi",
+      "legalName": "LI.FI",
+      "lastUpdate": "2025-12-26"
+    },
+    "token": {
+      "standard": "none"
+    }
+  },
+  "display": {
+    "formats": {
+      "startBridgeTokensViaStargate((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(uint16,(uint32,bytes32,uint256,uint256,bytes,bytes,bytes),(uint256,uint256),address))": {
+        "intent": "Bridge tokens via Stargate",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaStargate((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(uint16,(uint32,bytes32,uint256,uint256,bytes,bytes,bytes),(uint256,uint256),address))": {
+        "intent": "Swap tokens and bridge via Stargate",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ]
+      },
+      "swapTokensSingleV3ERC20ToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool))": {
+        "intent": "Swap tokens",
+        "fields": [
+          {
+            "path": "#._receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._minAmountOut",
+            "label": "Minimum Output",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.callTo"
+            }
+          }
+        ]
+      },
+      "swapTokensSingleV3ERC20ToERC20(bytes32,string,string,address,uint256,tuple)": {
+        "intent": "Swap tokens via LiFi",
+        "interpolatedIntent": "Swap {_swapData.fromAmount} via LiFi",
+        "fields": [
+          {
+            "path": "_swapData.sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "_swapData.receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "_swapData.fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_swapData.sendingAssetId"
+            }
+          },
+          {
+            "path": "_receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "_minAmountOut",
+            "label": "Minimum Output",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapTokensSingleV3ERC20ToNative(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool))": {
+        "intent": "Swap tokens",
+        "fields": [
+          {
+            "path": "#._receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._minAmountOut",
+            "label": "Minimum Output",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.callTo"
+            }
+          }
+        ]
+      },
+      "swapTokensSingleV3NativeToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool))": {
+        "intent": "Swap tokens",
+        "fields": [
+          {
+            "path": "#._receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._minAmountOut",
+            "label": "Minimum Output",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.callTo"
+            }
+          }
+        ]
+      },
+      "swapTokensMultipleV3ERC20ToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])": {
+        "intent": "Swap tokens",
+        "fields": [
+          {
+            "path": "#._receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._minAmountOut",
+            "label": "Minimum Output",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ]
+      },
+      "swapTokensMultipleV3ERC20ToNative(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])": {
+        "intent": "Swap tokens",
+        "fields": [
+          {
+            "path": "#._receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._minAmountOut",
+            "label": "Minimum Output",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ]
+      },
+      "swapTokensMultipleV3ERC20ToNative(bytes32,string,string,address,uint256,tuple[])": {
+        "intent": "Swap tokens to ETH via LiFi",
+        "interpolatedIntent": "Swap {_swapData.[0].fromAmount} to ETH via LiFi",
+        "fields": [
+          {
+            "path": "_swapData.[0].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "_swapData.[0].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_swapData.[0].sendingAssetId"
+            }
+          },
+          {
+            "path": "_receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "_minAmountOut",
+            "label": "Min ETH Output",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapTokensMultipleV3NativeToERC20(bytes32,string,string,address,uint256,(address,address,address,address,uint256,bytes,bool)[])": {
+        "intent": "Swap tokens",
+        "fields": [
+          {
+            "path": "#._receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._minAmountOut",
+            "label": "Minimum Output",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ]
+      },
+      "startBridgeTokensViaAllBridge((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(uint256,bytes32,uint256,bytes32,uint256,uint8,bool))": {
+        "intent": "Bridge tokens via AllBridge",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaAllBridge((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(uint256,bytes32,uint256,bytes32,uint256,uint8,bool))": {
+        "intent": "Swap tokens and bridge via AllBridge",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ]
+      },
+      "startBridgeTokensViaGasZip((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(bytes32,uint256))": {
+        "intent": "Bridge tokens via GasZip",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaGasZip((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(bytes32,uint256))": {
+        "intent": "Swap tokens and bridge via GasZip",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ]
+      },
+      "startBridgeTokensViaDeBridgeDln((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(bytes,bytes,uint256))": {
+        "intent": "Bridge tokens via DeBridge",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaDeBridgeDln((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(bytes,bytes,uint256))": {
+        "intent": "Swap tokens and bridge via DeBridge",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ]
+      },
+      "startBridgeTokensViaSquid((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(uint8,string,string,string,address,(uint8,address,uint256,bytes,bytes)[],bytes,uint256))": {
+        "intent": "Bridge tokens via Squid",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaSquid((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(uint8,string,string,string,address,(uint8,address,uint256,bytes,bytes)[],bytes,uint256))": {
+        "intent": "Swap tokens and bridge via Squid",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ]
+      },
+      "startBridgeTokensViaMayan((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,bytes))": {
+        "intent": "Bridge tokens via Mayan",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaMayan((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(address,bytes))": {
+        "intent": "Swap tokens and bridge via Mayan",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ]
+      },
+      "startBridgeTokensViaHop((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(uint256,uint256,uint256,uint256,uint256,address,address,uint256))": {
+        "intent": "Bridge tokens via Hop",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaHop((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(uint256,uint256,uint256,uint256,uint256,address,address,uint256))": {
+        "intent": "Swap tokens and bridge via Hop",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ]
+      },
+      "startBridgeTokensViaSymbiosis((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(bytes,bytes,address,address,address,address[],address,bytes))": {
+        "intent": "Bridge tokens via Symbiosis",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          }
+        ]
+      },
+      "startBridgeTokensViaAcrossV3((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,uint256,address,uint32,uint32,uint32,bytes))": {
+        "intent": "Bridge tokens via Across",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaAcrossV3((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(address,address,address,uint256,address,uint32,uint32,uint32,bytes))": {
+        "intent": "Swap tokens and bridge via Across",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ]
+      },
+      "startBridgeTokensViaCBridge((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(uint32,uint64))": {
+        "intent": "Bridge tokens via CBridge",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaCBridge((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(uint32,uint64))": {
+        "intent": "Swap tokens and bridge via CBridge",
+        "fields": [
+          {
+            "path": "#._bridgeData.sendingAssetId",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Minimum Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          }
+        ]
+      },
+      "startBridgeTokensViaNEARIntents((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(bytes32,address,bytes32,uint256,uint256,address,bytes))": {
+        "intent": "Bridge via NEAR Intents",
+        "interpolatedIntent": "Bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via NEAR Intents",
+        "fields": [
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._nearData.depositAddress",
+            "label": "Deposit Address",
+            "format": "addressName"
+          },
+          {
+            "path": "#._nearData.deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "#._nearData.minAmountOut",
+            "label": "Minimum Output",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaNEARIntents((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(bytes32,address,bytes32,uint256,uint256,address,bytes))": {
+        "intent": "Swap and bridge via NEAR Intents",
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} and bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via NEAR Intents",
+        "fields": [
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Bridge Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          },
+          {
+            "path": "#._nearData.depositAddress",
+            "label": "Deposit Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "startBridgeTokensViaNEARIntents(tuple,tuple)": {
+        "intent": "Bridge via NEAR Intents",
+        "interpolatedIntent": "Bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via NEAR Intents",
+        "fields": [
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._nearData.depositAddress",
+            "label": "Deposit Address",
+            "format": "addressName"
+          },
+          {
+            "path": "#._nearData.deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "#._nearData.minAmountOut",
+            "label": "Minimum Output",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaNEARIntents(tuple,tuple[],tuple)": {
+        "intent": "Swap and bridge via NEAR Intents",
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} and bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via NEAR Intents",
+        "fields": [
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Bridge Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          },
+          {
+            "path": "#._nearData.depositAddress",
+            "label": "Deposit Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "startBridgeTokensViaRelay((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(bytes32,bytes32,bytes32,bytes))": {
+        "intent": "Bridge via Relay",
+        "interpolatedIntent": "Bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via Relay",
+        "fields": [
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._relayData.receivingAssetId",
+            "label": "Receiving Asset",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaRelay((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(bytes32,bytes32,bytes32,bytes))": {
+        "intent": "Swap and bridge via Relay",
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} and bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via Relay",
+        "fields": [
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Bridge Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          },
+          {
+            "path": "#._relayData.receivingAssetId",
+            "label": "Receiving Asset",
+            "format": "raw"
+          }
+        ]
+      },
+      "startBridgeTokensViaRelay(tuple,tuple)": {
+        "intent": "Bridge via Relay",
+        "interpolatedIntent": "Bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via Relay",
+        "fields": [
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._relayData.receivingAssetId",
+            "label": "Receiving Asset",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaRelay(tuple,tuple[],tuple)": {
+        "intent": "Swap and bridge via Relay",
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} and bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via Relay",
+        "fields": [
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Bridge Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          },
+          {
+            "path": "#._relayData.receivingAssetId",
+            "label": "Receiving Asset",
+            "format": "raw"
+          }
+        ]
+      },
+      "startBridgeTokensViaRelayDepository((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(bytes32,address))": {
+        "intent": "Bridge via Relay Depository",
+        "interpolatedIntent": "Bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via Relay Depository",
+        "fields": [
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._relayDepositoryData.depositorAddress",
+            "label": "Depositor",
+            "format": "addressName"
+          },
+          {
+            "path": "#._relayDepositoryData.orderId",
+            "label": "Order ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "startBridgeTokensViaRelayDepository(tuple,tuple)": {
+        "intent": "Bridge via Relay Depository",
+        "interpolatedIntent": "Bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via Relay Depository",
+        "fields": [
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._relayDepositoryData.depositorAddress",
+            "label": "Depositor",
+            "format": "addressName"
+          },
+          {
+            "path": "#._relayDepositoryData.orderId",
+            "label": "Order ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaRelayDepository((bytes32,string,string,address,address,address,uint256,uint256,bool,bool),(address,address,address,address,uint256,bytes,bool)[],(bytes32,address))": {
+        "intent": "Swap and bridge via Relay Depository",
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} and bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via Relay Depository",
+        "fields": [
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Bridge Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          },
+          {
+            "path": "#._relayDepositoryData.depositorAddress",
+            "label": "Depositor",
+            "format": "addressName"
+          },
+          {
+            "path": "#._relayDepositoryData.orderId",
+            "label": "Order ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndStartBridgeTokensViaRelayDepository(tuple,tuple[],tuple)": {
+        "intent": "Swap and bridge via Relay Depository",
+        "interpolatedIntent": "Swap {#._swapData.[0].fromAmount} and bridge {#._bridgeData.minAmount} to chain {#._bridgeData.destinationChainId} via Relay Depository",
+        "fields": [
+          {
+            "path": "#._bridgeData.minAmount",
+            "label": "Bridge Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._bridgeData.sendingAssetId"
+            }
+          },
+          {
+            "path": "#._bridgeData.destinationChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "#._swapData.[].sendingAssetId",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].receivingAssetId",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "#._swapData.[].fromAmount",
+            "label": "Swap Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "#._swapData.[].sendingAssetId"
+            }
+          },
+          {
+            "path": "#._swapData.[].callData",
+            "label": "Swap Call",
+            "format": "calldata",
+            "params": {
+              "calleePath": "#._swapData.[].callTo"
+            }
+          },
+          {
+            "path": "#._relayDepositoryData.depositorAddress",
+            "label": "Depositor",
+            "format": "addressName"
+          },
+          {
+            "path": "#._relayDepositoryData.orderId",
+            "label": "Order ID",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,1198 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x152649ea73beab28c5b49b26eb48f7ead6d4c898",
+      "chainId": 1,
+      "name": "PancakeSwap",
+      "symbol": "Cake",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "callOnOFTReceived",
+          "selector": "0xeaffd49a",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_srcChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_srcAddress",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint64",
+              "name": "_nonce",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "_from",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_payload",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_gasForCall",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowance",
+          "selector": "0xa457c2d7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "forceResumeReceive",
+          "selector": "0x42d65a8d",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_srcChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_srcAddress",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowance",
+          "selector": "0x39509351",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "addedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "lzReceive",
+          "selector": "0x001d3567",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_srcChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_srcAddress",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint64",
+              "name": "_nonce",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_payload",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "nonblockingLzReceive",
+          "selector": "0x66ad5c8a",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_srcChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_srcAddress",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint64",
+              "name": "_nonce",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_payload",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pause",
+          "selector": "0x8456cb59",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "retryMessage",
+          "selector": "0xd1deba1f",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_srcChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_srcAddress",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint64",
+              "name": "_nonce",
+              "type": "uint64"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_payload",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "sendAndCall",
+          "selector": "0x455ba27d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "internalType": "uint16",
+              "name": "_dstChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "_toAddress",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_minAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_payload",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint64",
+              "name": "_dstGasForCall",
+              "type": "uint64"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address payable",
+                  "name": "refundAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "zroPaymentAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "adapterParams",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct ICommonOFT.LzCallParams",
+              "name": "_callParams",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "sendFrom",
+          "selector": "0x2cdf0b95",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "internalType": "uint16",
+              "name": "_dstChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "_toAddress",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_minAmount",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address payable",
+                  "name": "refundAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "zroPaymentAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "adapterParams",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct ICommonOFT.LzCallParams",
+              "name": "_callParams",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "setConfig",
+          "selector": "0xcbed8b9c",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_version",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint16",
+              "name": "_chainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_configType",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_config",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setDefaultFeeBp",
+          "selector": "0x5a359dc5",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_feeBp",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFeeBp",
+          "selector": "0x79c0ad4b",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_dstChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bool",
+              "name": "_enabled",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint16",
+              "name": "_feeBp",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFeeOwner",
+          "selector": "0x4b104eff",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_feeOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setInboundCap",
+          "selector": "0xfcd55081",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "chainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint256",
+              "name": "cap",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMinDstGas",
+          "selector": "0xdf2a5b3b",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_dstChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint16",
+              "name": "_packetType",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_minGas",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setOutboundCap",
+          "selector": "0x35dff2bc",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "chainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint256",
+              "name": "cap",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setPrecrime",
+          "selector": "0xbaf3292d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_precrime",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setReceiveVersion",
+          "selector": "0x10ddb137",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_version",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setSendVersion",
+          "selector": "0x07e0db17",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_version",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTrustedRemote",
+          "selector": "0xeb8d72b7",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_srcChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_path",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTrustedRemoteAddress",
+          "selector": "0xa6c3d165",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_remoteChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_remoteAddress",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setUseCustomAdapterParams",
+          "selector": "0xeab45d9c",
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "_useCustomAdapterParams",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setWhitelist",
+          "selector": "0x53d6fd59",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "addr",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "isWhitelist",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unpause",
+          "selector": "0x3f4ba83a",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} Cake",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "Cake"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} Cake",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "Cake"
+            }
+          }
+        ]
+      },
+      "callOnOFTReceived(uint16,bytes,uint64,bytes32,address,uint256,bytes,uint256)": {
+        "intent": "Review Call On OFTReceived transaction",
+        "fields": [
+          {
+            "path": "_srcChainId",
+            "label": " src Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_srcAddress",
+            "label": " src Address",
+            "format": "hex"
+          },
+          {
+            "path": "_nonce",
+            "label": " nonce",
+            "format": "raw"
+          },
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "hex"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "_payload",
+            "label": " payload",
+            "format": "hex"
+          },
+          {
+            "path": "_gasForCall",
+            "label": " gas For Call",
+            "format": "raw"
+          }
+        ]
+      },
+      "decreaseAllowance(address,uint256)": {
+        "intent": "Review Decrease Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "subtractedValue",
+            "label": "Subtracted Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "forceResumeReceive(uint16,bytes)": {
+        "intent": "Review Force Resume Receive transaction",
+        "fields": [
+          {
+            "path": "_srcChainId",
+            "label": " src Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_srcAddress",
+            "label": " src Address",
+            "format": "hex"
+          }
+        ]
+      },
+      "increaseAllowance(address,uint256)": {
+        "intent": "Review Increase Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "addedValue",
+            "label": "Added Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "lzReceive(uint16,bytes,uint64,bytes)": {
+        "intent": "Review Lz Receive transaction",
+        "fields": [
+          {
+            "path": "_srcChainId",
+            "label": " src Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_srcAddress",
+            "label": " src Address",
+            "format": "hex"
+          },
+          {
+            "path": "_nonce",
+            "label": " nonce",
+            "format": "raw"
+          },
+          {
+            "path": "_payload",
+            "label": " payload",
+            "format": "hex"
+          }
+        ]
+      },
+      "nonblockingLzReceive(uint16,bytes,uint64,bytes)": {
+        "intent": "Review Nonblocking Lz Receive transaction",
+        "fields": [
+          {
+            "path": "_srcChainId",
+            "label": " src Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_srcAddress",
+            "label": " src Address",
+            "format": "hex"
+          },
+          {
+            "path": "_nonce",
+            "label": " nonce",
+            "format": "raw"
+          },
+          {
+            "path": "_payload",
+            "label": " payload",
+            "format": "hex"
+          }
+        ]
+      },
+      "pause()": {
+        "intent": "Review Pause transaction",
+        "fields": []
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "retryMessage(uint16,bytes,uint64,bytes)": {
+        "intent": "Review Retry Message transaction",
+        "fields": [
+          {
+            "path": "_srcChainId",
+            "label": " src Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_srcAddress",
+            "label": " src Address",
+            "format": "hex"
+          },
+          {
+            "path": "_nonce",
+            "label": " nonce",
+            "format": "raw"
+          },
+          {
+            "path": "_payload",
+            "label": " payload",
+            "format": "hex"
+          }
+        ]
+      },
+      "sendAndCall(address,uint16,bytes32,uint256,uint256,bytes,uint64,(address,address,bytes))": {
+        "intent": "Review Send And Call transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_dstChainId",
+            "label": " dst Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_toAddress",
+            "label": " to Address",
+            "format": "hex"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "_minAmount",
+            "label": " min Amount",
+            "format": "raw"
+          },
+          {
+            "path": "_payload",
+            "label": " payload",
+            "format": "hex"
+          },
+          {
+            "path": "_dstGasForCall",
+            "label": " dst Gas For Call",
+            "format": "raw"
+          },
+          {
+            "path": "_callParams",
+            "label": " call Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "sendFrom(address,uint16,bytes32,uint256,uint256,(address,address,bytes))": {
+        "intent": "Review Send From transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_dstChainId",
+            "label": " dst Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_toAddress",
+            "label": " to Address",
+            "format": "hex"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "_minAmount",
+            "label": " min Amount",
+            "format": "raw"
+          },
+          {
+            "path": "_callParams",
+            "label": " call Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "setConfig(uint16,uint16,uint256,bytes)": {
+        "intent": "Review Set Config transaction",
+        "fields": [
+          {
+            "path": "_version",
+            "label": " version",
+            "format": "raw"
+          },
+          {
+            "path": "_chainId",
+            "label": " chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_configType",
+            "label": " config Type",
+            "format": "raw"
+          },
+          {
+            "path": "_config",
+            "label": " config",
+            "format": "hex"
+          }
+        ]
+      },
+      "setDefaultFeeBp(uint16)": {
+        "intent": "Review Set Default Fee Bp transaction",
+        "fields": [
+          {
+            "path": "_feeBp",
+            "label": " fee Bp",
+            "format": "raw"
+          }
+        ]
+      },
+      "setFeeBp(uint16,bool,uint16)": {
+        "intent": "Review Set Fee Bp transaction",
+        "fields": [
+          {
+            "path": "_dstChainId",
+            "label": " dst Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_enabled",
+            "label": " enabled",
+            "format": "boolean"
+          },
+          {
+            "path": "_feeBp",
+            "label": " fee Bp",
+            "format": "raw"
+          }
+        ]
+      },
+      "setFeeOwner(address)": {
+        "intent": "Review Set Fee Owner transaction",
+        "fields": [
+          {
+            "path": "_feeOwner",
+            "label": " fee Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "setInboundCap(uint16,uint256)": {
+        "intent": "Review Set Inbound Cap transaction",
+        "fields": [
+          {
+            "path": "chainId",
+            "label": "Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "cap",
+            "label": "Cap",
+            "format": "raw"
+          }
+        ]
+      },
+      "setMinDstGas(uint16,uint16,uint256)": {
+        "intent": "Review Set Min Dst Gas transaction",
+        "fields": [
+          {
+            "path": "_dstChainId",
+            "label": " dst Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_packetType",
+            "label": " packet Type",
+            "format": "raw"
+          },
+          {
+            "path": "_minGas",
+            "label": " min Gas",
+            "format": "raw"
+          }
+        ]
+      },
+      "setOutboundCap(uint16,uint256)": {
+        "intent": "Review Set Outbound Cap transaction",
+        "fields": [
+          {
+            "path": "chainId",
+            "label": "Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "cap",
+            "label": "Cap",
+            "format": "raw"
+          }
+        ]
+      },
+      "setPrecrime(address)": {
+        "intent": "Review Set Precrime transaction",
+        "fields": [
+          {
+            "path": "_precrime",
+            "label": " precrime",
+            "format": "address"
+          }
+        ]
+      },
+      "setReceiveVersion(uint16)": {
+        "intent": "Review Set Receive Version transaction",
+        "fields": [
+          {
+            "path": "_version",
+            "label": " version",
+            "format": "raw"
+          }
+        ]
+      },
+      "setSendVersion(uint16)": {
+        "intent": "Review Set Send Version transaction",
+        "fields": [
+          {
+            "path": "_version",
+            "label": " version",
+            "format": "raw"
+          }
+        ]
+      },
+      "setTrustedRemote(uint16,bytes)": {
+        "intent": "Review Set Trusted Remote transaction",
+        "fields": [
+          {
+            "path": "_srcChainId",
+            "label": " src Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_path",
+            "label": " path",
+            "format": "hex"
+          }
+        ]
+      },
+      "setTrustedRemoteAddress(uint16,bytes)": {
+        "intent": "Review Set Trusted Remote Address transaction",
+        "fields": [
+          {
+            "path": "_remoteChainId",
+            "label": " remote Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_remoteAddress",
+            "label": " remote Address",
+            "format": "hex"
+          }
+        ]
+      },
+      "setUseCustomAdapterParams(bool)": {
+        "intent": "Review Set Use Custom Adapter Params transaction",
+        "fields": [
+          {
+            "path": "_useCustomAdapterParams",
+            "label": " use Custom Adapter Params",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setWhitelist(address,bool)": {
+        "intent": "Review Set Whitelist transaction",
+        "fields": [
+          {
+            "path": "addr",
+            "label": "Addr",
+            "format": "address"
+          },
+          {
+            "path": "isWhitelist",
+            "label": "Is Whitelist",
+            "format": "boolean"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "unpause()": {
+        "intent": "Review Unpause transaction",
+        "fields": []
+      }
+    }
+  }
+}

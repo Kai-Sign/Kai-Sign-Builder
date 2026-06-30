@@ -1,0 +1,1636 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x0aa97c284e98396202b6a04024f5e2c65026f3c0",
+      "chainId": 1,
+      "name": "Aave V3 Pool (EthereumEtherFi)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "supply",
+          "selector": "0x617ba037",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "onBehalfOf",
+              "type": "address"
+            },
+            {
+              "name": "referralCode",
+              "type": "uint16"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0x69328dec",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "borrow",
+          "selector": "0xa415bcad",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "interestRateMode",
+              "type": "uint256"
+            },
+            {
+              "name": "referralCode",
+              "type": "uint16"
+            },
+            {
+              "name": "onBehalfOf",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "repay",
+          "selector": "0x573ade81",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "interestRateMode",
+              "type": "uint256"
+            },
+            {
+              "name": "onBehalfOf",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "admin",
+          "selector": "0xf851a440",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "implementation",
+          "selector": "0x5c60da1b",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xd1f57894",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_logic",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x3659cfe6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "approvePositionManager",
+          "selector": "0xb8caa7c5",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "positionManager",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "approve",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "configureEModeCategory",
+          "selector": "0x6302e0e4",
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "id",
+              "type": "uint8"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint16",
+                  "name": "ltv",
+                  "type": "uint16"
+                },
+                {
+                  "internalType": "uint16",
+                  "name": "liquidationThreshold",
+                  "type": "uint16"
+                },
+                {
+                  "internalType": "uint16",
+                  "name": "liquidationBonus",
+                  "type": "uint16"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "isolated",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "string",
+                  "name": "label",
+                  "type": "string"
+                }
+              ],
+              "internalType": "struct DataTypes.EModeCategoryBaseConfiguration",
+              "name": "category",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "configureEModeCategoryBorrowableBitmap",
+          "selector": "0xff72158a",
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "id",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint128",
+              "name": "borrowableBitmap",
+              "type": "uint128"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "configureEModeCategoryCollateralBitmap",
+          "selector": "0x92380ecb",
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "id",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint128",
+              "name": "collateralBitmap",
+              "type": "uint128"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "configureEModeCategoryIsolated",
+          "selector": "0xad57f436",
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "id",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bool",
+              "name": "isolated",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "configureEModeCategoryLtvzeroBitmap",
+          "selector": "0x10870f75",
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "id",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint128",
+              "name": "ltvzeroBitmap",
+              "type": "uint128"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0xe8eda9df",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "onBehalfOf",
+              "type": "address"
+            },
+            {
+              "internalType": "uint16",
+              "name": "referralCode",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "eliminateReserveDeficit",
+          "selector": "0xa1d2f3c4",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "finalizeTransfer",
+          "selector": "0x12772993",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "scaledAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "scaledBalanceFromBefore",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "flashLoan",
+          "selector": "0xab9c4b5d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "receiverAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address[]",
+              "name": "assets",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "interestRateModes",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "address",
+              "name": "onBehalfOf",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "params",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint16",
+              "name": "referralCode",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "flashLoanSimple",
+          "selector": "0x42b0b77c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "receiverAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "params",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint16",
+              "name": "referralCode",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initReserve",
+          "selector": "0x932f12c8",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "aTokenAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "variableDebtAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xc4d66de8",
+          "inputs": [
+            {
+              "internalType": "contract IPoolAddressesProvider",
+              "name": "provider",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "liquidationCall",
+          "selector": "0x00a718a9",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "collateralAsset",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "debtAsset",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "borrower",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "debtToCover",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "receiveAToken",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintToTreasury",
+          "selector": "0x9cd19996",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "assets",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "multicall",
+          "selector": "0xac9650d8",
+          "inputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "data",
+              "type": "bytes[]"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "results",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renouncePositionManagerRole",
+          "selector": "0xfea149a6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "repayWithATokens",
+          "selector": "0x2dad97d4",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "interestRateMode",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "repayWithPermit",
+          "selector": "0xee3e210b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "interestRateMode",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "onBehalfOf",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "permitV",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "permitR",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "permitS",
+              "type": "bytes32"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "rescueTokens",
+          "selector": "0xcea9d26f",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setConfiguration",
+          "selector": "0xf51e435b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "data",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct DataTypes.ReserveConfigurationMap",
+              "name": "configuration",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setLiquidationGracePeriod",
+          "selector": "0xb1a99e26",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint40",
+              "name": "until",
+              "type": "uint40"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setUserEMode",
+          "selector": "0x28530a47",
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "categoryId",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setUserEModeOnBehalfOf",
+          "selector": "0x4ba06814",
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "categoryId",
+              "type": "uint8"
+            },
+            {
+              "internalType": "address",
+              "name": "onBehalfOf",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setUserUseReserveAsCollateral",
+          "selector": "0x5a3b74b9",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "useAsCollateral",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setUserUseReserveAsCollateralOnBehalfOf",
+          "selector": "0x972b35fa",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "useAsCollateral",
+              "type": "bool"
+            },
+            {
+              "internalType": "address",
+              "name": "onBehalfOf",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "supplyWithPermit",
+          "selector": "0x02c205f0",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "onBehalfOf",
+              "type": "address"
+            },
+            {
+              "internalType": "uint16",
+              "name": "referralCode",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "permitV",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "permitR",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "permitS",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "syncIndexesState",
+          "selector": "0xab2b51f6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "syncRatesState",
+          "selector": "0x98c7da4e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateFlashloanPremium",
+          "selector": "0x9c1d5f00",
+          "inputs": [
+            {
+              "internalType": "uint128",
+              "name": "flashLoanPremium",
+              "type": "uint128"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "supply(address,uint256,address,uint16)": {
+        "intent": "Supply {amount} to Aave",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "asset"
+            }
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "number"
+          }
+        ]
+      },
+      "withdraw(address,uint256,address)": {
+        "intent": "Withdraw {amount} from Aave",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "asset"
+            }
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "borrow(address,uint256,uint256,uint16,address)": {
+        "intent": "Borrow {amount} from Aave",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "asset"
+            }
+          },
+          {
+            "path": "interestRateMode",
+            "label": "Rate Mode",
+            "format": "number"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "number"
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          }
+        ]
+      },
+      "repay(address,uint256,uint256,address)": {
+        "intent": "Repay {amount} to Aave",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "asset"
+            }
+          },
+          {
+            "path": "interestRateMode",
+            "label": "Rate Mode",
+            "format": "number"
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          }
+        ]
+      },
+      "admin()": {
+        "intent": "Review Admin transaction",
+        "fields": []
+      },
+      "implementation()": {
+        "intent": "Review Implementation transaction",
+        "fields": []
+      },
+      "initialize(address,bytes)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_logic",
+            "label": " logic",
+            "format": "address"
+          },
+          {
+            "path": "_data",
+            "label": " data",
+            "format": "hex"
+          }
+        ]
+      },
+      "upgradeTo(address)": {
+        "intent": "Review Upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "approvePositionManager(address,bool)": {
+        "intent": "Review Approve Position Manager transaction",
+        "fields": [
+          {
+            "path": "positionManager",
+            "label": "Position Manager",
+            "format": "address"
+          },
+          {
+            "path": "approve",
+            "label": "Approve",
+            "format": "boolean"
+          }
+        ]
+      },
+      "configureEModeCategory(uint8,(uint16,uint16,uint16,bool,string))": {
+        "intent": "Review Configure EMode Category transaction",
+        "fields": [
+          {
+            "path": "id",
+            "label": "Id",
+            "format": "raw"
+          },
+          {
+            "path": "category",
+            "label": "Category",
+            "format": "raw"
+          }
+        ]
+      },
+      "configureEModeCategoryBorrowableBitmap(uint8,uint128)": {
+        "intent": "Review Configure EMode Category Borrowable Bitmap transaction",
+        "fields": [
+          {
+            "path": "id",
+            "label": "Id",
+            "format": "raw"
+          },
+          {
+            "path": "borrowableBitmap",
+            "label": "Borrowable Bitmap",
+            "format": "raw"
+          }
+        ]
+      },
+      "configureEModeCategoryCollateralBitmap(uint8,uint128)": {
+        "intent": "Review Configure EMode Category Collateral Bitmap transaction",
+        "fields": [
+          {
+            "path": "id",
+            "label": "Id",
+            "format": "raw"
+          },
+          {
+            "path": "collateralBitmap",
+            "label": "Collateral Bitmap",
+            "format": "raw"
+          }
+        ]
+      },
+      "configureEModeCategoryIsolated(uint8,bool)": {
+        "intent": "Review Configure EMode Category Isolated transaction",
+        "fields": [
+          {
+            "path": "id",
+            "label": "Id",
+            "format": "raw"
+          },
+          {
+            "path": "isolated",
+            "label": "Isolated",
+            "format": "boolean"
+          }
+        ]
+      },
+      "configureEModeCategoryLtvzeroBitmap(uint8,uint128)": {
+        "intent": "Review Configure EMode Category Ltvzero Bitmap transaction",
+        "fields": [
+          {
+            "path": "id",
+            "label": "Id",
+            "format": "raw"
+          },
+          {
+            "path": "ltvzeroBitmap",
+            "label": "Ltvzero Bitmap",
+            "format": "raw"
+          }
+        ]
+      },
+      "deposit(address,uint256,address,uint16)": {
+        "intent": "Review Deposit transaction",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "raw"
+          }
+        ]
+      },
+      "eliminateReserveDeficit(address,uint256)": {
+        "intent": "Review Eliminate Reserve Deficit transaction",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "finalizeTransfer(address,address,address,uint256,uint256)": {
+        "intent": "Review Finalize Transfer transaction",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "scaledAmount",
+            "label": "Scaled Amount",
+            "format": "raw"
+          },
+          {
+            "path": "scaledBalanceFromBefore",
+            "label": "Scaled Balance From Before",
+            "format": "raw"
+          }
+        ]
+      },
+      "flashLoan(address,address[],uint256[],uint256[],address,bytes,uint16)": {
+        "intent": "Review Flash Loan transaction",
+        "fields": [
+          {
+            "path": "receiverAddress",
+            "label": "Receiver Address",
+            "format": "address"
+          },
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          },
+          {
+            "path": "amounts",
+            "label": "Amounts",
+            "format": "raw"
+          },
+          {
+            "path": "interestRateModes",
+            "label": "Interest Rate Modes",
+            "format": "raw"
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          },
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "hex"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "raw"
+          }
+        ]
+      },
+      "flashLoanSimple(address,address,uint256,bytes,uint16)": {
+        "intent": "Review Flash Loan Simple transaction",
+        "fields": [
+          {
+            "path": "receiverAddress",
+            "label": "Receiver Address",
+            "format": "address"
+          },
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "hex"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "raw"
+          }
+        ]
+      },
+      "initReserve(address,address,address)": {
+        "intent": "Review Init Reserve transaction",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "aTokenAddress",
+            "label": "A Token Address",
+            "format": "address"
+          },
+          {
+            "path": "variableDebtAddress",
+            "label": "Variable Debt Address",
+            "format": "address"
+          }
+        ]
+      },
+      "initialize(address)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "provider",
+            "label": "Provider",
+            "format": "address"
+          }
+        ]
+      },
+      "liquidationCall(address,address,address,uint256,bool)": {
+        "intent": "Review Liquidation Call transaction",
+        "fields": [
+          {
+            "path": "collateralAsset",
+            "label": "Collateral Asset",
+            "format": "address"
+          },
+          {
+            "path": "debtAsset",
+            "label": "Debt Asset",
+            "format": "address"
+          },
+          {
+            "path": "borrower",
+            "label": "Borrower",
+            "format": "address"
+          },
+          {
+            "path": "debtToCover",
+            "label": "Debt To Cover",
+            "format": "raw"
+          },
+          {
+            "path": "receiveAToken",
+            "label": "Receive AToken",
+            "format": "boolean"
+          }
+        ]
+      },
+      "mintToTreasury(address[])": {
+        "intent": "Review Mint To Treasury transaction",
+        "fields": [
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          }
+        ]
+      },
+      "multicall(bytes[])": {
+        "intent": "Review Multicall transaction",
+        "fields": [
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "renouncePositionManagerRole(address)": {
+        "intent": "Review Renounce Position Manager Role transaction",
+        "fields": [
+          {
+            "path": "user",
+            "label": "User",
+            "format": "address"
+          }
+        ]
+      },
+      "repayWithATokens(address,uint256,uint256)": {
+        "intent": "Review Repay With ATokens transaction",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "interestRateMode",
+            "label": "Interest Rate Mode",
+            "format": "raw"
+          }
+        ]
+      },
+      "repayWithPermit(address,uint256,uint256,address,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Repay With Permit transaction",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "interestRateMode",
+            "label": "Interest Rate Mode",
+            "format": "raw"
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "permitV",
+            "label": "Permit V",
+            "format": "raw"
+          },
+          {
+            "path": "permitR",
+            "label": "Permit R",
+            "format": "hex"
+          },
+          {
+            "path": "permitS",
+            "label": "Permit S",
+            "format": "hex"
+          }
+        ]
+      },
+      "rescueTokens(address,address,uint256)": {
+        "intent": "Review Rescue Tokens transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "setConfiguration(address,(uint256))": {
+        "intent": "Review Set Configuration transaction",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "configuration",
+            "label": "Configuration",
+            "format": "raw"
+          }
+        ]
+      },
+      "setLiquidationGracePeriod(address,uint40)": {
+        "intent": "Review Set Liquidation Grace Period transaction",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "until",
+            "label": "Until",
+            "format": "raw"
+          }
+        ]
+      },
+      "setUserEMode(uint8)": {
+        "intent": "Review Set User EMode transaction",
+        "fields": [
+          {
+            "path": "categoryId",
+            "label": "Category Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "setUserEModeOnBehalfOf(uint8,address)": {
+        "intent": "Review Set User EMode On Behalf Of transaction",
+        "fields": [
+          {
+            "path": "categoryId",
+            "label": "Category Id",
+            "format": "raw"
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          }
+        ]
+      },
+      "setUserUseReserveAsCollateral(address,bool)": {
+        "intent": "Review Set User Use Reserve As Collateral transaction",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "useAsCollateral",
+            "label": "Use As Collateral",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setUserUseReserveAsCollateralOnBehalfOf(address,bool,address)": {
+        "intent": "Review Set User Use Reserve As Collateral On Behalf Of transaction",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "useAsCollateral",
+            "label": "Use As Collateral",
+            "format": "boolean"
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          }
+        ]
+      },
+      "supplyWithPermit(address,uint256,address,uint16,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Supply With Permit transaction",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "onBehalfOf",
+            "label": "On Behalf Of",
+            "format": "address"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "permitV",
+            "label": "Permit V",
+            "format": "raw"
+          },
+          {
+            "path": "permitR",
+            "label": "Permit R",
+            "format": "hex"
+          },
+          {
+            "path": "permitS",
+            "label": "Permit S",
+            "format": "hex"
+          }
+        ]
+      },
+      "syncIndexesState(address)": {
+        "intent": "Review Sync Indexes State transaction",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          }
+        ]
+      },
+      "syncRatesState(address)": {
+        "intent": "Review Sync Rates State transaction",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          }
+        ]
+      },
+      "updateFlashloanPremium(uint128)": {
+        "intent": "Review Update Flashloan Premium transaction",
+        "fields": [
+          {
+            "path": "flashLoanPremium",
+            "label": "Flash Loan Premium",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

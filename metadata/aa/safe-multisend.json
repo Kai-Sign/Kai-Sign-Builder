@@ -1,0 +1,74 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xa238cbeb142c10ef7ad8442c6d1f9e89e07e7761",
+      "chainId": 1,
+      "name": "Safe MultiSend",
+      "abi": [
+        {
+          "type": "function",
+          "name": "multiSend",
+          "selector": "0x8d80ff0a",
+          "inputs": [
+            {
+              "name": "transactions",
+              "type": "bytes"
+            }
+          ]
+        }
+      ],
+      "deployments": [
+        {
+          "address": "0xa238cbeb142c10ef7ad8442c6d1f9e89e07e7761",
+          "chainId": 1
+        },
+        {
+          "address": "0x9641d764fc13c8b624c04430c7356c1c7c8102e2",
+          "chainId": 1
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "multiSend(bytes)": {
+        "intent": "Execute batch transactions",
+        "fields": [
+          {
+            "path": "transactions",
+            "label": "Batch Transactions",
+            "format": "calldata",
+            "params": {
+              "calleePath": "transactions"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "parsing": {
+    "multicallStructure": {
+      "operation": {
+        "type": "uint8",
+        "size": 1
+      },
+      "to": {
+        "type": "address",
+        "size": 20
+      },
+      "value": {
+        "type": "uint256",
+        "size": 32
+      },
+      "dataLength": {
+        "type": "uint256",
+        "size": 32
+      },
+      "data": {
+        "type": "bytes",
+        "size": 0,
+        "dynamic": true
+      }
+    }
+  }
+}

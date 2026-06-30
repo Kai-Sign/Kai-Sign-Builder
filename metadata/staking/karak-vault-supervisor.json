@@ -1,0 +1,44 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x54e44dbb92dba848ace27f44c0cb4268981ef1cc"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Andalusia Labs",
+    "contractName": "Karak Vault Supervisor"
+  },
+  "display": {
+    "formats": {
+      "deposit(address vault,uint256 amount)": {
+        "intent": "Deposit into Karak vault",
+        "interpolatedIntent": "Deposit {amount} into Karak vault {vault}",
+        "fields": [
+          { "path": "vault", "label": "Vault", "format": "addressName" },
+          { "path": "amount", "label": "Amount", "format": "raw" }
+        ]
+      },
+      "startWithdraw(address vault,uint256 shares)": {
+        "intent": "Start Karak withdrawal",
+        "interpolatedIntent": "Start withdrawal of {shares} shares from Karak vault {vault}",
+        "fields": [
+          { "path": "vault", "label": "Vault", "format": "addressName" },
+          { "path": "shares", "label": "Shares", "format": "raw" }
+        ]
+      },
+      "finishWithdraw(bytes32 withdrawalKey)": {
+        "intent": "Complete Karak withdrawal",
+        "interpolatedIntent": "Complete Karak withdrawal",
+        "fields": [
+          { "path": "withdrawalKey", "label": "Withdrawal Key", "format": "raw" }
+        ]
+      }
+    }
+  }
+}

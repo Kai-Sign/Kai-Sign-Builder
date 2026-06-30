@@ -1,0 +1,254 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x1a40621C54330940B081F925aA027458a4c035eD",
+      "chainId": 8453,
+      "name": "TRUE Staking Rewards on Base",
+      "abi": [
+        {
+          "type": "function",
+          "name": "stake",
+          "selector": "0xa694fc3a",
+          "inputs": [
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0x2e1a7d4d",
+          "inputs": [
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "getReward",
+          "selector": "0x3d18b912",
+          "inputs": []
+        },
+        {
+          "type": "function",
+          "name": "exit",
+          "selector": "0xe9fad8ee",
+          "inputs": []
+        },
+        {
+          "type": "function",
+          "name": "notifyRewardAmount",
+          "selector": "0x3c6b16ab",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "reward",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "recoverERC20",
+          "selector": "0x8980f11f",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "tokenAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setPaused",
+          "selector": "0x16c38b3c",
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "_paused",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setRewardsDistribution",
+          "selector": "0x19762143",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_rewardsDistribution",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setRewardsDuration",
+          "selector": "0xcc1a378f",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_rewardsDuration",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "stake(uint256)": {
+        "intent": "Stake TRUE tokens",
+        "interpolatedIntent": "Stake {amount} TRUE tokens",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Stake Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "TRUE"
+            }
+          }
+        ]
+      },
+      "withdraw(uint256)": {
+        "intent": "Withdraw staked TRUE tokens",
+        "interpolatedIntent": "Withdraw {amount} TRUE tokens",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Withdrawal Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "TRUE"
+            }
+          }
+        ]
+      },
+      "getReward()": {
+        "intent": "Claim TRUE staking rewards",
+        "fields": []
+      },
+      "exit()": {
+        "intent": "Exit TRUE staking (withdraw all and claim rewards)",
+        "fields": []
+      },
+      "notifyRewardAmount(uint256)": {
+        "intent": "Review Notify Reward Amount transaction",
+        "fields": [
+          {
+            "path": "reward",
+            "label": "Reward",
+            "format": "raw"
+          }
+        ]
+      },
+      "recoverERC20(address,uint256)": {
+        "intent": "Review Recover ERC20 transaction",
+        "fields": [
+          {
+            "path": "tokenAddress",
+            "label": "Token Address",
+            "format": "address"
+          },
+          {
+            "path": "tokenAmount",
+            "label": "Token Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "setPaused(bool)": {
+        "intent": "Review Set Paused transaction",
+        "fields": [
+          {
+            "path": "_paused",
+            "label": " paused",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setRewardsDistribution(address)": {
+        "intent": "Review Set Rewards Distribution transaction",
+        "fields": [
+          {
+            "path": "_rewardsDistribution",
+            "label": " rewards Distribution",
+            "format": "address"
+          }
+        ]
+      },
+      "setRewardsDuration(uint256)": {
+        "intent": "Review Set Rewards Duration transaction",
+        "fields": [
+          {
+            "path": "_rewardsDuration",
+            "label": " rewards Duration",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "TRUE Protocol",
+    "info": {
+      "url": "https://truefi.io/",
+      "lastUpdate": "2026-02-03"
+    }
+  }
+}
