@@ -1,0 +1,82 @@
+{
+  "$schema": "../../specs/erc7730-v2.schema.json",
+  "context": {
+    "$id": "MakerDAODSChief",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x9ef05f7f6deb616fd37ac3c959a2ddd25a54e4f5" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/maker/abis/0x9ef05f7f6deb616fd37ac3c959a2ddd25a54e4f5.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "MakerDAO",
+    "contractName": "MakerDAO DSChief (MKR Voting)",
+    "info": { "url": "https://vote.makerdao.com" },
+    "constants": {
+      "MKRaddress": "0x9f8F72aA9304c8B593d555F12eF6589cC3A579A2"
+    }
+  },
+  "display": {
+    "formats": {
+      "lock(uint256)": {
+        "intent": "Lock MKR to vote",
+        "fields": [
+          {
+            "path": "#.wad",
+            "label": "MKR Amount",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.MKRaddress" },
+            "visible": "always"
+          }
+        ]
+      },
+      "free(uint256)": {
+        "intent": "Unlock MKR",
+        "fields": [
+          {
+            "path": "#.wad",
+            "label": "MKR Amount",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.MKRaddress" },
+            "visible": "always"
+          }
+        ]
+      },
+      "vote(address[])": {
+        "intent": "Vote for executive slate",
+        "fields": [
+          {
+            "path": "#.yays",
+            "label": "Candidates",
+            "format": "raw",
+            "visible": "always"
+          }
+        ]
+      },
+      "vote(bytes32)": {
+        "intent": "Vote by slate hash",
+        "fields": [
+          {
+            "path": "#.slate",
+            "label": "Slate Hash",
+            "format": "raw",
+            "visible": "always"
+          }
+        ]
+      },
+      "lift(address)": {
+        "intent": "Elect new executive (hat)",
+        "fields": [
+          {
+            "path": "#.whom",
+            "label": "Candidate",
+            "format": "addressName",
+            "params": { "types": ["contract"], "sources": ["local"] },
+            "visible": "always"
+          }
+        ]
+      }
+    }
+  }
+}

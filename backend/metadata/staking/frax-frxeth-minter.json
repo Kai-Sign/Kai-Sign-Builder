@@ -1,0 +1,526 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xbafa44efe7901e04e39dad13167d089c559c1138",
+      "chainId": 1,
+      "name": "Frax frxETH Minter",
+      "abi": [
+        {
+          "type": "function",
+          "name": "submit",
+          "selector": "0xa1903eab",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "submitAndDeposit",
+          "selector": "0x3e279e4c",
+          "inputs": [
+            {
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "acceptOwnership",
+          "selector": "0x79ba5097",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addValidator",
+          "selector": "0x4b9b90c5",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "bytes",
+                  "name": "pubKey",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "depositDataRoot",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct OperatorRegistry.Validator",
+              "name": "validator",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addValidators",
+          "selector": "0xf63a1711",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "bytes",
+                  "name": "pubKey",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "depositDataRoot",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct OperatorRegistry.Validator[]",
+              "name": "validatorArray",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "clearValidatorArray",
+          "selector": "0xa3f34980",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "depositEther",
+          "selector": "0x26839f17",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "max_deposits",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "moveWithheldETH",
+          "selector": "0x3f8380b6",
+          "inputs": [
+            {
+              "internalType": "address payable",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "nominateNewOwner",
+          "selector": "0x1627540c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "popValidators",
+          "selector": "0xae6e83bf",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "times",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "recoverERC20",
+          "selector": "0x8980f11f",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "tokenAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "recoverEther",
+          "selector": "0xc3d31487",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeValidator",
+          "selector": "0xe77df366",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "remove_idx",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "dont_care_about_ordering",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTimelock",
+          "selector": "0xbdacb303",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_timelock_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setWithdrawalCredential",
+          "selector": "0x3683c204",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "_new_withdrawal_pubkey",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setWithholdRatio",
+          "selector": "0xaa6fa83c",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newRatio",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "submit",
+          "selector": "0x5bcb2fc6",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "submitAndDeposit",
+          "selector": "0x4dcd4547",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "submitAndGive",
+          "selector": "0xbfda0c8c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swapValidator",
+          "selector": "0x35b5d534",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "from_idx",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "to_idx",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "togglePauseDepositEther",
+          "selector": "0xb5e5e64c",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "togglePauseSubmits",
+          "selector": "0xb507fb00",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "submit()": {
+        "intent": "Mint frxETH via Frax",
+        "interpolatedIntent": "Stake ETH to mint frxETH via Frax",
+        "fields": []
+      },
+      "submitAndDeposit(address)": {
+        "intent": "Mint and stake frxETH via Frax",
+        "interpolatedIntent": "Stake ETH, mint frxETH and deposit to sfrxETH for {recipient}",
+        "fields": [
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "acceptOwnership()": {
+        "intent": "Review Accept Ownership transaction",
+        "fields": []
+      },
+      "addValidator((bytes,bytes,bytes32))": {
+        "intent": "Review Add Validator transaction",
+        "fields": [
+          {
+            "path": "validator",
+            "label": "Validator",
+            "format": "raw"
+          }
+        ]
+      },
+      "addValidators((bytes,bytes,bytes32)[])": {
+        "intent": "Review Add Validators transaction",
+        "fields": [
+          {
+            "path": "validatorArray",
+            "label": "Validator Array",
+            "format": "raw"
+          }
+        ]
+      },
+      "clearValidatorArray()": {
+        "intent": "Review Clear Validator Array transaction",
+        "fields": []
+      },
+      "depositEther(uint256)": {
+        "intent": "Review Deposit Ether transaction",
+        "fields": [
+          {
+            "path": "max_deposits",
+            "label": "Max deposits",
+            "format": "raw"
+          }
+        ]
+      },
+      "moveWithheldETH(address,uint256)": {
+        "intent": "Review Move Withheld ETH transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "nominateNewOwner(address)": {
+        "intent": "Review Nominate New Owner transaction",
+        "fields": [
+          {
+            "path": "_owner",
+            "label": " owner",
+            "format": "address"
+          }
+        ]
+      },
+      "popValidators(uint256)": {
+        "intent": "Review Pop Validators transaction",
+        "fields": [
+          {
+            "path": "times",
+            "label": "Times",
+            "format": "raw"
+          }
+        ]
+      },
+      "recoverERC20(address,uint256)": {
+        "intent": "Review Recover ERC20 transaction",
+        "fields": [
+          {
+            "path": "tokenAddress",
+            "label": "Token Address",
+            "format": "address"
+          },
+          {
+            "path": "tokenAmount",
+            "label": "Token Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "recoverEther(uint256)": {
+        "intent": "Review Recover Ether transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "removeValidator(uint256,bool)": {
+        "intent": "Review Remove Validator transaction",
+        "fields": [
+          {
+            "path": "remove_idx",
+            "label": "Remove idx",
+            "format": "raw"
+          },
+          {
+            "path": "dont_care_about_ordering",
+            "label": "Dont care about ordering",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setTimelock(address)": {
+        "intent": "Review Set Timelock transaction",
+        "fields": [
+          {
+            "path": "_timelock_address",
+            "label": " timelock address",
+            "format": "address"
+          }
+        ]
+      },
+      "setWithdrawalCredential(bytes)": {
+        "intent": "Review Set Withdrawal Credential transaction",
+        "fields": [
+          {
+            "path": "_new_withdrawal_pubkey",
+            "label": " new withdrawal pubkey",
+            "format": "hex"
+          }
+        ]
+      },
+      "setWithholdRatio(uint256)": {
+        "intent": "Review Set Withhold Ratio transaction",
+        "fields": [
+          {
+            "path": "newRatio",
+            "label": "New Ratio",
+            "format": "raw"
+          }
+        ]
+      },
+      "submitAndGive(address)": {
+        "intent": "Review Submit And Give transaction",
+        "fields": [
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "swapValidator(uint256,uint256)": {
+        "intent": "Review Swap Validator transaction",
+        "fields": [
+          {
+            "path": "from_idx",
+            "label": "From idx",
+            "format": "raw"
+          },
+          {
+            "path": "to_idx",
+            "label": "To idx",
+            "format": "raw"
+          }
+        ]
+      },
+      "togglePauseDepositEther()": {
+        "intent": "Review Toggle Pause Deposit Ether transaction",
+        "fields": []
+      },
+      "togglePauseSubmits()": {
+        "intent": "Review Toggle Pause Submits transaction",
+        "fields": []
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Frax Finance",
+    "info": {
+      "url": "https://app.frax.finance/",
+      "legalName": "Frax Finance",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

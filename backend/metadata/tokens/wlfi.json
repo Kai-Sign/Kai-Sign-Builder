@@ -1,0 +1,893 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xda5e1988097297dcdc1f90d4dfe7909e847cbef6",
+      "chainId": 1,
+      "name": "World Liberty Financial",
+      "symbol": "WLFI",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "acceptOwnership",
+          "selector": "0x79ba5097",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "activateAccount",
+          "selector": "0x252f3867",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "_signature",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "activateAccountAndClaimVest",
+          "selector": "0xe5195157",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "_signature",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "selector": "0x42966c68",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burnFrom",
+          "selector": "0x79cc6790",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimVest",
+          "selector": "0xf13253bb",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "delegate",
+          "selector": "0x5c19a95c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "delegatee",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "delegateBySig",
+          "selector": "0xc3cda520",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "delegatee",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "expiry",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "guardianPause",
+          "selector": "0xd4593872",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "guardianSetBlacklistStatus",
+          "selector": "0x5aa42d12",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "_isBlacklisted",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xc4d66de8",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_authorizedSigner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "ownerActivateAccount",
+          "selector": "0xb6274f3d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "_bypassVester",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "ownerBatchReallocateFrom",
+          "selector": "0x7adf1239",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "_fromChunk",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "_toChunk",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_valueChunk",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "ownerClaimVestFor",
+          "selector": "0xbfc9c359",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "ownerPause",
+          "selector": "0x967f1cc6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "ownerReallocateFrom",
+          "selector": "0x7df9a674",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "ownerRescueTokens",
+          "selector": "0x94d4827f",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "ownerSetAuthorizedSigner",
+          "selector": "0x2ad36687",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_authorizedSigner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "ownerSetBlacklistStatus",
+          "selector": "0xe1dfc884",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "_isBlacklisted",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "ownerSetGuardian",
+          "selector": "0x8682db37",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_guardian",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "_status",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "ownerSetMaxVotingPower",
+          "selector": "0x56f31c5d",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_maxVotingPower",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "ownerSetTransferBeforeStartStatus",
+          "selector": "0xc7dac704",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "_isAllowed",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "ownerSetVotingPowerExcludedStatus",
+          "selector": "0x56c531b9",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "_status",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "ownerUnpause",
+          "selector": "0x0f861ca3",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "ownerElectVestingUpdatesFor",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "_accounts",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x3254862e"
+        },
+        {
+          "type": "function",
+          "name": "electVestingUpdate",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_signature",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xdd1d1d9e"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} WLFI",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "WLFI"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} WLFI",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "WLFI"
+            }
+          }
+        ]
+      },
+      "acceptOwnership()": {
+        "intent": "Review Accept Ownership transaction",
+        "fields": []
+      },
+      "activateAccount(bytes)": {
+        "intent": "Review Activate Account transaction",
+        "fields": [
+          {
+            "path": "_signature",
+            "label": " signature",
+            "format": "hex"
+          }
+        ]
+      },
+      "activateAccountAndClaimVest(bytes)": {
+        "intent": "Review Activate Account And Claim Vest transaction",
+        "fields": [
+          {
+            "path": "_signature",
+            "label": " signature",
+            "format": "hex"
+          }
+        ]
+      },
+      "burn(uint256)": {
+        "intent": "Review Burn transaction",
+        "fields": [
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "burnFrom(address,uint256)": {
+        "intent": "Review Burn From transaction",
+        "fields": [
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "claimVest()": {
+        "intent": "Review Claim Vest transaction",
+        "fields": []
+      },
+      "delegate(address)": {
+        "intent": "Review Delegate transaction",
+        "fields": [
+          {
+            "path": "delegatee",
+            "label": "Delegatee",
+            "format": "address"
+          }
+        ]
+      },
+      "delegateBySig(address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Delegate By Sig transaction",
+        "fields": [
+          {
+            "path": "delegatee",
+            "label": "Delegatee",
+            "format": "address"
+          },
+          {
+            "path": "nonce",
+            "label": "Nonce",
+            "format": "raw"
+          },
+          {
+            "path": "expiry",
+            "label": "Expiry",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "guardianPause()": {
+        "intent": "Review Guardian Pause transaction",
+        "fields": []
+      },
+      "guardianSetBlacklistStatus(address,bool)": {
+        "intent": "Review Guardian Set Blacklist Status transaction",
+        "fields": [
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          },
+          {
+            "path": "_isBlacklisted",
+            "label": " is Blacklisted",
+            "format": "boolean"
+          }
+        ]
+      },
+      "initialize(address)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_authorizedSigner",
+            "label": " authorized Signer",
+            "format": "address"
+          }
+        ]
+      },
+      "ownerActivateAccount(address,bool)": {
+        "intent": "Review Owner Activate Account transaction",
+        "fields": [
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          },
+          {
+            "path": "_bypassVester",
+            "label": " bypass Vester",
+            "format": "boolean"
+          }
+        ]
+      },
+      "ownerBatchReallocateFrom(address[],address[],uint256[])": {
+        "intent": "Review Owner Batch Reallocate From transaction",
+        "fields": [
+          {
+            "path": "_fromChunk",
+            "label": " from Chunk",
+            "format": "raw"
+          },
+          {
+            "path": "_toChunk",
+            "label": " to Chunk",
+            "format": "raw"
+          },
+          {
+            "path": "_valueChunk",
+            "label": " value Chunk",
+            "format": "raw"
+          }
+        ]
+      },
+      "ownerClaimVestFor(address)": {
+        "intent": "Review Owner Claim Vest For transaction",
+        "fields": [
+          {
+            "path": "_user",
+            "label": " user",
+            "format": "address"
+          }
+        ]
+      },
+      "ownerPause()": {
+        "intent": "Review Owner Pause transaction",
+        "fields": []
+      },
+      "ownerReallocateFrom(address,address,uint256)": {
+        "intent": "Review Owner Reallocate From transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          }
+        ]
+      },
+      "ownerRescueTokens(address,address,uint256)": {
+        "intent": "Review Owner Rescue Tokens transaction",
+        "fields": [
+          {
+            "path": "_recipient",
+            "label": " recipient",
+            "format": "address"
+          },
+          {
+            "path": "_token",
+            "label": " token",
+            "format": "address"
+          },
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          }
+        ]
+      },
+      "ownerSetAuthorizedSigner(address)": {
+        "intent": "Review Owner Set Authorized Signer transaction",
+        "fields": [
+          {
+            "path": "_authorizedSigner",
+            "label": " authorized Signer",
+            "format": "address"
+          }
+        ]
+      },
+      "ownerSetBlacklistStatus(address,bool)": {
+        "intent": "Review Owner Set Blacklist Status transaction",
+        "fields": [
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          },
+          {
+            "path": "_isBlacklisted",
+            "label": " is Blacklisted",
+            "format": "boolean"
+          }
+        ]
+      },
+      "ownerSetGuardian(address,bool)": {
+        "intent": "Review Owner Set Guardian transaction",
+        "fields": [
+          {
+            "path": "_guardian",
+            "label": " guardian",
+            "format": "address"
+          },
+          {
+            "path": "_status",
+            "label": " status",
+            "format": "boolean"
+          }
+        ]
+      },
+      "ownerSetMaxVotingPower(uint256)": {
+        "intent": "Review Owner Set Max Voting Power transaction",
+        "fields": [
+          {
+            "path": "_maxVotingPower",
+            "label": " max Voting Power",
+            "format": "raw"
+          }
+        ]
+      },
+      "ownerSetTransferBeforeStartStatus(address,bool)": {
+        "intent": "Review Owner Set Transfer Before Start Status transaction",
+        "fields": [
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          },
+          {
+            "path": "_isAllowed",
+            "label": " is Allowed",
+            "format": "boolean"
+          }
+        ]
+      },
+      "ownerSetVotingPowerExcludedStatus(address,bool)": {
+        "intent": "Review Owner Set Voting Power Excluded Status transaction",
+        "fields": [
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          },
+          {
+            "path": "_status",
+            "label": " status",
+            "format": "boolean"
+          }
+        ]
+      },
+      "ownerUnpause()": {
+        "intent": "Review Owner Unpause transaction",
+        "fields": []
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

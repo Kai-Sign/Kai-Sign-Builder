@@ -1,0 +1,358 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xd54f502e184b6b739d7d27a6410a67dc462d69c8",
+      "chainId": 1,
+      "name": "dYdX V4 StarkEx Bridge (Ethereum)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "depositERC20",
+          "selector": "0x0c5e8ef9",
+          "inputs": [
+            {
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "starkKey",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "depositEth",
+          "selector": "0x9c72c6df",
+          "inputs": [
+            {
+              "name": "starkKey",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "requestWithdrawal",
+          "selector": "0xa44d4f41",
+          "inputs": [
+            {
+              "name": "starkKey",
+              "type": "uint256"
+            },
+            {
+              "name": "assetType",
+              "type": "uint256"
+            },
+            {
+              "name": "vaultId",
+              "type": "uint256"
+            },
+            {
+              "name": "quantizedAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0x441a3e70",
+          "inputs": [
+            {
+              "name": "starkKey",
+              "type": "uint256"
+            },
+            {
+              "name": "assetType",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addImplementation",
+          "selector": "0x5e3a97e7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bool",
+              "name": "finalize",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "proxyAcceptGovernance",
+          "selector": "0x6684b1d6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "proxyCancelNomination",
+          "selector": "0xf9bcdde4",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "proxyNominateNewGovernor",
+          "selector": "0x8757653f",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newGovernor",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "proxyRemoveGovernor",
+          "selector": "0x12f16e6d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "governorForRemoval",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeImplementation",
+          "selector": "0x22175a32",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x7147855d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bool",
+              "name": "finalize",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x439fab91"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "depositERC20(address,uint256,uint256)": {
+        "intent": "Deposit ERC-20 to dYdX V4 L2",
+        "interpolatedIntent": "Deposit {amount} {token} to dYdX V4 L2 account {starkKey}",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "token"
+            }
+          },
+          {
+            "path": "starkKey",
+            "label": "Stark Key",
+            "format": "raw"
+          }
+        ]
+      },
+      "depositEth(uint256)": {
+        "intent": "Deposit ETH to dYdX V4 L2",
+        "interpolatedIntent": "Deposit ETH to dYdX V4 L2 account {starkKey}",
+        "fields": [
+          {
+            "path": "starkKey",
+            "label": "Stark Key",
+            "format": "raw"
+          }
+        ]
+      },
+      "requestWithdrawal(uint256,uint256,uint256,uint256)": {
+        "intent": "Request withdrawal from dYdX V4 L2",
+        "interpolatedIntent": "Request withdrawal of {quantizedAmount} from dYdX V4 L2",
+        "fields": [
+          {
+            "path": "starkKey",
+            "label": "Stark Key",
+            "format": "raw"
+          },
+          {
+            "path": "quantizedAmount",
+            "label": "Quantized Amount",
+            "format": "raw"
+          },
+          {
+            "path": "vaultId",
+            "label": "Vault ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdraw(uint256,uint256)": {
+        "intent": "Withdraw from dYdX V4 L2 to Ethereum",
+        "interpolatedIntent": "Finalize dYdX V4 withdrawal for Stark Key {starkKey}",
+        "fields": [
+          {
+            "path": "starkKey",
+            "label": "Stark Key",
+            "format": "raw"
+          },
+          {
+            "path": "assetType",
+            "label": "Asset Type",
+            "format": "raw"
+          }
+        ]
+      },
+      "addImplementation(address,bytes,bool)": {
+        "intent": "Review Add Implementation transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          },
+          {
+            "path": "finalize",
+            "label": "Finalize",
+            "format": "boolean"
+          }
+        ]
+      },
+      "proxyAcceptGovernance()": {
+        "intent": "Review Proxy Accept Governance transaction",
+        "fields": []
+      },
+      "proxyCancelNomination()": {
+        "intent": "Review Proxy Cancel Nomination transaction",
+        "fields": []
+      },
+      "proxyNominateNewGovernor(address)": {
+        "intent": "Review Proxy Nominate New Governor transaction",
+        "fields": [
+          {
+            "path": "newGovernor",
+            "label": "New Governor",
+            "format": "address"
+          }
+        ]
+      },
+      "proxyRemoveGovernor(address)": {
+        "intent": "Review Proxy Remove Governor transaction",
+        "fields": [
+          {
+            "path": "governorForRemoval",
+            "label": "Governor For Removal",
+            "format": "address"
+          }
+        ]
+      },
+      "removeImplementation(address)": {
+        "intent": "Review Remove Implementation transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeTo(address,bytes,bool)": {
+        "intent": "Review Upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          },
+          {
+            "path": "finalize",
+            "label": "Finalize",
+            "format": "boolean"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "dYdX Foundation",
+    "info": {
+      "url": "https://dydx.exchange/",
+      "legalName": "dYdX Foundation",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

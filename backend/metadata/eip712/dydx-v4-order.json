@@ -1,0 +1,58 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "eip712": {
+      "deployments": [
+        { "chainId": 1, "address": "0x6cef87d89cf75de22cf261f36e0ab6a6d10f56ba" }
+      ],
+      "domain": {
+        "name": "dYdX",
+        "chainId": 1,
+        "verifyingContract": "0x6cef87d89cf75de22cf261f36e0ab6a6d10f56ba"
+      },
+      "schemas": [
+        {
+          "primaryType": "Order",
+          "types": {
+            "EIP712Domain": [
+              { "name": "name", "type": "string" },
+              { "name": "chainId", "type": "uint256" },
+              { "name": "verifyingContract", "type": "address" }
+            ],
+            "Order": [
+              { "name": "subaccountId", "type": "uint32" },
+              { "name": "clientId", "type": "uint64" },
+              { "name": "clobs", "type": "uint64" },
+              { "name": "side", "type": "uint8" },
+              { "name": "quantums", "type": "uint64" },
+              { "name": "subticks", "type": "uint64" },
+              { "name": "goodTilBlock", "type": "uint32" },
+              { "name": "timeInForce", "type": "uint8" },
+              { "name": "reduceOnly", "type": "bool" },
+              { "name": "clientMetadata", "type": "uint32" },
+              { "name": "conditionType", "type": "uint8" },
+              { "name": "conditionalOrderTriggerSubticks", "type": "uint64" }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "Order": {
+        "intent": "Place dYdX V4 Order",
+        "fields": [
+          { "path": "subaccountId", "label": "Subaccount ID", "format": "raw" },
+          { "path": "side", "label": "Side (0=BUY 1=SELL)", "format": "raw" },
+          { "path": "quantums", "label": "Size (quantums)", "format": "raw" },
+          { "path": "subticks", "label": "Price (subticks)", "format": "raw" },
+          { "path": "goodTilBlock", "label": "Good Til Block", "format": "raw" },
+          { "path": "timeInForce", "label": "Time in Force", "format": "raw" },
+          { "path": "reduceOnly", "label": "Reduce Only", "format": "raw" }
+        ],
+        "excluded": ["clientId", "clobs", "clientMetadata", "conditionType", "conditionalOrderTriggerSubticks"]
+      }
+    }
+  }
+}

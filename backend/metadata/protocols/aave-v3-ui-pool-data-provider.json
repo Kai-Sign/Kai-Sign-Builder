@@ -1,0 +1,33 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x56b7A1012765C285afAC8b8F25C69Bf10ccfE978"
+        }
+      ],
+      "abi": [
+        {"type": "function", "name": "setPoolDataProvider", "selector": "0x00000000", "inputs": [{"name": "provider", "type": "address"}]}
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave V3 UiPoolDataProvider",
+    "info": {
+      "website": "https://aave.com"
+    }
+  },
+  "display": {
+    "formats": {
+      "setPoolDataProvider(address)": {
+        "intent": "Set Pool Data Provider",
+        "fields": [
+          {"path": "provider", "label": "Provider Address", "format": "addressName"}
+        ]
+      }
+    }
+  }
+}

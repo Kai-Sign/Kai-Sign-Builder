@@ -1,0 +1,423 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x311Bb771e4F8952E6Da169b425E7e92d6Ac45756"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "setReserveBorrowing",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "enabled",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "configureReserveAsCollateral",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "ltv",
+              "type": "uint256"
+            },
+            {
+              "name": "liquidationThreshold",
+              "type": "uint256"
+            },
+            {
+              "name": "liquidationBonus",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setReserveStableRateBorrowing",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "enabled",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setReserveFreeze",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "freeze",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setReserveInterestRateStrategyAddress",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "rateStrategyAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x1d2118f9"
+        },
+        {
+          "type": "function",
+          "name": "deactivateReserve",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x3e72a454"
+        },
+        {
+          "type": "function",
+          "name": "updateAToken",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "implementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x45fe7946"
+        },
+        {
+          "type": "function",
+          "name": "setReserveFactor",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "reserveFactor",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x4b4e6753"
+        },
+        {
+          "type": "function",
+          "name": "updateVariableDebtToken",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "implementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x4d978258"
+        },
+        {
+          "type": "function",
+          "name": "initReserve",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "aTokenImpl",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "stableDebtTokenImpl",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "variableDebtTokenImpl",
+              "type": "address"
+            },
+            {
+              "internalType": "uint8",
+              "name": "underlyingAssetDecimals",
+              "type": "uint8"
+            },
+            {
+              "internalType": "address",
+              "name": "interestRateStrategyAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x6e801a71"
+        },
+        {
+          "type": "function",
+          "name": "setPoolPause",
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "val",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x7641f3d9"
+        },
+        {
+          "type": "function",
+          "name": "freezeReserve",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x7aca76eb"
+        },
+        {
+          "type": "function",
+          "name": "disableBorrowingOnReserve",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xa8dc0f45"
+        },
+        {
+          "type": "function",
+          "name": "updateStableDebtToken",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "implementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xaa65b66e"
+        },
+        {
+          "type": "function",
+          "name": "activateReserve",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xb75d6f34"
+        },
+        {
+          "type": "function",
+          "name": "enableReserveStableRate",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xbf344183"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [
+            {
+              "internalType": "contract ILendingPoolAddressesProvider",
+              "name": "provider",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xc4d66de8"
+        },
+        {
+          "type": "function",
+          "name": "enableBorrowingOnReserve",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "stableBorrowRateEnabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xeede87c1"
+        },
+        {
+          "type": "function",
+          "name": "unfreezeReserve",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xef1f9373"
+        },
+        {
+          "type": "function",
+          "name": "disableReserveStableRate",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf53a2515"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave V2 LendingPoolConfigurator",
+    "info": {
+      "website": "https://aave.com",
+      "docs": "https://docs.aave.com/developers/v2"
+    }
+  },
+  "display": {
+    "formats": {
+      "setReserveBorrowing(address,bool)": {
+        "intent": "{enabled,select,true{Enable} other{Disable}} Borrowing",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "enabled",
+            "label": "Enabled",
+            "format": "raw"
+          }
+        ]
+      },
+      "configureReserveAsCollateral(address,uint256,uint256,uint256)": {
+        "intent": "Configure Reserve as Collateral",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "ltv",
+            "label": "LTV",
+            "format": "raw"
+          },
+          {
+            "path": "liquidationThreshold",
+            "label": "Liq. Threshold",
+            "format": "raw"
+          },
+          {
+            "path": "liquidationBonus",
+            "label": "Liq. Bonus",
+            "format": "raw"
+          }
+        ]
+      },
+      "setReserveFreeze(address,bool)": {
+        "intent": "{freeze,select,true{Freeze} other{Unfreeze}} Reserve",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "freeze",
+            "label": "Freeze",
+            "format": "raw"
+          }
+        ]
+      },
+      "setReserveStableRateBorrowing(address,bool)": {
+        "intent": "{enabled,select,true{Enable} other{Disable}} Stable Rate Borrowing",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "enabled",
+            "label": "Enabled",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

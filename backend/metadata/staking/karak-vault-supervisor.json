@@ -1,0 +1,703 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x54e44dbb92dba848ace27f44c0cb4268981ef1cc"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "pause",
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "toPause",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x02329a29"
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "inputs": [
+            {
+              "internalType": "contract IVault",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minSharesOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x0efe6a8b",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "depositAndGimmie",
+          "inputs": [
+            {
+              "internalType": "contract IVault",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minSharesOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x17070f02",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "changeImplementation",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newVaultImpl",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x17a68dd8"
+        },
+        {
+          "type": "function",
+          "name": "renounceRoles",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "roles",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x183a4f6e"
+        },
+        {
+          "type": "function",
+          "name": "grantRoles",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "roles",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x1c10893f"
+        },
+        {
+          "type": "function",
+          "name": "requestOwnershipHandover",
+          "inputs": [],
+          "stateMutability": "payable",
+          "selector": "0x25692962"
+        },
+        {
+          "type": "function",
+          "name": "registerSwapperForRoutes",
+          "inputs": [
+            {
+              "internalType": "contract IERC20[]",
+              "name": "inputAsset",
+              "type": "address[]"
+            },
+            {
+              "internalType": "contract IERC20[]",
+              "name": "outputAsset",
+              "type": "address[]"
+            },
+            {
+              "internalType": "contract ISwapper",
+              "name": "swapper",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x259dff0c"
+        },
+        {
+          "type": "function",
+          "name": "depositWithSignature",
+          "inputs": [
+            {
+              "internalType": "contract IVault",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minSharesOut",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint8",
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "s",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct IVaultSupervisor.Signature",
+              "name": "permit",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint8",
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "s",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct IVaultSupervisor.Signature",
+              "name": "vaultAllowance",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x2b93e0a2",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "revokeRoles",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "roles",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x4a4ee7b1"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x4f1ef286"
+        },
+        {
+          "type": "function",
+          "name": "redeemShares",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "staker",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IVault",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x51ffb74a"
+        },
+        {
+          "type": "function",
+          "name": "cancelOwnershipHandover",
+          "inputs": [],
+          "stateMutability": "payable",
+          "selector": "0x54d1f13d"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "inputs": [],
+          "stateMutability": "payable",
+          "selector": "0x715018a6"
+        },
+        {
+          "type": "function",
+          "name": "setLimiter",
+          "inputs": [
+            {
+              "internalType": "contract ILimiter",
+              "name": "limiter",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x7a29084c"
+        },
+        {
+          "type": "function",
+          "name": "gimmieShares",
+          "inputs": [
+            {
+              "internalType": "contract IVault",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x7fb2a0a1"
+        },
+        {
+          "type": "function",
+          "name": "returnShares",
+          "inputs": [
+            {
+              "internalType": "contract IVault",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x8b198025"
+        },
+        {
+          "type": "function",
+          "name": "removeShares",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "staker",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IVault",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x8c80d4e5"
+        },
+        {
+          "type": "function",
+          "name": "changeImplementationForVault",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "newVaultImpl",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xaa0a050c"
+        },
+        {
+          "type": "function",
+          "name": "setV2Core",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "v2Core",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xb69b682f"
+        },
+        {
+          "type": "function",
+          "name": "runAdminOperation",
+          "inputs": [
+            {
+              "internalType": "contract IVault",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "fn",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xc1f09e30",
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "vaultSwap",
+          "inputs": [
+            {
+              "internalType": "contract IVault",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "contract IERC20",
+                  "name": "newDepositToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "string",
+                  "name": "name",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "symbol",
+                  "type": "string"
+                },
+                {
+                  "internalType": "enum IVault.AssetType",
+                  "name": "assetType",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "assetLimit",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IVault.SwapAssetParams",
+              "name": "params",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minNewAssetAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "swapperParams",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xca5f7678"
+        },
+        {
+          "type": "function",
+          "name": "migrate",
+          "inputs": [
+            {
+              "internalType": "contract IVault",
+              "name": "oldVault",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IVault",
+              "name": "newVault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "oldShares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minNewShares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "swapperOtherParams",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xefc1e712"
+        },
+        {
+          "type": "function",
+          "name": "completeOwnershipHandover",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "pendingOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0xf04e283e"
+        },
+        {
+          "type": "function",
+          "name": "deployVault",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "depositToken",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "name",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "symbol",
+              "type": "string"
+            },
+            {
+              "internalType": "enum IVault.AssetType",
+              "name": "assetType",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf0edf6aa",
+          "outputs": [
+            {
+              "internalType": "contract IVault",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0xf2fde38b"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_delegationSupervisor",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_vaultImpl",
+              "type": "address"
+            },
+            {
+              "internalType": "contract ILimiter",
+              "name": "_limiter",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_manager",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf8c8765e"
+        },
+        {
+          "type": "function",
+          "name": "migrateToV2",
+          "inputs": [
+            {
+              "internalType": "contract IVault",
+              "name": "v1Vault",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IVault2",
+              "name": "v2Vault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "oldShares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minNewShares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xfc346664"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Andalusia Labs",
+    "contractName": "Karak Vault Supervisor"
+  },
+  "display": {
+    "formats": {
+      "deposit(address vault,uint256 amount)": {
+        "intent": "Deposit into Karak vault",
+        "interpolatedIntent": "Deposit {amount} into Karak vault {vault}",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "startWithdraw(address vault,uint256 shares)": {
+        "intent": "Start Karak withdrawal",
+        "interpolatedIntent": "Start withdrawal of {shares} shares from Karak vault {vault}",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "addressName"
+          },
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          }
+        ]
+      },
+      "finishWithdraw(bytes32 withdrawalKey)": {
+        "intent": "Complete Karak withdrawal",
+        "interpolatedIntent": "Complete Karak withdrawal",
+        "fields": [
+          {
+            "path": "withdrawalKey",
+            "label": "Withdrawal Key",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

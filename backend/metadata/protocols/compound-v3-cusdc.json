@@ -1,0 +1,835 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xc3d688b66703497daa19211eedff47f25384cdc3",
+      "chainId": 1,
+      "name": "Compound V3 cUSDC",
+      "abi": [
+        {
+          "type": "function",
+          "name": "supply",
+          "selector": "0xf2b9fdb8",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xf3fef3a3",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "admin",
+          "selector": "0xf851a440",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "admin_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeAdmin",
+          "selector": "0x8f283970",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "implementation",
+          "selector": "0x5c60da1b",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "implementation_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x3659cfe6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "absorb",
+          "selector": "0xc3cecfd2",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "absorber",
+              "type": "address"
+            },
+            {
+              "internalType": "address[]",
+              "name": "accounts",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "accrueAccount",
+          "selector": "0xbfe69c8d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approveThis",
+          "selector": "0xad14777c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "manager",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "buyCollateral",
+          "selector": "0xe4e6e779",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "baseAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initializeStorage",
+          "selector": "0x1c9f7fb9",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pause",
+          "selector": "0x44c35d07",
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "supplyPaused",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "transferPaused",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "withdrawPaused",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "absorbPaused",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "buyPaused",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "supplyFrom",
+          "selector": "0x90323177",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "supplyTo",
+          "selector": "0x4232cd63",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferAsset",
+          "selector": "0x439e2e45",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferAssetFrom",
+          "selector": "0xc1ee2c18",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "src",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "src",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawFrom",
+          "selector": "0x26441318",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "src",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawReserves",
+          "selector": "0xe478795d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawTo",
+          "selector": "0xc3b35a7e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "supply(address,uint256)": {
+        "intent": "Supply to Compound",
+        "interpolatedIntent": "Supply {amount} to Compound",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "asset"
+            }
+          }
+        ]
+      },
+      "withdraw(address,uint256)": {
+        "intent": "Withdraw from Compound",
+        "interpolatedIntent": "Withdraw {amount} from Compound",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "asset"
+            }
+          }
+        ]
+      },
+      "admin()": {
+        "intent": "Review Admin transaction",
+        "fields": []
+      },
+      "changeAdmin(address)": {
+        "intent": "Review Change Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "implementation()": {
+        "intent": "Review Implementation transaction",
+        "fields": []
+      },
+      "upgradeTo(address)": {
+        "intent": "Review Upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "absorb(address,address[])": {
+        "intent": "Review Absorb transaction",
+        "fields": [
+          {
+            "path": "absorber",
+            "label": "Absorber",
+            "format": "address"
+          },
+          {
+            "path": "accounts",
+            "label": "Accounts",
+            "format": "raw"
+          }
+        ]
+      },
+      "accrueAccount(address)": {
+        "intent": "Review Accrue Account transaction",
+        "fields": [
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "approveThis(address,address,uint256)": {
+        "intent": "Review Approve This transaction",
+        "fields": [
+          {
+            "path": "manager",
+            "label": "Manager",
+            "format": "address"
+          },
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "buyCollateral(address,uint256,uint256,address)": {
+        "intent": "Review Buy Collateral transaction",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "minAmount",
+            "label": "Min Amount",
+            "format": "raw"
+          },
+          {
+            "path": "baseAmount",
+            "label": "Base Amount",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "initializeStorage()": {
+        "intent": "Review Initialize Storage transaction",
+        "fields": []
+      },
+      "pause(bool,bool,bool,bool,bool)": {
+        "intent": "Review Pause transaction",
+        "fields": [
+          {
+            "path": "supplyPaused",
+            "label": "Supply Paused",
+            "format": "boolean"
+          },
+          {
+            "path": "transferPaused",
+            "label": "Transfer Paused",
+            "format": "boolean"
+          },
+          {
+            "path": "withdrawPaused",
+            "label": "Withdraw Paused",
+            "format": "boolean"
+          },
+          {
+            "path": "absorbPaused",
+            "label": "Absorb Paused",
+            "format": "boolean"
+          },
+          {
+            "path": "buyPaused",
+            "label": "Buy Paused",
+            "format": "boolean"
+          }
+        ]
+      },
+      "supplyFrom(address,address,address,uint256)": {
+        "intent": "Review Supply From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "dst",
+            "label": "Dst",
+            "format": "address"
+          },
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "supplyTo(address,address,uint256)": {
+        "intent": "Review Supply To transaction",
+        "fields": [
+          {
+            "path": "dst",
+            "label": "Dst",
+            "format": "address"
+          },
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Review Transfer transaction",
+        "fields": [
+          {
+            "path": "dst",
+            "label": "Dst",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferAsset(address,address,uint256)": {
+        "intent": "Review Transfer Asset transaction",
+        "fields": [
+          {
+            "path": "dst",
+            "label": "Dst",
+            "format": "address"
+          },
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferAssetFrom(address,address,address,uint256)": {
+        "intent": "Review Transfer Asset From transaction",
+        "fields": [
+          {
+            "path": "src",
+            "label": "Src",
+            "format": "address"
+          },
+          {
+            "path": "dst",
+            "label": "Dst",
+            "format": "address"
+          },
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "src",
+            "label": "Src",
+            "format": "address"
+          },
+          {
+            "path": "dst",
+            "label": "Dst",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdrawFrom(address,address,address,uint256)": {
+        "intent": "Review Withdraw From transaction",
+        "fields": [
+          {
+            "path": "src",
+            "label": "Src",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdrawReserves(address,uint256)": {
+        "intent": "Review Withdraw Reserves transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdrawTo(address,address,uint256)": {
+        "intent": "Review Withdraw To transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

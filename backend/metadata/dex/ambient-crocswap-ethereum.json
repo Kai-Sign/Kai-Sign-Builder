@@ -1,0 +1,288 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0xaaaaaaaaa24eeeb8d57d431224f73832bc34f688"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "userCmdRelayer",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "callpath",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "cmd",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "conds",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "relayerTip",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x08719070",
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "output",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "protocolCmd",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "callpath",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "cmd",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bool",
+              "name": "sudo",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x13fd34f4"
+        },
+        {
+          "type": "function",
+          "name": "swap",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "base",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "quote",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "poolIdx",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "isBuy",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "inBaseQty",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint128",
+              "name": "qty",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint16",
+              "name": "tip",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint128",
+              "name": "limitPrice",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint128",
+              "name": "minOut",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint8",
+              "name": "reserveFlags",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x3d719cd9",
+          "outputs": [
+            {
+              "internalType": "int128",
+              "name": "baseQuote",
+              "type": "int128"
+            },
+            {
+              "internalType": "int128",
+              "name": "quoteFlow",
+              "type": "int128"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "userCmdRouter",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "callpath",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "cmd",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "client",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x90b33ce5",
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "userCmd",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "callpath",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "cmd",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0xa15112f9",
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "userCmd",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "input",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "int128",
+              "name": "baseFlow",
+              "type": "int128"
+            },
+            {
+              "internalType": "int128",
+              "name": "quoteFlow",
+              "type": "int128"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0xf96dc788"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Ambient Finance",
+    "contractName": "Ambient CrocSwapDex"
+  },
+  "display": {
+    "formats": {
+      "swap(address base,address quote,uint256 poolIdx,bool isBuy,bool inBaseQty,uint128 qty,uint16 tip,uint128 limitPrice,uint128 minOut,uint8 reserveFlags)": {
+        "intent": "Swap via Ambient Finance",
+        "interpolatedIntent": "Swap {qty} tokens via Ambient Finance",
+        "fields": [
+          {
+            "path": "base",
+            "label": "Base Token",
+            "format": "addressName"
+          },
+          {
+            "path": "quote",
+            "label": "Quote Token",
+            "format": "addressName"
+          },
+          {
+            "path": "qty",
+            "label": "Quantity",
+            "format": "raw"
+          },
+          {
+            "path": "minOut",
+            "label": "Minimum Output",
+            "format": "raw"
+          },
+          {
+            "path": "isBuy",
+            "label": "Is Buy",
+            "format": "integer"
+          },
+          {
+            "path": "limitPrice",
+            "label": "Limit Price",
+            "format": "raw"
+          }
+        ]
+      },
+      "userCmd(uint16 callpath,bytes cmd)": {
+        "intent": "Execute Ambient user command",
+        "interpolatedIntent": "Execute Ambient command on callpath {callpath}",
+        "fields": [
+          {
+            "path": "callpath",
+            "label": "Command Path",
+            "format": "integer"
+          },
+          {
+            "path": "cmd",
+            "label": "Command Data",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "Thirdweb Smart Account V5",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x4be0ddfebca9a5a4a617dee4dece99e7c862dceb" }
+      ],
+      "abi": "https://etherscan.io/address/0x4be0ddfebca9a5a4a617dee4dece99e7c862dceb#code"
+    }
+  },
+  "metadata": {
+    "owner": "Thirdweb",
+    "info": { "legalName": "thirdweb Inc.", "url": "https://thirdweb.com/" }
+  },
+  "display": {
+    "formats": {
+      "execute(address,uint256,bytes)": {
+        "intent": "Execute Transaction",
+        "fields": [
+          { "path": "#._target", "label": "Target Contract", "format": "addressName", "params": { "types": ["contract", "eoa"], "sources": null } },
+          { "path": "#._value", "label": "ETH Value", "format": "raw" },
+          { "path": "#._calldata", "label": "Calldata", "format": "raw" }
+        ],
+        "required": ["#._target", "#._value"],
+        "excluded": []
+      },
+      "executeBatch(address[],uint256[],bytes[])": {
+        "intent": "Execute Batch Transactions",
+        "fields": [
+          { "path": "#._targets", "label": "Target Contracts", "format": "raw" },
+          { "path": "#._values", "label": "ETH Values", "format": "raw" }
+        ],
+        "required": ["#._targets", "#._values"],
+        "excluded": []
+      },
+      "addAdmin(address)": {
+        "intent": "Add Account Admin",
+        "fields": [
+          { "path": "#._account", "label": "New Admin", "format": "addressName", "params": { "types": ["eoa", "wallet"], "sources": ["local", "ens"] } }
+        ],
+        "required": ["#._account"],
+        "excluded": []
+      },
+      "removeAdmin(address)": {
+        "intent": "Remove Account Admin",
+        "fields": [
+          { "path": "#._account", "label": "Admin to Remove", "format": "addressName", "params": { "types": ["eoa", "wallet"], "sources": ["local", "ens"] } }
+        ],
+        "required": ["#._account"],
+        "excluded": []
+      }
+    }
+  }
+}

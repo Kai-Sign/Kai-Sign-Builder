@@ -1,0 +1,455 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xcf5ea1b38380f6af39068375516daf40ed70d299",
+      "chainId": 1,
+      "name": "Stader ETHx Stake Pools Manager",
+      "abi": [
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0xf340fa01",
+          "inputs": [
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "requestWithdraw",
+          "selector": "0xd6e1bd68",
+          "inputs": [
+            {
+              "name": "ethXAmount",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "finalizeUserWithdrawalRequest",
+          "selector": "0x86a516f5",
+          "inputs": [
+            {
+              "name": "requestId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0xb7482509",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_receiver",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "_referralId",
+              "type": "string"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "_shares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "depositETHOverTargetWeight",
+          "selector": "0xbf040ea1",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "selector": "0x2f2ff15d",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0x485cc955",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_admin",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_staderConfig",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pause",
+          "selector": "0x8456cb59",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "receiveEthFromAuction",
+          "selector": "0x6f3ca778",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "receiveExcessEthFromPool",
+          "selector": "0xa55d3088",
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "_poolId",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "receiveExecutionLayerRewards",
+          "selector": "0x33cf0ef0",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "receiveWithdrawVaultUserShare",
+          "selector": "0x24477f11",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "selector": "0x36568abe",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "selector": "0xd547741f",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferETHToUserWithdrawManager",
+          "selector": "0x1cdfeb8f",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unpause",
+          "selector": "0x3f4ba83a",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateExcessETHDepositCoolDown",
+          "selector": "0x7fafeb8e",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_excessETHDepositCoolDown",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateStaderConfig",
+          "selector": "0x9ee804cb",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_staderConfig",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "validatorBatchDeposit",
+          "selector": "0x3e05b7dd",
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "_poolId",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "deposit(address)": {
+        "intent": "Stake ETH for ETHx via Stader",
+        "interpolatedIntent": "Stake ETH in Stader, ETHx to {receiver}",
+        "fields": [
+          {
+            "path": "receiver",
+            "label": "ETHx Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "requestWithdraw(uint256,address)": {
+        "intent": "Request ETH withdrawal from Stader",
+        "interpolatedIntent": "Request withdrawal of {ethXAmount} ETHx from Stader to {receiver}",
+        "fields": [
+          {
+            "path": "ethXAmount",
+            "label": "ETHx Amount",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "ETH Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "finalizeUserWithdrawalRequest(uint256)": {
+        "intent": "Claim ETH withdrawal from Stader",
+        "interpolatedIntent": "Finalize Stader withdrawal request #{requestId}",
+        "fields": [
+          {
+            "path": "requestId",
+            "label": "Request ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "deposit(address,string)": {
+        "intent": "Review Deposit transaction",
+        "fields": [
+          {
+            "path": "_receiver",
+            "label": " receiver",
+            "format": "address"
+          },
+          {
+            "path": "_referralId",
+            "label": " referral Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "depositETHOverTargetWeight()": {
+        "intent": "Review Deposit ETHOver Target Weight transaction",
+        "fields": []
+      },
+      "grantRole(bytes32,address)": {
+        "intent": "Review Grant Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "initialize(address,address)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_admin",
+            "label": " admin",
+            "format": "address"
+          },
+          {
+            "path": "_staderConfig",
+            "label": " stader Config",
+            "format": "address"
+          }
+        ]
+      },
+      "pause()": {
+        "intent": "Review Pause transaction",
+        "fields": []
+      },
+      "receiveEthFromAuction()": {
+        "intent": "Review Receive Eth From Auction transaction",
+        "fields": []
+      },
+      "receiveExcessEthFromPool(uint8)": {
+        "intent": "Review Receive Excess Eth From Pool transaction",
+        "fields": [
+          {
+            "path": "_poolId",
+            "label": " pool Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "receiveExecutionLayerRewards()": {
+        "intent": "Review Receive Execution Layer Rewards transaction",
+        "fields": []
+      },
+      "receiveWithdrawVaultUserShare()": {
+        "intent": "Review Receive Withdraw Vault User Share transaction",
+        "fields": []
+      },
+      "renounceRole(bytes32,address)": {
+        "intent": "Review Renounce Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "revokeRole(bytes32,address)": {
+        "intent": "Review Revoke Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "transferETHToUserWithdrawManager(uint256)": {
+        "intent": "Review Transfer ETHTo User Withdraw Manager transaction",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "unpause()": {
+        "intent": "Review Unpause transaction",
+        "fields": []
+      },
+      "updateExcessETHDepositCoolDown(uint256)": {
+        "intent": "Review Update Excess ETHDeposit Cool Down transaction",
+        "fields": [
+          {
+            "path": "_excessETHDepositCoolDown",
+            "label": " excess ETHDeposit Cool Down",
+            "format": "raw"
+          }
+        ]
+      },
+      "updateStaderConfig(address)": {
+        "intent": "Review Update Stader Config transaction",
+        "fields": [
+          {
+            "path": "_staderConfig",
+            "label": " stader Config",
+            "format": "address"
+          }
+        ]
+      },
+      "validatorBatchDeposit(uint8)": {
+        "intent": "Review Validator Batch Deposit transaction",
+        "fields": [
+          {
+            "path": "_poolId",
+            "label": " pool Id",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Stader Labs",
+    "info": {
+      "url": "https://www.staderlabs.com/eth/",
+      "legalName": "Stader Labs",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

@@ -1,0 +1,488 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c",
+      "chainId": 1,
+      "name": "Bancor",
+      "symbol": "BNT",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "name",
+          "selector": "0x06fdde03",
+          "inputs": [],
+          "outputs": [
+            {
+              "name": "",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "disableTransfers",
+          "selector": "0x1608f18f",
+          "inputs": [
+            {
+              "name": "_disable",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "totalSupply",
+          "selector": "0x18160ddd",
+          "inputs": [],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "decimals",
+          "selector": "0x313ce567",
+          "inputs": [],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint8"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "version",
+          "selector": "0x54fd4d50",
+          "inputs": [],
+          "outputs": [
+            {
+              "name": "",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "standard",
+          "selector": "0x5a3b7e42",
+          "inputs": [],
+          "outputs": [
+            {
+              "name": "",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdrawTokens",
+          "selector": "0x5e35359e",
+          "inputs": [
+            {
+              "name": "_token",
+              "type": "address"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "balanceOf",
+          "selector": "0x70a08231",
+          "inputs": [
+            {
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "acceptOwnership",
+          "selector": "0x79ba5097",
+          "inputs": []
+        },
+        {
+          "type": "function",
+          "name": "issue",
+          "selector": "0x867904b4",
+          "inputs": [
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "owner",
+          "selector": "0x8da5cb5b",
+          "inputs": [],
+          "outputs": [
+            {
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "symbol",
+          "selector": "0x95d89b41",
+          "inputs": [],
+          "outputs": [
+            {
+              "name": "",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "destroy",
+          "selector": "0xa24835d1",
+          "inputs": [
+            {
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfersEnabled",
+          "selector": "0xbef97c87",
+          "inputs": [],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "newOwner",
+          "selector": "0xd4ee1d90",
+          "inputs": [],
+          "outputs": [
+            {
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "allowance",
+          "selector": "0xdd62ed3e",
+          "inputs": [
+            {
+              "name": "",
+              "type": "address"
+            },
+            {
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "name": "_newOwner",
+              "type": "address"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} BNT",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "BNT"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} BNT",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "BNT"
+            }
+          }
+        ]
+      },
+      "name()": {
+        "intent": "Review Name transaction",
+        "fields": []
+      },
+      "disableTransfers(bool)": {
+        "intent": "Review Disable Transfers transaction",
+        "fields": [
+          {
+            "path": "_disable",
+            "label": " disable",
+            "format": "boolean"
+          }
+        ]
+      },
+      "totalSupply()": {
+        "intent": "Review Total Supply transaction",
+        "fields": []
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          }
+        ]
+      },
+      "decimals()": {
+        "intent": "Review Decimals transaction",
+        "fields": []
+      },
+      "version()": {
+        "intent": "Review Version transaction",
+        "fields": []
+      },
+      "standard()": {
+        "intent": "Review Standard transaction",
+        "fields": []
+      },
+      "withdrawTokens(address,address,uint256)": {
+        "intent": "Review Withdraw Tokens transaction",
+        "fields": [
+          {
+            "path": "_token",
+            "label": " token",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "balanceOf(address)": {
+        "intent": "Review Balance Of transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "address"
+          }
+        ]
+      },
+      "acceptOwnership()": {
+        "intent": "Review Accept Ownership transaction",
+        "fields": []
+      },
+      "issue(address,uint256)": {
+        "intent": "Review Issue transaction",
+        "fields": [
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "owner()": {
+        "intent": "Review Owner transaction",
+        "fields": []
+      },
+      "symbol()": {
+        "intent": "Review Symbol transaction",
+        "fields": []
+      },
+      "destroy(address,uint256)": {
+        "intent": "Review Destroy transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "transfersEnabled()": {
+        "intent": "Review Transfers Enabled transaction",
+        "fields": []
+      },
+      "newOwner()": {
+        "intent": "Review New Owner transaction",
+        "fields": []
+      },
+      "allowance(address,address)": {
+        "intent": "Review Allowance transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "address"
+          },
+          {
+            "path": "param1",
+            "label": "Param1",
+            "format": "address"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "_newOwner",
+            "label": " new Owner",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

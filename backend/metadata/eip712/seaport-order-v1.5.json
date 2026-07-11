@@ -1,0 +1,64 @@
+{
+  "context": {
+    "eip712": {
+      "domain": {
+        "name": "Seaport",
+        "version": "1.5",
+        "chainId": 1,
+        "verifyingContract": "0x00000000000000adc04c56bf30ac9d3c0aaf14dc"
+      },
+      "primaryType": "OrderComponents",
+      "types": {
+        "EIP712Domain": [
+          { "name": "name", "type": "string" },
+          { "name": "version", "type": "string" },
+          { "name": "chainId", "type": "uint256" },
+          { "name": "verifyingContract", "type": "address" }
+        ],
+        "OrderComponents": [
+          { "name": "offerer", "type": "address" },
+          { "name": "zone", "type": "address" },
+          { "name": "offer", "type": "OfferItem[]" },
+          { "name": "consideration", "type": "ConsiderationItem[]" },
+          { "name": "orderType", "type": "uint8" },
+          { "name": "startTime", "type": "uint256" },
+          { "name": "endTime", "type": "uint256" },
+          { "name": "zoneHash", "type": "bytes32" },
+          { "name": "salt", "type": "uint256" },
+          { "name": "conduitKey", "type": "bytes32" },
+          { "name": "counter", "type": "uint256" }
+        ],
+        "OfferItem": [
+          { "name": "itemType", "type": "uint8" },
+          { "name": "token", "type": "address" },
+          { "name": "identifierOrCriteria", "type": "uint256" },
+          { "name": "startAmount", "type": "uint256" },
+          { "name": "endAmount", "type": "uint256" }
+        ],
+        "ConsiderationItem": [
+          { "name": "itemType", "type": "uint8" },
+          { "name": "token", "type": "address" },
+          { "name": "identifierOrCriteria", "type": "uint256" },
+          { "name": "startAmount", "type": "uint256" },
+          { "name": "endAmount", "type": "uint256" },
+          { "name": "recipient", "type": "address" }
+        ]
+      },
+      "name": "Seaport V1.5 Order",
+      "description": "Off-chain order signature for Seaport V1.5 NFT marketplace"
+    }
+  },
+  "display": {
+    "formats": {
+      "OrderComponents": {
+        "intent": "Sign Seaport V1.5 NFT order",
+        "fields": [
+          { "path": "offerer", "label": "Offerer", "format": "address" },
+          { "path": "startTime", "label": "Valid From", "format": "timestamp" },
+          { "path": "endTime", "label": "Valid Until", "format": "timestamp" },
+          { "path": "orderType", "label": "Order Type", "format": "raw" }
+        ]
+      }
+    }
+  }
+}

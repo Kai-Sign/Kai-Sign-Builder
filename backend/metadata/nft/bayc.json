@@ -1,0 +1,399 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d",
+      "chainId": 1,
+      "name": "Bored Ape Yacht Club",
+      "symbol": "BAYC",
+      "abi": [
+        {
+          "type": "function",
+          "name": "setApprovalForAll",
+          "selector": "0xa22cb465",
+          "inputs": [
+            {
+              "name": "operator",
+              "type": "address"
+            },
+            {
+              "name": "approved",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "emergencySetStartingIndexBlock",
+          "selector": "0x7d17fcbe",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "flipSaleState",
+          "selector": "0x34918dfd",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintApe",
+          "selector": "0xa723533e",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "numberOfTokens",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "reserveApes",
+          "selector": "0xb0f67427",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "safeTransferFrom",
+          "selector": "0x42842e0e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "safeTransferFrom",
+          "selector": "0xb88d4fde",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setBaseURI",
+          "selector": "0x55f804b3",
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "baseURI",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setProvenanceHash",
+          "selector": "0x10969523",
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "provenanceHash",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setRevealTimestamp",
+          "selector": "0x018a2c37",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "revealTimeStamp",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setStartingIndex",
+          "selector": "0xe9866550",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0x3ccfd60b",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "setApprovalForAll(address,bool)": {
+        "intent": "{approved, select, true {Approve all BAYC for {operator}} other {Revoke BAYC approval for {operator}}}",
+        "fields": [
+          {
+            "path": "operator",
+            "label": "Operator",
+            "format": "address"
+          },
+          {
+            "path": "approved",
+            "label": "Approval",
+            "format": "raw"
+          }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Review Approve transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "emergencySetStartingIndexBlock()": {
+        "intent": "Review Emergency Set Starting Index Block transaction",
+        "fields": []
+      },
+      "flipSaleState()": {
+        "intent": "Review Flip Sale State transaction",
+        "fields": []
+      },
+      "mintApe(uint256)": {
+        "intent": "Review Mint Ape transaction",
+        "fields": [
+          {
+            "path": "numberOfTokens",
+            "label": "Number Of Tokens",
+            "format": "raw"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "reserveApes()": {
+        "intent": "Review Reserve Apes transaction",
+        "fields": []
+      },
+      "safeTransferFrom(address,address,uint256)": {
+        "intent": "Review Safe Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "safeTransferFrom(address,address,uint256,bytes)": {
+        "intent": "Review Safe Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          },
+          {
+            "path": "_data",
+            "label": " data",
+            "format": "hex"
+          }
+        ]
+      },
+      "setBaseURI(string)": {
+        "intent": "Review Set Base URI transaction",
+        "fields": [
+          {
+            "path": "baseURI",
+            "label": "Base URI",
+            "format": "raw"
+          }
+        ]
+      },
+      "setProvenanceHash(string)": {
+        "intent": "Review Set Provenance Hash transaction",
+        "fields": [
+          {
+            "path": "provenanceHash",
+            "label": "Provenance Hash",
+            "format": "raw"
+          }
+        ]
+      },
+      "setRevealTimestamp(uint256)": {
+        "intent": "Review Set Reveal Timestamp transaction",
+        "fields": [
+          {
+            "path": "revealTimeStamp",
+            "label": "Reveal Time Stamp",
+            "format": "raw"
+          }
+        ]
+      },
+      "setStartingIndex()": {
+        "intent": "Review Set Starting Index transaction",
+        "fields": []
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "withdraw()": {
+        "intent": "Review Withdraw transaction",
+        "fields": []
+      }
+    }
+  }
+}

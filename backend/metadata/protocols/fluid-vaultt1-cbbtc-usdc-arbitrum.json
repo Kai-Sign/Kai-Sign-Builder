@@ -6,87 +6,399 @@
       "name": "Fluid VaultT1_cbBTC_USDC (arbitrum)",
       "abi": [
         {
-          "type": "function",
-          "name": "deposit",
-          "selector": "0x6e553f65",
-          "inputs": [
-            {
-              "name": "assets_",
-              "type": "uint256"
-            },
-            {
-              "name": "receiver_",
-              "type": "address"
-            }
-          ]
+          "stateMutability": "nonpayable",
+          "type": "fallback"
         },
         {
-          "type": "function",
-          "name": "withdraw",
-          "selector": "0xb460af94",
           "inputs": [
             {
-              "name": "assets_",
+              "internalType": "uint256",
+              "name": "debtAmt_",
               "type": "uint256"
             },
             {
-              "name": "receiver_",
+              "internalType": "uint256",
+              "name": "colPerUnitDebt_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to_",
               "type": "address"
             },
             {
-              "name": "owner_",
+              "internalType": "bool",
+              "name": "absorb_",
+              "type": "bool"
+            }
+          ],
+          "name": "liquidate",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "actualDebtAmt_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "actualColAmt_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data_",
+              "type": "bytes"
+            }
+          ],
+          "name": "liquidityCallback",
+          "outputs": [],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "nftId_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256",
+              "name": "newCol_",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "newDebt_",
+              "type": "int256"
+            },
+            {
+              "internalType": "address",
+              "name": "to_",
               "type": "address"
             }
-          ]
+          ],
+          "name": "operate",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "int256",
+              "name": "",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "",
+              "type": "int256"
+            }
+          ],
+          "stateMutability": "payable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "rebalance",
+          "outputs": [
+            {
+              "internalType": "int256",
+              "name": "supplyAmt_",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "borrowAmt_",
+              "type": "int256"
+            }
+          ],
+          "stateMutability": "payable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "updateExchangePricesOnStorage",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "liqSupplyExPrice_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "liqBorrowExPrice_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "vaultSupplyExPrice_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "vaultBorrowExPrice_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "LIQUIDITY",
+          "outputs": [
+            {
+              "internalType": "contract IFluidLiquidity",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "VAULT_FACTORY",
+          "outputs": [
+            {
+              "internalType": "contract IFluidVaultFactory",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [],
+          "name": "VAULT_ID",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "slot_",
+              "type": "bytes32"
+            }
+          ],
+          "name": "readFromStorage",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "result_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "int256",
+              "name": "positionTick_",
+              "type": "int256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "positionTickId_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "positionRawDebt_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tickData_",
+              "type": "uint256"
+            }
+          ],
+          "name": "fetchLatestPosition",
+          "outputs": [
+            {
+              "internalType": "int256",
+              "name": "",
+              "type": "int256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "positionRawCol_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "branchId_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "branchData_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "vaultVariables2_",
+              "type": "uint256"
+            }
+          ],
+          "name": "updateExchangePrices",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "liqSupplyExPrice_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "liqBorrowExPrice_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "vaultSupplyExPrice_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "vaultBorrowExPrice_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function"
         }
       ]
     }
   },
   "display": {
     "formats": {
-      "deposit(uint256,address)": {
-        "intent": "Deposit {assets_} to Fluid",
+      "liquidate(uint256,uint256,address,bool)": {
+        "intent": "Liquidate Fluid vault position",
         "fields": [
           {
-            "path": "assets_",
-            "label": "Amount",
-            "format": "tokenAmount",
-            "params": {
-              "tokenAddress": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
-              "decimals": 8
-            }
+            "path": "debtAmt_",
+            "label": "Debt Amount",
+            "format": "raw"
           },
           {
-            "path": "receiver_",
-            "label": "Receiver",
-            "format": "address"
+            "path": "colPerUnitDebt_",
+            "label": "Collateral Per Unit Debt",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "absorb_",
+            "label": "Absorb",
+            "format": "raw"
           }
         ]
       },
-      "withdraw(uint256,address,address)": {
-        "intent": "Withdraw {assets_} from Fluid",
+      "liquidityCallback(address,uint256,bytes)": {
+        "intent": "Fluid liquidity callback",
         "fields": [
           {
-            "path": "assets_",
+            "path": "token_",
+            "label": "Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amount_",
             "label": "Amount",
-            "format": "tokenAmount",
-            "params": {
-              "tokenAddress": "0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf",
-              "decimals": 8
-            }
+            "format": "raw"
           },
           {
-            "path": "receiver_",
-            "label": "Receiver",
-            "format": "address"
-          },
-          {
-            "path": "owner_",
-            "label": "Owner",
-            "format": "address"
+            "path": "data_",
+            "label": "Data",
+            "format": "raw"
           }
         ]
+      },
+      "operate(uint256,int256,int256,address)": {
+        "intent": "Manage Fluid vault position",
+        "fields": [
+          {
+            "path": "nftId_",
+            "label": "Position ID",
+            "format": "raw"
+          },
+          {
+            "path": "newCol_",
+            "label": "Collateral Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "newDebt_",
+            "label": "Debt Adjustment",
+            "format": "raw"
+          },
+          {
+            "path": "to_",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "rebalance()": {
+        "intent": "Rebalance Fluid vault",
+        "fields": []
+      },
+      "updateExchangePricesOnStorage()": {
+        "intent": "Update Fluid vault exchange prices on storage",
+        "fields": []
       }
+    }
+  },
+  "metadata": {
+    "owner": "Fluid",
+    "info": {
+      "url": "https://fluid.instadapp.io/",
+      "legalName": "Fluid",
+      "lastUpdate": "2026-05-09",
+      "abiSource": "https://arbiscan.io/address/0x1982cc7b1570c2503282d0a0b41f69b3b28fdcc3#code"
     }
   }
 }

@@ -1,0 +1,422 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xa0b73e1ff0b80914ab6fe0444e65848c4c34450b",
+      "chainId": 1,
+      "name": "Cronos",
+      "symbol": "CRO",
+      "decimals": 8,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setTransferAgent",
+          "selector": "0x02f652a3",
+          "inputs": [
+            {
+              "name": "addr",
+              "type": "address"
+            },
+            {
+              "name": "state",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setReleaseAgent",
+          "selector": "0x29ff4f53",
+          "inputs": [
+            {
+              "name": "addr",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x40c10f19",
+          "inputs": [
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgrade",
+          "selector": "0x45977d03",
+          "inputs": [
+            {
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "releaseTokenTransfer",
+          "selector": "0x5f412d4f",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "decreaseApproval",
+          "selector": "0x66188463",
+          "inputs": [
+            {
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "name": "_subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "finishMinting",
+          "selector": "0x7d64bcb4",
+          "inputs": [],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseApproval",
+          "selector": "0xd73dd623",
+          "inputs": [
+            {
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "name": "_addedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setUpgradeAgent",
+          "selector": "0xd7e7088a",
+          "inputs": [
+            {
+              "name": "agent",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "name": "_newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setUpgradeMaster",
+          "selector": "0xffeb7d75",
+          "inputs": [
+            {
+              "name": "master",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} CRO",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 8,
+              "symbol": "CRO"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} CRO",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 8,
+              "symbol": "CRO"
+            }
+          }
+        ]
+      },
+      "setTransferAgent(address,bool)": {
+        "intent": "Review Set Transfer Agent transaction",
+        "fields": [
+          {
+            "path": "addr",
+            "label": "Addr",
+            "format": "address"
+          },
+          {
+            "path": "state",
+            "label": "State",
+            "format": "boolean"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          }
+        ]
+      },
+      "setReleaseAgent(address)": {
+        "intent": "Review Set Release Agent transaction",
+        "fields": [
+          {
+            "path": "addr",
+            "label": "Addr",
+            "format": "address"
+          }
+        ]
+      },
+      "mint(address,uint256)": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "upgrade(uint256)": {
+        "intent": "Review Upgrade transaction",
+        "fields": [
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "releaseTokenTransfer()": {
+        "intent": "Review Release Token Transfer transaction",
+        "fields": []
+      },
+      "decreaseApproval(address,uint256)": {
+        "intent": "Review Decrease Approval transaction",
+        "fields": [
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_subtractedValue",
+            "label": " subtracted Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "finishMinting()": {
+        "intent": "Review Finish Minting transaction",
+        "fields": []
+      },
+      "increaseApproval(address,uint256)": {
+        "intent": "Review Increase Approval transaction",
+        "fields": [
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_addedValue",
+            "label": " added Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "setUpgradeAgent(address)": {
+        "intent": "Review Set Upgrade Agent transaction",
+        "fields": [
+          {
+            "path": "agent",
+            "label": "Agent",
+            "format": "address"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "_newOwner",
+            "label": " new Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "setUpgradeMaster(address)": {
+        "intent": "Review Set Upgrade Master transaction",
+        "fields": [
+          {
+            "path": "master",
+            "label": "Master",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

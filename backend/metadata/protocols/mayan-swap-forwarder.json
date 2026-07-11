@@ -1,0 +1,712 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x337685fdaB40D39bd02028545a4FfA7D287cC3E2",
+      "chainId": 1,
+      "name": "Mayan Swap Forwarder (Ethereum)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "forwardEth",
+          "selector": "0x1d8b4fe9",
+          "inputs": [
+            {
+              "name": "swapParams",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "name": "minAmountOut",
+                  "type": "uint64"
+                },
+                {
+                  "name": "gasDrop",
+                  "type": "uint64"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint64"
+                },
+                {
+                  "name": "destChain",
+                  "type": "uint16"
+                },
+                {
+                  "name": "bridgeFee",
+                  "type": "uint64"
+                }
+              ]
+            },
+            {
+              "name": "recipient",
+              "type": "bytes32"
+            },
+            {
+              "name": "tokenOut",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "chain",
+                  "type": "uint16"
+                },
+                {
+                  "name": "addr",
+                  "type": "bytes32"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "forwardERC20",
+          "selector": "0xbc9e9958",
+          "inputs": [
+            {
+              "name": "tokenIn",
+              "type": "address"
+            },
+            {
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "name": "swapParams",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "minAmountOut",
+                  "type": "uint64"
+                },
+                {
+                  "name": "gasDrop",
+                  "type": "uint64"
+                },
+                {
+                  "name": "deadline",
+                  "type": "uint64"
+                },
+                {
+                  "name": "destChain",
+                  "type": "uint16"
+                },
+                {
+                  "name": "bridgeFee",
+                  "type": "uint64"
+                }
+              ]
+            },
+            {
+              "name": "recipient",
+              "type": "bytes32"
+            },
+            {
+              "name": "tokenOut",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "chain",
+                  "type": "uint16"
+                },
+                {
+                  "name": "addr",
+                  "type": "bytes32"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeGuardian",
+          "selector": "0x2fcb4f04",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newGuardian",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimGuardian",
+          "selector": "0x459656ee",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "forwardERC20",
+          "selector": "0xe4269fc4",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "tokenIn",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "value",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "s",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct MayanForwarder2.PermitParams",
+              "name": "permitParams",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "mayanProtocol",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "protocolData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "forwardEth",
+          "selector": "0xb0f584ff",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "mayanProtocol",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "protocolData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "rescueEth",
+          "selector": "0xb25ea8fb",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable",
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "rescueToken",
+          "selector": "0xf8a67a62",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMayanProtocol",
+          "selector": "0xa44382fe",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "mayanProtocol",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setSwapProtocol",
+          "selector": "0x7fc920eb",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "swapProtocol",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapAndForwardERC20",
+          "selector": "0x30dedc57",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "tokenIn",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "value",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "s",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct MayanForwarder2.PermitParams",
+              "name": "permitParams",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "swapProtocol",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "swapData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "middleToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minMiddleAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "mayanProtocol",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "mayanData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swapAndForwardEth",
+          "selector": "0xfa74fd43",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "swapProtocol",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "swapData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "middleToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minMiddleAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "mayanProtocol",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "mayanData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "forwardEth(tuple,bytes32,tuple)": {
+        "intent": "Bridge ETH cross-chain via Mayan Finance",
+        "interpolatedIntent": "Bridge {swapParams.amountIn} ETH to chain {swapParams.destChain} via Mayan",
+        "fields": [
+          {
+            "path": "swapParams.amountIn",
+            "label": "Amount (ETH)",
+            "format": "ethAmount"
+          },
+          {
+            "path": "swapParams.minAmountOut",
+            "label": "Min Amount Out",
+            "format": "raw"
+          },
+          {
+            "path": "swapParams.destChain",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "swapParams.deadline",
+            "label": "Deadline",
+            "format": "timestamp"
+          }
+        ]
+      },
+      "forwardERC20(address,uint256,tuple,bytes32,tuple)": {
+        "intent": "Bridge ERC-20 tokens cross-chain via Mayan Finance",
+        "interpolatedIntent": "Bridge {amountIn} {tokenIn} to chain {swapParams.destChain} via Mayan",
+        "fields": [
+          {
+            "path": "tokenIn",
+            "label": "Token In",
+            "format": "addressName"
+          },
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "tokenIn"
+            }
+          },
+          {
+            "path": "swapParams.minAmountOut",
+            "label": "Min Amount Out",
+            "format": "raw"
+          },
+          {
+            "path": "swapParams.destChain",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "swapParams.deadline",
+            "label": "Deadline",
+            "format": "timestamp"
+          }
+        ]
+      },
+      "changeGuardian(address)": {
+        "intent": "Review Change Guardian transaction",
+        "fields": [
+          {
+            "path": "newGuardian",
+            "label": "New Guardian",
+            "format": "address"
+          }
+        ]
+      },
+      "claimGuardian()": {
+        "intent": "Review Claim Guardian transaction",
+        "fields": []
+      },
+      "forwardERC20(address,uint256,(uint256,uint256,uint8,bytes32,bytes32),address,bytes)": {
+        "intent": "Review Forward ERC20 transaction",
+        "fields": [
+          {
+            "path": "tokenIn",
+            "label": "Token In",
+            "format": "address"
+          },
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "permitParams",
+            "label": "Permit Params",
+            "format": "raw"
+          },
+          {
+            "path": "mayanProtocol",
+            "label": "Mayan Protocol",
+            "format": "address"
+          },
+          {
+            "path": "protocolData",
+            "label": "Protocol Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "forwardEth(address,bytes)": {
+        "intent": "Review Forward Eth transaction",
+        "fields": [
+          {
+            "path": "mayanProtocol",
+            "label": "Mayan Protocol",
+            "format": "address"
+          },
+          {
+            "path": "protocolData",
+            "label": "Protocol Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "rescueEth(uint256,address)": {
+        "intent": "Review Rescue Eth transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          }
+        ]
+      },
+      "rescueToken(address,uint256,address)": {
+        "intent": "Review Rescue Token transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          }
+        ]
+      },
+      "setMayanProtocol(address,bool)": {
+        "intent": "Review Set Mayan Protocol transaction",
+        "fields": [
+          {
+            "path": "mayanProtocol",
+            "label": "Mayan Protocol",
+            "format": "address"
+          },
+          {
+            "path": "enabled",
+            "label": "Enabled",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setSwapProtocol(address,bool)": {
+        "intent": "Review Set Swap Protocol transaction",
+        "fields": [
+          {
+            "path": "swapProtocol",
+            "label": "Swap Protocol",
+            "format": "address"
+          },
+          {
+            "path": "enabled",
+            "label": "Enabled",
+            "format": "boolean"
+          }
+        ]
+      },
+      "swapAndForwardERC20(address,uint256,(uint256,uint256,uint8,bytes32,bytes32),address,bytes,address,uint256,address,bytes)": {
+        "intent": "Review Swap And Forward ERC20 transaction",
+        "fields": [
+          {
+            "path": "tokenIn",
+            "label": "Token In",
+            "format": "address"
+          },
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "permitParams",
+            "label": "Permit Params",
+            "format": "raw"
+          },
+          {
+            "path": "swapProtocol",
+            "label": "Swap Protocol",
+            "format": "address"
+          },
+          {
+            "path": "swapData",
+            "label": "Swap Data",
+            "format": "hex"
+          },
+          {
+            "path": "middleToken",
+            "label": "Middle Token",
+            "format": "address"
+          },
+          {
+            "path": "minMiddleAmount",
+            "label": "Min Middle Amount",
+            "format": "raw"
+          },
+          {
+            "path": "mayanProtocol",
+            "label": "Mayan Protocol",
+            "format": "address"
+          },
+          {
+            "path": "mayanData",
+            "label": "Mayan Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "swapAndForwardEth(uint256,address,bytes,address,uint256,address,bytes)": {
+        "intent": "Review Swap And Forward Eth transaction",
+        "fields": [
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "swapProtocol",
+            "label": "Swap Protocol",
+            "format": "address"
+          },
+          {
+            "path": "swapData",
+            "label": "Swap Data",
+            "format": "hex"
+          },
+          {
+            "path": "middleToken",
+            "label": "Middle Token",
+            "format": "address"
+          },
+          {
+            "path": "minMiddleAmount",
+            "label": "Min Middle Amount",
+            "format": "raw"
+          },
+          {
+            "path": "mayanProtocol",
+            "label": "Mayan Protocol",
+            "format": "address"
+          },
+          {
+            "path": "mayanData",
+            "label": "Mayan Data",
+            "format": "hex"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Mayan Finance",
+    "info": {
+      "url": "https://mayan.finance/",
+      "legalName": "Mayan Finance",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

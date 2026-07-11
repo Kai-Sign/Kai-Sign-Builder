@@ -1,0 +1,332 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+      "chainId": 1,
+      "name": "Tether USD",
+      "symbol": "USDT",
+      "decimals": 6,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "deprecate",
+          "selector": "0x0753c30c",
+          "inputs": [
+            {
+              "name": "_upgradedAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addBlackList",
+          "selector": "0x0ecb93c0",
+          "inputs": [
+            {
+              "name": "_evilUser",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unpause",
+          "selector": "0x3f4ba83a",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pause",
+          "selector": "0x8456cb59",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setParams",
+          "selector": "0xc0324c77",
+          "inputs": [
+            {
+              "name": "newBasisPoints",
+              "type": "uint256"
+            },
+            {
+              "name": "newMaxFee",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "issue",
+          "selector": "0xcc872b66",
+          "inputs": [
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redeem",
+          "selector": "0xdb006a75",
+          "inputs": [
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeBlackList",
+          "selector": "0xe4997dc5",
+          "inputs": [
+            {
+              "name": "_clearedUser",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "destroyBlackFunds",
+          "selector": "0xf3bdc228",
+          "inputs": [
+            {
+              "name": "_blackListedUser",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} USDT",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 6,
+              "symbol": "USDT"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} USDT",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 6,
+              "symbol": "USDT"
+            }
+          }
+        ]
+      },
+      "deprecate(address)": {
+        "intent": "Review Deprecate transaction",
+        "fields": [
+          {
+            "path": "_upgradedAddress",
+            "label": " upgraded Address",
+            "format": "address"
+          }
+        ]
+      },
+      "addBlackList(address)": {
+        "intent": "Review Add Black List transaction",
+        "fields": [
+          {
+            "path": "_evilUser",
+            "label": " evil User",
+            "format": "address"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          }
+        ]
+      },
+      "unpause()": {
+        "intent": "Review Unpause transaction",
+        "fields": []
+      },
+      "pause()": {
+        "intent": "Review Pause transaction",
+        "fields": []
+      },
+      "setParams(uint256,uint256)": {
+        "intent": "Review Set Params transaction",
+        "fields": [
+          {
+            "path": "newBasisPoints",
+            "label": "New Basis Points",
+            "format": "raw"
+          },
+          {
+            "path": "newMaxFee",
+            "label": "New Max Fee",
+            "format": "raw"
+          }
+        ]
+      },
+      "issue(uint256)": {
+        "intent": "Review Issue transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "redeem(uint256)": {
+        "intent": "Review Redeem transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "removeBlackList(address)": {
+        "intent": "Review Remove Black List transaction",
+        "fields": [
+          {
+            "path": "_clearedUser",
+            "label": " cleared User",
+            "format": "address"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "destroyBlackFunds(address)": {
+        "intent": "Review Destroy Black Funds transaction",
+        "fields": [
+          {
+            "path": "_blackListedUser",
+            "label": " black Listed User",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

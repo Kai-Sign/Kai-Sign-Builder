@@ -1,0 +1,402 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x2f50d538606fa9edd2b11e2446beb18c9d5846bb",
+      "chainId": 1,
+      "name": "Curve Gauge Controller",
+      "abi": [
+        {
+          "type": "function",
+          "name": "vote_for_gauge_weights",
+          "selector": "0x98e55b37",
+          "inputs": [
+            {
+              "name": "_gauge_addr",
+              "type": "address"
+            },
+            {
+              "name": "_user_weight",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "checkpoint_gauge",
+          "selector": "0x84e1e2f8",
+          "inputs": [
+            {
+              "name": "addr",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "commit_transfer_ownership",
+          "selector": "0x6b441a40",
+          "inputs": [
+            {
+              "name": "addr",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "apply_transfer_ownership",
+          "selector": "0x6a1c05ae",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "add_gauge",
+          "selector": "0x3a04f900",
+          "inputs": [
+            {
+              "name": "addr",
+              "type": "address"
+            },
+            {
+              "name": "gauge_type",
+              "type": "int128"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "add_gauge",
+          "selector": "0x18dfe921",
+          "inputs": [
+            {
+              "name": "addr",
+              "type": "address"
+            },
+            {
+              "name": "gauge_type",
+              "type": "int128"
+            },
+            {
+              "name": "weight",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "checkpoint",
+          "selector": "0xc2c4c5c1",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "checkpoint_gauge",
+          "selector": "0x615e5237",
+          "inputs": [
+            {
+              "name": "addr",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "gauge_relative_weight_write",
+          "selector": "0x95cfcec3",
+          "inputs": [
+            {
+              "name": "addr",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "gauge_relative_weight_write",
+          "selector": "0x6472eee1",
+          "inputs": [
+            {
+              "name": "addr",
+              "type": "address"
+            },
+            {
+              "name": "time",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "add_type",
+          "selector": "0x26e56d5e",
+          "inputs": [
+            {
+              "name": "_name",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "add_type",
+          "selector": "0x92d0d232",
+          "inputs": [
+            {
+              "name": "_name",
+              "type": "string"
+            },
+            {
+              "name": "weight",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "change_type_weight",
+          "selector": "0xdb1ca260",
+          "inputs": [
+            {
+              "name": "type_id",
+              "type": "int128"
+            },
+            {
+              "name": "weight",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "change_gauge_weight",
+          "selector": "0xd4d2646e",
+          "inputs": [
+            {
+              "name": "addr",
+              "type": "address"
+            },
+            {
+              "name": "weight",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "vote_for_gauge_weights",
+          "selector": "0xd7136328",
+          "inputs": [
+            {
+              "name": "_gauge_addr",
+              "type": "address"
+            },
+            {
+              "name": "_user_weight",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "vote_for_gauge_weights(address,uint256)": {
+        "intent": "Vote for Curve gauge weight",
+        "interpolatedIntent": "Allocate {_user_weight} weight (out of 10000) to gauge {_gauge_addr}",
+        "fields": [
+          {
+            "path": "_gauge_addr",
+            "label": "Gauge",
+            "format": "addressName"
+          },
+          {
+            "path": "_user_weight",
+            "label": "Weight (bps, max 10000)",
+            "format": "raw"
+          }
+        ]
+      },
+      "checkpoint_gauge(address)": {
+        "intent": "Checkpoint Curve gauge",
+        "interpolatedIntent": "Checkpoint gauge {addr}",
+        "fields": [
+          {
+            "path": "addr",
+            "label": "Gauge",
+            "format": "addressName"
+          }
+        ]
+      },
+      "commit_transfer_ownership(address)": {
+        "intent": "Review Commit transfer ownership transaction",
+        "fields": [
+          {
+            "path": "addr",
+            "label": "Addr",
+            "format": "address"
+          }
+        ]
+      },
+      "apply_transfer_ownership()": {
+        "intent": "Review Apply transfer ownership transaction",
+        "fields": []
+      },
+      "add_gauge(address,int128)": {
+        "intent": "Review Add gauge transaction",
+        "fields": [
+          {
+            "path": "addr",
+            "label": "Addr",
+            "format": "address"
+          },
+          {
+            "path": "gauge_type",
+            "label": "Gauge type",
+            "format": "raw"
+          }
+        ]
+      },
+      "add_gauge(address,int128,uint256)": {
+        "intent": "Review Add gauge transaction",
+        "fields": [
+          {
+            "path": "addr",
+            "label": "Addr",
+            "format": "address"
+          },
+          {
+            "path": "gauge_type",
+            "label": "Gauge type",
+            "format": "raw"
+          },
+          {
+            "path": "weight",
+            "label": "Weight",
+            "format": "raw"
+          }
+        ]
+      },
+      "checkpoint()": {
+        "intent": "Review Checkpoint transaction",
+        "fields": []
+      },
+      "gauge_relative_weight_write(address)": {
+        "intent": "Review Gauge relative weight write transaction",
+        "fields": [
+          {
+            "path": "addr",
+            "label": "Addr",
+            "format": "address"
+          }
+        ]
+      },
+      "gauge_relative_weight_write(address,uint256)": {
+        "intent": "Review Gauge relative weight write transaction",
+        "fields": [
+          {
+            "path": "addr",
+            "label": "Addr",
+            "format": "address"
+          },
+          {
+            "path": "time",
+            "label": "Time",
+            "format": "raw"
+          }
+        ]
+      },
+      "add_type(string)": {
+        "intent": "Review Add type transaction",
+        "fields": [
+          {
+            "path": "_name",
+            "label": " name",
+            "format": "raw"
+          }
+        ]
+      },
+      "add_type(string,uint256)": {
+        "intent": "Review Add type transaction",
+        "fields": [
+          {
+            "path": "_name",
+            "label": " name",
+            "format": "raw"
+          },
+          {
+            "path": "weight",
+            "label": "Weight",
+            "format": "raw"
+          }
+        ]
+      },
+      "change_type_weight(int128,uint256)": {
+        "intent": "Review Change type weight transaction",
+        "fields": [
+          {
+            "path": "type_id",
+            "label": "Type id",
+            "format": "raw"
+          },
+          {
+            "path": "weight",
+            "label": "Weight",
+            "format": "raw"
+          }
+        ]
+      },
+      "change_gauge_weight(address,uint256)": {
+        "intent": "Review Change gauge weight transaction",
+        "fields": [
+          {
+            "path": "addr",
+            "label": "Addr",
+            "format": "address"
+          },
+          {
+            "path": "weight",
+            "label": "Weight",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Curve Finance",
+    "info": {
+      "url": "https://curve.fi/",
+      "legalName": "Curve Finance",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

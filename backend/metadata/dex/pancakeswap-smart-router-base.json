@@ -1,0 +1,138 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "PancakeSwapSmartRouterBase",
+    "contract": {
+      "deployments": [
+        { "chainId": 8453, "address": "0x678aa4bf4e210cf2166753e054d5b7c31cc7fa86" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/pancakeswap/abis/0x678aa4bf4e210cf2166753e054d5b7c31cc7fa86.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "PancakeSwap",
+    "info": {
+      "legalName": "PancakeSwap",
+      "url": "https://pancakeswap.finance"
+    },
+    "constants": {
+      "CAKEaddress": "0x3055913c90Fcc1A6CE9a358911721eEb942013A1"
+    }
+  },
+  "display": {
+    "formats": {
+      "exactInputSingle((address,address,uint24,address,uint256,uint256,uint160))": {
+        "intent": "Swap exact input",
+        "fields": [
+          {
+            "path": "#.params.tokenIn",
+            "label": "Token In",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null }
+          },
+          {
+            "path": "#.params.tokenOut",
+            "label": "Token Out",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null }
+          },
+          {
+            "path": "#.params.amountIn",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": { "token": "#.params.tokenIn" }
+          },
+          {
+            "path": "#.params.amountOutMinimum",
+            "label": "Min Amount Out",
+            "format": "tokenAmount",
+            "params": { "token": "#.params.tokenOut" }
+          },
+          {
+            "path": "#.params.recipient",
+            "label": "Recipient",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] }
+          },
+          {
+            "path": "#.params.deadline",
+            "label": "Deadline",
+            "format": "date",
+            "params": { "encoding": "timestamp" }
+          }
+        ],
+        "required": ["#.params.tokenIn", "#.params.tokenOut", "#.params.amountIn", "#.params.amountOutMinimum", "#.params.recipient", "#.params.deadline"]
+      },
+      "exactInput((bytes,address,uint256,uint256))": {
+        "intent": "Swap exact input multi-hop",
+        "fields": [
+          {
+            "path": "#.params.recipient",
+            "label": "Recipient",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] }
+          },
+          {
+            "path": "#.params.amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "#.params.amountOutMinimum",
+            "label": "Min Amount Out",
+            "format": "raw"
+          },
+          {
+            "path": "#.params.deadline",
+            "label": "Deadline",
+            "format": "date",
+            "params": { "encoding": "timestamp" }
+          }
+        ],
+        "required": ["#.params.recipient", "#.params.amountIn", "#.params.amountOutMinimum", "#.params.deadline"]
+      },
+      "exactOutputSingle((address,address,uint24,address,uint256,uint256,uint160))": {
+        "intent": "Swap exact output",
+        "fields": [
+          {
+            "path": "#.params.tokenIn",
+            "label": "Token In",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null }
+          },
+          {
+            "path": "#.params.tokenOut",
+            "label": "Token Out",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null }
+          },
+          {
+            "path": "#.params.amountOut",
+            "label": "Amount Out",
+            "format": "tokenAmount",
+            "params": { "token": "#.params.tokenOut" }
+          },
+          {
+            "path": "#.params.amountInMaximum",
+            "label": "Max Amount In",
+            "format": "tokenAmount",
+            "params": { "token": "#.params.tokenIn" }
+          },
+          {
+            "path": "#.params.recipient",
+            "label": "Recipient",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] }
+          },
+          {
+            "path": "#.params.deadline",
+            "label": "Deadline",
+            "format": "date",
+            "params": { "encoding": "timestamp" }
+          }
+        ],
+        "required": ["#.params.tokenIn", "#.params.tokenOut", "#.params.amountOut", "#.params.amountInMaximum", "#.params.recipient", "#.params.deadline"]
+      }
+    }
+  }
+}

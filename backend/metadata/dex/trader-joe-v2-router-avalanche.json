@@ -1,0 +1,1612 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xb4315e873dBcf96Ffd0acd8EA43f689D8c20fB30",
+      "chainId": 43114,
+      "name": "Trader Joe V2 LBRouter (Avalanche)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "swapExactTokensForTokens",
+          "selector": "0x9a72ea95",
+          "inputs": [
+            {
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "name": "amountOutMin",
+              "type": "uint256"
+            },
+            {
+              "name": "path",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "pairBinSteps",
+                  "type": "uint256[]"
+                },
+                {
+                  "name": "versions",
+                  "type": "uint8[]"
+                },
+                {
+                  "name": "tokenPath",
+                  "type": "address[]"
+                }
+              ]
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapExactNATIVEForTokens",
+          "selector": "0xaad149e1",
+          "inputs": [
+            {
+              "name": "amountOutMin",
+              "type": "uint256"
+            },
+            {
+              "name": "path",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "pairBinSteps",
+                  "type": "uint256[]"
+                },
+                {
+                  "name": "versions",
+                  "type": "uint8[]"
+                },
+                {
+                  "name": "tokenPath",
+                  "type": "address[]"
+                }
+              ]
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swapExactTokensForNATIVE",
+          "selector": "0xb2f8a00a",
+          "inputs": [
+            {
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "name": "amountOutMinNATIVE",
+              "type": "uint256"
+            },
+            {
+              "name": "path",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "pairBinSteps",
+                  "type": "uint256[]"
+                },
+                {
+                  "name": "versions",
+                  "type": "uint8[]"
+                },
+                {
+                  "name": "tokenPath",
+                  "type": "address[]"
+                }
+              ]
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addLiquidity",
+          "selector": "0xa3c7271a",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "contract IERC20",
+                  "name": "tokenX",
+                  "type": "address"
+                },
+                {
+                  "internalType": "contract IERC20",
+                  "name": "tokenY",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "binStep",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountX",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountY",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountXMin",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountYMin",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "activeIdDesired",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "idSlippage",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "int256[]",
+                  "name": "deltaIds",
+                  "type": "int256[]"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "distributionX",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "distributionY",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "refundTo",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ILBRouter.LiquidityParameters",
+              "name": "liquidityParameters",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountXAdded",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountYAdded",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountXLeft",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountYLeft",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "depositIds",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "liquidityMinted",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addLiquidityNATIVE",
+          "selector": "0x8efc2b2c",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "contract IERC20",
+                  "name": "tokenX",
+                  "type": "address"
+                },
+                {
+                  "internalType": "contract IERC20",
+                  "name": "tokenY",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "binStep",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountX",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountY",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountXMin",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountYMin",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "activeIdDesired",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "idSlippage",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "int256[]",
+                  "name": "deltaIds",
+                  "type": "int256[]"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "distributionX",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "distributionY",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "refundTo",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ILBRouter.LiquidityParameters",
+              "name": "liquidityParameters",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountXAdded",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountYAdded",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountXLeft",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountYLeft",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "depositIds",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "liquidityMinted",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "createLBPair",
+          "selector": "0x659ac74b",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "tokenX",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IERC20",
+              "name": "tokenY",
+              "type": "address"
+            },
+            {
+              "internalType": "uint24",
+              "name": "activeId",
+              "type": "uint24"
+            },
+            {
+              "internalType": "uint16",
+              "name": "binStep",
+              "type": "uint16"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "contract ILBPair",
+              "name": "pair",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeLiquidity",
+          "selector": "0xc22159b6",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "tokenX",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IERC20",
+              "name": "tokenY",
+              "type": "address"
+            },
+            {
+              "internalType": "uint16",
+              "name": "binStep",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountXMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountYMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "ids",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountX",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountY",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeLiquidityNATIVE",
+          "selector": "0x81c2fdfb",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint16",
+              "name": "binStep",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountTokenMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountNATIVEMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "ids",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "address payable",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountToken",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountNATIVE",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapExactNATIVEForTokens",
+          "selector": "0xb066ea7c",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOutMin",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256[]",
+                  "name": "pairBinSteps",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "enum ILBRouter.Version[]",
+                  "name": "versions",
+                  "type": "uint8[]"
+                },
+                {
+                  "internalType": "contract IERC20[]",
+                  "name": "tokenPath",
+                  "type": "address[]"
+                }
+              ],
+              "internalType": "struct ILBRouter.Path",
+              "name": "path",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swapExactNATIVEForTokensSupportingFeeOnTransferTokens",
+          "selector": "0xe038e6dc",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOutMin",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256[]",
+                  "name": "pairBinSteps",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "enum ILBRouter.Version[]",
+                  "name": "versions",
+                  "type": "uint8[]"
+                },
+                {
+                  "internalType": "contract IERC20[]",
+                  "name": "tokenPath",
+                  "type": "address[]"
+                }
+              ],
+              "internalType": "struct ILBRouter.Path",
+              "name": "path",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swapExactTokensForNATIVE",
+          "selector": "0x9ab6156b",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOutMinNATIVE",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256[]",
+                  "name": "pairBinSteps",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "enum ILBRouter.Version[]",
+                  "name": "versions",
+                  "type": "uint8[]"
+                },
+                {
+                  "internalType": "contract IERC20[]",
+                  "name": "tokenPath",
+                  "type": "address[]"
+                }
+              ],
+              "internalType": "struct ILBRouter.Path",
+              "name": "path",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address payable",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapExactTokensForNATIVESupportingFeeOnTransferTokens",
+          "selector": "0x1a24f9a9",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOutMinNATIVE",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256[]",
+                  "name": "pairBinSteps",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "enum ILBRouter.Version[]",
+                  "name": "versions",
+                  "type": "uint8[]"
+                },
+                {
+                  "internalType": "contract IERC20[]",
+                  "name": "tokenPath",
+                  "type": "address[]"
+                }
+              ],
+              "internalType": "struct ILBRouter.Path",
+              "name": "path",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address payable",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapExactTokensForTokens",
+          "selector": "0x2a443fae",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOutMin",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256[]",
+                  "name": "pairBinSteps",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "enum ILBRouter.Version[]",
+                  "name": "versions",
+                  "type": "uint8[]"
+                },
+                {
+                  "internalType": "contract IERC20[]",
+                  "name": "tokenPath",
+                  "type": "address[]"
+                }
+              ],
+              "internalType": "struct ILBRouter.Path",
+              "name": "path",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapExactTokensForTokensSupportingFeeOnTransferTokens",
+          "selector": "0x4b801870",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOutMin",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256[]",
+                  "name": "pairBinSteps",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "enum ILBRouter.Version[]",
+                  "name": "versions",
+                  "type": "uint8[]"
+                },
+                {
+                  "internalType": "contract IERC20[]",
+                  "name": "tokenPath",
+                  "type": "address[]"
+                }
+              ],
+              "internalType": "struct ILBRouter.Path",
+              "name": "path",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapNATIVEForExactTokens",
+          "selector": "0x2075ad22",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256[]",
+                  "name": "pairBinSteps",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "enum ILBRouter.Version[]",
+                  "name": "versions",
+                  "type": "uint8[]"
+                },
+                {
+                  "internalType": "contract IERC20[]",
+                  "name": "tokenPath",
+                  "type": "address[]"
+                }
+              ],
+              "internalType": "struct ILBRouter.Path",
+              "name": "path",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "amountsIn",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swapTokensForExactNATIVE",
+          "selector": "0x3dc8f8ec",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountNATIVEOut",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountInMax",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256[]",
+                  "name": "pairBinSteps",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "enum ILBRouter.Version[]",
+                  "name": "versions",
+                  "type": "uint8[]"
+                },
+                {
+                  "internalType": "contract IERC20[]",
+                  "name": "tokenPath",
+                  "type": "address[]"
+                }
+              ],
+              "internalType": "struct ILBRouter.Path",
+              "name": "path",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address payable",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "amountsIn",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapTokensForExactTokens",
+          "selector": "0x92fe8e70",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountInMax",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256[]",
+                  "name": "pairBinSteps",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "enum ILBRouter.Version[]",
+                  "name": "versions",
+                  "type": "uint8[]"
+                },
+                {
+                  "internalType": "contract IERC20[]",
+                  "name": "tokenPath",
+                  "type": "address[]"
+                }
+              ],
+              "internalType": "struct ILBRouter.Path",
+              "name": "path",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "amountsIn",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "sweep",
+          "selector": "0x62c06767",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "sweepLBToken",
+          "selector": "0xe9361c08",
+          "inputs": [
+            {
+              "internalType": "contract ILBToken",
+              "name": "lbToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "ids",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "swapExactTokensForTokens(uint256,uint256,tuple,address,uint256)": {
+        "intent": "Swap exact tokens via Trader Joe V2 LB",
+        "interpolatedIntent": "Swap {amountIn} tokens for min {amountOutMin} on Trader Joe V2",
+        "fields": [
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "amountOutMin",
+            "label": "Min Amount Out",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "timestamp"
+          }
+        ]
+      },
+      "swapExactNATIVEForTokens(uint256,tuple,address,uint256)": {
+        "intent": "Swap exact AVAX for tokens via Trader Joe V2 LB",
+        "interpolatedIntent": "Swap AVAX for min {amountOutMin} tokens on Trader Joe V2",
+        "fields": [
+          {
+            "path": "amountOutMin",
+            "label": "Min Amount Out",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "timestamp"
+          }
+        ]
+      },
+      "swapExactTokensForNATIVE(uint256,uint256,tuple,address,uint256)": {
+        "intent": "Swap exact tokens for AVAX via Trader Joe V2 LB",
+        "interpolatedIntent": "Swap {amountIn} tokens for min {amountOutMinNATIVE} AVAX on Trader Joe V2",
+        "fields": [
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "amountOutMinNATIVE",
+            "label": "Min AVAX Out",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "timestamp"
+          }
+        ]
+      },
+      "addLiquidity((address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,int256[],uint256[],uint256[],address,address,uint256))": {
+        "intent": "Review Add Liquidity transaction",
+        "fields": [
+          {
+            "path": "liquidityParameters",
+            "label": "Liquidity Parameters",
+            "format": "raw"
+          }
+        ]
+      },
+      "addLiquidityNATIVE((address,address,uint256,uint256,uint256,uint256,uint256,uint256,uint256,int256[],uint256[],uint256[],address,address,uint256))": {
+        "intent": "Review Add Liquidity NATIVE transaction",
+        "fields": [
+          {
+            "path": "liquidityParameters",
+            "label": "Liquidity Parameters",
+            "format": "raw"
+          }
+        ]
+      },
+      "createLBPair(address,address,uint24,uint16)": {
+        "intent": "Review Create LBPair transaction",
+        "fields": [
+          {
+            "path": "tokenX",
+            "label": "Token X",
+            "format": "address"
+          },
+          {
+            "path": "tokenY",
+            "label": "Token Y",
+            "format": "address"
+          },
+          {
+            "path": "activeId",
+            "label": "Active Id",
+            "format": "raw"
+          },
+          {
+            "path": "binStep",
+            "label": "Bin Step",
+            "format": "raw"
+          }
+        ]
+      },
+      "removeLiquidity(address,address,uint16,uint256,uint256,uint256[],uint256[],address,uint256)": {
+        "intent": "Review Remove Liquidity transaction",
+        "fields": [
+          {
+            "path": "tokenX",
+            "label": "Token X",
+            "format": "address"
+          },
+          {
+            "path": "tokenY",
+            "label": "Token Y",
+            "format": "address"
+          },
+          {
+            "path": "binStep",
+            "label": "Bin Step",
+            "format": "raw"
+          },
+          {
+            "path": "amountXMin",
+            "label": "Amount XMin",
+            "format": "raw"
+          },
+          {
+            "path": "amountYMin",
+            "label": "Amount YMin",
+            "format": "raw"
+          },
+          {
+            "path": "ids",
+            "label": "Ids",
+            "format": "raw"
+          },
+          {
+            "path": "amounts",
+            "label": "Amounts",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "removeLiquidityNATIVE(address,uint16,uint256,uint256,uint256[],uint256[],address,uint256)": {
+        "intent": "Review Remove Liquidity NATIVE transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "binStep",
+            "label": "Bin Step",
+            "format": "raw"
+          },
+          {
+            "path": "amountTokenMin",
+            "label": "Amount Token Min",
+            "format": "raw"
+          },
+          {
+            "path": "amountNATIVEMin",
+            "label": "Amount NATIVEMin",
+            "format": "raw"
+          },
+          {
+            "path": "ids",
+            "label": "Ids",
+            "format": "raw"
+          },
+          {
+            "path": "amounts",
+            "label": "Amounts",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapExactNATIVEForTokens(uint256,(uint256[],uint8[],address[]),address,uint256)": {
+        "intent": "Review Swap Exact NATIVEFor Tokens transaction",
+        "fields": [
+          {
+            "path": "amountOutMin",
+            "label": "Amount Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "path",
+            "label": "Path",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapExactNATIVEForTokensSupportingFeeOnTransferTokens(uint256,(uint256[],uint8[],address[]),address,uint256)": {
+        "intent": "Review Swap Exact NATIVEFor Tokens Supporting Fee On Transfer Tokens transaction",
+        "fields": [
+          {
+            "path": "amountOutMin",
+            "label": "Amount Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "path",
+            "label": "Path",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapExactTokensForNATIVE(uint256,uint256,(uint256[],uint8[],address[]),address,uint256)": {
+        "intent": "Review Swap Exact Tokens For NATIVE transaction",
+        "fields": [
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "amountOutMinNATIVE",
+            "label": "Amount Out Min NATIVE",
+            "format": "raw"
+          },
+          {
+            "path": "path",
+            "label": "Path",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapExactTokensForNATIVESupportingFeeOnTransferTokens(uint256,uint256,(uint256[],uint8[],address[]),address,uint256)": {
+        "intent": "Review Swap Exact Tokens For NATIVESupporting Fee On Transfer Tokens transaction",
+        "fields": [
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "amountOutMinNATIVE",
+            "label": "Amount Out Min NATIVE",
+            "format": "raw"
+          },
+          {
+            "path": "path",
+            "label": "Path",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapExactTokensForTokens(uint256,uint256,(uint256[],uint8[],address[]),address,uint256)": {
+        "intent": "Review Swap Exact Tokens For Tokens transaction",
+        "fields": [
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "amountOutMin",
+            "label": "Amount Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "path",
+            "label": "Path",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapExactTokensForTokensSupportingFeeOnTransferTokens(uint256,uint256,(uint256[],uint8[],address[]),address,uint256)": {
+        "intent": "Review Swap Exact Tokens For Tokens Supporting Fee On Transfer Tokens transaction",
+        "fields": [
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "amountOutMin",
+            "label": "Amount Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "path",
+            "label": "Path",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapNATIVEForExactTokens(uint256,(uint256[],uint8[],address[]),address,uint256)": {
+        "intent": "Review Swap NATIVEFor Exact Tokens transaction",
+        "fields": [
+          {
+            "path": "amountOut",
+            "label": "Amount Out",
+            "format": "raw"
+          },
+          {
+            "path": "path",
+            "label": "Path",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapTokensForExactNATIVE(uint256,uint256,(uint256[],uint8[],address[]),address,uint256)": {
+        "intent": "Review Swap Tokens For Exact NATIVE transaction",
+        "fields": [
+          {
+            "path": "amountNATIVEOut",
+            "label": "Amount NATIVEOut",
+            "format": "raw"
+          },
+          {
+            "path": "amountInMax",
+            "label": "Amount In Max",
+            "format": "raw"
+          },
+          {
+            "path": "path",
+            "label": "Path",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapTokensForExactTokens(uint256,uint256,(uint256[],uint8[],address[]),address,uint256)": {
+        "intent": "Review Swap Tokens For Exact Tokens transaction",
+        "fields": [
+          {
+            "path": "amountOut",
+            "label": "Amount Out",
+            "format": "raw"
+          },
+          {
+            "path": "amountInMax",
+            "label": "Amount In Max",
+            "format": "raw"
+          },
+          {
+            "path": "path",
+            "label": "Path",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          }
+        ]
+      },
+      "sweep(address,address,uint256)": {
+        "intent": "Review Sweep transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "sweepLBToken(address,address,uint256[],uint256[])": {
+        "intent": "Review Sweep LBToken transaction",
+        "fields": [
+          {
+            "path": "lbToken",
+            "label": "Lb Token",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "ids",
+            "label": "Ids",
+            "format": "raw"
+          },
+          {
+            "path": "amounts",
+            "label": "Amounts",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Trader Joe",
+    "info": {
+      "url": "https://traderjoexyz.com/",
+      "legalName": "Trader Joe",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

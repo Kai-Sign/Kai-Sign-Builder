@@ -1,0 +1,320 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x0635E2f2926b306356b5B3F5CB6489107796b085",
+      "chainId": 1,
+      "name": "Art Blocks Set Price Minter",
+      "abi": [
+        {
+          "type": "function",
+          "name": "purchase",
+          "selector": "0xefef39a1",
+          "inputs": [
+            {
+              "name": "_projectId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "purchaseTo",
+          "selector": "0x4ee6e4e6",
+          "inputs": [
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_projectId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "updatePricePerTokenInWei",
+          "selector": "0x91b9f14a",
+          "inputs": [
+            {
+              "name": "_projectId",
+              "type": "uint256"
+            },
+            {
+              "name": "_pricePerTokenInWei",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "manuallyLimitProjectMaxInvocations",
+          "selector": "0xb000e334",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "projectId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "coreContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint24",
+              "name": "maxInvocations",
+              "type": "uint24"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "purchase",
+          "selector": "0xae77c237",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "projectId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "coreContract",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "purchaseTo",
+          "selector": "0x4e8d8787",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "projectId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "coreContract",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "syncProjectMaxInvocationsToCore",
+          "selector": "0xd9bffbce",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "projectId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "coreContract",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updatePricePerTokenInWei",
+          "selector": "0x7e947f24",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "projectId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "coreContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint248",
+              "name": "pricePerTokenInWei",
+              "type": "uint248"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "purchase(uint256)": {
+        "intent": "Mint Art Blocks NFT at set price",
+        "interpolatedIntent": "Mint Art Blocks project #{_projectId} NFT",
+        "fields": [
+          {
+            "path": "_projectId",
+            "label": "Project ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "purchaseTo(address,uint256)": {
+        "intent": "Mint Art Blocks NFT to another address",
+        "interpolatedIntent": "Mint Art Blocks project #{_projectId} NFT to {_to}",
+        "fields": [
+          {
+            "path": "_to",
+            "label": "NFT Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "_projectId",
+            "label": "Project ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "updatePricePerTokenInWei(uint256,uint256)": {
+        "intent": "Update Art Blocks project mint price",
+        "interpolatedIntent": "Set mint price for project #{_projectId} to {_pricePerTokenInWei} wei",
+        "fields": [
+          {
+            "path": "_projectId",
+            "label": "Project ID",
+            "format": "raw"
+          },
+          {
+            "path": "_pricePerTokenInWei",
+            "label": "Price Per Token (ETH)",
+            "format": "ethAmount"
+          }
+        ]
+      },
+      "manuallyLimitProjectMaxInvocations(uint256,address,uint24)": {
+        "intent": "Review Manually Limit Project Max Invocations transaction",
+        "fields": [
+          {
+            "path": "projectId",
+            "label": "Project Id",
+            "format": "raw"
+          },
+          {
+            "path": "coreContract",
+            "label": "Core Contract",
+            "format": "address"
+          },
+          {
+            "path": "maxInvocations",
+            "label": "Max Invocations",
+            "format": "raw"
+          }
+        ]
+      },
+      "purchase(uint256,address)": {
+        "intent": "Review Purchase transaction",
+        "fields": [
+          {
+            "path": "projectId",
+            "label": "Project Id",
+            "format": "raw"
+          },
+          {
+            "path": "coreContract",
+            "label": "Core Contract",
+            "format": "address"
+          }
+        ]
+      },
+      "purchaseTo(address,uint256,address)": {
+        "intent": "Review Purchase To transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "projectId",
+            "label": "Project Id",
+            "format": "raw"
+          },
+          {
+            "path": "coreContract",
+            "label": "Core Contract",
+            "format": "address"
+          }
+        ]
+      },
+      "syncProjectMaxInvocationsToCore(uint256,address)": {
+        "intent": "Review Sync Project Max Invocations To Core transaction",
+        "fields": [
+          {
+            "path": "projectId",
+            "label": "Project Id",
+            "format": "raw"
+          },
+          {
+            "path": "coreContract",
+            "label": "Core Contract",
+            "format": "address"
+          }
+        ]
+      },
+      "updatePricePerTokenInWei(uint256,address,uint248)": {
+        "intent": "Review Update Price Per Token In Wei transaction",
+        "fields": [
+          {
+            "path": "projectId",
+            "label": "Project Id",
+            "format": "raw"
+          },
+          {
+            "path": "coreContract",
+            "label": "Core Contract",
+            "format": "address"
+          },
+          {
+            "path": "pricePerTokenInWei",
+            "label": "Price Per Token In Wei",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Art Blocks",
+    "info": {
+      "url": "https://www.artblocks.io/",
+      "legalName": "Art Blocks Inc.",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

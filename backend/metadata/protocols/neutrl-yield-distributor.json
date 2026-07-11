@@ -1,0 +1,273 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x77d135a27396ba1647cd8c3af3b2ccf9305a9e8c",
+      "chainId": 1,
+      "name": "Neutrl Yield Distributor",
+      "abi": [
+        {
+          "type": "function",
+          "name": "acceptAdmin",
+          "selector": "0x0e18b681",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addYieldToken",
+          "selector": "0x5c516de7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_yieldToken",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "convertYieldToNUSD",
+          "selector": "0x4d5495b2",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_slippage",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "distributeYield",
+          "selector": "0xc8cc5cd8",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_nusdAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "selector": "0x2f2ff15d",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "recoverERC20",
+          "selector": "0x8980f11f",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeYieldToken",
+          "selector": "0x01a2f3cd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_yieldToken",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "selector": "0x36568abe",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "selector": "0xd547741f",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferAdmin",
+          "selector": "0x75829def",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "acceptAdmin()": {
+        "intent": "Review Accept Admin transaction",
+        "fields": []
+      },
+      "addYieldToken(address)": {
+        "intent": "Review Add Yield Token transaction",
+        "fields": [
+          {
+            "path": "_yieldToken",
+            "label": " yield Token",
+            "format": "address"
+          }
+        ]
+      },
+      "convertYieldToNUSD(uint256)": {
+        "intent": "Review Convert Yield To NUSD transaction",
+        "fields": [
+          {
+            "path": "_slippage",
+            "label": " slippage",
+            "format": "raw"
+          }
+        ]
+      },
+      "distributeYield(uint256)": {
+        "intent": "Review Distribute Yield transaction",
+        "fields": [
+          {
+            "path": "_nusdAmount",
+            "label": " nusd Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "grantRole(bytes32,address)": {
+        "intent": "Review Grant Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "recoverERC20(address,uint256)": {
+        "intent": "Review Recover ERC20 transaction",
+        "fields": [
+          {
+            "path": "_token",
+            "label": " token",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "removeYieldToken(address)": {
+        "intent": "Review Remove Yield Token transaction",
+        "fields": [
+          {
+            "path": "_yieldToken",
+            "label": " yield Token",
+            "format": "address"
+          }
+        ]
+      },
+      "renounceRole(bytes32,address)": {
+        "intent": "Review Renounce Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "revokeRole(bytes32,address)": {
+        "intent": "Review Revoke Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "transferAdmin(address)": {
+        "intent": "Review Transfer Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,560 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 42161,
+          "address": "0xb88690461ddbab6f04dfad7df66b7725942feb9c"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "executeRelayerRefundLeaf",
+          "inputs": [
+            {
+              "internalType": "uint32",
+              "name": "rootBundleId",
+              "type": "uint32"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "amountToReturn",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "chainId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "refundAmounts",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "uint32",
+                  "name": "leafId",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "address",
+                  "name": "l2TokenAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "refundAddresses",
+                  "type": "address[]"
+                }
+              ],
+              "internalType": "struct SpokePoolInterface.RelayerRefundLeaf",
+              "name": "relayerRefundLeaf",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes32[]",
+              "name": "proof",
+              "type": "bytes32[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x1b3d5559"
+        },
+        {
+          "type": "function",
+          "name": "setHubPool",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newHubPool",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x1dfb2d02"
+        },
+        {
+          "type": "function",
+          "name": "setCurrentTime",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "time",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x22f8e566"
+        },
+        {
+          "type": "function",
+          "name": "setEnableRoute",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "originToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "destinationChainId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x272751c7"
+        },
+        {
+          "type": "function",
+          "name": "setDepositQuoteTimeBuffer",
+          "inputs": [
+            {
+              "internalType": "uint32",
+              "name": "newDepositQuoteTimeBuffer",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x2752042e"
+        },
+        {
+          "type": "function",
+          "name": "whitelistToken",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "l2Token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "l1Token",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x364f01a6"
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "originToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "destinationChainId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint64",
+              "name": "relayerFeePct",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint32",
+              "name": "quoteTimestamp",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x49228978"
+        },
+        {
+          "type": "function",
+          "name": "relayRootBundle",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "relayerRefundRoot",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "slowRelayRoot",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x493a4f84"
+        },
+        {
+          "type": "function",
+          "name": "setL2GatewayRouter",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newL2GatewayRouter",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x4e3485c8"
+        },
+        {
+          "type": "function",
+          "name": "fillRelay",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "depositor",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "destinationToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxTokensToSend",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "repaymentChainId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "originChainId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint64",
+              "name": "realizedLpFeePct",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "relayerFeePct",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint32",
+              "name": "depositId",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x89a153cc"
+        },
+        {
+          "type": "function",
+          "name": "emergencyDeleteRootBundle",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "rootBundleId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x8a7860ce"
+        },
+        {
+          "type": "function",
+          "name": "multicall",
+          "inputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "data",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0xac9650d8",
+          "outputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "results",
+              "type": "bytes[]"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "executeSlowRelayLeaf",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "depositor",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "destinationToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "originChainId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint64",
+              "name": "realizedLpFeePct",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "relayerFeePct",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint32",
+              "name": "depositId",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint32",
+              "name": "rootBundleId",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes32[]",
+              "name": "proof",
+              "type": "bytes32[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xbe3576ee"
+        },
+        {
+          "type": "function",
+          "name": "setCrossDomainAdmin",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newCrossDomainAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xde7eba78"
+        },
+        {
+          "type": "function",
+          "name": "speedUpDeposit",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "depositor",
+              "type": "address"
+            },
+            {
+              "internalType": "uint64",
+              "name": "newRelayerFeePct",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint32",
+              "name": "depositId",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "depositorSignature",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xe282d5b9"
+        },
+        {
+          "type": "function",
+          "name": "fillRelayWithUpdatedFee",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "depositor",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "destinationToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxTokensToSend",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "repaymentChainId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "originChainId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint64",
+              "name": "realizedLpFeePct",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "relayerFeePct",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "newRelayerFeePct",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint32",
+              "name": "depositId",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "depositorSignature",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xffc351a3"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Risk Labs",
+    "contractName": "Across V3 SpokePool (Arbitrum)"
+  },
+  "display": {
+    "formats": {
+      "depositV3(address depositor,address recipient,address inputToken,address outputToken,uint256 inputAmount,uint256 outputAmount,uint256 destinationChainId,address exclusiveRelayer,uint32 quoteTimestamp,uint32 fillDeadline,uint32 exclusivityDeadline,bytes message)": {
+        "intent": "Bridge tokens via Across",
+        "interpolatedIntent": "Bridge {inputAmount} tokens to chain {destinationChainId} via Across",
+        "fields": [
+          {
+            "path": "inputToken",
+            "label": "Input Token",
+            "format": "addressName"
+          },
+          {
+            "path": "outputToken",
+            "label": "Output Token",
+            "format": "addressName"
+          },
+          {
+            "path": "inputAmount",
+            "label": "Input Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "inputToken"
+            }
+          },
+          {
+            "path": "outputAmount",
+            "label": "Min Output Amount",
+            "format": "raw"
+          },
+          {
+            "path": "destinationChainId",
+            "label": "Destination Chain",
+            "format": "integer"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "depositor",
+            "label": "Depositor",
+            "format": "addressName"
+          },
+          {
+            "path": "fillDeadline",
+            "label": "Fill Deadline",
+            "format": "timestamp"
+          }
+        ]
+      },
+      "speedUpV3Deposit(address depositor,uint32 depositId,uint256 updatedOutputAmount,address updatedRecipient,bytes updatedMessage,bytes depositorSignature)": {
+        "intent": "Speed up Across bridge deposit",
+        "interpolatedIntent": "Speed up deposit #{depositId} with new output {updatedOutputAmount}",
+        "fields": [
+          {
+            "path": "depositor",
+            "label": "Depositor",
+            "format": "addressName"
+          },
+          {
+            "path": "depositId",
+            "label": "Deposit ID",
+            "format": "integer"
+          },
+          {
+            "path": "updatedOutputAmount",
+            "label": "Updated Output Amount",
+            "format": "raw"
+          },
+          {
+            "path": "updatedRecipient",
+            "label": "Updated Recipient",
+            "format": "addressName"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,473 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xa0c68c638235ee32657e8f720a23cec1bfc77c77",
+      "chainId": 1,
+      "name": "Polygon PoS Root Chain Manager",
+      "abi": [
+        {
+          "type": "function",
+          "name": "depositEtherFor",
+          "selector": "0x4faa8a26",
+          "inputs": [
+            {
+              "name": "user",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "depositFor",
+          "selector": "0xe3dec8fb",
+          "inputs": [
+            {
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "name": "rootToken",
+              "type": "address"
+            },
+            {
+              "name": "depositData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "exit",
+          "selector": "0x3805550f",
+          "inputs": [
+            {
+              "name": "inputData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferProxyOwnership",
+          "selector": "0xf1739cae",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateAndCall",
+          "selector": "0xd88ca2c8",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_newProxyTo",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "updateImplementation",
+          "selector": "0x025b22bc",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_newProxyTo",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "cleanMapToken",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "rootToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "childToken",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x0c3894bb"
+        },
+        {
+          "type": "function",
+          "name": "executeMetaTransaction",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "userAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "functionSignature",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "sigR",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "sigS",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint8",
+              "name": "sigV",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x0c53c51c",
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "registerPredicate",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "tokenType",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "predicateAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x0c598220"
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x2f2ff15d"
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x36568abe"
+        },
+        {
+          "type": "function",
+          "name": "initializeEIP712",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x630fcbfb"
+        },
+        {
+          "type": "function",
+          "name": "setStateSender",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newStateSender",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x6cb136b0"
+        },
+        {
+          "type": "function",
+          "name": "mapToken",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "rootToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "childToken",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "tokenType",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x9173b139"
+        },
+        {
+          "type": "function",
+          "name": "updateTokenMigrationStatus",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "rootToken",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "isDepositDisable",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "isExitDisabled",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "lastExitBlockNumber",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x985aa88c"
+        },
+        {
+          "type": "function",
+          "name": "setupContractId",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0xb4b4f63e"
+        },
+        {
+          "type": "function",
+          "name": "setCheckpointManager",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newCheckpointManager",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xbc08452b"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xc4d66de8"
+        },
+        {
+          "type": "function",
+          "name": "remapToken",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "rootToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "childToken",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "tokenType",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xd233a3c7"
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xd547741f"
+        },
+        {
+          "type": "function",
+          "name": "setChildChainManagerAddress",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newChildChainManager",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xdc993a23"
+        },
+        {
+          "type": "function",
+          "name": "migrateBridgeFunds",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "rootToken",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xfc906f67"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "depositEtherFor(address)": {
+        "intent": "Bridge ETH to Polygon PoS",
+        "interpolatedIntent": "Bridge ETH to Polygon PoS for {user}",
+        "fields": [
+          {
+            "path": "user",
+            "label": "Polygon Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "depositFor(address,address,bytes)": {
+        "intent": "Bridge ERC-20 tokens to Polygon PoS",
+        "interpolatedIntent": "Bridge {rootToken} to Polygon PoS for {user}",
+        "fields": [
+          {
+            "path": "user",
+            "label": "Polygon Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "rootToken",
+            "label": "Token to Bridge",
+            "format": "addressName"
+          }
+        ]
+      },
+      "exit(bytes)": {
+        "intent": "Claim tokens from Polygon PoS back to Ethereum",
+        "interpolatedIntent": "Finalize Polygon PoS withdrawal to Ethereum",
+        "fields": [
+          {
+            "path": "inputData",
+            "label": "Exit Proof Data",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferProxyOwnership(address)": {
+        "intent": "Review Transfer Proxy Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "updateAndCall(address,bytes)": {
+        "intent": "Review Update And Call transaction",
+        "fields": [
+          {
+            "path": "_newProxyTo",
+            "label": " new Proxy To",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "updateImplementation(address)": {
+        "intent": "Review Update Implementation transaction",
+        "fields": [
+          {
+            "path": "_newProxyTo",
+            "label": " new Proxy To",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Polygon",
+    "info": {
+      "url": "https://wallet.polygon.technology/polygon/bridge/deposit",
+      "legalName": "Polygon Technology",
+      "lastUpdate": "2026-03-27"
+    }
+  }
+}

@@ -1,0 +1,440 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x5288c571fd7ad117bea99bf60fe0846c4e84f933",
+      "chainId": 42161,
+      "name": "Arbitrum L2 Gateway Router",
+      "abi": [
+        {
+          "type": "function",
+          "name": "outboundTransfer",
+          "selector": "0x7b3a3c8b",
+          "inputs": [
+            {
+              "name": "_token",
+              "type": "address"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_data",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "admin",
+          "selector": "0xf851a440",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "admin_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeAdmin",
+          "selector": "0x8f283970",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "implementation",
+          "selector": "0x5c60da1b",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "implementation_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x3659cfe6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "finalizeInboundTransfer",
+          "selector": "0x2e567b36",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0x485cc955",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_counterpartGateway",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_defaultGateway",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "outboundTransfer",
+          "selector": "0xd2ce7d65",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_maxGas",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_gasPriceBid",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_data",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "postUpgradeInit",
+          "selector": "0x95fcea78",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setDefaultGateway",
+          "selector": "0xf7c9362f",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newL2DefaultGateway",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setGateway",
+          "selector": "0x4201f985",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "_l1Token",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "_gateway",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "outboundTransfer(address,address,uint256,bytes)": {
+        "intent": "Bridge {#._amount} of {#._token} out of Arbitrum",
+        "fields": [
+          {
+            "path": "#._token",
+            "label": "Token",
+            "format": "addressName",
+            "params": {
+              "types": [
+                "token"
+              ],
+              "sources": null
+            }
+          },
+          {
+            "path": "#._to",
+            "label": "Recipient",
+            "format": "addressName",
+            "params": {
+              "types": [
+                "eoa",
+                "wallet"
+              ],
+              "sources": [
+                "local",
+                "ens"
+              ]
+            }
+          },
+          {
+            "path": "#._amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_token"
+            }
+          },
+          {
+            "path": "#._data",
+            "label": "Bridge Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "admin()": {
+        "intent": "Review Admin transaction",
+        "fields": []
+      },
+      "changeAdmin(address)": {
+        "intent": "Review Change Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "implementation()": {
+        "intent": "Review Implementation transaction",
+        "fields": []
+      },
+      "upgradeTo(address)": {
+        "intent": "Review Upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "finalizeInboundTransfer(address,address,address,uint256,bytes)": {
+        "intent": "Review Finalize Inbound Transfer transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "address"
+          },
+          {
+            "path": "param1",
+            "label": "Param1",
+            "format": "address"
+          },
+          {
+            "path": "param2",
+            "label": "Param2",
+            "format": "address"
+          },
+          {
+            "path": "param3",
+            "label": "Param3",
+            "format": "raw"
+          },
+          {
+            "path": "param4",
+            "label": "Param4",
+            "format": "hex"
+          }
+        ]
+      },
+      "initialize(address,address)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_counterpartGateway",
+            "label": " counterpart Gateway",
+            "format": "address"
+          },
+          {
+            "path": "_defaultGateway",
+            "label": " default Gateway",
+            "format": "address"
+          }
+        ]
+      },
+      "outboundTransfer(address,address,uint256,uint256,uint256,bytes)": {
+        "intent": "Review Outbound Transfer transaction",
+        "fields": [
+          {
+            "path": "_token",
+            "label": " token",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "_maxGas",
+            "label": " max Gas",
+            "format": "raw"
+          },
+          {
+            "path": "_gasPriceBid",
+            "label": " gas Price Bid",
+            "format": "raw"
+          },
+          {
+            "path": "_data",
+            "label": " data",
+            "format": "hex"
+          }
+        ]
+      },
+      "postUpgradeInit()": {
+        "intent": "Review Post Upgrade Init transaction",
+        "fields": []
+      },
+      "setDefaultGateway(address)": {
+        "intent": "Review Set Default Gateway transaction",
+        "fields": [
+          {
+            "path": "newL2DefaultGateway",
+            "label": "New L2 Default Gateway",
+            "format": "address"
+          }
+        ]
+      },
+      "setGateway(address[],address[])": {
+        "intent": "Review Set Gateway transaction",
+        "fields": [
+          {
+            "path": "_l1Token",
+            "label": " l1 Token",
+            "format": "raw"
+          },
+          {
+            "path": "_gateway",
+            "label": " gateway",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

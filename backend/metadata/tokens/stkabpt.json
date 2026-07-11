@@ -1,0 +1,680 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0xa1116930326D21fB917d5A27F1E9943A9595fb47"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "stake",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "onBehalfOf",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "redeem",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "cooldown",
+          "selector": "0x00000000",
+          "inputs": []
+        },
+        {
+          "type": "function",
+          "name": "claimRewards",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "slash",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "destination",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x02fb4d85",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x095ea7b3",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "redeemOnBehalf",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x112d037c"
+        },
+        {
+          "type": "function",
+          "name": "claimRewardsOnBehalf",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x20fb80b5",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x23b872dd",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "cooldownOnBehalfOf",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x250201db"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowance",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "addedValue",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x39509351",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "returnFunds",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x45755dd6"
+        },
+        {
+          "type": "function",
+          "name": "delegate",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "delegatee",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x5c19a95c"
+        },
+        {
+          "type": "function",
+          "name": "setMaxSlashablePercentage",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "percentage",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x74011f56"
+        },
+        {
+          "type": "function",
+          "name": "setCooldownSeconds",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "cooldownSeconds",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x7b5b1157"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x8129fc1c"
+        },
+        {
+          "type": "function",
+          "name": "claimRewardsAndRedeemOnBehalf",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "claimAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "redeemAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x9c9b5154"
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowance",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xa457c2d7",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xa9059cbb",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setPendingAdmin",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "role",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "newPendingAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xab406fe6"
+        },
+        {
+          "type": "function",
+          "name": "settleSlashing",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0xaff05aa9"
+        },
+        {
+          "type": "function",
+          "name": "configureAssets",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint128",
+                  "name": "emissionPerSecond",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "totalStaked",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "underlyingAsset",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct DistributionTypes.AssetConfigInput[]",
+              "name": "assetsConfigInput",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xb2a5dbfa"
+        },
+        {
+          "type": "function",
+          "name": "delegateBySig",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "delegatee",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "expiry",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xc3cda520"
+        },
+        {
+          "type": "function",
+          "name": "permit",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xd505accf"
+        },
+        {
+          "type": "function",
+          "name": "delegateByType",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "delegatee",
+              "type": "address"
+            },
+            {
+              "internalType": "enum IGovernancePowerDelegationToken.DelegationType",
+              "name": "delegationType",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xdc937e1c"
+        },
+        {
+          "type": "function",
+          "name": "claimRewardsAndRedeem",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "claimAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "redeemAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xeab52318"
+        },
+        {
+          "type": "function",
+          "name": "delegateByTypeBySig",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "delegatee",
+              "type": "address"
+            },
+            {
+              "internalType": "enum IGovernancePowerDelegationToken.DelegationType",
+              "name": "delegationType",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "expiry",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf713d8a8"
+        },
+        {
+          "type": "function",
+          "name": "claimRoleAdmin",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "role",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xfde9eb69"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Staked ABPT (Aave Balancer Pool Token)",
+    "info": {
+      "website": "https://aave.com",
+      "docs": "https://docs.aave.com/ecosystem/safety-module"
+    }
+  },
+  "display": {
+    "formats": {
+      "stake(address,uint256)": {
+        "intent": "Stake {amount} ABPT in Safety Module",
+        "fields": [
+          {
+            "path": "onBehalfOf",
+            "label": "Stake For",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "ABPT"
+            }
+          }
+        ]
+      },
+      "redeem(address,uint256)": {
+        "intent": "Redeem {amount} stkABPT",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "stkABPT"
+            }
+          }
+        ]
+      },
+      "cooldown()": {
+        "intent": "Activate Cooldown for Withdrawal",
+        "fields": []
+      },
+      "claimRewards(address,uint256)": {
+        "intent": "Claim {amount} Safety Module Rewards",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "AAVE"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

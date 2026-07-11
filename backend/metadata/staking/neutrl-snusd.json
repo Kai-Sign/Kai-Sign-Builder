@@ -1,0 +1,830 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x08efcc2f3e61185d0ea7f8830b3fec9bfa2ee313",
+      "chainId": 1,
+      "name": "Neutrl sNUSD (Staked NUSD)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x6e553f65",
+          "inputs": [
+            {
+              "name": "assets",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x94bf804d",
+          "inputs": [
+            {
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xb460af94",
+          "inputs": [
+            {
+              "name": "assets",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "name": "_owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redeem",
+          "selector": "0xba087652",
+          "inputs": [
+            {
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "name": "_owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "cooldownAssets",
+          "selector": "0xcdac52ed",
+          "inputs": [
+            {
+              "name": "assets",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "cooldownShares",
+          "selector": "0x9343d9e1",
+          "inputs": [
+            {
+              "name": "shares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unstake",
+          "selector": "0xf2888dbb",
+          "inputs": [
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "acceptAdmin",
+          "selector": "0x0e18b681",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addToBlacklist",
+          "selector": "0xf298f42c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "target",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "isFullBlacklisting",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "selector": "0x2f2ff15d",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pause",
+          "selector": "0x8456cb59",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "permit",
+          "selector": "0xd505accf",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "recoverToken",
+          "selector": "0xa7229fd9",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redistributeLockedAmount",
+          "selector": "0x757f1008",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountToDistribute",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeFromBlacklist",
+          "selector": "0xc336a084",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "target",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "isFullBlacklisting",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "selector": "0x36568abe",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "selector": "0xd547741f",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setCooldownDuration",
+          "selector": "0xce23eb3c",
+          "inputs": [
+            {
+              "internalType": "uint24",
+              "name": "_cooldownDuration",
+              "type": "uint24"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setVestingPeriod",
+          "selector": "0x40bee0ed",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_vestingPeriod",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferAdmin",
+          "selector": "0x75829def",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferInRewards",
+          "selector": "0xc80ef110",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unpause",
+          "selector": "0x3f4ba83a",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "deposit(uint256,address)": {
+        "intent": "Stake NUSD into sNUSD vault",
+        "interpolatedIntent": "Deposit {assets} NUSD into sNUSD vault for {receiver}",
+        "fields": [
+          {
+            "path": "assets",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "NUSD"
+            }
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          }
+        ]
+      },
+      "mint(uint256,address)": {
+        "intent": "Mint sNUSD shares",
+        "interpolatedIntent": "Mint {shares} sNUSD shares for {receiver}",
+        "fields": [
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "sNUSD"
+            }
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Withdraw NUSD from sNUSD vault",
+        "interpolatedIntent": "Withdraw {assets} NUSD from sNUSD vault to {receiver}",
+        "fields": [
+          {
+            "path": "assets",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "NUSD"
+            }
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "_owner",
+            "label": "Owner",
+            "format": "addressName"
+          }
+        ]
+      },
+      "redeem(uint256,address,address)": {
+        "intent": "Redeem sNUSD shares for NUSD",
+        "interpolatedIntent": "Redeem {shares} sNUSD shares to {receiver}",
+        "fields": [
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "sNUSD"
+            }
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "_owner",
+            "label": "Owner",
+            "format": "addressName"
+          }
+        ]
+      },
+      "cooldownAssets(uint256)": {
+        "intent": "Start sNUSD unstaking cooldown (by assets)",
+        "interpolatedIntent": "Start 10-day cooldown for {assets} NUSD worth of sNUSD",
+        "fields": [
+          {
+            "path": "assets",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "NUSD"
+            }
+          }
+        ]
+      },
+      "cooldownShares(uint256)": {
+        "intent": "Start sNUSD unstaking cooldown (by shares)",
+        "interpolatedIntent": "Start 10-day cooldown for {shares} sNUSD shares",
+        "fields": [
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "sNUSD"
+            }
+          }
+        ]
+      },
+      "unstake(address)": {
+        "intent": "Complete sNUSD unstaking after cooldown",
+        "interpolatedIntent": "Complete unstaking and send NUSD to {receiver}",
+        "fields": [
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Approve sNUSD spending",
+        "interpolatedIntent": "Approve {spender} to spend {value} sNUSD",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "addressName"
+          },
+          {
+            "path": "value",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "sNUSD"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer sNUSD",
+        "interpolatedIntent": "Transfer {value} sNUSD to {to}",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "value",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "sNUSD"
+            }
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Transfer sNUSD on behalf of sender",
+        "interpolatedIntent": "Transfer {value} sNUSD from {from} to {to}",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "addressName"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "addressName"
+          },
+          {
+            "path": "value",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "sNUSD"
+            }
+          }
+        ]
+      },
+      "acceptAdmin()": {
+        "intent": "Review Accept Admin transaction",
+        "fields": []
+      },
+      "addToBlacklist(address,bool)": {
+        "intent": "Review Add To Blacklist transaction",
+        "fields": [
+          {
+            "path": "target",
+            "label": "Target",
+            "format": "address"
+          },
+          {
+            "path": "isFullBlacklisting",
+            "label": "Is Full Blacklisting",
+            "format": "boolean"
+          }
+        ]
+      },
+      "grantRole(bytes32,address)": {
+        "intent": "Review Grant Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "pause()": {
+        "intent": "Review Pause transaction",
+        "fields": []
+      },
+      "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Permit transaction",
+        "fields": [
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "recoverToken(address,address,uint256)": {
+        "intent": "Review Recover Token transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "redistributeLockedAmount(address,address,uint256)": {
+        "intent": "Review Redistribute Locked Amount transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amountToDistribute",
+            "label": "Amount To Distribute",
+            "format": "raw"
+          }
+        ]
+      },
+      "removeFromBlacklist(address,bool)": {
+        "intent": "Review Remove From Blacklist transaction",
+        "fields": [
+          {
+            "path": "target",
+            "label": "Target",
+            "format": "address"
+          },
+          {
+            "path": "isFullBlacklisting",
+            "label": "Is Full Blacklisting",
+            "format": "boolean"
+          }
+        ]
+      },
+      "renounceRole(bytes32,address)": {
+        "intent": "Review Renounce Role transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "hex"
+          },
+          {
+            "path": "param1",
+            "label": "Param1",
+            "format": "address"
+          }
+        ]
+      },
+      "revokeRole(bytes32,address)": {
+        "intent": "Review Revoke Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "setCooldownDuration(uint24)": {
+        "intent": "Review Set Cooldown Duration transaction",
+        "fields": [
+          {
+            "path": "_cooldownDuration",
+            "label": " cooldown Duration",
+            "format": "raw"
+          }
+        ]
+      },
+      "setVestingPeriod(uint256)": {
+        "intent": "Review Set Vesting Period transaction",
+        "fields": [
+          {
+            "path": "_vestingPeriod",
+            "label": " vesting Period",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferAdmin(address)": {
+        "intent": "Review Transfer Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "transferInRewards(uint256)": {
+        "intent": "Review Transfer In Rewards transaction",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "unpause()": {
+        "intent": "Review Unpause transaction",
+        "fields": []
+      }
+    }
+  }
+}

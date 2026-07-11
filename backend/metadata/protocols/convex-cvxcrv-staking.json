@@ -1,0 +1,441 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x3Fe65692bfCD0e6CF84Cb1E7d24108E434A7587e",
+      "chainId": 1,
+      "name": "Convex cvxCRV Staking",
+      "abi": [
+        {
+          "type": "function",
+          "name": "stake",
+          "selector": "0xa694fc3a",
+          "inputs": [
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0x2e1a7d4d",
+          "inputs": [
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "getReward",
+          "selector": "0xc00007b0",
+          "inputs": [
+            {
+              "name": "_account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "stakeAll",
+          "selector": "0x8dcb4061",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawAll",
+          "selector": "0x853828b6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addExtraReward",
+          "selector": "0x5e43c47b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_reward",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "clearExtraRewards",
+          "selector": "0x0569d388",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "donate",
+          "selector": "0xf14faf6f",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "getReward",
+          "selector": "0x3d18b912",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "getReward",
+          "selector": "0x7050ccd9",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_account",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "_claimExtras",
+              "type": "bool"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "queueNewRewards",
+          "selector": "0x590a41f5",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_rewards",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "stakeFor",
+          "selector": "0x2ee40908",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_for",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0x38d07436",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "claim",
+              "type": "bool"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawAll",
+          "selector": "0x1c1c6fe5",
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "claim",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawAllAndUnwrap",
+          "selector": "0x49f039a2",
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "claim",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawAndUnwrap",
+          "selector": "0xc32e7202",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "claim",
+              "type": "bool"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "stake(uint256)": {
+        "intent": "Stake cvxCRV on Convex",
+        "interpolatedIntent": "Stake {_amount} cvxCRV on Convex",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "cvxCRV"
+            }
+          }
+        ]
+      },
+      "withdraw(uint256)": {
+        "intent": "Withdraw cvxCRV from Convex",
+        "interpolatedIntent": "Withdraw {_amount} cvxCRV from Convex",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "cvxCRV"
+            }
+          }
+        ]
+      },
+      "getReward(address)": {
+        "intent": "Claim Convex cvxCRV rewards",
+        "interpolatedIntent": "Claim Convex cvxCRV rewards for {_account}",
+        "fields": [
+          {
+            "path": "_account",
+            "label": "Account",
+            "format": "addressName"
+          }
+        ]
+      },
+      "stakeAll()": {
+        "intent": "Stake all cvxCRV on Convex",
+        "interpolatedIntent": "Stake all cvxCRV on Convex",
+        "fields": []
+      },
+      "withdrawAll()": {
+        "intent": "Withdraw all cvxCRV from Convex",
+        "interpolatedIntent": "Withdraw all cvxCRV from Convex",
+        "fields": []
+      },
+      "addExtraReward(address)": {
+        "intent": "Review Add Extra Reward transaction",
+        "fields": [
+          {
+            "path": "_reward",
+            "label": " reward",
+            "format": "address"
+          }
+        ]
+      },
+      "clearExtraRewards()": {
+        "intent": "Review Clear Extra Rewards transaction",
+        "fields": []
+      },
+      "donate(uint256)": {
+        "intent": "Review Donate transaction",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "getReward()": {
+        "intent": "Review Get Reward transaction",
+        "fields": []
+      },
+      "getReward(address,bool)": {
+        "intent": "Review Get Reward transaction",
+        "fields": [
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          },
+          {
+            "path": "_claimExtras",
+            "label": " claim Extras",
+            "format": "boolean"
+          }
+        ]
+      },
+      "queueNewRewards(uint256)": {
+        "intent": "Review Queue New Rewards transaction",
+        "fields": [
+          {
+            "path": "_rewards",
+            "label": " rewards",
+            "format": "raw"
+          }
+        ]
+      },
+      "stakeFor(address,uint256)": {
+        "intent": "Review Stake For transaction",
+        "fields": [
+          {
+            "path": "_for",
+            "label": " for",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdraw(uint256,bool)": {
+        "intent": "Review Withdraw transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "claim",
+            "label": "Claim",
+            "format": "boolean"
+          }
+        ]
+      },
+      "withdrawAll(bool)": {
+        "intent": "Review Withdraw All transaction",
+        "fields": [
+          {
+            "path": "claim",
+            "label": "Claim",
+            "format": "boolean"
+          }
+        ]
+      },
+      "withdrawAllAndUnwrap(bool)": {
+        "intent": "Review Withdraw All And Unwrap transaction",
+        "fields": [
+          {
+            "path": "claim",
+            "label": "Claim",
+            "format": "boolean"
+          }
+        ]
+      },
+      "withdrawAndUnwrap(uint256,bool)": {
+        "intent": "Review Withdraw And Unwrap transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "claim",
+            "label": "Claim",
+            "format": "boolean"
+          }
+        ]
+      }
+    }
+  }
+}

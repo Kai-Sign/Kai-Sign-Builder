@@ -1,0 +1,1182 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xbbbbbbbbbb9cc5e90e3b3af64bdaf62c37eeffcb",
+      "chainId": 8453,
+      "name": "Morpho Blue (Base)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "supply",
+          "selector": "0xa99aad89",
+          "inputs": [
+            {
+              "name": "marketParams",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "loanToken",
+                  "type": "address"
+                },
+                {
+                  "name": "collateralToken",
+                  "type": "address"
+                },
+                {
+                  "name": "oracle",
+                  "type": "address"
+                },
+                {
+                  "name": "irm",
+                  "type": "address"
+                },
+                {
+                  "name": "lltv",
+                  "type": "uint256"
+                }
+              ]
+            },
+            {
+              "name": "assets",
+              "type": "uint256"
+            },
+            {
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "name": "onBehalf",
+              "type": "address"
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0x5c2bea49",
+          "inputs": [
+            {
+              "name": "marketParams",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "loanToken",
+                  "type": "address"
+                },
+                {
+                  "name": "collateralToken",
+                  "type": "address"
+                },
+                {
+                  "name": "oracle",
+                  "type": "address"
+                },
+                {
+                  "name": "irm",
+                  "type": "address"
+                },
+                {
+                  "name": "lltv",
+                  "type": "uint256"
+                }
+              ]
+            },
+            {
+              "name": "assets",
+              "type": "uint256"
+            },
+            {
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "name": "onBehalf",
+              "type": "address"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "borrow",
+          "selector": "0x50d8cd4b",
+          "inputs": [
+            {
+              "name": "marketParams",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "loanToken",
+                  "type": "address"
+                },
+                {
+                  "name": "collateralToken",
+                  "type": "address"
+                },
+                {
+                  "name": "oracle",
+                  "type": "address"
+                },
+                {
+                  "name": "irm",
+                  "type": "address"
+                },
+                {
+                  "name": "lltv",
+                  "type": "uint256"
+                }
+              ]
+            },
+            {
+              "name": "assets",
+              "type": "uint256"
+            },
+            {
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "name": "onBehalf",
+              "type": "address"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "repay",
+          "selector": "0x20b76e81",
+          "inputs": [
+            {
+              "name": "marketParams",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "loanToken",
+                  "type": "address"
+                },
+                {
+                  "name": "collateralToken",
+                  "type": "address"
+                },
+                {
+                  "name": "oracle",
+                  "type": "address"
+                },
+                {
+                  "name": "irm",
+                  "type": "address"
+                },
+                {
+                  "name": "lltv",
+                  "type": "uint256"
+                }
+              ]
+            },
+            {
+              "name": "assets",
+              "type": "uint256"
+            },
+            {
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "name": "onBehalf",
+              "type": "address"
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "supplyCollateral",
+          "selector": "0x238d6579",
+          "inputs": [
+            {
+              "name": "marketParams",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "loanToken",
+                  "type": "address"
+                },
+                {
+                  "name": "collateralToken",
+                  "type": "address"
+                },
+                {
+                  "name": "oracle",
+                  "type": "address"
+                },
+                {
+                  "name": "irm",
+                  "type": "address"
+                },
+                {
+                  "name": "lltv",
+                  "type": "uint256"
+                }
+              ]
+            },
+            {
+              "name": "assets",
+              "type": "uint256"
+            },
+            {
+              "name": "onBehalf",
+              "type": "address"
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawCollateral",
+          "selector": "0x8720316d",
+          "inputs": [
+            {
+              "name": "marketParams",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "loanToken",
+                  "type": "address"
+                },
+                {
+                  "name": "collateralToken",
+                  "type": "address"
+                },
+                {
+                  "name": "oracle",
+                  "type": "address"
+                },
+                {
+                  "name": "irm",
+                  "type": "address"
+                },
+                {
+                  "name": "lltv",
+                  "type": "uint256"
+                }
+              ]
+            },
+            {
+              "name": "assets",
+              "type": "uint256"
+            },
+            {
+              "name": "onBehalf",
+              "type": "address"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "accrueInterest",
+          "selector": "0x151c1ade",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "loanToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "collateralToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "oracle",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "irm",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "lltv",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct MarketParams",
+              "name": "marketParams",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "createMarket",
+          "selector": "0x8c1358a2",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "loanToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "collateralToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "oracle",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "irm",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "lltv",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct MarketParams",
+              "name": "marketParams",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "enableIrm",
+          "selector": "0x5a64f51e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "irm",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "enableLltv",
+          "selector": "0x4d98a93b",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "lltv",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "flashLoan",
+          "selector": "0xe0232b42",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "assets",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "liquidate",
+          "selector": "0xd8eabcb8",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "loanToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "collateralToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "oracle",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "irm",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "lltv",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct MarketParams",
+              "name": "marketParams",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "borrower",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "seizedAssets",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "repaidShares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setAuthorization",
+          "selector": "0xeecea000",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "authorized",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "newIsAuthorized",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setAuthorizationWithSig",
+          "selector": "0x8069218f",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "authorizer",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "authorized",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "isAuthorized",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Authorization",
+              "name": "authorization",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint8",
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "s",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct Signature",
+              "name": "signature",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFee",
+          "selector": "0x2b4f013c",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "loanToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "collateralToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "oracle",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "irm",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "lltv",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct MarketParams",
+              "name": "marketParams",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint256",
+              "name": "newFee",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFeeRecipient",
+          "selector": "0xe74b981b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newFeeRecipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setOwner",
+          "selector": "0x13af4035",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "supply(tuple,uint256,uint256,address,bytes)": {
+        "intent": "Supply to Morpho Blue",
+        "interpolatedIntent": "Supply {assets} {marketParams.loanToken} to Morpho Blue",
+        "fields": [
+          {
+            "path": "marketParams.loanToken",
+            "label": "Loan Token",
+            "format": "addressName"
+          },
+          {
+            "path": "marketParams.collateralToken",
+            "label": "Collateral Token",
+            "format": "addressName"
+          },
+          {
+            "path": "assets",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "marketParams.loanToken"
+            }
+          },
+          {
+            "path": "onBehalf",
+            "label": "On Behalf Of",
+            "format": "addressName"
+          }
+        ]
+      },
+      "withdraw(tuple,uint256,uint256,address,address)": {
+        "intent": "Withdraw from Morpho Blue",
+        "interpolatedIntent": "Withdraw {assets} {marketParams.loanToken} from Morpho Blue",
+        "fields": [
+          {
+            "path": "marketParams.loanToken",
+            "label": "Loan Token",
+            "format": "addressName"
+          },
+          {
+            "path": "marketParams.collateralToken",
+            "label": "Collateral Token",
+            "format": "addressName"
+          },
+          {
+            "path": "assets",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "marketParams.loanToken"
+            }
+          },
+          {
+            "path": "onBehalf",
+            "label": "On Behalf Of",
+            "format": "addressName"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          }
+        ]
+      },
+      "borrow(tuple,uint256,uint256,address,address)": {
+        "intent": "Borrow from Morpho Blue",
+        "interpolatedIntent": "Borrow {assets} {marketParams.loanToken} from Morpho Blue",
+        "fields": [
+          {
+            "path": "marketParams.loanToken",
+            "label": "Loan Token",
+            "format": "addressName"
+          },
+          {
+            "path": "marketParams.collateralToken",
+            "label": "Collateral Token",
+            "format": "addressName"
+          },
+          {
+            "path": "assets",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "marketParams.loanToken"
+            }
+          },
+          {
+            "path": "onBehalf",
+            "label": "On Behalf Of",
+            "format": "addressName"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          }
+        ]
+      },
+      "repay(tuple,uint256,uint256,address,bytes)": {
+        "intent": "Repay Morpho Blue loan",
+        "interpolatedIntent": "Repay {assets} {marketParams.loanToken} on Morpho Blue",
+        "fields": [
+          {
+            "path": "marketParams.loanToken",
+            "label": "Loan Token",
+            "format": "addressName"
+          },
+          {
+            "path": "marketParams.collateralToken",
+            "label": "Collateral Token",
+            "format": "addressName"
+          },
+          {
+            "path": "assets",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "marketParams.loanToken"
+            }
+          },
+          {
+            "path": "onBehalf",
+            "label": "On Behalf Of",
+            "format": "addressName"
+          }
+        ]
+      },
+      "supplyCollateral(tuple,uint256,address,bytes)": {
+        "intent": "Supply collateral to Morpho Blue",
+        "interpolatedIntent": "Supply {assets} {marketParams.collateralToken} as collateral",
+        "fields": [
+          {
+            "path": "marketParams.loanToken",
+            "label": "Loan Token",
+            "format": "addressName"
+          },
+          {
+            "path": "marketParams.collateralToken",
+            "label": "Collateral Token",
+            "format": "addressName"
+          },
+          {
+            "path": "assets",
+            "label": "Collateral Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "marketParams.collateralToken"
+            }
+          },
+          {
+            "path": "onBehalf",
+            "label": "On Behalf Of",
+            "format": "addressName"
+          }
+        ]
+      },
+      "withdrawCollateral(tuple,uint256,address,address)": {
+        "intent": "Withdraw collateral from Morpho Blue",
+        "interpolatedIntent": "Withdraw {assets} {marketParams.collateralToken} collateral",
+        "fields": [
+          {
+            "path": "marketParams.loanToken",
+            "label": "Loan Token",
+            "format": "addressName"
+          },
+          {
+            "path": "marketParams.collateralToken",
+            "label": "Collateral Token",
+            "format": "addressName"
+          },
+          {
+            "path": "assets",
+            "label": "Collateral Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "marketParams.collateralToken"
+            }
+          },
+          {
+            "path": "onBehalf",
+            "label": "On Behalf Of",
+            "format": "addressName"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          }
+        ]
+      },
+      "accrueInterest((address,address,address,address,uint256))": {
+        "intent": "Review Accrue Interest transaction",
+        "fields": [
+          {
+            "path": "marketParams",
+            "label": "Market Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "createMarket((address,address,address,address,uint256))": {
+        "intent": "Review Create Market transaction",
+        "fields": [
+          {
+            "path": "marketParams",
+            "label": "Market Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "enableIrm(address)": {
+        "intent": "Review Enable Irm transaction",
+        "fields": [
+          {
+            "path": "irm",
+            "label": "Irm",
+            "format": "address"
+          }
+        ]
+      },
+      "enableLltv(uint256)": {
+        "intent": "Review Enable Lltv transaction",
+        "fields": [
+          {
+            "path": "lltv",
+            "label": "Lltv",
+            "format": "raw"
+          }
+        ]
+      },
+      "flashLoan(address,uint256,bytes)": {
+        "intent": "Review Flash Loan transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "liquidate((address,address,address,address,uint256),address,uint256,uint256,bytes)": {
+        "intent": "Review Liquidate transaction",
+        "fields": [
+          {
+            "path": "marketParams",
+            "label": "Market Params",
+            "format": "raw"
+          },
+          {
+            "path": "borrower",
+            "label": "Borrower",
+            "format": "address"
+          },
+          {
+            "path": "seizedAssets",
+            "label": "Seized Assets",
+            "format": "raw"
+          },
+          {
+            "path": "repaidShares",
+            "label": "Repaid Shares",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "setAuthorization(address,bool)": {
+        "intent": "Review Set Authorization transaction",
+        "fields": [
+          {
+            "path": "authorized",
+            "label": "Authorized",
+            "format": "address"
+          },
+          {
+            "path": "newIsAuthorized",
+            "label": "New Is Authorized",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setAuthorizationWithSig((address,address,bool,uint256,uint256),(uint8,bytes32,bytes32))": {
+        "intent": "Review Set Authorization With Sig transaction",
+        "fields": [
+          {
+            "path": "authorization",
+            "label": "Authorization",
+            "format": "raw"
+          },
+          {
+            "path": "signature",
+            "label": "Signature",
+            "format": "raw"
+          }
+        ]
+      },
+      "setFee((address,address,address,address,uint256),uint256)": {
+        "intent": "Review Set Fee transaction",
+        "fields": [
+          {
+            "path": "marketParams",
+            "label": "Market Params",
+            "format": "raw"
+          },
+          {
+            "path": "newFee",
+            "label": "New Fee",
+            "format": "raw"
+          }
+        ]
+      },
+      "setFeeRecipient(address)": {
+        "intent": "Review Set Fee Recipient transaction",
+        "fields": [
+          {
+            "path": "newFeeRecipient",
+            "label": "New Fee Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "setOwner(address)": {
+        "intent": "Review Set Owner transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "borrow((address,address,address,address,uint256),uint256,uint256,address,address)": {
+        "intent": "Review Borrow transaction",
+        "fields": [
+          {
+            "path": "marketParams",
+            "label": "Market Params",
+            "format": "raw"
+          },
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          },
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "onBehalf",
+            "label": "On Behalf",
+            "format": "address"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "repay((address,address,address,address,uint256),uint256,uint256,address,bytes)": {
+        "intent": "Review Repay transaction",
+        "fields": [
+          {
+            "path": "marketParams",
+            "label": "Market Params",
+            "format": "raw"
+          },
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          },
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "onBehalf",
+            "label": "On Behalf",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "supply((address,address,address,address,uint256),uint256,uint256,address,bytes)": {
+        "intent": "Review Supply transaction",
+        "fields": [
+          {
+            "path": "marketParams",
+            "label": "Market Params",
+            "format": "raw"
+          },
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          },
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "onBehalf",
+            "label": "On Behalf",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "supplyCollateral((address,address,address,address,uint256),uint256,address,bytes)": {
+        "intent": "Review Supply Collateral transaction",
+        "fields": [
+          {
+            "path": "marketParams",
+            "label": "Market Params",
+            "format": "raw"
+          },
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          },
+          {
+            "path": "onBehalf",
+            "label": "On Behalf",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "withdraw((address,address,address,address,uint256),uint256,uint256,address,address)": {
+        "intent": "Review Withdraw transaction",
+        "fields": [
+          {
+            "path": "marketParams",
+            "label": "Market Params",
+            "format": "raw"
+          },
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          },
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "onBehalf",
+            "label": "On Behalf",
+            "format": "address"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "withdrawCollateral((address,address,address,address,uint256),uint256,address,address)": {
+        "intent": "Review Withdraw Collateral transaction",
+        "fields": [
+          {
+            "path": "marketParams",
+            "label": "Market Params",
+            "format": "raw"
+          },
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          },
+          {
+            "path": "onBehalf",
+            "label": "On Behalf",
+            "format": "address"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Morpho Labs",
+    "info": {
+      "url": "https://app.morpho.org/",
+      "legalName": "Morpho Labs",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

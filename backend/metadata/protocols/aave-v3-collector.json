@@ -1,0 +1,333 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x464C71f6c2F760DdA6093dCB91C24c39e5d6e18c"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0xf9e54204",
+          "inputs": [
+            {
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0x04292e8b",
+          "inputs": [
+            {
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "swap",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "tokenIn",
+              "type": "address"
+            },
+            {
+              "name": "tokenOut",
+              "type": "address"
+            },
+            {
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "name": "minAmountOut",
+              "type": "uint256"
+            },
+            {
+              "name": "calldata",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x2f2ff15d"
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "callerConfirmation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x36568abe"
+        },
+        {
+          "type": "function",
+          "name": "cancelStream",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "streamId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x6db9241b",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "withdrawFromStream",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "streamId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x7a9b2c6c",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "createStream",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deposit",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "startTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "stopTime",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xcc1b4bf6",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xd547741f"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "admin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xda35a26f"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xe1f21c67"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave V3 Collector (Treasury)",
+    "info": {
+      "website": "https://aave.com",
+      "docs": "https://docs.aave.com/developers/core/collector"
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve Token Transfer from Treasury",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount"
+          }
+        ]
+      },
+      "transfer(address,address,uint256)": {
+        "intent": "Transfer {amount} from Treasury",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount"
+          }
+        ]
+      },
+      "swap(address,address,uint256,uint256,bytes)": {
+        "intent": "Swap Treasury Funds",
+        "fields": [
+          {
+            "path": "tokenIn",
+            "label": "Token In",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "tokenOut",
+            "label": "Token Out",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "amount"
+          },
+          {
+            "path": "minAmountOut",
+            "label": "Min Amount Out",
+            "format": "amount"
+          },
+          {
+            "path": "calldata",
+            "label": "Swap Calldata",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

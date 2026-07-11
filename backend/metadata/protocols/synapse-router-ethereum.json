@@ -1,0 +1,839 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x7e7a0e201fd38d3adaa9523da6c109a07118c96a",
+      "chainId": 1,
+      "name": "Synapse Router (Ethereum)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "bridge",
+          "selector": "0xb4e4b296",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "chainId",
+              "type": "uint256"
+            },
+            {
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "originQuery",
+              "type": "bytes"
+            },
+            {
+              "name": "destQuery",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swap",
+          "selector": "0xea6ded59",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "minAmountOut",
+              "type": "uint256"
+            },
+            {
+              "name": "query",
+              "type": "bytes"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "adapterSwap",
+          "selector": "0x24a98f11",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenIn",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenOut",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "rawParams",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "addToken",
+          "selector": "0x530d95f6",
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "symbol",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "enum LocalBridgeConfig.TokenType",
+              "name": "tokenType",
+              "type": "uint8"
+            },
+            {
+              "internalType": "address",
+              "name": "bridgeToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "bridgeFee",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minFee",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxFee",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "wasAdded",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addTokens",
+          "selector": "0xd62933e2",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "string",
+                  "name": "id",
+                  "type": "string"
+                },
+                {
+                  "internalType": "address",
+                  "name": "token",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "decimals",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "enum LocalBridgeConfig.TokenType",
+                  "name": "tokenType",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "address",
+                  "name": "bridgeToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "bridgeFee",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minFee",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "maxFee",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct LocalBridgeConfig.BridgeTokenConfig[]",
+              "name": "tokens",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "bridge",
+          "selector": "0xc2288147",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "chainId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "swapAdapter",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenOut",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minAmountOut",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "rawParams",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SwapQuery",
+              "name": "originQuery",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "swapAdapter",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenOut",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minAmountOut",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "rawParams",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SwapQuery",
+              "name": "destQuery",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "removeToken",
+          "selector": "0x5fa7b584",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "wasRemoved",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeTokens",
+          "selector": "0x6c3824ef",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "tokens",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setAllowance",
+          "selector": "0xda46098c",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setSwapQuoter",
+          "selector": "0x804b3dff",
+          "inputs": [
+            {
+              "internalType": "contract ISwapQuoter",
+              "name": "_swapQuoter",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTokenConfig",
+          "selector": "0x10f60034",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "enum LocalBridgeConfig.TokenType",
+              "name": "tokenType",
+              "type": "uint8"
+            },
+            {
+              "internalType": "address",
+              "name": "bridgeToken",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTokenFee",
+          "selector": "0x302fee96",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "bridgeFee",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minFee",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxFee",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swap",
+          "selector": "0xb5d1cdd4",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "swapAdapter",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenOut",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minAmountOut",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "rawParams",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct SwapQuery",
+              "name": "query",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "bridge(address,uint256,address,uint256,bytes,bytes)": {
+        "intent": "Bridge tokens via Synapse Protocol",
+        "interpolatedIntent": "Bridge {amount} {token} to chain {chainId} via Synapse",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "token"
+            }
+          },
+          {
+            "path": "chainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "swap(address,address,uint256,uint256,bytes,uint256)": {
+        "intent": "Swap tokens via Synapse AMM",
+        "interpolatedIntent": "Swap {amount} {token} via Synapse to {to}",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token In",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "token"
+            }
+          },
+          {
+            "path": "minAmountOut",
+            "label": "Min Amount Out",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "timestamp"
+          }
+        ]
+      },
+      "adapterSwap(address,address,uint256,address,bytes)": {
+        "intent": "Review Adapter Swap transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "tokenIn",
+            "label": "Token In",
+            "format": "address"
+          },
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "tokenOut",
+            "label": "Token Out",
+            "format": "address"
+          },
+          {
+            "path": "rawParams",
+            "label": "Raw Params",
+            "format": "hex"
+          }
+        ]
+      },
+      "addToken(string,address,uint8,address,uint256,uint256,uint256)": {
+        "intent": "Review Add Token transaction",
+        "fields": [
+          {
+            "path": "symbol",
+            "label": "Symbol",
+            "format": "raw"
+          },
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "tokenType",
+            "label": "Token Type",
+            "format": "raw"
+          },
+          {
+            "path": "bridgeToken",
+            "label": "Bridge Token",
+            "format": "address"
+          },
+          {
+            "path": "bridgeFee",
+            "label": "Bridge Fee",
+            "format": "raw"
+          },
+          {
+            "path": "minFee",
+            "label": "Min Fee",
+            "format": "raw"
+          },
+          {
+            "path": "maxFee",
+            "label": "Max Fee",
+            "format": "raw"
+          }
+        ]
+      },
+      "addTokens((string,address,uint256,uint8,address,uint256,uint256,uint256)[])": {
+        "intent": "Review Add Tokens transaction",
+        "fields": [
+          {
+            "path": "tokens",
+            "label": "Tokens",
+            "format": "raw"
+          }
+        ]
+      },
+      "bridge(address,uint256,address,uint256,(address,address,uint256,uint256,bytes),(address,address,uint256,uint256,bytes))": {
+        "intent": "Review Bridge transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "chainId",
+            "label": "Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "originQuery",
+            "label": "Origin Query",
+            "format": "raw"
+          },
+          {
+            "path": "destQuery",
+            "label": "Dest Query",
+            "format": "raw"
+          }
+        ]
+      },
+      "removeToken(address)": {
+        "intent": "Review Remove Token transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          }
+        ]
+      },
+      "removeTokens(address[])": {
+        "intent": "Review Remove Tokens transaction",
+        "fields": [
+          {
+            "path": "tokens",
+            "label": "Tokens",
+            "format": "raw"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "setAllowance(address,address,uint256)": {
+        "intent": "Review Set Allowance transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "setSwapQuoter(address)": {
+        "intent": "Review Set Swap Quoter transaction",
+        "fields": [
+          {
+            "path": "_swapQuoter",
+            "label": " swap Quoter",
+            "format": "address"
+          }
+        ]
+      },
+      "setTokenConfig(address,uint8,address)": {
+        "intent": "Review Set Token Config transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "tokenType",
+            "label": "Token Type",
+            "format": "raw"
+          },
+          {
+            "path": "bridgeToken",
+            "label": "Bridge Token",
+            "format": "address"
+          }
+        ]
+      },
+      "setTokenFee(address,uint256,uint256,uint256)": {
+        "intent": "Review Set Token Fee transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "bridgeFee",
+            "label": "Bridge Fee",
+            "format": "raw"
+          },
+          {
+            "path": "minFee",
+            "label": "Min Fee",
+            "format": "raw"
+          },
+          {
+            "path": "maxFee",
+            "label": "Max Fee",
+            "format": "raw"
+          }
+        ]
+      },
+      "swap(address,address,uint256,(address,address,uint256,uint256,bytes))": {
+        "intent": "Review Swap transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "query",
+            "label": "Query",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Synapse Protocol",
+    "info": {
+      "url": "https://synapseprotocol.com/",
+      "legalName": "Synapse Protocol",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

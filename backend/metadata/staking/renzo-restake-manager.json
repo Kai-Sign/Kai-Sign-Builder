@@ -1,0 +1,606 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x74a09653a083691711cf8215a6ab074bb4e99ef5",
+      "chainId": 1,
+      "name": "Renzo RestakeManager",
+      "abi": [
+        {
+          "type": "function",
+          "name": "depositETH",
+          "selector": "0xf6326fb3",
+          "inputs": [
+            {
+              "name": "_referralId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x47e7ef24",
+          "inputs": [
+            {
+              "name": "_collateralToken",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_referralId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "admin",
+          "selector": "0xf851a440",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "admin_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeAdmin",
+          "selector": "0x8f283970",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "implementation",
+          "selector": "0x5c60da1b",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "implementation_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x3659cfe6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "addCollateralToken",
+          "selector": "0x29918899",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "_newCollateralToken",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addOperatorDelegator",
+          "selector": "0x22eaa1d9",
+          "inputs": [
+            {
+              "internalType": "contract IOperatorDelegator",
+              "name": "_newOperatorDelegator",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_allocationBasisPoints",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x0efe6a8b",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "_collateralToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_referralId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "depositETH",
+          "selector": "0x5358fbda",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_referralId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "depositTokenRewardsFromProtocol",
+          "selector": "0xda25b68e",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "_token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xcc2a9a5b",
+          "inputs": [
+            {
+              "internalType": "contract IRoleManager",
+              "name": "_roleManager",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IEzEthToken",
+              "name": "_ezETH",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IRenzoOracle",
+              "name": "_renzoOracle",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IStrategyManager",
+              "name": "_strategyManager",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IDelegationManager",
+              "name": "_delegationManager",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IDepositQueue",
+              "name": "_depositQueue",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeCollateralToken",
+          "selector": "0x94f9059f",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "_collateralTokenToRemove",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeOperatorDelegator",
+          "selector": "0xee953b91",
+          "inputs": [
+            {
+              "internalType": "contract IOperatorDelegator",
+              "name": "_operatorDelegatorToRemove",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setOperatorDelegatorAllocation",
+          "selector": "0x22e90fac",
+          "inputs": [
+            {
+              "internalType": "contract IOperatorDelegator",
+              "name": "_operatorDelegator",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_allocationBasisPoints",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setPaused",
+          "selector": "0x16c38b3c",
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "_paused",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTokenTvlLimit",
+          "selector": "0x9a336f90",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "_token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_limit",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "stakeEthInOperatorDelegator",
+          "selector": "0xabbfe4e7",
+          "inputs": [
+            {
+              "internalType": "contract IOperatorDelegator",
+              "name": "operatorDelegator",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "pubkey",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "depositDataRoot",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "_collateralToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x47e7ef24"
+        },
+        {
+          "type": "function",
+          "name": "depositETH",
+          "inputs": [],
+          "stateMutability": "payable",
+          "selector": "0xf6326fb3"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "depositETH(uint256)": {
+        "intent": "Stake ETH for ezETH via Renzo",
+        "interpolatedIntent": "Deposit ETH to receive ezETH via Renzo",
+        "fields": []
+      },
+      "deposit(address,uint256,uint256)": {
+        "intent": "Stake LST for ezETH via Renzo",
+        "interpolatedIntent": "Deposit {_amount} {_collateralToken} to receive ezETH",
+        "fields": [
+          {
+            "path": "_collateralToken",
+            "label": "Collateral Token",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_collateralToken"
+            }
+          }
+        ]
+      },
+      "admin()": {
+        "intent": "Review Admin transaction",
+        "fields": []
+      },
+      "changeAdmin(address)": {
+        "intent": "Review Change Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "implementation()": {
+        "intent": "Review Implementation transaction",
+        "fields": []
+      },
+      "upgradeTo(address)": {
+        "intent": "Review Upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "addCollateralToken(address)": {
+        "intent": "Review Add Collateral Token transaction",
+        "fields": [
+          {
+            "path": "_newCollateralToken",
+            "label": " new Collateral Token",
+            "format": "address"
+          }
+        ]
+      },
+      "addOperatorDelegator(address,uint256)": {
+        "intent": "Review Add Operator Delegator transaction",
+        "fields": [
+          {
+            "path": "_newOperatorDelegator",
+            "label": " new Operator Delegator",
+            "format": "address"
+          },
+          {
+            "path": "_allocationBasisPoints",
+            "label": " allocation Basis Points",
+            "format": "raw"
+          }
+        ]
+      },
+      "depositTokenRewardsFromProtocol(address,uint256)": {
+        "intent": "Review Deposit Token Rewards From Protocol transaction",
+        "fields": [
+          {
+            "path": "_token",
+            "label": " token",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "initialize(address,address,address,address,address,address)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_roleManager",
+            "label": " role Manager",
+            "format": "address"
+          },
+          {
+            "path": "_ezETH",
+            "label": " ez ETH",
+            "format": "address"
+          },
+          {
+            "path": "_renzoOracle",
+            "label": " renzo Oracle",
+            "format": "address"
+          },
+          {
+            "path": "_strategyManager",
+            "label": " strategy Manager",
+            "format": "address"
+          },
+          {
+            "path": "_delegationManager",
+            "label": " delegation Manager",
+            "format": "address"
+          },
+          {
+            "path": "_depositQueue",
+            "label": " deposit Queue",
+            "format": "address"
+          }
+        ]
+      },
+      "removeCollateralToken(address)": {
+        "intent": "Review Remove Collateral Token transaction",
+        "fields": [
+          {
+            "path": "_collateralTokenToRemove",
+            "label": " collateral Token To Remove",
+            "format": "address"
+          }
+        ]
+      },
+      "removeOperatorDelegator(address)": {
+        "intent": "Review Remove Operator Delegator transaction",
+        "fields": [
+          {
+            "path": "_operatorDelegatorToRemove",
+            "label": " operator Delegator To Remove",
+            "format": "address"
+          }
+        ]
+      },
+      "setOperatorDelegatorAllocation(address,uint256)": {
+        "intent": "Review Set Operator Delegator Allocation transaction",
+        "fields": [
+          {
+            "path": "_operatorDelegator",
+            "label": " operator Delegator",
+            "format": "address"
+          },
+          {
+            "path": "_allocationBasisPoints",
+            "label": " allocation Basis Points",
+            "format": "raw"
+          }
+        ]
+      },
+      "setPaused(bool)": {
+        "intent": "Review Set Paused transaction",
+        "fields": [
+          {
+            "path": "_paused",
+            "label": " paused",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setTokenTvlLimit(address,uint256)": {
+        "intent": "Review Set Token Tvl Limit transaction",
+        "fields": [
+          {
+            "path": "_token",
+            "label": " token",
+            "format": "address"
+          },
+          {
+            "path": "_limit",
+            "label": " limit",
+            "format": "raw"
+          }
+        ]
+      },
+      "stakeEthInOperatorDelegator(address,bytes,bytes,bytes32)": {
+        "intent": "Review Stake Eth In Operator Delegator transaction",
+        "fields": [
+          {
+            "path": "operatorDelegator",
+            "label": "Operator Delegator",
+            "format": "address"
+          },
+          {
+            "path": "pubkey",
+            "label": "Pubkey",
+            "format": "hex"
+          },
+          {
+            "path": "signature",
+            "label": "Signature",
+            "format": "hex"
+          },
+          {
+            "path": "depositDataRoot",
+            "label": "Deposit Data Root",
+            "format": "hex"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Renzo Protocol",
+    "info": {
+      "url": "https://app.renzoprotocol.com/",
+      "legalName": "Renzo Protocol",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

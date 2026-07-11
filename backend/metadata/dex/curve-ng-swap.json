@@ -1,0 +1,1483 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x7f86bf177dd4f3494b841a37e810a34dd56c829b",
+      "chainId": 1,
+      "name": "Curve TriCrypto-ng Pool (Ethereum)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "exchange",
+          "selector": "0x5b41b908",
+          "inputs": [
+            {
+              "name": "i",
+              "type": "uint256"
+            },
+            {
+              "name": "j",
+              "type": "uint256"
+            },
+            {
+              "name": "dx",
+              "type": "uint256"
+            },
+            {
+              "name": "min_dy",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "exchange_underlying",
+          "selector": "0x65b2489b",
+          "inputs": [
+            {
+              "name": "i",
+              "type": "uint256"
+            },
+            {
+              "name": "j",
+              "type": "uint256"
+            },
+            {
+              "name": "dx",
+              "type": "uint256"
+            },
+            {
+              "name": "min_dy",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "add_liquidity",
+          "selector": "0x29ed6e8d",
+          "inputs": [
+            {
+              "name": "amounts",
+              "type": "uint256[3]"
+            },
+            {
+              "name": "min_mint_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "remove_liquidity_one_coin",
+          "selector": "0xf1dc3cc9",
+          "inputs": [
+            {
+              "name": "token_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "i",
+              "type": "uint256"
+            },
+            {
+              "name": "min_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "remove_liquidity",
+          "selector": "0xecb586a5",
+          "inputs": [
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "min_amounts",
+              "type": "uint256[3]"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "exchange",
+          "selector": "0x394747c5",
+          "inputs": [
+            {
+              "name": "i",
+              "type": "uint256"
+            },
+            {
+              "name": "j",
+              "type": "uint256"
+            },
+            {
+              "name": "dx",
+              "type": "uint256"
+            },
+            {
+              "name": "min_dy",
+              "type": "uint256"
+            },
+            {
+              "name": "use_eth",
+              "type": "bool"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "exchange",
+          "selector": "0xce7d6503",
+          "inputs": [
+            {
+              "name": "i",
+              "type": "uint256"
+            },
+            {
+              "name": "j",
+              "type": "uint256"
+            },
+            {
+              "name": "dx",
+              "type": "uint256"
+            },
+            {
+              "name": "min_dy",
+              "type": "uint256"
+            },
+            {
+              "name": "use_eth",
+              "type": "bool"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "exchange_underlying",
+          "selector": "0xe2ad025a",
+          "inputs": [
+            {
+              "name": "i",
+              "type": "uint256"
+            },
+            {
+              "name": "j",
+              "type": "uint256"
+            },
+            {
+              "name": "dx",
+              "type": "uint256"
+            },
+            {
+              "name": "min_dy",
+              "type": "uint256"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "exchange_extended",
+          "selector": "0xdd96994f",
+          "inputs": [
+            {
+              "name": "i",
+              "type": "uint256"
+            },
+            {
+              "name": "j",
+              "type": "uint256"
+            },
+            {
+              "name": "dx",
+              "type": "uint256"
+            },
+            {
+              "name": "min_dy",
+              "type": "uint256"
+            },
+            {
+              "name": "use_eth",
+              "type": "bool"
+            },
+            {
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "name": "cb",
+              "type": "bytes32"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "add_liquidity",
+          "selector": "0x4515cef3",
+          "inputs": [
+            {
+              "name": "amounts",
+              "type": "uint256[3]"
+            },
+            {
+              "name": "min_mint_amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "add_liquidity",
+          "selector": "0x2b6e993a",
+          "inputs": [
+            {
+              "name": "amounts",
+              "type": "uint256[3]"
+            },
+            {
+              "name": "min_mint_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "use_eth",
+              "type": "bool"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "add_liquidity",
+          "selector": "0x5cecb5f7",
+          "inputs": [
+            {
+              "name": "amounts",
+              "type": "uint256[3]"
+            },
+            {
+              "name": "min_mint_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "use_eth",
+              "type": "bool"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "remove_liquidity",
+          "selector": "0xfce64736",
+          "inputs": [
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "min_amounts",
+              "type": "uint256[3]"
+            },
+            {
+              "name": "use_eth",
+              "type": "bool"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256[3]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "remove_liquidity",
+          "selector": "0x1da3d238",
+          "inputs": [
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "min_amounts",
+              "type": "uint256[3]"
+            },
+            {
+              "name": "use_eth",
+              "type": "bool"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256[3]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "remove_liquidity",
+          "selector": "0x5cd34780",
+          "inputs": [
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "min_amounts",
+              "type": "uint256[3]"
+            },
+            {
+              "name": "use_eth",
+              "type": "bool"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "name": "claim_admin_fees",
+              "type": "bool"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256[3]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "remove_liquidity_one_coin",
+          "selector": "0x8f15b6b5",
+          "inputs": [
+            {
+              "name": "token_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "i",
+              "type": "uint256"
+            },
+            {
+              "name": "min_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "use_eth",
+              "type": "bool"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "remove_liquidity_one_coin",
+          "selector": "0x07329bcd",
+          "inputs": [
+            {
+              "name": "token_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "i",
+              "type": "uint256"
+            },
+            {
+              "name": "min_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "use_eth",
+              "type": "bool"
+            },
+            {
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claim_admin_fees",
+          "selector": "0xc93f49e8",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowance",
+          "selector": "0x39509351",
+          "inputs": [
+            {
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "name": "_add_value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowance",
+          "selector": "0xa457c2d7",
+          "inputs": [
+            {
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "name": "_sub_value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "permit",
+          "selector": "0xd505accf",
+          "inputs": [
+            {
+              "name": "_owner",
+              "type": "address"
+            },
+            {
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "name": "_value",
+              "type": "uint256"
+            },
+            {
+              "name": "_deadline",
+              "type": "uint256"
+            },
+            {
+              "name": "_v",
+              "type": "uint8"
+            },
+            {
+              "name": "_r",
+              "type": "bytes32"
+            },
+            {
+              "name": "_s",
+              "type": "bytes32"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "ramp_A_gamma",
+          "selector": "0x5e248072",
+          "inputs": [
+            {
+              "name": "future_A",
+              "type": "uint256"
+            },
+            {
+              "name": "future_gamma",
+              "type": "uint256"
+            },
+            {
+              "name": "future_time",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "stop_ramp_A_gamma",
+          "selector": "0x244c7c2e",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "commit_new_parameters",
+          "selector": "0x4711a4f8",
+          "inputs": [
+            {
+              "name": "_new_mid_fee",
+              "type": "uint256"
+            },
+            {
+              "name": "_new_out_fee",
+              "type": "uint256"
+            },
+            {
+              "name": "_new_fee_gamma",
+              "type": "uint256"
+            },
+            {
+              "name": "_new_allowed_extra_profit",
+              "type": "uint256"
+            },
+            {
+              "name": "_new_adjustment_step",
+              "type": "uint256"
+            },
+            {
+              "name": "_new_ma_time",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "apply_new_parameters",
+          "selector": "0x2a7dd7cd",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revert_new_parameters",
+          "selector": "0x226840fb",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "exchange",
+          "inputs": [
+            {
+              "name": "i",
+              "type": "uint256"
+            },
+            {
+              "name": "j",
+              "type": "uint256"
+            },
+            {
+              "name": "dx",
+              "type": "uint256"
+            },
+            {
+              "name": "min_dy",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x5b41b908",
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "exchange_underlying",
+          "inputs": [
+            {
+              "name": "i",
+              "type": "uint256"
+            },
+            {
+              "name": "j",
+              "type": "uint256"
+            },
+            {
+              "name": "dx",
+              "type": "uint256"
+            },
+            {
+              "name": "min_dy",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x65b2489b",
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "remove_liquidity",
+          "inputs": [
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "min_amounts",
+              "type": "uint256[3]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xecb586a5",
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256[3]"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "remove_liquidity_one_coin",
+          "inputs": [
+            {
+              "name": "token_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "i",
+              "type": "uint256"
+            },
+            {
+              "name": "min_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf1dc3cc9",
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "exchange(uint256,uint256,uint256,uint256,address)": {
+        "intent": "Swap tokens via Curve TriCrypto-ng",
+        "interpolatedIntent": "Swap {dx} (coin index {i}) for min {min_dy} (coin index {j}) on Curve TriCrypto-ng",
+        "fields": [
+          {
+            "path": "i",
+            "label": "Token In Index",
+            "format": "raw"
+          },
+          {
+            "path": "j",
+            "label": "Token Out Index",
+            "format": "raw"
+          },
+          {
+            "path": "dx",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "min_dy",
+            "label": "Min Amount Out",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "exchange_underlying(uint256,uint256,uint256,uint256,address)": {
+        "intent": "Swap using underlying tokens via Curve TriCrypto-ng",
+        "interpolatedIntent": "Swap {dx} underlying (coin index {i}) for min {min_dy} (coin index {j}) on Curve TriCrypto-ng",
+        "fields": [
+          {
+            "path": "i",
+            "label": "Token In Index",
+            "format": "raw"
+          },
+          {
+            "path": "j",
+            "label": "Token Out Index",
+            "format": "raw"
+          },
+          {
+            "path": "dx",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "min_dy",
+            "label": "Min Amount Out",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "add_liquidity(uint256[3],uint256,address)": {
+        "intent": "Add liquidity to Curve TriCrypto-ng pool",
+        "interpolatedIntent": "Add liquidity to Curve TriCrypto-ng, receive min {min_mint_amount} LP to {receiver}",
+        "fields": [
+          {
+            "path": "min_mint_amount",
+            "label": "Min LP Tokens",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "LP Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "remove_liquidity_one_coin(uint256,uint256,uint256,address)": {
+        "intent": "Remove liquidity from Curve TriCrypto-ng (single coin)",
+        "interpolatedIntent": "Burn {token_amount} LP tokens for min {min_amount} of coin {i} from Curve TriCrypto-ng",
+        "fields": [
+          {
+            "path": "token_amount",
+            "label": "LP Tokens to Burn",
+            "format": "raw"
+          },
+          {
+            "path": "i",
+            "label": "Coin Index to Receive",
+            "format": "raw"
+          },
+          {
+            "path": "min_amount",
+            "label": "Min Amount Out",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "remove_liquidity(uint256,uint256[3],address)": {
+        "intent": "Remove liquidity from Curve TriCrypto-ng (all coins)",
+        "interpolatedIntent": "Burn {_amount} LP tokens from Curve TriCrypto-ng",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": "LP Tokens to Burn",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "exchange(uint256,uint256,uint256,uint256,bool)": {
+        "intent": "Review Exchange transaction",
+        "fields": [
+          {
+            "path": "i",
+            "label": "I",
+            "format": "raw"
+          },
+          {
+            "path": "j",
+            "label": "J",
+            "format": "raw"
+          },
+          {
+            "path": "dx",
+            "label": "Dx",
+            "format": "raw"
+          },
+          {
+            "path": "min_dy",
+            "label": "Min dy",
+            "format": "raw"
+          },
+          {
+            "path": "use_eth",
+            "label": "Use eth",
+            "format": "boolean"
+          }
+        ]
+      },
+      "exchange(uint256,uint256,uint256,uint256,bool,address)": {
+        "intent": "Review Exchange transaction",
+        "fields": [
+          {
+            "path": "i",
+            "label": "I",
+            "format": "raw"
+          },
+          {
+            "path": "j",
+            "label": "J",
+            "format": "raw"
+          },
+          {
+            "path": "dx",
+            "label": "Dx",
+            "format": "raw"
+          },
+          {
+            "path": "min_dy",
+            "label": "Min dy",
+            "format": "raw"
+          },
+          {
+            "path": "use_eth",
+            "label": "Use eth",
+            "format": "boolean"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "exchange_extended(uint256,uint256,uint256,uint256,bool,address,address,bytes32)": {
+        "intent": "Review Exchange extended transaction",
+        "fields": [
+          {
+            "path": "i",
+            "label": "I",
+            "format": "raw"
+          },
+          {
+            "path": "j",
+            "label": "J",
+            "format": "raw"
+          },
+          {
+            "path": "dx",
+            "label": "Dx",
+            "format": "raw"
+          },
+          {
+            "path": "min_dy",
+            "label": "Min dy",
+            "format": "raw"
+          },
+          {
+            "path": "use_eth",
+            "label": "Use eth",
+            "format": "boolean"
+          },
+          {
+            "path": "sender",
+            "label": "Sender",
+            "format": "address"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "cb",
+            "label": "Cb",
+            "format": "hex"
+          }
+        ]
+      },
+      "add_liquidity(uint256[3],uint256)": {
+        "intent": "Review Add liquidity transaction",
+        "fields": [
+          {
+            "path": "amounts",
+            "label": "Amounts",
+            "format": "raw"
+          },
+          {
+            "path": "min_mint_amount",
+            "label": "Min mint amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "add_liquidity(uint256[3],uint256,bool)": {
+        "intent": "Review Add liquidity transaction",
+        "fields": [
+          {
+            "path": "amounts",
+            "label": "Amounts",
+            "format": "raw"
+          },
+          {
+            "path": "min_mint_amount",
+            "label": "Min mint amount",
+            "format": "raw"
+          },
+          {
+            "path": "use_eth",
+            "label": "Use eth",
+            "format": "boolean"
+          }
+        ]
+      },
+      "add_liquidity(uint256[3],uint256,bool,address)": {
+        "intent": "Review Add liquidity transaction",
+        "fields": [
+          {
+            "path": "amounts",
+            "label": "Amounts",
+            "format": "raw"
+          },
+          {
+            "path": "min_mint_amount",
+            "label": "Min mint amount",
+            "format": "raw"
+          },
+          {
+            "path": "use_eth",
+            "label": "Use eth",
+            "format": "boolean"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "remove_liquidity(uint256,uint256[3],bool)": {
+        "intent": "Review Remove liquidity transaction",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "min_amounts",
+            "label": "Min amounts",
+            "format": "raw"
+          },
+          {
+            "path": "use_eth",
+            "label": "Use eth",
+            "format": "boolean"
+          }
+        ]
+      },
+      "remove_liquidity(uint256,uint256[3],bool,address)": {
+        "intent": "Review Remove liquidity transaction",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "min_amounts",
+            "label": "Min amounts",
+            "format": "raw"
+          },
+          {
+            "path": "use_eth",
+            "label": "Use eth",
+            "format": "boolean"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "remove_liquidity(uint256,uint256[3],bool,address,bool)": {
+        "intent": "Review Remove liquidity transaction",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "min_amounts",
+            "label": "Min amounts",
+            "format": "raw"
+          },
+          {
+            "path": "use_eth",
+            "label": "Use eth",
+            "format": "boolean"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "claim_admin_fees",
+            "label": "Claim admin fees",
+            "format": "boolean"
+          }
+        ]
+      },
+      "remove_liquidity_one_coin(uint256,uint256,uint256,bool)": {
+        "intent": "Review Remove liquidity one coin transaction",
+        "fields": [
+          {
+            "path": "token_amount",
+            "label": "Token amount",
+            "format": "raw"
+          },
+          {
+            "path": "i",
+            "label": "I",
+            "format": "raw"
+          },
+          {
+            "path": "min_amount",
+            "label": "Min amount",
+            "format": "raw"
+          },
+          {
+            "path": "use_eth",
+            "label": "Use eth",
+            "format": "boolean"
+          }
+        ]
+      },
+      "remove_liquidity_one_coin(uint256,uint256,uint256,bool,address)": {
+        "intent": "Review Remove liquidity one coin transaction",
+        "fields": [
+          {
+            "path": "token_amount",
+            "label": "Token amount",
+            "format": "raw"
+          },
+          {
+            "path": "i",
+            "label": "I",
+            "format": "raw"
+          },
+          {
+            "path": "min_amount",
+            "label": "Min amount",
+            "format": "raw"
+          },
+          {
+            "path": "use_eth",
+            "label": "Use eth",
+            "format": "boolean"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "claim_admin_fees()": {
+        "intent": "Review Claim admin fees transaction",
+        "fields": []
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Review Transfer transaction",
+        "fields": [
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Review Approve transaction",
+        "fields": [
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          }
+        ]
+      },
+      "increaseAllowance(address,uint256)": {
+        "intent": "Review Increase Allowance transaction",
+        "fields": [
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_add_value",
+            "label": " add value",
+            "format": "raw"
+          }
+        ]
+      },
+      "decreaseAllowance(address,uint256)": {
+        "intent": "Review Decrease Allowance transaction",
+        "fields": [
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_sub_value",
+            "label": " sub value",
+            "format": "raw"
+          }
+        ]
+      },
+      "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Permit transaction",
+        "fields": [
+          {
+            "path": "_owner",
+            "label": " owner",
+            "format": "address"
+          },
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_value",
+            "label": " value",
+            "format": "raw"
+          },
+          {
+            "path": "_deadline",
+            "label": " deadline",
+            "format": "raw"
+          },
+          {
+            "path": "_v",
+            "label": " v",
+            "format": "raw"
+          },
+          {
+            "path": "_r",
+            "label": " r",
+            "format": "hex"
+          },
+          {
+            "path": "_s",
+            "label": " s",
+            "format": "hex"
+          }
+        ]
+      },
+      "ramp_A_gamma(uint256,uint256,uint256)": {
+        "intent": "Review Ramp A gamma transaction",
+        "fields": [
+          {
+            "path": "future_A",
+            "label": "Future A",
+            "format": "raw"
+          },
+          {
+            "path": "future_gamma",
+            "label": "Future gamma",
+            "format": "raw"
+          },
+          {
+            "path": "future_time",
+            "label": "Future time",
+            "format": "raw"
+          }
+        ]
+      },
+      "stop_ramp_A_gamma()": {
+        "intent": "Review Stop ramp A gamma transaction",
+        "fields": []
+      },
+      "commit_new_parameters(uint256,uint256,uint256,uint256,uint256,uint256)": {
+        "intent": "Review Commit new parameters transaction",
+        "fields": [
+          {
+            "path": "_new_mid_fee",
+            "label": " new mid fee",
+            "format": "raw"
+          },
+          {
+            "path": "_new_out_fee",
+            "label": " new out fee",
+            "format": "raw"
+          },
+          {
+            "path": "_new_fee_gamma",
+            "label": " new fee gamma",
+            "format": "raw"
+          },
+          {
+            "path": "_new_allowed_extra_profit",
+            "label": " new allowed extra profit",
+            "format": "raw"
+          },
+          {
+            "path": "_new_adjustment_step",
+            "label": " new adjustment step",
+            "format": "raw"
+          },
+          {
+            "path": "_new_ma_time",
+            "label": " new ma time",
+            "format": "raw"
+          }
+        ]
+      },
+      "apply_new_parameters()": {
+        "intent": "Review Apply new parameters transaction",
+        "fields": []
+      },
+      "revert_new_parameters()": {
+        "intent": "Review Revert new parameters transaction",
+        "fields": []
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Curve Finance",
+    "info": {
+      "url": "https://curve.fi/",
+      "legalName": "Curve Finance",
+      "lastUpdate": "2026-03-27"
+    }
+  }
+}

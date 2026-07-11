@@ -1,0 +1,490 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x827179dD56d07A7eeA32e3873493835da2866976",
+      "chainId": 1,
+      "name": "SushiSwap Router V3",
+      "abi": [
+        {
+          "type": "function",
+          "name": "exactInputSingle",
+          "selector": "0x04e45aaf",
+          "inputs": [
+            {
+              "name": "params",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "name": "tokenOut",
+                  "type": "address"
+                },
+                {
+                  "name": "fee",
+                  "type": "uint24"
+                },
+                {
+                  "name": "recipient",
+                  "type": "address"
+                },
+                {
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amountOutMinimum",
+                  "type": "uint256"
+                },
+                {
+                  "name": "sqrtPriceLimitX96",
+                  "type": "uint160"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "exactInput",
+          "selector": "0xb858183f",
+          "inputs": [
+            {
+              "name": "params",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "path",
+                  "type": "bytes"
+                },
+                {
+                  "name": "recipient",
+                  "type": "address"
+                },
+                {
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amountOutMinimum",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "multicall",
+          "selector": "0xac9650d8",
+          "inputs": [
+            {
+              "name": "data",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "pause",
+          "selector": "0x8456cb59",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "processRoute",
+          "selector": "0x2646478b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "tokenIn",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenOut",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOutMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "route",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "resume",
+          "selector": "0x046f7da2",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setPriviledge",
+          "selector": "0x9a1f3406",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "priviledge",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferValueAndprocessRoute",
+          "selector": "0x93b3774c",
+          "inputs": [
+            {
+              "internalType": "address payable",
+              "name": "transferValueTo",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountValueTransfer",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenIn",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "tokenOut",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOutMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "route",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "uniswapV3SwapCallback",
+          "selector": "0xfa461e33",
+          "inputs": [
+            {
+              "internalType": "int256",
+              "name": "amount0Delta",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "amount1Delta",
+              "type": "int256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "exactInputSingle((address,address,uint24,address,uint256,uint256,uint160))": {
+        "intent": "Swap via SushiSwap",
+        "interpolatedIntent": "Swap {params.amountIn} for at least {params.amountOutMinimum} via SushiSwap",
+        "fields": [
+          {
+            "path": "params.tokenIn",
+            "label": "Token In",
+            "format": "addressName"
+          },
+          {
+            "path": "params.tokenOut",
+            "label": "Token Out",
+            "format": "addressName"
+          },
+          {
+            "path": "params.fee",
+            "label": "Fee Tier",
+            "format": "raw"
+          },
+          {
+            "path": "params.recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "params.amountIn",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "params.tokenIn"
+            }
+          },
+          {
+            "path": "params.amountOutMinimum",
+            "label": "Minimum Output",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "params.tokenOut"
+            }
+          }
+        ]
+      },
+      "exactInput((bytes,address,uint256,uint256))": {
+        "intent": "Multi-hop swap via SushiSwap",
+        "interpolatedIntent": "Swap {params.amountIn} for at least {params.amountOutMinimum} via SushiSwap multi-hop",
+        "fields": [
+          {
+            "path": "params.path",
+            "label": "Swap Path",
+            "format": "raw"
+          },
+          {
+            "path": "params.recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "params.amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "params.amountOutMinimum",
+            "label": "Minimum Output",
+            "format": "raw"
+          }
+        ]
+      },
+      "multicall(bytes[])": {
+        "intent": "Swap via SushiSwap",
+        "interpolatedIntent": "Execute SushiSwap multicall",
+        "fields": [
+          {
+            "path": "data",
+            "label": "Calls",
+            "format": "raw"
+          }
+        ]
+      },
+      "pause()": {
+        "intent": "Review Pause transaction",
+        "fields": []
+      },
+      "processRoute(address,uint256,address,uint256,address,bytes)": {
+        "intent": "Review Process Route transaction",
+        "fields": [
+          {
+            "path": "tokenIn",
+            "label": "Token In",
+            "format": "address"
+          },
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "tokenOut",
+            "label": "Token Out",
+            "format": "address"
+          },
+          {
+            "path": "amountOutMin",
+            "label": "Amount Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "route",
+            "label": "Route",
+            "format": "hex"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "resume()": {
+        "intent": "Review Resume transaction",
+        "fields": []
+      },
+      "setPriviledge(address,bool)": {
+        "intent": "Review Set Priviledge transaction",
+        "fields": [
+          {
+            "path": "user",
+            "label": "User",
+            "format": "address"
+          },
+          {
+            "path": "priviledge",
+            "label": "Priviledge",
+            "format": "boolean"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "transferValueAndprocessRoute(address,uint256,address,uint256,address,uint256,address,bytes)": {
+        "intent": "Review Transfer Value Andprocess Route transaction",
+        "fields": [
+          {
+            "path": "transferValueTo",
+            "label": "Transfer Value To",
+            "format": "address"
+          },
+          {
+            "path": "amountValueTransfer",
+            "label": "Amount Value Transfer",
+            "format": "raw"
+          },
+          {
+            "path": "tokenIn",
+            "label": "Token In",
+            "format": "address"
+          },
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "tokenOut",
+            "label": "Token Out",
+            "format": "address"
+          },
+          {
+            "path": "amountOutMin",
+            "label": "Amount Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "route",
+            "label": "Route",
+            "format": "hex"
+          }
+        ]
+      },
+      "uniswapV3SwapCallback(int256,int256,bytes)": {
+        "intent": "Review Uniswap V3 Swap Callback transaction",
+        "fields": [
+          {
+            "path": "amount0Delta",
+            "label": "Amount0 Delta",
+            "format": "raw"
+          },
+          {
+            "path": "amount1Delta",
+            "label": "Amount1 Delta",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      }
+    }
+  }
+}

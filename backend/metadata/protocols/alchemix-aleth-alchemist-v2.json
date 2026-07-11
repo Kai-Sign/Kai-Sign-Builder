@@ -1,0 +1,1138 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x062bf725dc4cdf947aa79ca2aaccd4f385b13b5c"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "setSentinel",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "sentinel",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "flag",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x00796bf7"
+        },
+        {
+          "type": "function",
+          "name": "sweep",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x01681a62"
+        },
+        {
+          "type": "function",
+          "name": "harvest",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minimumAmountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x018ee9b7"
+        },
+        {
+          "type": "function",
+          "name": "liquidate",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minimumAmountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x0710285c",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "acceptAdmin",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x0e18b681"
+        },
+        {
+          "type": "function",
+          "name": "approveMint",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x13b39b9c"
+        },
+        {
+          "type": "function",
+          "name": "setMinimumCollateralization",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x19815a32"
+        },
+        {
+          "type": "function",
+          "name": "configureLiquidationLimit",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "underlyingToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maximum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "blocks",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x19a158d0"
+        },
+        {
+          "type": "function",
+          "name": "setTokenAdapter",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "adapter",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x1a49e55e"
+        },
+        {
+          "type": "function",
+          "name": "setYieldTokenEnabled",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x26b00c00"
+        },
+        {
+          "type": "function",
+          "name": "configureCreditUnlockRate",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "blocks",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x306f6e67"
+        },
+        {
+          "type": "function",
+          "name": "addYieldToken",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "adapter",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "maximumLoss",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "maximumExpectedValue",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "creditUnlockBlocks",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IAlchemistV2AdminActions.YieldTokenConfig",
+              "name": "config",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x3f6384fe"
+        },
+        {
+          "type": "function",
+          "name": "setUnderlyingTokenEnabled",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "underlyingToken",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x41220938"
+        },
+        {
+          "type": "function",
+          "name": "setProtocolFeeReceiver",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "value",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x46877b1a"
+        },
+        {
+          "type": "function",
+          "name": "setPendingAdmin",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "value",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x4dd18bf5"
+        },
+        {
+          "type": "function",
+          "name": "mintFrom",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x51044b8e"
+        },
+        {
+          "type": "function",
+          "name": "setMaximumLoss",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x5c34586c"
+        },
+        {
+          "type": "function",
+          "name": "repay",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "underlyingToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x5ceae9c4",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "configureRepayLimit",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "underlyingToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maximum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "blocks",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x63c92490"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x69328dec",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "admin",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "debtToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "transmuter",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minimumCollateralization",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "protocolFee",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "protocolFeeReceiver",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "mintingLimitMinimum",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "mintingLimitMaximum",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "mintingLimitBlocks",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "whitelist",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct IAlchemistV2AdminActions.InitializationParams",
+              "name": "params",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x6987227a"
+        },
+        {
+          "type": "function",
+          "name": "approveWithdraw",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x6bf9b3e7"
+        },
+        {
+          "type": "function",
+          "name": "setProtocolFee",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x787dce3d"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x94bf804d"
+        },
+        {
+          "type": "function",
+          "name": "setTransferAdapterAddress",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "transferAdapterAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x991c0fea"
+        },
+        {
+          "type": "function",
+          "name": "transferDebtV1",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "int256",
+              "name": "debt",
+              "type": "int256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x9b4542e6"
+        },
+        {
+          "type": "function",
+          "name": "withdrawUnderlying",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minimumAmountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xa6459a32",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "multicall",
+          "inputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "data",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0xac9650d8",
+          "outputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "results",
+              "type": "bytes[]"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setTransmuter",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "value",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xadb4a9ad"
+        },
+        {
+          "type": "function",
+          "name": "poke",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xb1a997ac"
+        },
+        {
+          "type": "function",
+          "name": "addUnderlyingToken",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "underlyingToken",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "repayLimitMinimum",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "repayLimitMaximum",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "repayLimitBlocks",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "liquidationLimitMinimum",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "liquidationLimitMaximum",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "liquidationLimitBlocks",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IAlchemistV2AdminActions.UnderlyingTokenConfig",
+              "name": "config",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xb30ac7f6"
+        },
+        {
+          "type": "function",
+          "name": "withdrawUnderlyingFrom",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minimumAmountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xb968ee3c",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "depositUnderlying",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minimumAmountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xbdfa9bae",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "configureMintingLimit",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "maximum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "rate",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xca9e8ad6"
+        },
+        {
+          "type": "function",
+          "name": "setKeeper",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "keeper",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "flag",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xd1b9e853"
+        },
+        {
+          "type": "function",
+          "name": "snap",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xd6737ccf"
+        },
+        {
+          "type": "function",
+          "name": "donate",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xe69d849d"
+        },
+        {
+          "type": "function",
+          "name": "withdrawFrom",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xedca201b",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setMaximumExpectedValue",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xeeb15a9c"
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "yieldToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf45346dc",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xfcd3533c",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Alchemix Finance",
+    "contractName": "Alchemix alETH AlchemistV2"
+  },
+  "display": {
+    "formats": {
+      "deposit(address yieldToken,uint256 amount,address recipient)": {
+        "intent": "Deposit to Alchemix alETH",
+        "interpolatedIntent": "Deposit {amount} of yield token {yieldToken} to Alchemix for {recipient}",
+        "fields": [
+          {
+            "path": "yieldToken",
+            "label": "Yield Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "yieldToken"
+            }
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "depositUnderlying(address yieldToken,uint256 amount,address recipient,uint256 minimumAmountOut)": {
+        "intent": "Deposit underlying to Alchemix alETH",
+        "interpolatedIntent": "Deposit {amount} underlying for {yieldToken} to Alchemix for {recipient}",
+        "fields": [
+          {
+            "path": "yieldToken",
+            "label": "Yield Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "minimumAmountOut",
+            "label": "Min Amount Out",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdraw(address yieldToken,uint256 shares,address recipient)": {
+        "intent": "Withdraw from Alchemix alETH",
+        "interpolatedIntent": "Withdraw {shares} shares of {yieldToken} from Alchemix to {recipient}",
+        "fields": [
+          {
+            "path": "yieldToken",
+            "label": "Yield Token",
+            "format": "addressName"
+          },
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "withdrawUnderlying(address yieldToken,uint256 shares,address recipient,uint256 minimumAmountOut)": {
+        "intent": "Withdraw underlying from Alchemix alETH",
+        "interpolatedIntent": "Withdraw {shares} shares of {yieldToken} as underlying from Alchemix to {recipient}",
+        "fields": [
+          {
+            "path": "yieldToken",
+            "label": "Yield Token",
+            "format": "addressName"
+          },
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "minimumAmountOut",
+            "label": "Min Amount Out",
+            "format": "raw"
+          }
+        ]
+      },
+      "mint(uint256 amount,address recipient)": {
+        "intent": "Mint alETH from Alchemix",
+        "interpolatedIntent": "Mint {amount} alETH to {recipient}",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "alETH Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "alETH"
+            }
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "burn(uint256 amount,address recipient)": {
+        "intent": "Burn alETH to reduce Alchemix debt",
+        "interpolatedIntent": "Burn {amount} alETH to reduce debt for {recipient}",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "alETH Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "alETH"
+            }
+          },
+          {
+            "path": "recipient",
+            "label": "Account",
+            "format": "addressName"
+          }
+        ]
+      },
+      "repay(address underlyingToken,uint256 amount,address recipient)": {
+        "intent": "Repay Alchemix alETH debt",
+        "interpolatedIntent": "Repay {amount} of {underlyingToken} to reduce debt for {recipient}",
+        "fields": [
+          {
+            "path": "underlyingToken",
+            "label": "Underlying Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "underlyingToken"
+            }
+          },
+          {
+            "path": "recipient",
+            "label": "Account",
+            "format": "addressName"
+          }
+        ]
+      },
+      "liquidate(address yieldToken,uint256 shares,uint256 minimumAmountOut)": {
+        "intent": "Self-liquidate Alchemix alETH position",
+        "interpolatedIntent": "Liquidate {shares} shares of {yieldToken} from Alchemix",
+        "fields": [
+          {
+            "path": "yieldToken",
+            "label": "Yield Token",
+            "format": "addressName"
+          },
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "minimumAmountOut",
+            "label": "Min Amount Out",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

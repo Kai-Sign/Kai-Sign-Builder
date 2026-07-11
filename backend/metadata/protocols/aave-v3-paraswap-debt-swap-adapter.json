@@ -1,0 +1,409 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0xd7852E139a7097E119623de0751AE53a61efb442"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "swapAndRepay",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "collateralAsset",
+              "type": "address"
+            },
+            {
+              "name": "debtAsset",
+              "type": "address"
+            },
+            {
+              "name": "collateralAmount",
+              "type": "uint256"
+            },
+            {
+              "name": "debtRepayAmount",
+              "type": "uint256"
+            },
+            {
+              "name": "rateMode",
+              "type": "uint256"
+            },
+            {
+              "name": "swapCalldata",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "swapAndDeposit",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "assetToSwapFrom",
+              "type": "address"
+            },
+            {
+              "name": "assetToSwapTo",
+              "type": "address"
+            },
+            {
+              "name": "amountToSwap",
+              "type": "uint256"
+            },
+            {
+              "name": "minAmountToReceive",
+              "type": "uint256"
+            },
+            {
+              "name": "swapCalldata",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "rescueTokens",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "token",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x00ae3bf8"
+        },
+        {
+          "type": "function",
+          "name": "renewAllowance",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "reserve",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x0a036351"
+        },
+        {
+          "type": "function",
+          "name": "onFlashLoan",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "initiator",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "fee",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x23e30c8b",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x715018a6"
+        },
+        {
+          "type": "function",
+          "name": "executeOperation",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "assets",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "address",
+              "name": "initiator",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "params",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x920f5c84",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "swapDebt",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "debtAsset",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "debtRepayAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "debtRateMode",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "newDebtAsset",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "maxNewDebtAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "extraCollateralAsset",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "extraCollateralAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "offset",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "paraswapData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct IParaswapDebtSwapAdapter.DebtSwapParams",
+              "name": "debtSwapParams",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "contract ICreditDelegationToken",
+                  "name": "debtToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "value",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "s",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct IParaswapDebtSwapAdapter.CreditDelegationInput",
+              "name": "creditDelegationPermit",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "contract IERC20WithPermit",
+                  "name": "aToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "value",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "s",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct IParaswapDebtSwapAdapter.PermitInput",
+              "name": "collateralATokenPermit",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xb8bd1c6b"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf2fde38b"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave V3 ParaSwapDebtSwapAdapter",
+    "info": {
+      "website": "https://aave.com"
+    }
+  },
+  "display": {
+    "formats": {
+      "swapAndRepay(address,address,uint256,uint256,uint256,bytes)": {
+        "intent": "Swap Collateral & Repay Debt",
+        "fields": [
+          {
+            "path": "collateralAsset",
+            "label": "Collateral Asset",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "debtAsset",
+            "label": "Debt Asset",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "collateralAmount",
+            "label": "Collateral Amount",
+            "format": "amount"
+          },
+          {
+            "path": "debtRepayAmount",
+            "label": "Repay Amount",
+            "format": "amount"
+          },
+          {
+            "path": "rateMode",
+            "label": "Rate Mode",
+            "format": "raw"
+          },
+          {
+            "path": "swapCalldata",
+            "label": "Swap Calldata",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapAndDeposit(address,address,uint256,uint256,bytes)": {
+        "intent": "Swap & Deposit {amountToSwap}",
+        "fields": [
+          {
+            "path": "assetToSwapFrom",
+            "label": "Swap From",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "assetToSwapTo",
+            "label": "Deposit To",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "amountToSwap",
+            "label": "Amount",
+            "format": "amount"
+          },
+          {
+            "path": "minAmountToReceive",
+            "label": "Min Received",
+            "format": "amount"
+          },
+          {
+            "path": "swapCalldata",
+            "label": "Swap Calldata",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,462 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xdef1c0ded9bec7f1a1670819833240f027b25eff",
+      "chainId": 1,
+      "name": "0x Exchange Proxy",
+      "abi": [
+        {
+          "type": "function",
+          "name": "transformERC20",
+          "selector": "0x415565b0",
+          "inputs": [
+            {
+              "name": "inputToken",
+              "type": "address"
+            },
+            {
+              "name": "outputToken",
+              "type": "address"
+            },
+            {
+              "name": "inputTokenAmount",
+              "type": "uint256"
+            },
+            {
+              "name": "minOutputTokenAmount",
+              "type": "uint256"
+            },
+            {
+              "name": "transformations",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "deploymentNonce",
+                  "type": "uint32"
+                },
+                {
+                  "name": "data",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "fillRfqOrder",
+          "selector": "0xaa77476c",
+          "inputs": [
+            {
+              "name": "order",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "makerToken",
+                  "type": "address"
+                },
+                {
+                  "name": "takerToken",
+                  "type": "address"
+                },
+                {
+                  "name": "makerAmount",
+                  "type": "uint128"
+                },
+                {
+                  "name": "takerAmount",
+                  "type": "uint128"
+                },
+                {
+                  "name": "maker",
+                  "type": "address"
+                },
+                {
+                  "name": "taker",
+                  "type": "address"
+                },
+                {
+                  "name": "txOrigin",
+                  "type": "address"
+                },
+                {
+                  "name": "pool",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "expiry",
+                  "type": "uint64"
+                },
+                {
+                  "name": "salt",
+                  "type": "uint256"
+                }
+              ]
+            },
+            {
+              "name": "signature",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "signatureType",
+                  "type": "uint8"
+                },
+                {
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "s",
+                  "type": "bytes32"
+                }
+              ]
+            },
+            {
+              "name": "takerTokenFillAmount",
+              "type": "uint128"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "fillOtcOrder",
+          "selector": "0xdac748d4",
+          "inputs": [
+            {
+              "name": "order",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "makerToken",
+                  "type": "address"
+                },
+                {
+                  "name": "takerToken",
+                  "type": "address"
+                },
+                {
+                  "name": "makerAmount",
+                  "type": "uint128"
+                },
+                {
+                  "name": "takerAmount",
+                  "type": "uint128"
+                },
+                {
+                  "name": "maker",
+                  "type": "address"
+                },
+                {
+                  "name": "taker",
+                  "type": "address"
+                },
+                {
+                  "name": "txOrigin",
+                  "type": "address"
+                },
+                {
+                  "name": "expiryAndNonce",
+                  "type": "uint256"
+                }
+              ]
+            },
+            {
+              "name": "signature",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "signatureType",
+                  "type": "uint8"
+                },
+                {
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "s",
+                  "type": "bytes32"
+                }
+              ]
+            },
+            {
+              "name": "takerTokenFillAmount",
+              "type": "uint128"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "createTransformWallet",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x287b071b",
+          "outputs": [
+            {
+              "internalType": "contract IFlashWallet",
+              "name": "wallet",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setQuoteSigner",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "quoteSigner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x56ce180a"
+        },
+        {
+          "type": "function",
+          "name": "transformERC20Staging",
+          "inputs": [
+            {
+              "internalType": "contract IERC20TokenV06",
+              "name": "inputToken",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IERC20TokenV06",
+              "name": "outputToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "inputTokenAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minOutputTokenAmount",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "deploymentNonce",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "data",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct ITransformERC20Feature.Transformation[]",
+              "name": "transformations",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x8182b61f",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "outputTokenAmount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setTransformerDeployer",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "transformerDeployer",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x87c96419"
+        },
+        {
+          "type": "function",
+          "name": "_transformERC20",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address payable",
+                  "name": "taker",
+                  "type": "address"
+                },
+                {
+                  "internalType": "contract IERC20TokenV06",
+                  "name": "inputToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "contract IERC20TokenV06",
+                  "name": "outputToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "inputTokenAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minOutputTokenAmount",
+                  "type": "uint256"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint32",
+                      "name": "deploymentNonce",
+                      "type": "uint32"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "data",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct ITransformERC20Feature.Transformation[]",
+                  "name": "transformations",
+                  "type": "tuple[]"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "useSelfBalance",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address payable",
+                  "name": "recipient",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct ITransformERC20Feature.TransformERC20Args",
+              "name": "args",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x8aa6539b",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "outputTokenAmount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "migrate",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "transformerDeployer",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xce5494bb",
+          "outputs": [
+            {
+              "internalType": "bytes4",
+              "name": "success",
+              "type": "bytes4"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "transformERC20(address,address,uint256,uint256,tuple[])": {
+        "intent": "Swap via 0x",
+        "interpolatedIntent": "Swap {inputTokenAmount} for at least {minOutputTokenAmount}",
+        "fields": [
+          {
+            "path": "inputToken",
+            "label": "From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "outputToken",
+            "label": "To Token",
+            "format": "addressName"
+          },
+          {
+            "path": "inputTokenAmount",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "inputToken"
+            }
+          },
+          {
+            "path": "minOutputTokenAmount",
+            "label": "Min Amount Out",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "outputToken"
+            }
+          }
+        ]
+      },
+      "fillRfqOrder(tuple,tuple,uint128)": {
+        "intent": "Fill RFQ order via 0x",
+        "interpolatedIntent": "Fill RFQ order for {takerTokenFillAmount}",
+        "fields": [
+          {
+            "path": "order.makerToken",
+            "label": "Maker Token",
+            "format": "addressName"
+          },
+          {
+            "path": "order.takerToken",
+            "label": "Taker Token",
+            "format": "addressName"
+          },
+          {
+            "path": "takerTokenFillAmount",
+            "label": "Fill Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "fillOtcOrder(tuple,tuple,uint128)": {
+        "intent": "Fill OTC order via 0x",
+        "interpolatedIntent": "Fill OTC order for {takerTokenFillAmount}",
+        "fields": [
+          {
+            "path": "order.makerToken",
+            "label": "Maker Token",
+            "format": "addressName"
+          },
+          {
+            "path": "order.takerToken",
+            "label": "Taker Token",
+            "format": "addressName"
+          },
+          {
+            "path": "takerTokenFillAmount",
+            "label": "Fill Amount",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

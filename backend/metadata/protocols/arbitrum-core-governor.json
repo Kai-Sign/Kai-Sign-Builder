@@ -1,0 +1,1178 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xf07ded9dc292157749b6fd268e37df6ea38395b9",
+      "chainId": 42161,
+      "name": "Arbitrum DAO Core Governor",
+      "abi": [
+        {
+          "type": "function",
+          "name": "castVote",
+          "selector": "0x56781388",
+          "inputs": [
+            {
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "name": "support",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "castVoteWithReason",
+          "selector": "0x7b3c71d3",
+          "inputs": [
+            {
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "name": "support",
+              "type": "uint8"
+            },
+            {
+              "name": "reason",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "propose",
+          "selector": "0x7d5e81e2",
+          "inputs": [
+            {
+              "name": "targets",
+              "type": "address[]"
+            },
+            {
+              "name": "values",
+              "type": "uint256[]"
+            },
+            {
+              "name": "calldatas",
+              "type": "bytes[]"
+            },
+            {
+              "name": "description",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "queue",
+          "selector": "0x160cbed7",
+          "inputs": [
+            {
+              "name": "targets",
+              "type": "address[]"
+            },
+            {
+              "name": "values",
+              "type": "uint256[]"
+            },
+            {
+              "name": "calldatas",
+              "type": "bytes[]"
+            },
+            {
+              "name": "descriptionHash",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "execute",
+          "selector": "0x2656227d",
+          "inputs": [
+            {
+              "name": "targets",
+              "type": "address[]"
+            },
+            {
+              "name": "values",
+              "type": "uint256[]"
+            },
+            {
+              "name": "calldatas",
+              "type": "bytes[]"
+            },
+            {
+              "name": "descriptionHash",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "admin",
+          "selector": "0xf851a440",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "admin_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeAdmin",
+          "selector": "0x8f283970",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "implementation",
+          "selector": "0x5c60da1b",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "implementation_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x3659cfe6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "cancel",
+          "selector": "0x452115d6",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "targets",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "values",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "calldatas",
+              "type": "bytes[]"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "descriptionHash",
+              "type": "bytes32"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "castVoteBySig",
+          "selector": "0x3bccf4fd",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "support",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "castVoteWithReasonAndParams",
+          "selector": "0x5f398a14",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "support",
+              "type": "uint8"
+            },
+            {
+              "internalType": "string",
+              "name": "reason",
+              "type": "string"
+            },
+            {
+              "internalType": "bytes",
+              "name": "params",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "castVoteWithReasonAndParamsBySig",
+          "selector": "0x03420181",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "support",
+              "type": "uint8"
+            },
+            {
+              "internalType": "string",
+              "name": "reason",
+              "type": "string"
+            },
+            {
+              "internalType": "bytes",
+              "name": "params",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0x5b447a57",
+          "inputs": [
+            {
+              "internalType": "contract IVotesUpgradeable",
+              "name": "_token",
+              "type": "address"
+            },
+            {
+              "internalType": "contract TimelockControllerUpgradeable",
+              "name": "_timelock",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_owner",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_votingDelay",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_votingPeriod",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_quorumNumerator",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_proposalThreshold",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint64",
+              "name": "_minPeriodAfterQuorum",
+              "type": "uint64"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "onERC1155BatchReceived",
+          "selector": "0xbc197c81",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes4",
+              "name": "",
+              "type": "bytes4"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "onERC1155Received",
+          "selector": "0xf23a6e61",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes4",
+              "name": "",
+              "type": "bytes4"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "onERC721Received",
+          "selector": "0x150b7a02",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes4",
+              "name": "",
+              "type": "bytes4"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "postUpgradeInit",
+          "selector": "0x3b3af665",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_minimumQuorum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_maximumQuorum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_newQuorumNumerator",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "relay",
+          "selector": "0xc28bc2fa",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "target",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setLateQuorumVoteExtension",
+          "selector": "0xd07f91e9",
+          "inputs": [
+            {
+              "internalType": "uint64",
+              "name": "newVoteExtension",
+              "type": "uint64"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setProposalThreshold",
+          "selector": "0xece40cc1",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newProposalThreshold",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setQuorumMinAndMax",
+          "selector": "0x5a9fd1d5",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_minimumQuorum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_maximumQuorum",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setVotingDelay",
+          "selector": "0x70b0f660",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newVotingDelay",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setVotingPeriod",
+          "selector": "0xea0217cf",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newVotingPeriod",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateQuorumNumerator",
+          "selector": "0x06f3f9e6",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newQuorumNumerator",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateTimelock",
+          "selector": "0xa890c910",
+          "inputs": [
+            {
+              "internalType": "contract TimelockControllerUpgradeable",
+              "name": "newTimelock",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "castVote(uint256,uint8)": {
+        "intent": "Vote on Arbitrum DAO proposal",
+        "interpolatedIntent": "Vote {support} on Arbitrum DAO proposal #{proposalId}",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal ID",
+            "format": "raw"
+          },
+          {
+            "path": "support",
+            "label": "Vote (0=Against, 1=For, 2=Abstain)",
+            "format": "raw"
+          }
+        ]
+      },
+      "castVoteWithReason(uint256,uint8,string)": {
+        "intent": "Vote on Arbitrum DAO proposal with reason",
+        "interpolatedIntent": "Vote {support} on Arbitrum DAO proposal #{proposalId}",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal ID",
+            "format": "raw"
+          },
+          {
+            "path": "support",
+            "label": "Vote (0=Against, 1=For, 2=Abstain)",
+            "format": "raw"
+          },
+          {
+            "path": "reason",
+            "label": "Reason",
+            "format": "raw"
+          }
+        ]
+      },
+      "propose(address[],uint256[],bytes[],string)": {
+        "intent": "Create Arbitrum DAO governance proposal",
+        "fields": [
+          {
+            "path": "description",
+            "label": "Description",
+            "format": "raw"
+          }
+        ]
+      },
+      "queue(address[],uint256[],bytes[],bytes32)": {
+        "intent": "Queue Arbitrum DAO proposal for execution",
+        "fields": [
+          {
+            "path": "descriptionHash",
+            "label": "Description Hash",
+            "format": "raw"
+          }
+        ]
+      },
+      "execute(address[],uint256[],bytes[],bytes32)": {
+        "intent": "Execute Arbitrum DAO proposal",
+        "fields": [
+          {
+            "path": "descriptionHash",
+            "label": "Description Hash",
+            "format": "raw"
+          }
+        ]
+      },
+      "admin()": {
+        "intent": "Review Admin transaction",
+        "fields": []
+      },
+      "changeAdmin(address)": {
+        "intent": "Review Change Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "implementation()": {
+        "intent": "Review Implementation transaction",
+        "fields": []
+      },
+      "upgradeTo(address)": {
+        "intent": "Review Upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "cancel(address[],uint256[],bytes[],bytes32)": {
+        "intent": "Review Cancel transaction",
+        "fields": [
+          {
+            "path": "targets",
+            "label": "Targets",
+            "format": "raw"
+          },
+          {
+            "path": "values",
+            "label": "Values",
+            "format": "raw"
+          },
+          {
+            "path": "calldatas",
+            "label": "Calldatas",
+            "format": "hex"
+          },
+          {
+            "path": "descriptionHash",
+            "label": "Description Hash",
+            "format": "hex"
+          }
+        ]
+      },
+      "castVoteBySig(uint256,uint8,uint8,bytes32,bytes32)": {
+        "intent": "Review Cast Vote By Sig transaction",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal Id",
+            "format": "raw"
+          },
+          {
+            "path": "support",
+            "label": "Support",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "castVoteWithReasonAndParams(uint256,uint8,string,bytes)": {
+        "intent": "Review Cast Vote With Reason And Params transaction",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal Id",
+            "format": "raw"
+          },
+          {
+            "path": "support",
+            "label": "Support",
+            "format": "raw"
+          },
+          {
+            "path": "reason",
+            "label": "Reason",
+            "format": "raw"
+          },
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "hex"
+          }
+        ]
+      },
+      "castVoteWithReasonAndParamsBySig(uint256,uint8,string,bytes,uint8,bytes32,bytes32)": {
+        "intent": "Review Cast Vote With Reason And Params By Sig transaction",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal Id",
+            "format": "raw"
+          },
+          {
+            "path": "support",
+            "label": "Support",
+            "format": "raw"
+          },
+          {
+            "path": "reason",
+            "label": "Reason",
+            "format": "raw"
+          },
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "hex"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "initialize(address,address,address,uint256,uint256,uint256,uint256,uint64)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_token",
+            "label": " token",
+            "format": "address"
+          },
+          {
+            "path": "_timelock",
+            "label": " timelock",
+            "format": "address"
+          },
+          {
+            "path": "_owner",
+            "label": " owner",
+            "format": "address"
+          },
+          {
+            "path": "_votingDelay",
+            "label": " voting Delay",
+            "format": "raw"
+          },
+          {
+            "path": "_votingPeriod",
+            "label": " voting Period",
+            "format": "raw"
+          },
+          {
+            "path": "_quorumNumerator",
+            "label": " quorum Numerator",
+            "format": "raw"
+          },
+          {
+            "path": "_proposalThreshold",
+            "label": " proposal Threshold",
+            "format": "raw"
+          },
+          {
+            "path": "_minPeriodAfterQuorum",
+            "label": " min Period After Quorum",
+            "format": "raw"
+          }
+        ]
+      },
+      "onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)": {
+        "intent": "Review On ERC1155 Batch Received transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "address"
+          },
+          {
+            "path": "param1",
+            "label": "Param1",
+            "format": "address"
+          },
+          {
+            "path": "param2",
+            "label": "Param2",
+            "format": "raw"
+          },
+          {
+            "path": "param3",
+            "label": "Param3",
+            "format": "raw"
+          },
+          {
+            "path": "param4",
+            "label": "Param4",
+            "format": "hex"
+          }
+        ]
+      },
+      "onERC1155Received(address,address,uint256,uint256,bytes)": {
+        "intent": "Review On ERC1155 Received transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "address"
+          },
+          {
+            "path": "param1",
+            "label": "Param1",
+            "format": "address"
+          },
+          {
+            "path": "param2",
+            "label": "Param2",
+            "format": "raw"
+          },
+          {
+            "path": "param3",
+            "label": "Param3",
+            "format": "raw"
+          },
+          {
+            "path": "param4",
+            "label": "Param4",
+            "format": "hex"
+          }
+        ]
+      },
+      "onERC721Received(address,address,uint256,bytes)": {
+        "intent": "Review On ERC721 Received transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "address"
+          },
+          {
+            "path": "param1",
+            "label": "Param1",
+            "format": "address"
+          },
+          {
+            "path": "param2",
+            "label": "Param2",
+            "format": "raw"
+          },
+          {
+            "path": "param3",
+            "label": "Param3",
+            "format": "hex"
+          }
+        ]
+      },
+      "postUpgradeInit(uint256,uint256,uint256)": {
+        "intent": "Review Post Upgrade Init transaction",
+        "fields": [
+          {
+            "path": "_minimumQuorum",
+            "label": " minimum Quorum",
+            "format": "raw"
+          },
+          {
+            "path": "_maximumQuorum",
+            "label": " maximum Quorum",
+            "format": "raw"
+          },
+          {
+            "path": "_newQuorumNumerator",
+            "label": " new Quorum Numerator",
+            "format": "raw"
+          }
+        ]
+      },
+      "relay(address,uint256,bytes)": {
+        "intent": "Review Relay transaction",
+        "fields": [
+          {
+            "path": "target",
+            "label": "Target",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "setLateQuorumVoteExtension(uint64)": {
+        "intent": "Review Set Late Quorum Vote Extension transaction",
+        "fields": [
+          {
+            "path": "newVoteExtension",
+            "label": "New Vote Extension",
+            "format": "raw"
+          }
+        ]
+      },
+      "setProposalThreshold(uint256)": {
+        "intent": "Review Set Proposal Threshold transaction",
+        "fields": [
+          {
+            "path": "newProposalThreshold",
+            "label": "New Proposal Threshold",
+            "format": "raw"
+          }
+        ]
+      },
+      "setQuorumMinAndMax(uint256,uint256)": {
+        "intent": "Review Set Quorum Min And Max transaction",
+        "fields": [
+          {
+            "path": "_minimumQuorum",
+            "label": " minimum Quorum",
+            "format": "raw"
+          },
+          {
+            "path": "_maximumQuorum",
+            "label": " maximum Quorum",
+            "format": "raw"
+          }
+        ]
+      },
+      "setVotingDelay(uint256)": {
+        "intent": "Review Set Voting Delay transaction",
+        "fields": [
+          {
+            "path": "newVotingDelay",
+            "label": "New Voting Delay",
+            "format": "raw"
+          }
+        ]
+      },
+      "setVotingPeriod(uint256)": {
+        "intent": "Review Set Voting Period transaction",
+        "fields": [
+          {
+            "path": "newVotingPeriod",
+            "label": "New Voting Period",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "updateQuorumNumerator(uint256)": {
+        "intent": "Review Update Quorum Numerator transaction",
+        "fields": [
+          {
+            "path": "newQuorumNumerator",
+            "label": "New Quorum Numerator",
+            "format": "raw"
+          }
+        ]
+      },
+      "updateTimelock(address)": {
+        "intent": "Review Update Timelock transaction",
+        "fields": [
+          {
+            "path": "newTimelock",
+            "label": "New Timelock",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Arbitrum DAO",
+    "info": {
+      "url": "https://www.tally.xyz/gov/arbitrum",
+      "legalName": "Arbitrum DAO",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

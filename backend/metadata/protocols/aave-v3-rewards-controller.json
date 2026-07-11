@@ -1,0 +1,853 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x8164cc65827dcfe994ab23944cbc90e0aa80bfcb",
+      "chainId": 1,
+      "name": "Aave V3 Rewards Controller",
+      "abi": [
+        {
+          "type": "function",
+          "name": "claimRewards",
+          "selector": "0xd294f093",
+          "inputs": [
+            {
+              "name": "assets",
+              "type": "address[]"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "reward",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimAllRewards",
+          "selector": "0xa5b68b73",
+          "inputs": [
+            {
+              "name": "assets",
+              "type": "address[]"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimRewardsOnBehalf",
+          "selector": "0x9abfc435",
+          "inputs": [
+            {
+              "name": "assets",
+              "type": "address[]"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "reward",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimAllRewardsOnBehalf",
+          "selector": "0xf4e43254",
+          "inputs": [
+            {
+              "name": "assets",
+              "type": "address[]"
+            },
+            {
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "admin",
+          "selector": "0xf851a440",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "implementation",
+          "selector": "0x5c60da1b",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xd1f57894",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_logic",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x3659cfe6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "claimAllRewards",
+          "selector": "0xbb492bf5",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "assets",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "address[]",
+              "name": "rewardsList",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "claimedAmounts",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimAllRewardsOnBehalf",
+          "selector": "0x9ff55db9",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "assets",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "address[]",
+              "name": "rewardsList",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "claimedAmounts",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimAllRewardsToSelf",
+          "selector": "0xbf90f63a",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "assets",
+              "type": "address[]"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "address[]",
+              "name": "rewardsList",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "claimedAmounts",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimRewards",
+          "selector": "0x236300dc",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "assets",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "reward",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimRewardsOnBehalf",
+          "selector": "0x33028b99",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "assets",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "reward",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimRewardsToSelf",
+          "selector": "0x57b89883",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "assets",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "reward",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "configureAssets",
+          "selector": "0x955c2ad7",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint88",
+                  "name": "emissionPerSecond",
+                  "type": "uint88"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "totalSupply",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint32",
+                  "name": "distributionEnd",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "address",
+                  "name": "asset",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "reward",
+                  "type": "address"
+                },
+                {
+                  "internalType": "contract ITransferStrategyBase",
+                  "name": "transferStrategy",
+                  "type": "address"
+                },
+                {
+                  "internalType": "contract IEACAggregatorProxy",
+                  "name": "rewardOracle",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct RewardsDataTypes.RewardsConfigInput[]",
+              "name": "config",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "handleAction",
+          "selector": "0x31873e2e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalSupply",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "userBalance",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xc4d66de8",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setClaimer",
+          "selector": "0xf5cf673b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "user",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "caller",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setDistributionEnd",
+          "selector": "0xc5a7b538",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "reward",
+              "type": "address"
+            },
+            {
+              "internalType": "uint32",
+              "name": "newDistributionEnd",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setEmissionPerSecond",
+          "selector": "0xf996868b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "address[]",
+              "name": "rewards",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint88[]",
+              "name": "newEmissionsPerSecond",
+              "type": "uint88[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setRewardOracle",
+          "selector": "0x5453ba10",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "reward",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IEACAggregatorProxy",
+              "name": "rewardOracle",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTransferStrategy",
+          "selector": "0xe15ac623",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "reward",
+              "type": "address"
+            },
+            {
+              "internalType": "contract ITransferStrategyBase",
+              "name": "transferStrategy",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "claimRewards(address[],uint256,address,address)": {
+        "intent": "Claim Aave V3 rewards",
+        "interpolatedIntent": "Claim up to {amount} {reward} rewards to {to}",
+        "fields": [
+          {
+            "path": "reward",
+            "label": "Reward Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "reward"
+            }
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "claimAllRewards(address[],address)": {
+        "intent": "Claim all Aave V3 rewards",
+        "interpolatedIntent": "Claim all pending Aave rewards to {to}",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "claimRewardsOnBehalf(address[],uint256,address,address,address)": {
+        "intent": "Claim Aave V3 rewards on behalf of user",
+        "interpolatedIntent": "Claim {amount} {reward} rewards for {user} to {to}",
+        "fields": [
+          {
+            "path": "reward",
+            "label": "Reward Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "reward"
+            }
+          },
+          {
+            "path": "user",
+            "label": "User",
+            "format": "addressName"
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "claimAllRewardsOnBehalf(address[],address,address)": {
+        "intent": "Claim all Aave V3 rewards on behalf of user",
+        "interpolatedIntent": "Claim all Aave rewards for {user} to {to}",
+        "fields": [
+          {
+            "path": "user",
+            "label": "User",
+            "format": "addressName"
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "admin()": {
+        "intent": "Review Admin transaction",
+        "fields": []
+      },
+      "implementation()": {
+        "intent": "Review Implementation transaction",
+        "fields": []
+      },
+      "initialize(address,bytes)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_logic",
+            "label": " logic",
+            "format": "address"
+          },
+          {
+            "path": "_data",
+            "label": " data",
+            "format": "hex"
+          }
+        ]
+      },
+      "upgradeTo(address)": {
+        "intent": "Review Upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "claimAllRewardsToSelf(address[])": {
+        "intent": "Review Claim All Rewards To Self transaction",
+        "fields": [
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          }
+        ]
+      },
+      "claimRewardsToSelf(address[],uint256,address)": {
+        "intent": "Review Claim Rewards To Self transaction",
+        "fields": [
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "reward",
+            "label": "Reward",
+            "format": "address"
+          }
+        ]
+      },
+      "configureAssets((uint88,uint256,uint32,address,address,address,address)[])": {
+        "intent": "Review Configure Assets transaction",
+        "fields": [
+          {
+            "path": "config",
+            "label": "Config",
+            "format": "raw"
+          }
+        ]
+      },
+      "handleAction(address,uint256,uint256)": {
+        "intent": "Review Handle Action transaction",
+        "fields": [
+          {
+            "path": "user",
+            "label": "User",
+            "format": "address"
+          },
+          {
+            "path": "totalSupply",
+            "label": "Total Supply",
+            "format": "raw"
+          },
+          {
+            "path": "userBalance",
+            "label": "User Balance",
+            "format": "raw"
+          }
+        ]
+      },
+      "initialize(address)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "address"
+          }
+        ]
+      },
+      "setClaimer(address,address)": {
+        "intent": "Review Set Claimer transaction",
+        "fields": [
+          {
+            "path": "user",
+            "label": "User",
+            "format": "address"
+          },
+          {
+            "path": "caller",
+            "label": "Caller",
+            "format": "address"
+          }
+        ]
+      },
+      "setDistributionEnd(address,address,uint32)": {
+        "intent": "Review Set Distribution End transaction",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "reward",
+            "label": "Reward",
+            "format": "address"
+          },
+          {
+            "path": "newDistributionEnd",
+            "label": "New Distribution End",
+            "format": "raw"
+          }
+        ]
+      },
+      "setEmissionPerSecond(address,address[],uint88[])": {
+        "intent": "Review Set Emission Per Second transaction",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "address"
+          },
+          {
+            "path": "rewards",
+            "label": "Rewards",
+            "format": "raw"
+          },
+          {
+            "path": "newEmissionsPerSecond",
+            "label": "New Emissions Per Second",
+            "format": "raw"
+          }
+        ]
+      },
+      "setRewardOracle(address,address)": {
+        "intent": "Review Set Reward Oracle transaction",
+        "fields": [
+          {
+            "path": "reward",
+            "label": "Reward",
+            "format": "address"
+          },
+          {
+            "path": "rewardOracle",
+            "label": "Reward Oracle",
+            "format": "address"
+          }
+        ]
+      },
+      "setTransferStrategy(address,address)": {
+        "intent": "Review Set Transfer Strategy transaction",
+        "fields": [
+          {
+            "path": "reward",
+            "label": "Reward",
+            "format": "address"
+          },
+          {
+            "path": "transferStrategy",
+            "label": "Transfer Strategy",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Aave Labs",
+    "info": {
+      "url": "https://app.aave.com/",
+      "legalName": "Aave Protocol",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

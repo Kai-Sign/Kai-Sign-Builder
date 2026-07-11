@@ -1,0 +1,1205 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x308861a430be4cce5502d0a12724771fc6daf216",
+      "chainId": 1,
+      "name": "EtherFi Liquidity Pool",
+      "abi": [
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0xd0e30db0",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "requestWithdraw",
+          "selector": "0x27a4ef4a",
+          "inputs": [
+            {
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "DEPRECATED_sendExitRequests",
+          "selector": "0x0716e242",
+          "inputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "_validatorIds",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addEthAmountLockedForWithdrawal",
+          "selector": "0x1665f66d",
+          "inputs": [
+            {
+              "internalType": "uint128",
+              "name": "_amount",
+              "type": "uint128"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "batchApproveRegistration",
+          "selector": "0x08388426",
+          "inputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "_validatorIds",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "_pubkeys",
+              "type": "bytes[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "_signatures",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "batchCreateBeaconValidators",
+          "selector": "0xde70b59f",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "bytes",
+                  "name": "publicKey",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "depositDataRoot",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "string",
+                  "name": "ipfsHashForEncryptedValidatorKey",
+                  "type": "string"
+                }
+              ],
+              "internalType": "struct IStakingManager.DepositData[]",
+              "name": "_depositData",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_bidIds",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "address",
+              "name": "_etherFiNode",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "batchRegister",
+          "selector": "0x1ee665c4",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "bytes",
+                  "name": "publicKey",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "depositDataRoot",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "string",
+                  "name": "ipfsHashForEncryptedValidatorKey",
+                  "type": "string"
+                }
+              ],
+              "internalType": "struct IStakingManager.DepositData[]",
+              "name": "_depositData",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_bidIds",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "address",
+              "name": "_etherFiNode",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burnEEthShares",
+          "selector": "0xf2c5998a",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burnEEthSharesForNonETHWithdrawal",
+          "selector": "0x7c8dc440",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amountSharesToBurn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_withdrawalValueInETH",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "confirmAndFundBeaconValidators",
+          "selector": "0xbaaff116",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "bytes",
+                  "name": "publicKey",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "depositDataRoot",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "string",
+                  "name": "ipfsHashForEncryptedValidatorKey",
+                  "type": "string"
+                }
+              ],
+              "internalType": "struct IStakingManager.DepositData[]",
+              "name": "_depositData",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_validatorSizeWei",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0xf340fa01",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_referral",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0xf9609f08",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_referral",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "depositToRecipient",
+          "selector": "0xb46a130e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_referral",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0x35876476",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_eEthAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_stakingManagerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_nodesManagerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_membershipManagerAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_tNftAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_etherFiAdminContract",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_withdrawRequestNFT",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initializeOnUpgrade",
+          "selector": "0x4c73f498",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_auctionManager",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_liquifier",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initializeVTwoDotFourNine",
+          "selector": "0x46d4b714",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_roleRegistry",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_etherFiRedemptionManager",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pauseContract",
+          "selector": "0x439766ce",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "payProtocolFees",
+          "selector": "0x1991c225",
+          "inputs": [
+            {
+              "internalType": "uint128",
+              "name": "_protocolFees",
+              "type": "uint128"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "rebase",
+          "selector": "0xc00b2d61",
+          "inputs": [
+            {
+              "internalType": "int128",
+              "name": "_accruedRewards",
+              "type": "int128"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "registerValidatorSpawner",
+          "selector": "0x56f1199b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "requestMembershipNFTWithdraw",
+          "selector": "0x1aab9ef1",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "fee",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "requestWithdraw",
+          "selector": "0x397a1b28",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "requestWithdrawWithPermit",
+          "selector": "0x03dcfbdc",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_owner",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "value",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "s",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct ILiquidityPool.PermitInput",
+              "name": "_permit",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFeeRecipient",
+          "selector": "0xe74b981b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_feeRecipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setRestakeBnftDeposits",
+          "selector": "0xda8ed1f7",
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "_restake",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setStakingTargetWeights",
+          "selector": "0x086e16c0",
+          "inputs": [
+            {
+              "internalType": "uint32",
+              "name": "_eEthWeight",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint32",
+              "name": "_etherFanWeight",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setValidatorSizeWei",
+          "selector": "0x616e6c1b",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_validatorSizeWei",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unPauseContract",
+          "selector": "0xbac15203",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unregisterValidatorSpawner",
+          "selector": "0x158f8f59",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x3659cfe6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xf3fef3a3",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "deposit()": {
+        "intent": "Stake ETH via EtherFi",
+        "interpolatedIntent": "Deposit ETH to receive eETH via EtherFi",
+        "fields": []
+      },
+      "requestWithdraw(address,uint256)": {
+        "intent": "Request eETH withdrawal via EtherFi",
+        "interpolatedIntent": "Request withdrawal of {amount} eETH to {recipient}",
+        "fields": [
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "eETH"
+            }
+          }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Approve eETH spending",
+        "interpolatedIntent": "Approve {spender} to spend {amount} eETH",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "eETH"
+            }
+          }
+        ]
+      },
+      "DEPRECATED_sendExitRequests(uint256[])": {
+        "intent": "Review DEPRECATED send Exit Requests transaction",
+        "fields": [
+          {
+            "path": "_validatorIds",
+            "label": " validator Ids",
+            "format": "raw"
+          }
+        ]
+      },
+      "addEthAmountLockedForWithdrawal(uint128)": {
+        "intent": "Review Add Eth Amount Locked For Withdrawal transaction",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "batchApproveRegistration(uint256[],bytes[],bytes[])": {
+        "intent": "Review Batch Approve Registration transaction",
+        "fields": [
+          {
+            "path": "_validatorIds",
+            "label": " validator Ids",
+            "format": "raw"
+          },
+          {
+            "path": "_pubkeys",
+            "label": " pubkeys",
+            "format": "hex"
+          },
+          {
+            "path": "_signatures",
+            "label": " signatures",
+            "format": "hex"
+          }
+        ]
+      },
+      "batchCreateBeaconValidators((bytes,bytes,bytes32,string)[],uint256[],address)": {
+        "intent": "Review Batch Create Beacon Validators transaction",
+        "fields": [
+          {
+            "path": "_depositData",
+            "label": " deposit Data",
+            "format": "raw"
+          },
+          {
+            "path": "_bidIds",
+            "label": " bid Ids",
+            "format": "raw"
+          },
+          {
+            "path": "_etherFiNode",
+            "label": " ether Fi Node",
+            "format": "address"
+          }
+        ]
+      },
+      "batchRegister((bytes,bytes,bytes32,string)[],uint256[],address)": {
+        "intent": "Review Batch Register transaction",
+        "fields": [
+          {
+            "path": "_depositData",
+            "label": " deposit Data",
+            "format": "raw"
+          },
+          {
+            "path": "_bidIds",
+            "label": " bid Ids",
+            "format": "raw"
+          },
+          {
+            "path": "_etherFiNode",
+            "label": " ether Fi Node",
+            "format": "address"
+          }
+        ]
+      },
+      "burnEEthShares(uint256)": {
+        "intent": "Review Burn EEth Shares transaction",
+        "fields": [
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          }
+        ]
+      },
+      "burnEEthSharesForNonETHWithdrawal(uint256,uint256)": {
+        "intent": "Review Burn EEth Shares For Non ETHWithdrawal transaction",
+        "fields": [
+          {
+            "path": "_amountSharesToBurn",
+            "label": " amount Shares To Burn",
+            "format": "raw"
+          },
+          {
+            "path": "_withdrawalValueInETH",
+            "label": " withdrawal Value In ETH",
+            "format": "raw"
+          }
+        ]
+      },
+      "confirmAndFundBeaconValidators((bytes,bytes,bytes32,string)[],uint256)": {
+        "intent": "Review Confirm And Fund Beacon Validators transaction",
+        "fields": [
+          {
+            "path": "_depositData",
+            "label": " deposit Data",
+            "format": "raw"
+          },
+          {
+            "path": "_validatorSizeWei",
+            "label": " validator Size Wei",
+            "format": "raw"
+          }
+        ]
+      },
+      "deposit(address)": {
+        "intent": "Review Deposit transaction",
+        "fields": [
+          {
+            "path": "_referral",
+            "label": " referral",
+            "format": "address"
+          }
+        ]
+      },
+      "deposit(address,address)": {
+        "intent": "Review Deposit transaction",
+        "fields": [
+          {
+            "path": "_user",
+            "label": " user",
+            "format": "address"
+          },
+          {
+            "path": "_referral",
+            "label": " referral",
+            "format": "address"
+          }
+        ]
+      },
+      "depositToRecipient(address,uint256,address)": {
+        "intent": "Review Deposit To Recipient transaction",
+        "fields": [
+          {
+            "path": "_recipient",
+            "label": " recipient",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "_referral",
+            "label": " referral",
+            "format": "address"
+          }
+        ]
+      },
+      "initialize(address,address,address,address,address,address,address)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_eEthAddress",
+            "label": " e Eth Address",
+            "format": "address"
+          },
+          {
+            "path": "_stakingManagerAddress",
+            "label": " staking Manager Address",
+            "format": "address"
+          },
+          {
+            "path": "_nodesManagerAddress",
+            "label": " nodes Manager Address",
+            "format": "address"
+          },
+          {
+            "path": "_membershipManagerAddress",
+            "label": " membership Manager Address",
+            "format": "address"
+          },
+          {
+            "path": "_tNftAddress",
+            "label": " t Nft Address",
+            "format": "address"
+          },
+          {
+            "path": "_etherFiAdminContract",
+            "label": " ether Fi Admin Contract",
+            "format": "address"
+          },
+          {
+            "path": "_withdrawRequestNFT",
+            "label": " withdraw Request NFT",
+            "format": "address"
+          }
+        ]
+      },
+      "initializeOnUpgrade(address,address)": {
+        "intent": "Review Initialize On Upgrade transaction",
+        "fields": [
+          {
+            "path": "_auctionManager",
+            "label": " auction Manager",
+            "format": "address"
+          },
+          {
+            "path": "_liquifier",
+            "label": " liquifier",
+            "format": "address"
+          }
+        ]
+      },
+      "initializeVTwoDotFourNine(address,address)": {
+        "intent": "Review Initialize VTwo Dot Four Nine transaction",
+        "fields": [
+          {
+            "path": "_roleRegistry",
+            "label": " role Registry",
+            "format": "address"
+          },
+          {
+            "path": "_etherFiRedemptionManager",
+            "label": " ether Fi Redemption Manager",
+            "format": "address"
+          }
+        ]
+      },
+      "pauseContract()": {
+        "intent": "Review Pause Contract transaction",
+        "fields": []
+      },
+      "payProtocolFees(uint128)": {
+        "intent": "Review Pay Protocol Fees transaction",
+        "fields": [
+          {
+            "path": "_protocolFees",
+            "label": " protocol Fees",
+            "format": "raw"
+          }
+        ]
+      },
+      "rebase(int128)": {
+        "intent": "Review Rebase transaction",
+        "fields": [
+          {
+            "path": "_accruedRewards",
+            "label": " accrued Rewards",
+            "format": "raw"
+          }
+        ]
+      },
+      "registerValidatorSpawner(address)": {
+        "intent": "Review Register Validator Spawner transaction",
+        "fields": [
+          {
+            "path": "_user",
+            "label": " user",
+            "format": "address"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "requestMembershipNFTWithdraw(address,uint256,uint256)": {
+        "intent": "Review Request Membership NFTWithdraw transaction",
+        "fields": [
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "fee",
+            "label": "Fee",
+            "format": "raw"
+          }
+        ]
+      },
+      "requestWithdrawWithPermit(address,uint256,(uint256,uint256,uint8,bytes32,bytes32))": {
+        "intent": "Review Request Withdraw With Permit transaction",
+        "fields": [
+          {
+            "path": "_owner",
+            "label": " owner",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "_permit",
+            "label": " permit",
+            "format": "raw"
+          }
+        ]
+      },
+      "setFeeRecipient(address)": {
+        "intent": "Review Set Fee Recipient transaction",
+        "fields": [
+          {
+            "path": "_feeRecipient",
+            "label": " fee Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "setRestakeBnftDeposits(bool)": {
+        "intent": "Review Set Restake Bnft Deposits transaction",
+        "fields": [
+          {
+            "path": "_restake",
+            "label": " restake",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setStakingTargetWeights(uint32,uint32)": {
+        "intent": "Review Set Staking Target Weights transaction",
+        "fields": [
+          {
+            "path": "_eEthWeight",
+            "label": " e Eth Weight",
+            "format": "raw"
+          },
+          {
+            "path": "_etherFanWeight",
+            "label": " ether Fan Weight",
+            "format": "raw"
+          }
+        ]
+      },
+      "setValidatorSizeWei(uint256)": {
+        "intent": "Review Set Validator Size Wei transaction",
+        "fields": [
+          {
+            "path": "_validatorSizeWei",
+            "label": " validator Size Wei",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "unPauseContract()": {
+        "intent": "Review Un Pause Contract transaction",
+        "fields": []
+      },
+      "unregisterValidatorSpawner(address)": {
+        "intent": "Review Unregister Validator Spawner transaction",
+        "fields": [
+          {
+            "path": "_user",
+            "label": " user",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeTo(address)": {
+        "intent": "Review Upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "withdraw(address,uint256)": {
+        "intent": "Review Withdraw transaction",
+        "fields": [
+          {
+            "path": "_recipient",
+            "label": " recipient",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "EtherFi",
+    "info": {
+      "url": "https://app.ether.fi/",
+      "legalName": "EtherFi Protocol",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

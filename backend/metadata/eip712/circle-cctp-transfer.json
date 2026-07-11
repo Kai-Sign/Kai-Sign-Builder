@@ -1,0 +1,68 @@
+{
+  "context": {
+    "eip712": {
+      "deployments": [
+        { "chainId": 1, "address": "0xbd3fa81b58ba92a82136038b25adec7066af3155" }
+      ],
+      "domain": {
+        "name": "CCTP",
+        "version": "1",
+        "chainId": 1,
+        "verifyingContract": "0xBd3fa81B58Ba92a82136038B25aDec7066af3155"
+      },
+      "schemas": [
+        {
+          "primaryType": "BurnMessage",
+          "types": {
+            "BurnMessage": [
+              { "name": "version", "type": "uint32" },
+              { "name": "burnToken", "type": "bytes32" },
+              { "name": "mintRecipient", "type": "bytes32" },
+              { "name": "amount", "type": "uint256" },
+              { "name": "messageSender", "type": "bytes32" }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "BurnMessage": {
+        "intent": "Sign Circle CCTP transfer",
+        "fields": [
+          {
+            "path": "#.burnToken",
+            "label": "Token",
+            "format": "raw",
+            "visible": "always"
+          },
+          {
+            "path": "#.mintRecipient",
+            "label": "Recipient",
+            "format": "raw",
+            "visible": "always"
+          },
+          {
+            "path": "#.amount",
+            "label": "Amount",
+            "format": "raw",
+            "visible": "always"
+          },
+          {
+            "path": "#.messageSender",
+            "label": "Sender",
+            "format": "raw",
+            "visible": "always"
+          },
+          {
+            "path": "#.version",
+            "label": "Version",
+            "format": "raw",
+            "visible": "never"
+          }
+        ]
+      }
+    }
+  }
+}

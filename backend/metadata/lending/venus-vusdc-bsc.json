@@ -1,0 +1,1169 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xeca88125a5adbe82614ffc12d0db554e2e2867c8",
+      "chainId": 56,
+      "name": "Venus vUSDC Market (BSC)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0xa0712d68",
+          "inputs": [
+            {
+              "name": "mintAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redeem",
+          "selector": "0xdb006a75",
+          "inputs": [
+            {
+              "name": "redeemTokens",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redeemUnderlying",
+          "selector": "0x852a12e3",
+          "inputs": [
+            {
+              "name": "redeemAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "borrow",
+          "selector": "0xc5ebeaec",
+          "inputs": [
+            {
+              "name": "borrowAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "repayBorrow",
+          "selector": "0x0e752702",
+          "inputs": [
+            {
+              "name": "repayAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "repayBorrowBehalf",
+          "selector": "0x2608f818",
+          "inputs": [
+            {
+              "name": "borrower",
+              "type": "address"
+            },
+            {
+              "name": "repayAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "_acceptAdmin",
+          "selector": "0xe9c714f2",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "_addReserves",
+          "selector": "0x3e941010",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "addAmount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "_reduceReserves",
+          "selector": "0x601a0bf1",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "reduceAmount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "_setComptroller",
+          "selector": "0x4576b5db",
+          "inputs": [
+            {
+              "internalType": "contract ComptrollerInterface",
+              "name": "newComptroller",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "_setImplementation",
+          "selector": "0x555bcc40",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "implementation_",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "allowResign",
+              "type": "bool"
+            },
+            {
+              "internalType": "bytes",
+              "name": "becomeImplementationData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "_setInterestRateModel",
+          "selector": "0xf2b3abbd",
+          "inputs": [
+            {
+              "internalType": "contract InterestRateModel",
+              "name": "newInterestRateModel",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "_setPendingAdmin",
+          "selector": "0xb71d1a0c",
+          "inputs": [
+            {
+              "internalType": "address payable",
+              "name": "newPendingAdmin",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "_setReserveFactor",
+          "selector": "0xfca7820b",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newReserveFactorMantissa",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "accrueInterest",
+          "selector": "0xa6afed95",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "balanceOfUnderlying",
+          "selector": "0x3af9e669",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "borrowBalanceCurrent",
+          "selector": "0x17bfdfbc",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "delegateToImplementation",
+          "selector": "0x0933c1ed",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "exchangeRateCurrent",
+          "selector": "0xbd6d894d",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "liquidateBorrow",
+          "selector": "0xf5e3c462",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "borrower",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "repayAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "contract VTokenInterface",
+              "name": "vTokenCollateral",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "seize",
+          "selector": "0xb2a02ff1",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "liquidator",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "borrower",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "seizeTokens",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "totalBorrowsCurrent",
+          "selector": "0x73acee98",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "src",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "dst",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setAccessControlManager",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAccessControlManagerAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x0e32cb86",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setProtocolShareReserve",
+          "inputs": [
+            {
+              "internalType": "address payable",
+              "name": "protcolShareReserve_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x107568df"
+        },
+        {
+          "type": "function",
+          "name": "_resignImplementation",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x153ab505"
+        },
+        {
+          "type": "function",
+          "name": "sweepTokenAndSync",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "transferAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x1960cb49"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "underlying_",
+              "type": "address"
+            },
+            {
+              "internalType": "contract ComptrollerInterface",
+              "name": "comptroller_",
+              "type": "address"
+            },
+            {
+              "internalType": "contract InterestRateModelV8",
+              "name": "interestRateModel_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "initialExchangeRateMantissa_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "name_",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "symbol_",
+              "type": "string"
+            },
+            {
+              "internalType": "uint8",
+              "name": "decimals_",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x1a31d465"
+        },
+        {
+          "type": "function",
+          "name": "redeemBehalf",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "redeemer",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "redeemTokens",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x210bc052",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "mintBehalf",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "mintAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x23323e03",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setReduceReservesBlockDelta",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newReduceReservesBlockDelta_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x2464176b"
+        },
+        {
+          "type": "function",
+          "name": "setFlashLoanFeeMantissa",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "flashLoanFeeMantissa_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "flashLoanProtocolShare_",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x3c86778e",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "_becomeImplementation",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x56e67728"
+        },
+        {
+          "type": "function",
+          "name": "transferInUnderlyingFlashLoan",
+          "inputs": [
+            {
+              "internalType": "address payable",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "repaymentAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalFee",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "protocolFee",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x64846b92",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "flashLoanDebtPosition",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "borrower",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "borrowAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x66ce8d7d",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "borrowBehalf",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "borrower",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "borrowAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x856e5bb3",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transferOutUnderlyingFlashLoan",
+          "inputs": [
+            {
+              "internalType": "address payable",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x8d1f23d4"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [
+            {
+              "internalType": "contract ComptrollerInterface",
+              "name": "comptroller_",
+              "type": "address"
+            },
+            {
+              "internalType": "contract InterestRateModelV8",
+              "name": "interestRateModel_",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "initialExchangeRateMantissa_",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "name_",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "symbol_",
+              "type": "string"
+            },
+            {
+              "internalType": "uint8",
+              "name": "decimals_",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x99d8c1b4"
+        },
+        {
+          "type": "function",
+          "name": "setFlashLoanEnabled",
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xa55102f7",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "redeemUnderlyingBehalf",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "redeemer",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "redeemAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xdf3a516e",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "mint(uint256)": {
+        "intent": "Supply USDC to Venus Protocol",
+        "interpolatedIntent": "Supply {mintAmount} USDC to Venus, receive vUSDC",
+        "fields": [
+          {
+            "path": "mintAmount",
+            "label": "USDC to Supply",
+            "format": "raw"
+          }
+        ]
+      },
+      "redeem(uint256)": {
+        "intent": "Withdraw from Venus by redeeming vUSDC",
+        "interpolatedIntent": "Redeem {redeemTokens} vUSDC from Venus Protocol",
+        "fields": [
+          {
+            "path": "redeemTokens",
+            "label": "vUSDC to Redeem",
+            "format": "raw"
+          }
+        ]
+      },
+      "redeemUnderlying(uint256)": {
+        "intent": "Withdraw USDC from Venus Protocol",
+        "interpolatedIntent": "Withdraw {redeemAmount} USDC from Venus Protocol",
+        "fields": [
+          {
+            "path": "redeemAmount",
+            "label": "USDC to Withdraw",
+            "format": "raw"
+          }
+        ]
+      },
+      "borrow(uint256)": {
+        "intent": "Borrow USDC from Venus Protocol",
+        "interpolatedIntent": "Borrow {borrowAmount} USDC from Venus Protocol",
+        "fields": [
+          {
+            "path": "borrowAmount",
+            "label": "USDC to Borrow",
+            "format": "raw"
+          }
+        ]
+      },
+      "repayBorrow(uint256)": {
+        "intent": "Repay USDC borrow on Venus Protocol",
+        "interpolatedIntent": "Repay {repayAmount} USDC on Venus Protocol",
+        "fields": [
+          {
+            "path": "repayAmount",
+            "label": "USDC to Repay",
+            "format": "raw"
+          }
+        ]
+      },
+      "repayBorrowBehalf(address,uint256)": {
+        "intent": "Repay USDC borrow on behalf of another on Venus",
+        "interpolatedIntent": "Repay {repayAmount} USDC for {borrower} on Venus Protocol",
+        "fields": [
+          {
+            "path": "borrower",
+            "label": "Borrower",
+            "format": "addressName"
+          },
+          {
+            "path": "repayAmount",
+            "label": "USDC to Repay",
+            "format": "raw"
+          }
+        ]
+      },
+      "_acceptAdmin()": {
+        "intent": "Review accept Admin transaction",
+        "fields": []
+      },
+      "_addReserves(uint256)": {
+        "intent": "Review add Reserves transaction",
+        "fields": [
+          {
+            "path": "addAmount",
+            "label": "Add Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "_reduceReserves(uint256)": {
+        "intent": "Review reduce Reserves transaction",
+        "fields": [
+          {
+            "path": "reduceAmount",
+            "label": "Reduce Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "_setComptroller(address)": {
+        "intent": "Review set Comptroller transaction",
+        "fields": [
+          {
+            "path": "newComptroller",
+            "label": "New Comptroller",
+            "format": "address"
+          }
+        ]
+      },
+      "_setImplementation(address,bool,bytes)": {
+        "intent": "Review set Implementation transaction",
+        "fields": [
+          {
+            "path": "implementation_",
+            "label": "Implementation ",
+            "format": "address"
+          },
+          {
+            "path": "allowResign",
+            "label": "Allow Resign",
+            "format": "boolean"
+          },
+          {
+            "path": "becomeImplementationData",
+            "label": "Become Implementation Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "_setInterestRateModel(address)": {
+        "intent": "Review set Interest Rate Model transaction",
+        "fields": [
+          {
+            "path": "newInterestRateModel",
+            "label": "New Interest Rate Model",
+            "format": "address"
+          }
+        ]
+      },
+      "_setPendingAdmin(address)": {
+        "intent": "Review set Pending Admin transaction",
+        "fields": [
+          {
+            "path": "newPendingAdmin",
+            "label": "New Pending Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "_setReserveFactor(uint256)": {
+        "intent": "Review set Reserve Factor transaction",
+        "fields": [
+          {
+            "path": "newReserveFactorMantissa",
+            "label": "New Reserve Factor Mantissa",
+            "format": "raw"
+          }
+        ]
+      },
+      "accrueInterest()": {
+        "intent": "Review Accrue Interest transaction",
+        "fields": []
+      },
+      "approve(address,uint256)": {
+        "intent": "Review Approve transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "balanceOfUnderlying(address)": {
+        "intent": "Review Balance Of Underlying transaction",
+        "fields": [
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "borrowBalanceCurrent(address)": {
+        "intent": "Review Borrow Balance Current transaction",
+        "fields": [
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "delegateToImplementation(bytes)": {
+        "intent": "Review Delegate To Implementation transaction",
+        "fields": [
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "exchangeRateCurrent()": {
+        "intent": "Review Exchange Rate Current transaction",
+        "fields": []
+      },
+      "liquidateBorrow(address,uint256,address)": {
+        "intent": "Review Liquidate Borrow transaction",
+        "fields": [
+          {
+            "path": "borrower",
+            "label": "Borrower",
+            "format": "address"
+          },
+          {
+            "path": "repayAmount",
+            "label": "Repay Amount",
+            "format": "raw"
+          },
+          {
+            "path": "vTokenCollateral",
+            "label": "V Token Collateral",
+            "format": "address"
+          }
+        ]
+      },
+      "seize(address,address,uint256)": {
+        "intent": "Review Seize transaction",
+        "fields": [
+          {
+            "path": "liquidator",
+            "label": "Liquidator",
+            "format": "address"
+          },
+          {
+            "path": "borrower",
+            "label": "Borrower",
+            "format": "address"
+          },
+          {
+            "path": "seizeTokens",
+            "label": "Seize Tokens",
+            "format": "raw"
+          }
+        ]
+      },
+      "totalBorrowsCurrent()": {
+        "intent": "Review Total Borrows Current transaction",
+        "fields": []
+      },
+      "transfer(address,uint256)": {
+        "intent": "Review Transfer transaction",
+        "fields": [
+          {
+            "path": "dst",
+            "label": "Dst",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "src",
+            "label": "Src",
+            "format": "address"
+          },
+          {
+            "path": "dst",
+            "label": "Dst",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Venus Protocol",
+    "info": {
+      "url": "https://app.venus.io/",
+      "legalName": "Venus Protocol",
+      "lastUpdate": "2026-03-27"
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "context": {
+    "eip712": {
+      "domain": {
+        "name": "Blur Exchange",
+        "version": "1.0",
+        "chainId": 1,
+        "verifyingContract": "0x000000000000ad05ccc4f10045630fb830b95127"
+      },
+      "primaryType": "Order",
+      "types": {
+        "EIP712Domain": [
+          { "name": "name", "type": "string" },
+          { "name": "version", "type": "string" },
+          { "name": "chainId", "type": "uint256" },
+          { "name": "verifyingContract", "type": "address" }
+        ],
+        "Fee": [
+          { "name": "rate", "type": "uint16" },
+          { "name": "recipient", "type": "address" }
+        ],
+        "Order": [
+          { "name": "trader", "type": "address" },
+          { "name": "side", "type": "uint8" },
+          { "name": "matchingPolicy", "type": "address" },
+          { "name": "collection", "type": "address" },
+          { "name": "tokenId", "type": "uint256" },
+          { "name": "amount", "type": "uint256" },
+          { "name": "paymentToken", "type": "address" },
+          { "name": "price", "type": "uint256" },
+          { "name": "listingTime", "type": "uint256" },
+          { "name": "expirationTime", "type": "uint256" },
+          { "name": "fees", "type": "Fee[]" },
+          { "name": "salt", "type": "uint256" },
+          { "name": "extraParams", "type": "bytes" }
+        ]
+      },
+      "name": "Blur Order",
+      "description": "Blur NFT marketplace order listing or bid"
+    }
+  },
+  "display": {
+    "formats": {
+      "Order": {
+        "intent": "Sign Blur NFT order",
+        "fields": [
+          { "path": "trader", "label": "Trader", "format": "address" },
+          { "path": "side", "label": "Side (0=Buy,1=Sell)", "format": "raw" },
+          { "path": "collection", "label": "Collection", "format": "addressName" },
+          { "path": "tokenId", "label": "Token ID", "format": "raw" },
+          { "path": "paymentToken", "label": "Payment Token", "format": "addressName" },
+          { "path": "price", "label": "Price", "format": "raw" },
+          { "path": "listingTime", "label": "Listing Time", "format": "timestamp" },
+          { "path": "expirationTime", "label": "Expiration", "format": "timestamp" }
+        ]
+      }
+    }
+  }
+}

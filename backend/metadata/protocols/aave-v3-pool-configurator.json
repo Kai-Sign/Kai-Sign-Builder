@@ -1,0 +1,922 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x64b761D848206f447Fe2dd461b0c635Ec39EbB27"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "setUserEMode",
+          "selector": "0x2851c1e2",
+          "inputs": [
+            {
+              "name": "categoryId",
+              "type": "uint8"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setReserveBorrowing",
+          "selector": "0x1d2118f9",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "enabled",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "configureReserveAsCollateral",
+          "selector": "0x4f681e4e",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "ltv",
+              "type": "uint256"
+            },
+            {
+              "name": "liquidationThreshold",
+              "type": "uint256"
+            },
+            {
+              "name": "liquidationBonus",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setReserveStableRateBorrowing",
+          "selector": "0xd3aecc04",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "enabled",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setReserveFreeze",
+          "selector": "0xce2ec7e4",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "freeze",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setBorrowableInIsolation",
+          "selector": "0x1811389b",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "borrowable",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setReservePause",
+          "selector": "0x6f76fda5",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "paused",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setReserveFlashLoaning",
+          "selector": "0x8e3f1979",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "enabled",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setAssetEModeCategory",
+          "selector": "0x07751e1f",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "categoryId",
+              "type": "uint8"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setEModeCategory",
+          "selector": "0x153bee1e",
+          "inputs": [
+            {
+              "name": "categoryId",
+              "type": "uint8"
+            },
+            {
+              "name": "ltv",
+              "type": "uint16"
+            },
+            {
+              "name": "liquidationThreshold",
+              "type": "uint16"
+            },
+            {
+              "name": "liquidationBonus",
+              "type": "uint16"
+            },
+            {
+              "name": "oracle",
+              "type": "address"
+            },
+            {
+              "name": "label",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setBorrowCap",
+          "selector": "0xc99944f4",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "newBorrowCap",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setSupplyCap",
+          "selector": "0x60bd7e01",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "newSupplyCap",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setDebtCeiling",
+          "selector": "0x0add1980",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "newDebtCeiling",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setSiloedBorrowing",
+          "selector": "0xcd11247c",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "siloed",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setLiquidationProtocolFee",
+          "selector": "0x4c0a2a4b",
+          "inputs": [
+            {
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "name": "newFee",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setAssetBorrowableInEMode",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint8",
+              "name": "categoryId",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bool",
+              "name": "borrowable",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x110ac256"
+        },
+        {
+          "type": "function",
+          "name": "setPoolPause",
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "paused",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint40",
+              "name": "gracePeriod",
+              "type": "uint40"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x12bc3f61"
+        },
+        {
+          "type": "function",
+          "name": "updateAToken",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "asset",
+                  "type": "address"
+                },
+                {
+                  "internalType": "string",
+                  "name": "name",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "symbol",
+                  "type": "string"
+                },
+                {
+                  "internalType": "address",
+                  "name": "implementation",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "params",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct ConfiguratorInputTypes.UpdateATokenInput",
+              "name": "input",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x14ef0ac5"
+        },
+        {
+          "type": "function",
+          "name": "disableLiquidationGracePeriod",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x23415e46"
+        },
+        {
+          "type": "function",
+          "name": "setReserveLtvzero",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "ltvZero",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x2dc9552b"
+        },
+        {
+          "type": "function",
+          "name": "setReserveFactor",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "newReserveFactor",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x4b4e6753"
+        },
+        {
+          "type": "function",
+          "name": "initReserves",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "aTokenImpl",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "variableDebtTokenImpl",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "underlyingAsset",
+                  "type": "address"
+                },
+                {
+                  "internalType": "string",
+                  "name": "aTokenName",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "aTokenSymbol",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "variableDebtTokenName",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "variableDebtTokenSymbol",
+                  "type": "string"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "params",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "interestRateData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct ConfiguratorInputTypes.InitReserveInput[]",
+              "name": "input",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x6623c804"
+        },
+        {
+          "type": "function",
+          "name": "setReserveInterestRateData",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "rateData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x6aabe21d"
+        },
+        {
+          "type": "function",
+          "name": "setPoolPause",
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "paused",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x7641f3d9"
+        },
+        {
+          "type": "function",
+          "name": "setEModeCategory",
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "categoryId",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint16",
+              "name": "ltv",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint16",
+              "name": "liquidationThreshold",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint16",
+              "name": "liquidationBonus",
+              "type": "uint16"
+            },
+            {
+              "internalType": "string",
+              "name": "label",
+              "type": "string"
+            },
+            {
+              "internalType": "bool",
+              "name": "isolated",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x7c025f2c"
+        },
+        {
+          "type": "function",
+          "name": "setAssetLtvzeroInEMode",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint8",
+              "name": "categoryId",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bool",
+              "name": "ltvzero",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x85cbfce3"
+        },
+        {
+          "type": "function",
+          "name": "updateFlashloanPremium",
+          "inputs": [
+            {
+              "internalType": "uint128",
+              "name": "newFlashloanPremium",
+              "type": "uint128"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x9c1d5f00"
+        },
+        {
+          "type": "function",
+          "name": "setReservePause",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "paused",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint40",
+              "name": "gracePeriod",
+              "type": "uint40"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xb42d793b"
+        },
+        {
+          "type": "function",
+          "name": "setReserveActive",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "active",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xb736aaeb"
+        },
+        {
+          "type": "function",
+          "name": "updateVariableDebtToken",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "asset",
+                  "type": "address"
+                },
+                {
+                  "internalType": "string",
+                  "name": "name",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "symbol",
+                  "type": "string"
+                },
+                {
+                  "internalType": "address",
+                  "name": "implementation",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "params",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct ConfiguratorInputTypes.UpdateDebtTokenInput",
+              "name": "input",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xbfbc47ff"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [
+            {
+              "internalType": "contract IPoolAddressesProvider",
+              "name": "provider",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xc4d66de8"
+        },
+        {
+          "type": "function",
+          "name": "setAssetCollateralInEMode",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint8",
+              "name": "categoryId",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bool",
+              "name": "allowed",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf6527810"
+        },
+        {
+          "type": "function",
+          "name": "setEModeCategoryIsolated",
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "categoryId",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bool",
+              "name": "isolated",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf787ac1f"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave V3 PoolConfigurator",
+    "info": {
+      "website": "https://aave.com",
+      "docs": "https://docs.aave.com/developers/core/poolconfigurator"
+    }
+  },
+  "display": {
+    "formats": {
+      "setUserEMode(uint8)": {
+        "intent": "Set Efficiency Mode Category {categoryId}",
+        "fields": [
+          {
+            "path": "categoryId",
+            "label": "E-Mode Category",
+            "format": "raw"
+          }
+        ]
+      },
+      "setReserveBorrowing(address,bool)": {
+        "intent": "{enabled,select,true{Enable} other{Disable}} Borrowing",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "enabled",
+            "label": "Enabled",
+            "format": "raw"
+          }
+        ]
+      },
+      "configureReserveAsCollateral(address,uint256,uint256,uint256)": {
+        "intent": "Configure Reserve as Collateral",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "ltv",
+            "label": "LTV (bps)",
+            "format": "raw"
+          },
+          {
+            "path": "liquidationThreshold",
+            "label": "Liq. Threshold (bps)",
+            "format": "raw"
+          },
+          {
+            "path": "liquidationBonus",
+            "label": "Liq. Bonus (bps)",
+            "format": "raw"
+          }
+        ]
+      },
+      "setReserveFreeze(address,bool)": {
+        "intent": "{freeze,select,true{Freeze} other{Unfreeze}} Reserve",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "freeze",
+            "label": "Freeze",
+            "format": "raw"
+          }
+        ]
+      },
+      "setReservePause(address,bool)": {
+        "intent": "{paused,select,true{Pause} other{Unpause}} Reserve",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "paused",
+            "label": "Paused",
+            "format": "raw"
+          }
+        ]
+      },
+      "setReserveFlashLoaning(address,bool)": {
+        "intent": "{enabled,select,true{Enable} other{Disable}} Flash Loans",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "enabled",
+            "label": "Enabled",
+            "format": "raw"
+          }
+        ]
+      },
+      "setAssetEModeCategory(address,uint8)": {
+        "intent": "Set Asset E-Mode Category",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "categoryId",
+            "label": "Category ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "setEModeCategory(uint8,uint16,uint16,uint16,address,string)": {
+        "intent": "Set E-Mode Category {label}",
+        "fields": [
+          {
+            "path": "categoryId",
+            "label": "Category ID",
+            "format": "raw"
+          },
+          {
+            "path": "ltv",
+            "label": "LTV (bps)",
+            "format": "raw"
+          },
+          {
+            "path": "liquidationThreshold",
+            "label": "Liq. Threshold (bps)",
+            "format": "raw"
+          },
+          {
+            "path": "liquidationBonus",
+            "label": "Liq. Bonus (bps)",
+            "format": "raw"
+          },
+          {
+            "path": "oracle",
+            "label": "Oracle",
+            "format": "addressName"
+          },
+          {
+            "path": "label",
+            "label": "Label",
+            "format": "raw"
+          }
+        ]
+      },
+      "setBorrowCap(address,uint256)": {
+        "intent": "Set Borrow Cap to {newBorrowCap}",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "newBorrowCap",
+            "label": "New Borrow Cap",
+            "format": "raw"
+          }
+        ]
+      },
+      "setSupplyCap(address,uint256)": {
+        "intent": "Set Supply Cap to {newSupplyCap}",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "newSupplyCap",
+            "label": "New Supply Cap",
+            "format": "raw"
+          }
+        ]
+      },
+      "setDebtCeiling(address,uint256)": {
+        "intent": "Set Debt Ceiling to {newDebtCeiling}",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "newDebtCeiling",
+            "label": "New Debt Ceiling",
+            "format": "raw"
+          }
+        ]
+      },
+      "setSiloedBorrowing(address,bool)": {
+        "intent": "{siloed,select,true{Enable} other{Disable}} Siloed Borrowing",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "siloed",
+            "label": "Siloed",
+            "format": "raw"
+          }
+        ]
+      },
+      "setLiquidationProtocolFee(address,uint256)": {
+        "intent": "Set Liquidation Protocol Fee",
+        "fields": [
+          {
+            "path": "asset",
+            "label": "Asset",
+            "format": "tokenAmount"
+          },
+          {
+            "path": "newFee",
+            "label": "New Fee (bps)",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

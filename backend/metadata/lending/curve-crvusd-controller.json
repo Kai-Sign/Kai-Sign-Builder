@@ -1,0 +1,129 @@
+{
+  "$schema": "../../specs/erc7730-v2.schema.json",
+  "context": {
+    "$id": "CurveCrvUSDController",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0xa920de414ea4ab66b97da1bfe9e6eca7d4219635" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/curve/abis/0xa920de414ea4ab66b97da1bfe9e6eca7d4219635.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "Curve Finance",
+    "contractName": "Curve crvUSD LLAMMA Controller (WETH)",
+    "info": { "url": "https://crvusd.curve.fi" },
+    "constants": {
+      "WETHaddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      "crvUSDaddress": "0xf939E0A03FB07F59A73314E73794Be0E57ac1b4E"
+    }
+  },
+  "display": {
+    "formats": {
+      "create_loan(uint256,uint256,uint256)": {
+        "intent": "Create crvUSD loan (LLAMMA)",
+        "fields": [
+          {
+            "path": "#.collateral",
+            "label": "Collateral",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.WETHaddress" },
+            "visible": "always"
+          },
+          {
+            "path": "#.debt",
+            "label": "crvUSD to Mint",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.crvUSDaddress" },
+            "visible": "always"
+          },
+          {
+            "path": "#.N",
+            "label": "Number of Bands",
+            "format": "raw",
+            "visible": "always"
+          }
+        ]
+      },
+      "close_loan()": {
+        "intent": "Close crvUSD loan",
+        "fields": []
+      },
+      "add_collateral(uint256,address)": {
+        "intent": "Add collateral to crvUSD loan",
+        "fields": [
+          {
+            "path": "#.collateral",
+            "label": "Collateral Added",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.WETHaddress" },
+            "visible": "always"
+          },
+          {
+            "path": "#._for",
+            "label": "For Account",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          }
+        ]
+      },
+      "remove_collateral(uint256,bool)": {
+        "intent": "Remove collateral from crvUSD loan",
+        "fields": [
+          {
+            "path": "#.collateral",
+            "label": "Collateral Removed",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.WETHaddress" },
+            "visible": "always"
+          },
+          {
+            "path": "#.use_eth",
+            "label": "Receive ETH",
+            "format": "raw",
+            "visible": "always"
+          }
+        ]
+      },
+      "borrow_more(uint256,uint256)": {
+        "intent": "Borrow more crvUSD",
+        "fields": [
+          {
+            "path": "#.collateral",
+            "label": "Additional Collateral",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.WETHaddress" },
+            "visible": "always"
+          },
+          {
+            "path": "#.debt",
+            "label": "Additional crvUSD",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.crvUSDaddress" },
+            "visible": "always"
+          }
+        ]
+      },
+      "repay(uint256,address,int256,bool)": {
+        "intent": "Repay crvUSD loan",
+        "fields": [
+          {
+            "path": "#._d_debt",
+            "label": "crvUSD Repaid",
+            "format": "tokenAmount",
+            "params": { "token": "$.metadata.constants.crvUSDaddress" },
+            "visible": "always"
+          },
+          {
+            "path": "#._for",
+            "label": "For Account",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          }
+        ]
+      }
+    }
+  }
+}

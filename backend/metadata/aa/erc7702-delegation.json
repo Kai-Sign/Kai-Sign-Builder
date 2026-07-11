@@ -1,0 +1,40 @@
+{
+  "context": {
+    "eip712": {
+      "domain": {
+        "name": "*",
+        "version": "*",
+        "chainId": 1,
+        "verifyingContract": "*"
+      },
+      "primaryType": "Delegation",
+      "types": {
+        "EIP712Domain": [
+          { "name": "name", "type": "string" },
+          { "name": "version", "type": "string" },
+          { "name": "chainId", "type": "uint256" },
+          { "name": "verifyingContract", "type": "address" }
+        ],
+        "Delegation": [
+          { "name": "delegate", "type": "address" },
+          { "name": "nonce", "type": "uint256" },
+          { "name": "expiry", "type": "uint256" }
+        ]
+      },
+      "name": "EIP-7702 Delegation",
+      "description": "EIP-7702 code delegation authorization — grants a delegate address permission to act on behalf of the EOA"
+    }
+  },
+  "display": {
+    "formats": {
+      "Delegation": {
+        "intent": "Authorize EIP-7702 delegation",
+        "fields": [
+          { "path": "delegate", "label": "Delegate Address", "format": "addressName" },
+          { "path": "nonce", "label": "Nonce", "format": "integer" },
+          { "path": "expiry", "label": "Expiry", "format": "timestamp" }
+        ]
+      }
+    }
+  }
+}

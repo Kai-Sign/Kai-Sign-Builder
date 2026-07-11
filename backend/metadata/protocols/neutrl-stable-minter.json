@@ -1,0 +1,345 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xff0b98c0b1d8390b2a7cffbccd4e20bfcfb8191d",
+      "chainId": 1,
+      "name": "Neutrl Stable Minter",
+      "abi": [
+        {
+          "type": "function",
+          "name": "acceptAdmin",
+          "selector": "0x0e18b681",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addAsset",
+          "selector": "0xda489997",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_asset",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_oracle",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "selector": "0x2f2ff15d",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0xd2fe78e6",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "enum OrderType",
+                  "name": "orderType",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "expiry",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "benefactor",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "beneficiary",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "collateralAsset",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "collateralAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nusdAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "additionalData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct Order",
+              "name": "order",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeAsset",
+          "selector": "0x4a5e42b1",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_asset",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "selector": "0x36568abe",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "selector": "0xd547741f",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMaxMintPerBlock",
+          "selector": "0x9cd29136",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_maxMintPerBlock",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMinPrice",
+          "selector": "0x5ea8cd12",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_minPrice",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setRouter",
+          "selector": "0xc0d78655",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_router",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferAdmin",
+          "selector": "0x75829def",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "acceptAdmin()": {
+        "intent": "Review Accept Admin transaction",
+        "fields": []
+      },
+      "addAsset(address,address)": {
+        "intent": "Review Add Asset transaction",
+        "fields": [
+          {
+            "path": "_asset",
+            "label": " asset",
+            "format": "address"
+          },
+          {
+            "path": "_oracle",
+            "label": " oracle",
+            "format": "address"
+          }
+        ]
+      },
+      "grantRole(bytes32,address)": {
+        "intent": "Review Grant Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "mint((uint8,uint256,address,address,address,uint256,uint256,bytes))": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "order",
+            "label": "Order",
+            "format": "raw"
+          }
+        ]
+      },
+      "removeAsset(address)": {
+        "intent": "Review Remove Asset transaction",
+        "fields": [
+          {
+            "path": "_asset",
+            "label": " asset",
+            "format": "address"
+          }
+        ]
+      },
+      "renounceRole(bytes32,address)": {
+        "intent": "Review Renounce Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "revokeRole(bytes32,address)": {
+        "intent": "Review Revoke Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "setMaxMintPerBlock(uint256)": {
+        "intent": "Review Set Max Mint Per Block transaction",
+        "fields": [
+          {
+            "path": "_maxMintPerBlock",
+            "label": " max Mint Per Block",
+            "format": "raw"
+          }
+        ]
+      },
+      "setMinPrice(uint256)": {
+        "intent": "Review Set Min Price transaction",
+        "fields": [
+          {
+            "path": "_minPrice",
+            "label": " min Price",
+            "format": "raw"
+          }
+        ]
+      },
+      "setRouter(address)": {
+        "intent": "Review Set Router transaction",
+        "fields": [
+          {
+            "path": "_router",
+            "label": " router",
+            "format": "address"
+          }
+        ]
+      },
+      "transferAdmin(address)": {
+        "intent": "Review Transfer Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

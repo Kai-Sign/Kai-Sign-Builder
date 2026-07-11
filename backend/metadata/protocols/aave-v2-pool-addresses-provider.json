@@ -1,0 +1,243 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0xB53C1a33016B2DC2fF3653530bfF1848a515c8c5"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "setLendingPoolImpl",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "pool",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setLendingPoolConfiguratorImpl",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "configurator",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setLendingPoolCollateralManager",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "manager",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setPoolAdmin",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "admin",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setEmergencyAdmin",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "admin",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setPriceOracle",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "priceOracle",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setLendingRateOracle",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "lendingRateOracle",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setAddressAsProxy",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "implementationAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x5dcc528c"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x715018a6"
+        },
+        {
+          "type": "function",
+          "name": "setAddress",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "id",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "newAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xca446dd9"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf2fde38b"
+        },
+        {
+          "type": "function",
+          "name": "setMarketId",
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "marketId",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf67b1847"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave V2 LendingPoolAddressesProvider",
+    "info": {
+      "website": "https://aave.com",
+      "docs": "https://docs.aave.com/developers/v2"
+    }
+  },
+  "display": {
+    "formats": {
+      "setLendingPoolImpl(address)": {
+        "intent": "Set Lending Pool Implementation",
+        "fields": [
+          {
+            "path": "pool",
+            "label": "Pool Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "setLendingPoolConfiguratorImpl(address)": {
+        "intent": "Set Pool Configurator Impl",
+        "fields": [
+          {
+            "path": "configurator",
+            "label": "Configurator Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "setLendingPoolCollateralManager(address)": {
+        "intent": "Set Collateral Manager",
+        "fields": [
+          {
+            "path": "manager",
+            "label": "Manager Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "setPoolAdmin(address)": {
+        "intent": "Set Pool Admin",
+        "fields": [
+          {
+            "path": "admin",
+            "label": "Admin Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "setEmergencyAdmin(address)": {
+        "intent": "Set Emergency Admin",
+        "fields": [
+          {
+            "path": "admin",
+            "label": "Admin Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "setPriceOracle(address)": {
+        "intent": "Set Price Oracle",
+        "fields": [
+          {
+            "path": "priceOracle",
+            "label": "Oracle Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "setLendingRateOracle(address)": {
+        "intent": "Set Lending Rate Oracle",
+        "fields": [
+          {
+            "path": "lendingRateOracle",
+            "label": "Rate Oracle Address",
+            "format": "addressName"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,708 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x7712c34205737192402172409a8f7ccef8aa2aec",
+      "chainId": 1,
+      "name": "BlackRock USD Fund",
+      "symbol": "BUIDL",
+      "decimals": 6,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setOwner",
+          "selector": "0x13af4035",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTarget",
+          "selector": "0x776d1a01",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_target",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setDSService",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_serviceId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x082af7c0",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "emitOmnibusTransferEvent",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_omnibusWallet",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x0bffae76"
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_who",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "_reason",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x15f570dc"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [
+            {
+              "internalType": "string",
+              "name": "_name",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "_symbol",
+              "type": "string"
+            },
+            {
+              "internalType": "uint8",
+              "name": "_decimals",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x1624f6c6"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x23b872dd",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "issueTokensWithMultipleLocks",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_issuanceTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "_valuesLocked",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "string",
+              "name": "_reason",
+              "type": "string"
+            },
+            {
+              "internalType": "uint64[]",
+              "name": "_releaseTimes",
+              "type": "uint64[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x24ffea9a",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setFeatures",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "features",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x356c52b0"
+        },
+        {
+          "type": "function",
+          "name": "seize",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "_reason",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x3ce5aae9"
+        },
+        {
+          "type": "function",
+          "name": "unpause",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x3f4ba83a"
+        },
+        {
+          "type": "function",
+          "name": "issueTokens",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x475a9fa9",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setCap",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_cap",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x47786d37"
+        },
+        {
+          "type": "function",
+          "name": "setFeature",
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "featureIndex",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bool",
+              "name": "enable",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x59fefa47"
+        },
+        {
+          "type": "function",
+          "name": "decreaseApproval",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x66188463",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "issueTokensCustom",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_issuanceTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_valueLocked",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "_reason",
+              "type": "string"
+            },
+            {
+              "internalType": "uint64",
+              "name": "_releaseTime",
+              "type": "uint64"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x712d5fa2",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x715018a6"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x8129fc1c"
+        },
+        {
+          "type": "function",
+          "name": "pause",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x8456cb59"
+        },
+        {
+          "type": "function",
+          "name": "issueTokensWithNoCompliance",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x93af4a47"
+        },
+        {
+          "type": "function",
+          "name": "updateOmnibusInvestorBalance",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_omnibusWallet",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_wallet",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "enum CommonUtils.IncDec",
+              "name": "_increase",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x9aa25f25",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "omnibusBurn",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_omnibusWallet",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_who",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "_reason",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xb9683af0"
+        },
+        {
+          "type": "function",
+          "name": "emitOmnibusTBETransferEvent",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "omnibusWallet",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "externalId",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xcc1bbe49"
+        },
+        {
+          "type": "function",
+          "name": "increaseApproval",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_addedValue",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xd73dd623",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "emitOmnibusTBEEvent",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "omnibusWallet",
+              "type": "address"
+            },
+            {
+              "internalType": "int256",
+              "name": "totalDelta",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "accreditedDelta",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "usAccreditedDelta",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "usTotalDelta",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "jpTotalDelta",
+              "type": "int256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf11d785c"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf2fde38b"
+        },
+        {
+          "type": "function",
+          "name": "omnibusSeize",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_omnibusWallet",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "_reason",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xfbb24bf4"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} BUIDL",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 6,
+              "symbol": "BUIDL"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} BUIDL",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 6,
+              "symbol": "BUIDL"
+            }
+          }
+        ]
+      },
+      "setOwner(address)": {
+        "intent": "Review Set Owner transaction",
+        "fields": [
+          {
+            "path": "_owner",
+            "label": " owner",
+            "format": "address"
+          }
+        ]
+      },
+      "setTarget(address)": {
+        "intent": "Review Set Target transaction",
+        "fields": [
+          {
+            "path": "_target",
+            "label": " target",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

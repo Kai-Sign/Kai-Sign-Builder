@@ -1,0 +1,424 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 42161,
+          "address": "0x0b2402144bb366a632d14b83f244d2e0e21bd39c"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "transferTokens",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint16",
+              "name": "recipientChain",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "recipient",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "arbiterFee",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint32",
+              "name": "nonce",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x0f5287b0",
+          "outputs": [
+            {
+              "internalType": "uint64",
+              "name": "sequence",
+              "type": "uint64"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "submitRecoverChainId",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "encodedVM",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x178149e7"
+        },
+        {
+          "type": "function",
+          "name": "completeTransferAndUnwrapETHWithPayload",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "encodedVm",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x1c8475e4",
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "upgrade",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "encodedVM",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x25394645"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x8129fc1c"
+        },
+        {
+          "type": "function",
+          "name": "wrapAndTransferETH",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "recipientChain",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "recipient",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "arbiterFee",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint32",
+              "name": "nonce",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x9981509f",
+          "outputs": [
+            {
+              "internalType": "uint64",
+              "name": "sequence",
+              "type": "uint64"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "registerChain",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "encodedVM",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xa5799f93"
+        },
+        {
+          "type": "function",
+          "name": "wrapAndTransferETHWithPayload",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "recipientChain",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "recipient",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint32",
+              "name": "nonce",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "payload",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0xbee9cdfc",
+          "outputs": [
+            {
+              "internalType": "uint64",
+              "name": "sequence",
+              "type": "uint64"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "completeTransferWithPayload",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "encodedVm",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xc3f511c1",
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "attestToken",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "tokenAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint32",
+              "name": "nonce",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0xc48fa115",
+          "outputs": [
+            {
+              "internalType": "uint64",
+              "name": "sequence",
+              "type": "uint64"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transferTokensWithPayload",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint16",
+              "name": "recipientChain",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "recipient",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint32",
+              "name": "nonce",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "payload",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0xc5a5ebda",
+          "outputs": [
+            {
+              "internalType": "uint64",
+              "name": "sequence",
+              "type": "uint64"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "completeTransfer",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "encodedVm",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xc6878519"
+        },
+        {
+          "type": "function",
+          "name": "createWrapped",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "encodedVm",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xe8059810",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "updateWrapped",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "encodedVm",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf768441f",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "completeTransferAndUnwrapETH",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "encodedVm",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xff200cde"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Wormhole Foundation",
+    "contractName": "Wormhole Token Bridge (Arbitrum)"
+  },
+  "display": {
+    "formats": {
+      "transferTokens(address token,uint256 amount,uint16 recipientChain,bytes32 recipient,uint256 arbiterFee,uint32 nonce)": {
+        "intent": "Bridge tokens via Wormhole",
+        "interpolatedIntent": "Bridge {amount} {token} to chain {recipientChain} via Wormhole",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "token"
+            }
+          },
+          {
+            "path": "recipientChain",
+            "label": "Destination Chain",
+            "format": "integer"
+          },
+          {
+            "path": "arbiterFee",
+            "label": "Arbiter Fee",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferTokensWithPayload(address token,uint256 amount,uint16 recipientChain,bytes32 recipient,uint32 nonce,bytes payload)": {
+        "intent": "Bridge tokens with message via Wormhole",
+        "interpolatedIntent": "Bridge {amount} {token} with payload to chain {recipientChain} via Wormhole",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "token"
+            }
+          },
+          {
+            "path": "recipientChain",
+            "label": "Destination Chain",
+            "format": "integer"
+          }
+        ]
+      },
+      "completeTransfer(bytes encodedVm)": {
+        "intent": "Complete inbound Wormhole transfer",
+        "interpolatedIntent": "Complete inbound Wormhole token transfer",
+        "fields": [
+          {
+            "path": "encodedVm",
+            "label": "Signed VAA",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

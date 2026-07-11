@@ -1,0 +1,68 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "eip712": {
+      "domain": {
+        "name": "Gnosis Protocol",
+        "version": "v2",
+        "chainId": 1,
+        "verifyingContract": "0x9008D19f58AAbD9eD0D60971565AA8510560ab41"
+      },
+      "deployments": [
+        { "chainId": 1, "verifyingContract": "0x9008D19f58AAbD9eD0D60971565AA8510560ab41" },
+        { "chainId": 100, "verifyingContract": "0x9008D19f58AAbD9eD0D60971565AA8510560ab41" },
+        { "chainId": 42161, "verifyingContract": "0x9008D19f58AAbD9eD0D60971565AA8510560ab41" },
+        { "chainId": 8453, "verifyingContract": "0x9008D19f58AAbD9eD0D60971565AA8510560ab41" }
+      ],
+      "primaryType": "Order",
+      "types": {
+        "EIP712Domain": [
+          { "name": "name", "type": "string" },
+          { "name": "version", "type": "string" },
+          { "name": "chainId", "type": "uint256" },
+          { "name": "verifyingContract", "type": "address" }
+        ],
+        "Order": [
+          { "name": "sellToken", "type": "address" },
+          { "name": "buyToken", "type": "address" },
+          { "name": "receiver", "type": "address" },
+          { "name": "sellAmount", "type": "uint256" },
+          { "name": "buyAmount", "type": "uint256" },
+          { "name": "validTo", "type": "uint32" },
+          { "name": "appData", "type": "bytes32" },
+          { "name": "feeAmount", "type": "uint256" },
+          { "name": "kind", "type": "string" },
+          { "name": "partiallyFillable", "type": "bool" },
+          { "name": "sellTokenBalance", "type": "string" },
+          { "name": "buyTokenBalance", "type": "string" }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "CoW Protocol",
+    "info": {
+      "url": "https://cow.fi",
+      "legalName": "CoW Protocol"
+    }
+  },
+  "display": {
+    "formats": {
+      "Order": {
+        "intent": "Sign CoW Protocol order",
+        "interpolatedIntent": "Swap {sellAmount} {sellToken} for {buyAmount} {buyToken}",
+        "fields": [
+          { "path": "sellToken", "label": "Sell Token", "format": "addressName" },
+          { "path": "buyToken", "label": "Buy Token", "format": "addressName" },
+          { "path": "sellAmount", "label": "Sell Amount", "format": "amount", "params": { "tokenPath": "$.sellToken" } },
+          { "path": "buyAmount", "label": "Min Receive", "format": "amount", "params": { "tokenPath": "$.buyToken" } },
+          { "path": "receiver", "label": "Receiver", "format": "addressName" },
+          { "path": "validTo", "label": "Valid Until", "format": "timestamp" },
+          { "path": "feeAmount", "label": "Fee", "format": "amount", "params": { "tokenPath": "$.sellToken" } },
+          { "path": "kind", "label": "Order Type", "format": "string" },
+          { "path": "partiallyFillable", "label": "Partial Fill", "format": "boolean" }
+        ]
+      }
+    }
+  }
+}

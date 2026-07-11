@@ -1,0 +1,33 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0xe3dFf4052F0bF6134ACb73bEaE8fe2317d71F047"
+        }
+      ],
+      "abi": [
+        {"type": "function", "name": "setIncentiveDataProvider", "selector": "0x00000000", "inputs": [{"name": "provider", "type": "address"}]}
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave V3 UiIncentiveDataProvider",
+    "info": {
+      "website": "https://aave.com"
+    }
+  },
+  "display": {
+    "formats": {
+      "setIncentiveDataProvider(address)": {
+        "intent": "Set Incentive Data Provider",
+        "fields": [
+          {"path": "provider", "label": "Provider Address", "format": "addressName"}
+        ]
+      }
+    }
+  }
+}

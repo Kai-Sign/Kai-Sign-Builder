@@ -1,0 +1,1023 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xba1333333333a1ba1108e8412f11850a5c319ba9",
+      "chainId": 1,
+      "name": "Balancer Vault V3 (Ethereum)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "swap",
+          "selector": "0xa0a42cca",
+          "inputs": [
+            {
+              "name": "vaultSwapParams",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "kind",
+                  "type": "uint8"
+                },
+                {
+                  "name": "pool",
+                  "type": "address"
+                },
+                {
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "name": "tokenOut",
+                  "type": "address"
+                },
+                {
+                  "name": "amountGivenRaw",
+                  "type": "uint256"
+                },
+                {
+                  "name": "limitRaw",
+                  "type": "uint256"
+                },
+                {
+                  "name": "userData",
+                  "type": "bytes"
+                }
+              ]
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "addLiquidity",
+          "selector": "0x05de3b4e",
+          "inputs": [
+            {
+              "name": "params",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "pool",
+                  "type": "address"
+                },
+                {
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "name": "maxAmountsIn",
+                  "type": "uint256[]"
+                },
+                {
+                  "name": "minBptAmountOut",
+                  "type": "uint256"
+                },
+                {
+                  "name": "kind",
+                  "type": "uint8"
+                },
+                {
+                  "name": "userData",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "removeLiquidity",
+          "selector": "0xf6d37a76",
+          "inputs": [
+            {
+              "name": "params",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "pool",
+                  "type": "address"
+                },
+                {
+                  "name": "from",
+                  "type": "address"
+                },
+                {
+                  "name": "maxBptAmountIn",
+                  "type": "uint256"
+                },
+                {
+                  "name": "minAmountsOut",
+                  "type": "uint256[]"
+                },
+                {
+                  "name": "kind",
+                  "type": "uint8"
+                },
+                {
+                  "name": "userData",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "addLiquidity",
+          "selector": "0x4af29ec4",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "pool",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "maxAmountsIn",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minBptAmountOut",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "enum AddLiquidityKind",
+                  "name": "kind",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "userData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct AddLiquidityParams",
+              "name": "params",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "amountsIn",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "bptAmountOut",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "returnData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "erc4626BufferWrapOrUnwrap",
+          "selector": "0x43583be5",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "enum SwapKind",
+                  "name": "kind",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "enum WrappingDirection",
+                  "name": "direction",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "contract IERC4626",
+                  "name": "wrappedToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountGivenRaw",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "limitRaw",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct BufferWrapOrUnwrapParams",
+              "name": "params",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountCalculatedRaw",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountInRaw",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOutRaw",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeLiquidity",
+          "selector": "0x21457897",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "pool",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "from",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "maxBptAmountIn",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "minAmountsOut",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "enum RemoveLiquidityKind",
+                  "name": "kind",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "userData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct RemoveLiquidityParams",
+              "name": "params",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "bptAmountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amountsOut",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "returnData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "sendTo",
+          "selector": "0xae639329",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "settle",
+          "selector": "0x15afd409",
+          "inputs": [
+            {
+              "internalType": "contract IERC20",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountHint",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "credit",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swap",
+          "selector": "0x2bfb780c",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "enum SwapKind",
+                  "name": "kind",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "address",
+                  "name": "pool",
+                  "type": "address"
+                },
+                {
+                  "internalType": "contract IERC20",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "contract IERC20",
+                  "name": "tokenOut",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountGivenRaw",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "limitRaw",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "userData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct VaultSwapParams",
+              "name": "vaultSwapParams",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountCalculated",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xbeabacc8",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x15dacbea",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unlock",
+          "selector": "0x48c89491",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "result",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "quoteAndRevert",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x757d64b3"
+        },
+        {
+          "type": "function",
+          "name": "removeLiquidityRecovery",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "exactBptAmountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "minAmountsOut",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xa07d6040",
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "amountsOutRaw",
+              "type": "uint256[]"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IERC20[]",
+              "name": "tokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "exactAmountsIn",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minBptAmountOut",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "userData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xba8a2be0",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "bptAmountOut",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "emitAuxiliaryEvent",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "eventKey",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "eventData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xc8088247"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xe1f21c67",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "quote",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xedfa3568",
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "result",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "registerPool",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "contract IERC20",
+                  "name": "token",
+                  "type": "address"
+                },
+                {
+                  "internalType": "enum TokenType",
+                  "name": "tokenType",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "contract IRateProvider",
+                  "name": "rateProvider",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "paysYieldFees",
+                  "type": "bool"
+                }
+              ],
+              "internalType": "struct TokenConfig[]",
+              "name": "tokenConfig",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "swapFeePercentage",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint32",
+              "name": "pauseWindowEndTime",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bool",
+              "name": "protocolFeeExempt",
+              "type": "bool"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "pauseManager",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "swapFeeManager",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "poolCreator",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct PoolRoleAccounts",
+              "name": "roleAccounts",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "poolHooksContract",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "bool",
+                  "name": "disableUnbalancedLiquidity",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "enableAddLiquidityCustom",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "enableRemoveLiquidityCustom",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "bool",
+                  "name": "enableDonation",
+                  "type": "bool"
+                }
+              ],
+              "internalType": "struct LiquidityManagement",
+              "name": "liquidityManagement",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xeeec802f"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "swap(tuple,uint256)": {
+        "intent": "Swap tokens via Balancer V3",
+        "interpolatedIntent": "Swap {vaultSwapParams.amountGivenRaw} {vaultSwapParams.tokenIn} for {vaultSwapParams.tokenOut} on Balancer V3",
+        "fields": [
+          {
+            "path": "vaultSwapParams.tokenIn",
+            "label": "Token In",
+            "format": "addressName"
+          },
+          {
+            "path": "vaultSwapParams.tokenOut",
+            "label": "Token Out",
+            "format": "addressName"
+          },
+          {
+            "path": "vaultSwapParams.amountGivenRaw",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "vaultSwapParams.tokenIn"
+            }
+          },
+          {
+            "path": "vaultSwapParams.limitRaw",
+            "label": "Limit",
+            "format": "raw"
+          },
+          {
+            "path": "vaultSwapParams.pool",
+            "label": "Pool",
+            "format": "addressName"
+          },
+          {
+            "path": "vaultSwapParams.kind",
+            "label": "Swap Kind (0=ExactIn, 1=ExactOut)",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "timestamp"
+          }
+        ]
+      },
+      "addLiquidity(tuple)": {
+        "intent": "Add liquidity to Balancer V3 pool",
+        "interpolatedIntent": "Add liquidity to Balancer V3 pool {params.pool}",
+        "fields": [
+          {
+            "path": "params.pool",
+            "label": "Pool",
+            "format": "addressName"
+          },
+          {
+            "path": "params.to",
+            "label": "BPT Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "params.minBptAmountOut",
+            "label": "Min BPT Out",
+            "format": "raw"
+          },
+          {
+            "path": "params.kind",
+            "label": "Add Kind",
+            "format": "raw"
+          }
+        ]
+      },
+      "removeLiquidity(tuple)": {
+        "intent": "Remove liquidity from Balancer V3 pool",
+        "interpolatedIntent": "Remove up to {params.maxBptAmountIn} BPT from Balancer V3 pool {params.pool}",
+        "fields": [
+          {
+            "path": "params.pool",
+            "label": "Pool",
+            "format": "addressName"
+          },
+          {
+            "path": "params.from",
+            "label": "BPT Owner",
+            "format": "addressName"
+          },
+          {
+            "path": "params.maxBptAmountIn",
+            "label": "Max BPT In",
+            "format": "raw"
+          },
+          {
+            "path": "params.kind",
+            "label": "Remove Kind",
+            "format": "raw"
+          }
+        ]
+      },
+      "addLiquidity((address,address,uint256[],uint256,uint8,bytes))": {
+        "intent": "Review Add Liquidity transaction",
+        "fields": [
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "erc4626BufferWrapOrUnwrap((uint8,uint8,address,uint256,uint256))": {
+        "intent": "Review Erc4626 Buffer Wrap Or Unwrap transaction",
+        "fields": [
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "removeLiquidity((address,address,uint256,uint256[],uint8,bytes))": {
+        "intent": "Review Remove Liquidity transaction",
+        "fields": [
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "sendTo(address,address,uint256)": {
+        "intent": "Review Send To transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "settle(address,uint256)": {
+        "intent": "Review Settle transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "amountHint",
+            "label": "Amount Hint",
+            "format": "raw"
+          }
+        ]
+      },
+      "swap((uint8,address,address,address,uint256,uint256,bytes))": {
+        "intent": "Review Swap transaction",
+        "fields": [
+          {
+            "path": "vaultSwapParams",
+            "label": "Vault Swap Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "transfer(address,address,uint256)": {
+        "intent": "Review Transfer transaction",
+        "fields": [
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferFrom(address,address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "unlock(bytes)": {
+        "intent": "Review Unlock transaction",
+        "fields": [
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Balancer Labs",
+    "info": {
+      "url": "https://app.balancer.fi/",
+      "legalName": "Balancer Protocol",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

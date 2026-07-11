@@ -1,0 +1,427 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x7d5706f6ef3f89b3951e23e557cdfbc3239d4e2c"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x095ea7b3"
+        },
+        {
+          "type": "function",
+          "name": "updateShareRemainderSplitToTreasuryInBps",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_shareRemainderSplitToTreasuryInBps",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x105a6695"
+        },
+        {
+          "type": "function",
+          "name": "requestWithdraw",
+          "inputs": [
+            {
+              "internalType": "uint96",
+              "name": "amountOfEEth",
+              "type": "uint96"
+            },
+            {
+              "internalType": "uint96",
+              "name": "shareOfEEth",
+              "type": "uint96"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "fee",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x19691cb0",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x23b872dd"
+        },
+        {
+          "type": "function",
+          "name": "batchClaimWithdraw",
+          "inputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "tokenIds",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x24fccdcf"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x3659cfe6"
+        },
+        {
+          "type": "function",
+          "name": "safeTransferFrom",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x42842e0e"
+        },
+        {
+          "type": "function",
+          "name": "pauseContract",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x439766ce"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x4f1ef286"
+        },
+        {
+          "type": "function",
+          "name": "finalizeRequests",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "requestId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x54768571"
+        },
+        {
+          "type": "function",
+          "name": "seizeInvalidRequest",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "requestId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x554e34f7"
+        },
+        {
+          "type": "function",
+          "name": "aggregateSumEEthShareAmount",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_numReqsToScan",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x66eb8b19"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x715018a6"
+        },
+        {
+          "type": "function",
+          "name": "setApprovalForAll",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "operator",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "approved",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xa22cb465"
+        },
+        {
+          "type": "function",
+          "name": "claimWithdraw",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xb13acedd"
+        },
+        {
+          "type": "function",
+          "name": "safeTransferFrom",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xb88d4fde"
+        },
+        {
+          "type": "function",
+          "name": "invalidateRequest",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "requestId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xb9907174"
+        },
+        {
+          "type": "function",
+          "name": "unPauseContract",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0xbac15203"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_liquidityPoolAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_eEthAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_membershipManagerAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xc0c53b8b"
+        },
+        {
+          "type": "function",
+          "name": "handleRemainder",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_eEthAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xd2051277"
+        },
+        {
+          "type": "function",
+          "name": "validateRequest",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "requestId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xe27d067b"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf2fde38b"
+        },
+        {
+          "type": "function",
+          "name": "initializeOnUpgrade",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_roleRegistry",
+              "type": "address"
+            },
+            {
+              "internalType": "uint16",
+              "name": "_shareRemainderSplitToTreasuryInBps",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf8a025b4"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "ether.fi",
+    "contractName": "ether.fi WithdrawRequestNFT"
+  },
+  "display": {
+    "formats": {
+      "requestWithdraw(uint96 amount,address owner)": {
+        "intent": "Request ether.fi eETH withdrawal",
+        "interpolatedIntent": "Request withdrawal of {amount} eETH for {owner}",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "eETH"
+            }
+          },
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "addressName"
+          }
+        ]
+      },
+      "claimWithdraw(uint256 tokenId)": {
+        "intent": "Claim ether.fi withdrawal",
+        "interpolatedIntent": "Claim completed withdrawal #{tokenId}",
+        "fields": [
+          {
+            "path": "tokenId",
+            "label": "Request NFT ID",
+            "format": "integer"
+          }
+        ]
+      }
+    }
+  }
+}

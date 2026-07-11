@@ -1,0 +1,508 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x85f60d3ea4e86af43c9d4e9cc9095281fc25c405"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "updateExchangeRate",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x02ce728f",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "updated",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "rate",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "direct",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "renounce",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x078dfbe7"
+        },
+        {
+          "type": "function",
+          "name": "repay",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "skim",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "part",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x15294c40",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "changeInterestRate",
+          "inputs": [
+            {
+              "internalType": "uint64",
+              "name": "newInterestRate",
+              "type": "uint64"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x1cd4c966"
+        },
+        {
+          "type": "function",
+          "name": "withdrawFees",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x476343ee"
+        },
+        {
+          "type": "function",
+          "name": "borrow",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x4b8a3529",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "part",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "share",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "init",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x4ddf47d4"
+        },
+        {
+          "type": "function",
+          "name": "claimOwnership",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x4e71e0c8"
+        },
+        {
+          "type": "function",
+          "name": "cook",
+          "inputs": [
+            {
+              "internalType": "uint8[]",
+              "name": "actions",
+              "type": "uint8[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "values",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "datas",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x656f3d64",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "value1",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value2",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "repayForAll",
+          "inputs": [
+            {
+              "internalType": "uint128",
+              "name": "amount",
+              "type": "uint128"
+            },
+            {
+              "internalType": "bool",
+              "name": "skim",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x7ef40455",
+          "outputs": [
+            {
+              "internalType": "uint128",
+              "name": "",
+              "type": "uint128"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "reduceSupply",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x80623444"
+        },
+        {
+          "type": "function",
+          "name": "addCollateral",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "skim",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "share",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x860ffea1"
+        },
+        {
+          "type": "function",
+          "name": "removeCollateral",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "share",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x876467f8"
+        },
+        {
+          "type": "function",
+          "name": "addBorrowPosition",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x8a08adf9",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "part",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setBlacklistedCallee",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "callee",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "blacklisted",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xeeae797b"
+        },
+        {
+          "type": "function",
+          "name": "setFeeTo",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newFeeTo",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf46901ed"
+        },
+        {
+          "type": "function",
+          "name": "changeBorrowLimit",
+          "inputs": [
+            {
+              "internalType": "uint128",
+              "name": "newBorrowLimit",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint128",
+              "name": "perAddressPart",
+              "type": "uint128"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf7dad434"
+        },
+        {
+          "type": "function",
+          "name": "accrue",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0xf8ba4cff"
+        },
+        {
+          "type": "function",
+          "name": "liquidate",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "users",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "maxBorrowParts",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "contract ISwapperV2",
+              "name": "swapper",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "swapperData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xff6ff84b"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Abracadabra",
+    "contractName": "Abracadabra CauldronV4 (WBTC)"
+  },
+  "display": {
+    "formats": {
+      "cook(uint8[] actions,uint256[] values,bytes[] datas)": {
+        "intent": "Execute Abracadabra batch operation",
+        "interpolatedIntent": "Execute batch operations on Abracadabra Cauldron",
+        "fields": [
+          {
+            "path": "actions",
+            "label": "Actions",
+            "format": "raw"
+          },
+          {
+            "path": "values",
+            "label": "Values",
+            "format": "raw"
+          },
+          {
+            "path": "datas",
+            "label": "Data",
+            "format": "raw"
+          }
+        ]
+      },
+      "borrow(address to,uint256 amount)": {
+        "intent": "Borrow MIM from Abracadabra",
+        "interpolatedIntent": "Borrow {amount} MIM to {to}",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "MIM Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "MIM"
+            }
+          }
+        ]
+      },
+      "repay(address to,bool skim,uint256 part)": {
+        "intent": "Repay MIM to Abracadabra",
+        "interpolatedIntent": "Repay {part} MIM debt for {to}",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Account",
+            "format": "addressName"
+          },
+          {
+            "path": "part",
+            "label": "Debt Part",
+            "format": "raw"
+          }
+        ]
+      },
+      "addCollateral(address to,bool skim,uint256 share)": {
+        "intent": "Add collateral to Abracadabra Cauldron",
+        "interpolatedIntent": "Add {share} collateral shares for {to}",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Account",
+            "format": "addressName"
+          },
+          {
+            "path": "share",
+            "label": "Collateral Shares",
+            "format": "raw"
+          }
+        ]
+      },
+      "removeCollateral(address to,uint256 share)": {
+        "intent": "Remove collateral from Abracadabra Cauldron",
+        "interpolatedIntent": "Remove {share} collateral shares to {to}",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "share",
+            "label": "Collateral Shares",
+            "format": "raw"
+          }
+        ]
+      },
+      "liquidate(address[] users,uint256[] maxBorrowParts,address to,address swapper)": {
+        "intent": "Liquidate Abracadabra positions",
+        "interpolatedIntent": "Liquidate undercollateralized positions on Abracadabra",
+        "fields": [
+          {
+            "path": "users",
+            "label": "Users to Liquidate",
+            "format": "raw"
+          },
+          {
+            "path": "maxBorrowParts",
+            "label": "Max Borrow Parts",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "swapper",
+            "label": "Swapper",
+            "format": "addressName"
+          }
+        ]
+      }
+    }
+  }
+}

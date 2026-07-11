@@ -1,0 +1,52 @@
+{
+  "$schema": "../../specs/erc7730-v2.schema.json",
+  "context": {
+    "$id": "X2Y2Exchange",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x74312363e45DCaBA76c59ec49a7Aa8A65a67EeD3" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/x2y2/abis/0x74312363e45dcaba76c59ec49a13aa114034c39b.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "X2Y2",
+    "contractName": "X2Y2 Exchange V1",
+    "info": { "url": "https://x2y2.io" },
+    "constants": {
+      "X2Y2address": "0x1E4EDE388cbc9F4b5c79681B7f94d36a11ABEBC9"
+    },
+    "enums": {
+      "orderSide": {
+        "0": "Buy",
+        "1": "Sell"
+      }
+    }
+  },
+  "display": {
+    "formats": {
+      "cancelOrder(uint256)": {
+        "intent": "Cancel X2Y2 order",
+        "fields": [
+          {
+            "path": "#.itemHash",
+            "label": "Order Hash",
+            "format": "raw",
+            "visible": "always"
+          }
+        ]
+      },
+      "cancelOrders(uint256[])": {
+        "intent": "Cancel multiple X2Y2 orders",
+        "fields": [
+          {
+            "path": "#.itemHashes",
+            "label": "Order Hashes",
+            "format": "raw",
+            "visible": "always"
+          }
+        ]
+      }
+    }
+  }
+}

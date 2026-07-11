@@ -1,0 +1,857 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x84db6ee82b7cf3b47e8f19270abde5718b936670",
+      "chainId": 1,
+      "name": "Ankr ETH Staking",
+      "abi": [
+        {
+          "type": "function",
+          "name": "stakeAndClaimBonds",
+          "selector": "0x48c518fc",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "stakeAndClaimCerts",
+          "selector": "0x830f9320",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "unstakeBonds",
+          "selector": "0xc36f3503",
+          "inputs": [
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unstakeCerts",
+          "selector": "0x394ff0e0",
+          "inputs": [
+            {
+              "name": "shares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "admin",
+          "selector": "0xf851a440",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeAdmin",
+          "selector": "0x8f283970",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "implementation",
+          "selector": "0x5c60da1b",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x3659cfe6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "allowVault",
+          "selector": "0xcee446c1",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "vault",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeOperator",
+          "selector": "0x06394c9b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "operator",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimAETH",
+          "selector": "0x70829f0e",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimFETH",
+          "selector": "0xca3e9f8f",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimManually",
+          "selector": "0xe44148ec",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "receiverAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "disallowVault",
+          "selector": "0x9c8fb3e2",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "vault",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "distributeRewards",
+          "selector": "0x59974e38",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "feeAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xc0c53b8b",
+          "inputs": [
+            {
+              "internalType": "contract IAETH",
+              "name": "aethContract",
+              "type": "address"
+            },
+            {
+              "internalType": "contract SystemParameters",
+              "name": "parameters",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "depositContract",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pushToBeacon",
+          "selector": "0xec60a985",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "pubkey",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "withdrawal_credentials",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "signature",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "deposit_data_root",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pushToVault",
+          "selector": "0x4f574ab3",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "count",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "restake",
+          "selector": "0x4f91440d",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "stake",
+          "selector": "0x3a4b66f1",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "stakeAndClaimAethB",
+          "selector": "0xeb834a2c",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "stakeAndClaimAethC",
+          "selector": "0x9fa65c56",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "togglePause",
+          "selector": "0x2c323bbd",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "action",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unstakeAETH",
+          "selector": "0xc957619d",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unstakeAETHFor",
+          "selector": "0xd972896e",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unstakeFETH",
+          "selector": "0x8666407a",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unstakeFETHFor",
+          "selector": "0xd8cb5fc5",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateAETHContract",
+          "selector": "0x2edabb71",
+          "inputs": [
+            {
+              "internalType": "address payable",
+              "name": "aEthContract",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateClaimableShares",
+          "selector": "0x6e45feb7",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "accounts",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateConfigContract",
+          "selector": "0x58b1c691",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "configContract",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateDistributeGasLimit",
+          "selector": "0xae965101",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newValue",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateFETHContract",
+          "selector": "0x75e73cdb",
+          "inputs": [
+            {
+              "internalType": "address payable",
+              "name": "fEthContract",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateTreasury",
+          "selector": "0x7f51bb1f",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newValue",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateWithdrawalPool",
+          "selector": "0xdb3c3ea7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newValue",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "stakeAndClaimBonds()": {
+        "intent": "Stake ETH for ankrETH (bonds) via Ankr",
+        "fields": []
+      },
+      "stakeAndClaimCerts()": {
+        "intent": "Stake ETH for ankrETH (certificates) via Ankr",
+        "fields": []
+      },
+      "unstakeBonds(uint256)": {
+        "intent": "Unstake ankrETH bonds via Ankr",
+        "interpolatedIntent": "Unstake {amount} ankrETH bonds from Ankr staking",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "ankrETH to Unstake",
+            "format": "raw"
+          }
+        ]
+      },
+      "unstakeCerts(uint256)": {
+        "intent": "Unstake ankrETH certificates via Ankr",
+        "interpolatedIntent": "Unstake {shares} ankrETH certificate shares from Ankr staking",
+        "fields": [
+          {
+            "path": "shares",
+            "label": "ankrETH Shares to Unstake",
+            "format": "raw"
+          }
+        ]
+      },
+      "admin()": {
+        "intent": "Review Admin transaction",
+        "fields": []
+      },
+      "changeAdmin(address)": {
+        "intent": "Review Change Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "implementation()": {
+        "intent": "Review Implementation transaction",
+        "fields": []
+      },
+      "upgradeTo(address)": {
+        "intent": "Review Upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "allowVault(address)": {
+        "intent": "Review Allow Vault transaction",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "address"
+          }
+        ]
+      },
+      "changeOperator(address)": {
+        "intent": "Review Change Operator transaction",
+        "fields": [
+          {
+            "path": "operator",
+            "label": "Operator",
+            "format": "address"
+          }
+        ]
+      },
+      "claimAETH()": {
+        "intent": "Review Claim AETH transaction",
+        "fields": []
+      },
+      "claimFETH()": {
+        "intent": "Review Claim FETH transaction",
+        "fields": []
+      },
+      "claimManually(address)": {
+        "intent": "Review Claim Manually transaction",
+        "fields": [
+          {
+            "path": "receiverAddress",
+            "label": "Receiver Address",
+            "format": "address"
+          }
+        ]
+      },
+      "disallowVault(address)": {
+        "intent": "Review Disallow Vault transaction",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "address"
+          }
+        ]
+      },
+      "distributeRewards(uint256)": {
+        "intent": "Review Distribute Rewards transaction",
+        "fields": [
+          {
+            "path": "feeAmount",
+            "label": "Fee Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "initialize(address,address,address)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "aethContract",
+            "label": "Aeth Contract",
+            "format": "address"
+          },
+          {
+            "path": "parameters",
+            "label": "Parameters",
+            "format": "address"
+          },
+          {
+            "path": "depositContract",
+            "label": "Deposit Contract",
+            "format": "address"
+          }
+        ]
+      },
+      "pushToBeacon(bytes,bytes,bytes,bytes32)": {
+        "intent": "Review Push To Beacon transaction",
+        "fields": [
+          {
+            "path": "pubkey",
+            "label": "Pubkey",
+            "format": "hex"
+          },
+          {
+            "path": "withdrawal_credentials",
+            "label": "Withdrawal credentials",
+            "format": "hex"
+          },
+          {
+            "path": "signature",
+            "label": "Signature",
+            "format": "hex"
+          },
+          {
+            "path": "deposit_data_root",
+            "label": "Deposit data root",
+            "format": "hex"
+          }
+        ]
+      },
+      "pushToVault(address,uint256)": {
+        "intent": "Review Push To Vault transaction",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "address"
+          },
+          {
+            "path": "count",
+            "label": "Count",
+            "format": "raw"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "restake()": {
+        "intent": "Review Restake transaction",
+        "fields": []
+      },
+      "stake()": {
+        "intent": "Review Stake transaction",
+        "fields": []
+      },
+      "stakeAndClaimAethB()": {
+        "intent": "Review Stake And Claim Aeth B transaction",
+        "fields": []
+      },
+      "stakeAndClaimAethC()": {
+        "intent": "Review Stake And Claim Aeth C transaction",
+        "fields": []
+      },
+      "togglePause(bytes32)": {
+        "intent": "Review Toggle Pause transaction",
+        "fields": [
+          {
+            "path": "action",
+            "label": "Action",
+            "format": "hex"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "unstakeAETH(uint256)": {
+        "intent": "Review Unstake AETH transaction",
+        "fields": [
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          }
+        ]
+      },
+      "unstakeAETHFor(uint256,address)": {
+        "intent": "Review Unstake AETHFor transaction",
+        "fields": [
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "unstakeFETH(uint256)": {
+        "intent": "Review Unstake FETH transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "unstakeFETHFor(uint256,address)": {
+        "intent": "Review Unstake FETHFor transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "updateAETHContract(address)": {
+        "intent": "Review Update AETHContract transaction",
+        "fields": [
+          {
+            "path": "aEthContract",
+            "label": "A Eth Contract",
+            "format": "address"
+          }
+        ]
+      },
+      "updateClaimableShares(address[],uint256[])": {
+        "intent": "Review Update Claimable Shares transaction",
+        "fields": [
+          {
+            "path": "accounts",
+            "label": "Accounts",
+            "format": "raw"
+          },
+          {
+            "path": "amounts",
+            "label": "Amounts",
+            "format": "raw"
+          }
+        ]
+      },
+      "updateConfigContract(address)": {
+        "intent": "Review Update Config Contract transaction",
+        "fields": [
+          {
+            "path": "configContract",
+            "label": "Config Contract",
+            "format": "address"
+          }
+        ]
+      },
+      "updateDistributeGasLimit(uint256)": {
+        "intent": "Review Update Distribute Gas Limit transaction",
+        "fields": [
+          {
+            "path": "newValue",
+            "label": "New Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "updateFETHContract(address)": {
+        "intent": "Review Update FETHContract transaction",
+        "fields": [
+          {
+            "path": "fEthContract",
+            "label": "F Eth Contract",
+            "format": "address"
+          }
+        ]
+      },
+      "updateTreasury(address)": {
+        "intent": "Review Update Treasury transaction",
+        "fields": [
+          {
+            "path": "newValue",
+            "label": "New Value",
+            "format": "address"
+          }
+        ]
+      },
+      "updateWithdrawalPool(address)": {
+        "intent": "Review Update Withdrawal Pool transaction",
+        "fields": [
+          {
+            "path": "newValue",
+            "label": "New Value",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Ankr",
+    "info": {
+      "url": "https://www.ankr.com/staking/stake/",
+      "legalName": "Ankr Network",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

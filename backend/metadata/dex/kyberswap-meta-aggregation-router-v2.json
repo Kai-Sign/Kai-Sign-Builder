@@ -1,0 +1,672 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x6131b5fae19ea4f9d964eac0408e4408b66337b5",
+      "chainId": 1,
+      "name": "KyberSwap Meta Aggregation Router V2",
+      "abi": [
+        {
+          "type": "function",
+          "name": "swap",
+          "selector": "0xe21fd0e9",
+          "inputs": [
+            {
+              "name": "executor",
+              "type": "address"
+            },
+            {
+              "name": "desc",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "srcToken",
+                  "type": "address"
+                },
+                {
+                  "name": "dstToken",
+                  "type": "address"
+                },
+                {
+                  "name": "srcReceiver",
+                  "type": "address"
+                },
+                {
+                  "name": "dstReceiver",
+                  "type": "address"
+                },
+                {
+                  "name": "amount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "minReturnAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "flags",
+                  "type": "uint256"
+                }
+              ]
+            },
+            {
+              "name": "clientData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swapSimpleMode",
+          "selector": "0x8af033fb",
+          "inputs": [
+            {
+              "name": "executor",
+              "type": "address"
+            },
+            {
+              "name": "desc",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "srcToken",
+                  "type": "address"
+                },
+                {
+                  "name": "dstToken",
+                  "type": "address"
+                },
+                {
+                  "name": "srcReceiver",
+                  "type": "address"
+                },
+                {
+                  "name": "dstReceiver",
+                  "type": "address"
+                },
+                {
+                  "name": "amount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "minReturnAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "flags",
+                  "type": "uint256"
+                }
+              ]
+            },
+            {
+              "name": "clientData",
+              "type": "bytes"
+            },
+            {
+              "name": "permit",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "rescueFunds",
+          "selector": "0x78e3214f",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapGeneric",
+          "selector": "0x59e50fed",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "callTarget",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "approveTarget",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "targetData",
+                  "type": "bytes"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "contract IERC20",
+                      "name": "srcToken",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "contract IERC20",
+                      "name": "dstToken",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address[]",
+                      "name": "srcReceivers",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "uint256[]",
+                      "name": "srcAmounts",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "internalType": "address[]",
+                      "name": "feeReceivers",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "uint256[]",
+                      "name": "feeAmounts",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "dstReceiver",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minReturnAmount",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "flags",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "permit",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct MetaAggregationRouterV2.SwapDescriptionV2",
+                  "name": "desc",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "clientData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct MetaAggregationRouterV2.SwapExecutionParams",
+              "name": "execution",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "returnAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "gasUsed",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateWhitelist",
+          "selector": "0x33320de3",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "addr",
+              "type": "address[]"
+            },
+            {
+              "internalType": "bool[]",
+              "name": "value",
+              "type": "bool[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapSimpleMode",
+          "inputs": [
+            {
+              "internalType": "contract IAggregationExecutor",
+              "name": "caller",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "contract IERC20",
+                  "name": "srcToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "contract IERC20",
+                  "name": "dstToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "srcReceivers",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "srcAmounts",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "feeReceivers",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "feeAmounts",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "address",
+                  "name": "dstReceiver",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minReturnAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "flags",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "permit",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct MetaAggregationRouterV2.SwapDescriptionV2",
+              "name": "desc",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "executorData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "clientData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x8af033fb",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "returnAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "gasUsed",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "swap",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "callTarget",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "approveTarget",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "targetData",
+                  "type": "bytes"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "contract IERC20",
+                      "name": "srcToken",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "contract IERC20",
+                      "name": "dstToken",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address[]",
+                      "name": "srcReceivers",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "uint256[]",
+                      "name": "srcAmounts",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "internalType": "address[]",
+                      "name": "feeReceivers",
+                      "type": "address[]"
+                    },
+                    {
+                      "internalType": "uint256[]",
+                      "name": "feeAmounts",
+                      "type": "uint256[]"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "dstReceiver",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "minReturnAmount",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "flags",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "permit",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct MetaAggregationRouterV2.SwapDescriptionV2",
+                  "name": "desc",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "clientData",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct MetaAggregationRouterV2.SwapExecutionParams",
+              "name": "execution",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0xe21fd0e9",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "returnAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "gasUsed",
+              "type": "uint256"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "swap(address,tuple,bytes)": {
+        "intent": "Swap via KyberSwap",
+        "interpolatedIntent": "Swap {desc.amount} {desc.srcToken} for at least {desc.minReturnAmount} {desc.dstToken}",
+        "fields": [
+          {
+            "path": "desc.srcToken",
+            "label": "From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "desc.dstToken",
+            "label": "To Token",
+            "format": "addressName"
+          },
+          {
+            "path": "desc.amount",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "desc.srcToken"
+            }
+          },
+          {
+            "path": "desc.minReturnAmount",
+            "label": "Min Amount Out",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "desc.dstToken"
+            }
+          },
+          {
+            "path": "desc.dstReceiver",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "swapSimpleMode(address,tuple,bytes,bytes)": {
+        "intent": "Swap via KyberSwap",
+        "interpolatedIntent": "Swap {desc.amount} {desc.srcToken} for at least {desc.minReturnAmount} {desc.dstToken}",
+        "fields": [
+          {
+            "path": "desc.srcToken",
+            "label": "From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "desc.dstToken",
+            "label": "To Token",
+            "format": "addressName"
+          },
+          {
+            "path": "desc.amount",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "desc.srcToken"
+            }
+          },
+          {
+            "path": "desc.minReturnAmount",
+            "label": "Min Amount Out",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "desc.dstToken"
+            }
+          },
+          {
+            "path": "desc.dstReceiver",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "rescueFunds(address,uint256)": {
+        "intent": "Review Rescue Funds transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapGeneric((address,address,bytes,(address,address,address[],uint256[],address[],uint256[],address,uint256,uint256,uint256,bytes),bytes))": {
+        "intent": "Review Swap Generic transaction",
+        "fields": [
+          {
+            "path": "execution",
+            "label": "Execution",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "updateWhitelist(address[],bool[])": {
+        "intent": "Review Update Whitelist transaction",
+        "fields": [
+          {
+            "path": "addr",
+            "label": "Addr",
+            "format": "raw"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "swap(address,(address,address,address,address,uint256,uint256,uint256),bytes)": {
+        "intent": "Review Swap transaction",
+        "fields": [
+          {
+            "path": "executor",
+            "label": "Executor",
+            "format": "address"
+          },
+          {
+            "path": "desc",
+            "label": "Desc",
+            "format": "raw"
+          },
+          {
+            "path": "clientData",
+            "label": "Client Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "swapSimpleMode(address,(address,address,address,address,uint256,uint256,uint256),bytes,bytes)": {
+        "intent": "Review Swap Simple Mode transaction",
+        "fields": [
+          {
+            "path": "executor",
+            "label": "Executor",
+            "format": "address"
+          },
+          {
+            "path": "desc",
+            "label": "Desc",
+            "format": "raw"
+          },
+          {
+            "path": "clientData",
+            "label": "Client Data",
+            "format": "hex"
+          },
+          {
+            "path": "permit",
+            "label": "Permit",
+            "format": "hex"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "KyberNetwork",
+    "info": {
+      "url": "https://kyberswap.com/",
+      "legalName": "KyberSwap Protocol",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

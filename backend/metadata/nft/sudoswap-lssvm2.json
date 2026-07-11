@@ -1,0 +1,84 @@
+{
+  "$schema": "../../specs/erc7730-v2.schema.json",
+  "context": {
+    "$id": "SudoSwapLSSVM2",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x2B2e8cDA09bBA9660dCA5cB6233787738Ad68329" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/sudoswap/abis/0xa020d57ab0448ef74115c08736c66b5cc8e4cd0.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "SudoSwap",
+    "contractName": "SudoSwap LSSVM2 Router",
+    "info": { "url": "https://sudoswap.xyz" }
+  },
+  "display": {
+    "formats": {
+      "swapETHForSpecificNFTs((address,uint256[])[],address,address,uint256)": {
+        "intent": "Buy specific NFTs from SudoSwap",
+        "fields": [
+          {
+            "path": "#.nftRecipient",
+            "label": "NFT Recipient",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.deadline",
+            "label": "Deadline",
+            "format": "date",
+            "params": { "encoding": "timestamp" },
+            "visible": "always"
+          }
+        ]
+      },
+      "swapNFTsForToken((address,(uint256[],uint256)[])[],uint256,address,uint256)": {
+        "intent": "Sell NFTs to SudoSwap pools",
+        "fields": [
+          {
+            "path": "#.minOutput",
+            "label": "Min Output",
+            "format": "amount",
+            "visible": "always"
+          },
+          {
+            "path": "#.tokenRecipient",
+            "label": "Token Recipient",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.deadline",
+            "label": "Deadline",
+            "format": "date",
+            "params": { "encoding": "timestamp" },
+            "visible": "always"
+          }
+        ]
+      },
+      "swapETHForAnyNFTs((address,uint256)[],address,address,uint256)": {
+        "intent": "Buy any NFTs from SudoSwap",
+        "fields": [
+          {
+            "path": "#.nftRecipient",
+            "label": "NFT Recipient",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          },
+          {
+            "path": "#.deadline",
+            "label": "Deadline",
+            "format": "date",
+            "params": { "encoding": "timestamp" },
+            "visible": "always"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,384 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x40D16FC0246aD3160Ccc09B8D0D3A2cD28aE6C2f"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x40c10f19",
+          "inputs": [
+            {
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "selector": "0x9dc29fac",
+          "inputs": [
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "permit",
+          "selector": "0xd505accf",
+          "inputs": [
+            {
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "name": "s",
+              "type": "bytes32"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x2f2ff15d"
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x36568abe"
+        },
+        {
+          "type": "function",
+          "name": "addFacilitator",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "facilitatorAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "facilitatorLabel",
+              "type": "string"
+            },
+            {
+              "internalType": "uint128",
+              "name": "bucketCapacity",
+              "type": "uint128"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x7fc24def"
+        },
+        {
+          "type": "function",
+          "name": "removeFacilitator",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "facilitatorAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xa11812ba"
+        },
+        {
+          "type": "function",
+          "name": "setFacilitatorBucketCapacity",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "facilitator",
+              "type": "address"
+            },
+            {
+              "internalType": "uint128",
+              "name": "newCapacity",
+              "type": "uint128"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xaf93df57"
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xd547741f"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "GHO Token",
+    "info": {
+      "website": "https://aave.com",
+      "docs": "https://docs.aave.com/ecosystem/gho"
+    }
+  },
+  "display": {
+    "formats": {
+      "mint(address,uint256)": {
+        "intent": "Mint {amount} GHO",
+        "fields": [
+          {
+            "path": "account",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "GHO"
+            }
+          }
+        ]
+      },
+      "burn(uint256)": {
+        "intent": "Burn {amount} GHO",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "GHO"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} GHO",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "GHO"
+            }
+          }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} GHO",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "GHO"
+            }
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Transfer {amount} GHO from {from}",
+        "fields": [
+          {
+            "path": "from",
+            "label": "Sender",
+            "format": "addressName"
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "GHO"
+            }
+          }
+        ]
+      },
+      "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Permit {value} GHO",
+        "fields": [
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "addressName"
+          },
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "addressName"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "GHO"
+            }
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "v",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "r",
+            "format": "raw"
+          },
+          {
+            "path": "s",
+            "label": "s",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

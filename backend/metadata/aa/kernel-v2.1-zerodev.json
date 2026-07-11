@@ -1,0 +1,403 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xf048AD83CB2dfd6037A43902a2A5Be04e53cd2Eb",
+      "chainId": 1,
+      "name": "ZeroDev Kernel V2.1",
+      "abi": [
+        {
+          "type": "function",
+          "name": "execute",
+          "selector": "0x51945447",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            },
+            {
+              "name": "operation",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "executeBatch",
+          "selector": "0x68135d43",
+          "inputs": [
+            {
+              "name": "calls",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "to",
+                  "type": "address"
+                },
+                {
+                  "name": "value",
+                  "type": "uint256"
+                },
+                {
+                  "name": "data",
+                  "type": "bytes"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "setDefaultValidator",
+          "selector": "0x0fc4a345",
+          "inputs": [
+            {
+              "name": "_defaultValidator",
+              "type": "address"
+            },
+            {
+              "name": "_data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x3659cfe6",
+          "inputs": [
+            {
+              "name": "_newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "disableMode",
+          "selector": "0xd5416221",
+          "inputs": [
+            {
+              "internalType": "bytes4",
+              "name": "_disableFlag",
+              "type": "bytes4"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xd1f57894",
+          "inputs": [
+            {
+              "internalType": "contract IKernelValidator",
+              "name": "_defaultValidator",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "setDefaultValidator",
+          "selector": "0x55b14f50",
+          "inputs": [
+            {
+              "internalType": "contract IKernelValidator",
+              "name": "_defaultValidator",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "setExecution",
+          "selector": "0x29f8b174",
+          "inputs": [
+            {
+              "internalType": "bytes4",
+              "name": "_selector",
+              "type": "bytes4"
+            },
+            {
+              "internalType": "address",
+              "name": "_executor",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IKernelValidator",
+              "name": "_validator",
+              "type": "address"
+            },
+            {
+              "internalType": "uint48",
+              "name": "_validUntil",
+              "type": "uint48"
+            },
+            {
+              "internalType": "uint48",
+              "name": "_validAfter",
+              "type": "uint48"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_enableData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "validateUserOp",
+          "selector": "0x3a871cdd",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "sender",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "initCode",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "callGasLimit",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "verificationGasLimit",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "preVerificationGas",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "maxFeePerGas",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "maxPriorityFeePerGas",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "paymasterAndData",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct UserOperation",
+              "name": "userOp",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "userOpHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "missingAccountFunds",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "ValidationData",
+              "name": "validationData",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "execute(address,uint256,bytes,uint8)": {
+        "intent": "Execute transaction via ZeroDev Kernel V2.1",
+        "interpolatedIntent": "Execute call to {to} via ZeroDev Kernel",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "addressName"
+          },
+          {
+            "path": "value",
+            "label": "Value (ETH)",
+            "format": "ethAmount"
+          },
+          {
+            "path": "operation",
+            "label": "Operation (0=Call, 1=DelegateCall)",
+            "format": "raw"
+          }
+        ]
+      },
+      "executeBatch(tuple[])": {
+        "intent": "Execute batch transactions via ZeroDev Kernel V2.1",
+        "fields": []
+      },
+      "setDefaultValidator(address,bytes)": {
+        "intent": "Change default validator on ZeroDev Kernel V2.1",
+        "interpolatedIntent": "Set {_defaultValidator} as default validator on ZeroDev Kernel",
+        "fields": [
+          {
+            "path": "_defaultValidator",
+            "label": "New Default Validator",
+            "format": "addressName"
+          }
+        ]
+      },
+      "upgradeTo(address)": {
+        "intent": "Upgrade ZeroDev Kernel V2.1 implementation",
+        "interpolatedIntent": "Upgrade Kernel to implementation {_newImplementation}",
+        "fields": [
+          {
+            "path": "_newImplementation",
+            "label": "New Implementation",
+            "format": "addressName"
+          }
+        ]
+      },
+      "disableMode(bytes4)": {
+        "intent": "Review Disable Mode transaction",
+        "fields": [
+          {
+            "path": "_disableFlag",
+            "label": " disable Flag",
+            "format": "hex"
+          }
+        ]
+      },
+      "initialize(address,bytes)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_defaultValidator",
+            "label": " default Validator",
+            "format": "address"
+          },
+          {
+            "path": "_data",
+            "label": " data",
+            "format": "hex"
+          }
+        ]
+      },
+      "setExecution(bytes4,address,address,uint48,uint48,bytes)": {
+        "intent": "Review Set Execution transaction",
+        "fields": [
+          {
+            "path": "_selector",
+            "label": " selector",
+            "format": "hex"
+          },
+          {
+            "path": "_executor",
+            "label": " executor",
+            "format": "address"
+          },
+          {
+            "path": "_validator",
+            "label": " validator",
+            "format": "address"
+          },
+          {
+            "path": "_validUntil",
+            "label": " valid Until",
+            "format": "raw"
+          },
+          {
+            "path": "_validAfter",
+            "label": " valid After",
+            "format": "raw"
+          },
+          {
+            "path": "_enableData",
+            "label": " enable Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "validateUserOp((address,uint256,bytes,bytes,uint256,uint256,uint256,uint256,uint256,bytes,bytes),bytes32,uint256)": {
+        "intent": "Review Validate User Op transaction",
+        "fields": [
+          {
+            "path": "userOp",
+            "label": "User Op",
+            "format": "raw"
+          },
+          {
+            "path": "userOpHash",
+            "label": "User Op Hash",
+            "format": "hex"
+          },
+          {
+            "path": "missingAccountFunds",
+            "label": "Missing Account Funds",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "ZeroDev",
+    "info": {
+      "url": "https://zerodev.app/",
+      "legalName": "ZeroDev",
+      "lastUpdate": "2026-03-27"
+    }
+  }
+}

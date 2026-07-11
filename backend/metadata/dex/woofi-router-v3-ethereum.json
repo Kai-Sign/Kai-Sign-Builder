@@ -1,0 +1,87 @@
+{
+  "$schema": "../../specs/erc7730-v2.schema.json",
+  "context": {
+    "$id": "WooFiRouterV3",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x044c08639bd59beb4f6ec52c0da6cd47283534e8" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/woofi/abis/0x4c4af8dbc524681930a27b2f1af5bcc8062e604f.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "WOOFi",
+    "contractName": "WooFi Router V3",
+    "info": { "url": "https://fi.woo.org" }
+  },
+  "display": {
+    "formats": {
+      "swap(address,address,uint256,uint256,address,address)": {
+        "intent": "Swap tokens on WooFi",
+        "fields": [
+          {
+            "path": "#.fromToken",
+            "label": "From Token",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.toToken",
+            "label": "To Token",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.fromAmount",
+            "label": "From Amount",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.fromToken" },
+            "visible": "always"
+          },
+          {
+            "path": "#.minToAmount",
+            "label": "Min Received",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.toToken" },
+            "visible": "always"
+          },
+          {
+            "path": "#.to",
+            "label": "Recipient",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          }
+        ]
+      },
+      "swapETH(address,uint256,address,address)": {
+        "intent": "Swap ETH on WooFi",
+        "fields": [
+          {
+            "path": "#.toToken",
+            "label": "To Token",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          },
+          {
+            "path": "#.minToAmount",
+            "label": "Min Received",
+            "format": "tokenAmount",
+            "params": { "tokenPath": "#.toToken" },
+            "visible": "always"
+          },
+          {
+            "path": "#.to",
+            "label": "Recipient",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] },
+            "visible": "always"
+          }
+        ]
+      }
+    }
+  }
+}

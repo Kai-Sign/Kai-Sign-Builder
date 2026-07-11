@@ -1,0 +1,1579 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x1112dbcf805682e828606f74ab717abf4b4fd8de",
+      "chainId": 1,
+      "name": "Yearn V3 4626 Router",
+      "abi": [
+        {
+          "type": "function",
+          "name": "depositToVault",
+          "selector": "0x30b3484f",
+          "inputs": [
+            {
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "minSharesOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0x4b2084e3",
+          "inputs": [
+            {
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "maxLoss",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redeem",
+          "selector": "0xf3f094a1",
+          "inputs": [
+            {
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "maxLoss",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x3c173a4f",
+          "inputs": [
+            {
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "maxAmountIn",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "migrate",
+          "selector": "0x4a250330",
+          "inputs": [
+            {
+              "name": "fromVault",
+              "type": "address"
+            },
+            {
+              "name": "toVault",
+              "type": "address"
+            },
+            {
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "minSharesOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0xe1f21c67",
+          "inputs": [
+            {
+              "internalType": "contract ERC20",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x90d25074",
+          "inputs": [
+            {
+              "internalType": "contract IYearn4626",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minSharesOut",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "sharesOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "depositToVault",
+          "selector": "0xa3d11158",
+          "inputs": [
+            {
+              "internalType": "contract IYearn4626",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minSharesOut",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "depositToVault",
+          "selector": "0xc28916f6",
+          "inputs": [
+            {
+              "internalType": "contract IYearn4626",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minSharesOut",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "depositToVault",
+          "selector": "0xefc7a861",
+          "inputs": [
+            {
+              "internalType": "contract IYearn4626",
+              "name": "vault",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "migrate",
+          "selector": "0x1068361f",
+          "inputs": [
+            {
+              "internalType": "contract IYearn4626",
+              "name": "fromVault",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IYearn4626",
+              "name": "toVault",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "migrate",
+          "selector": "0xa79721fe",
+          "inputs": [
+            {
+              "internalType": "contract IYearn4626",
+              "name": "fromVault",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IYearn4626",
+              "name": "toVault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minSharesOut",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "migrate",
+          "selector": "0xf16565ee",
+          "inputs": [
+            {
+              "internalType": "contract IYearn4626",
+              "name": "fromVault",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IYearn4626",
+              "name": "toVault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minSharesOut",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "migrateFromV2",
+          "selector": "0x3dff6639",
+          "inputs": [
+            {
+              "internalType": "contract IYearnV2",
+              "name": "fromVault",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IYearn4626",
+              "name": "toVault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minSharesOut",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "migrateFromV2",
+          "selector": "0x9b4f09af",
+          "inputs": [
+            {
+              "internalType": "contract IYearnV2",
+              "name": "fromVault",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IYearn4626",
+              "name": "toVault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minSharesOut",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "migrateFromV2",
+          "selector": "0xa3ebe717",
+          "inputs": [
+            {
+              "internalType": "contract IYearnV2",
+              "name": "fromVault",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IYearn4626",
+              "name": "toVault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minSharesOut",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "migrateFromV2",
+          "selector": "0xdbae0292",
+          "inputs": [
+            {
+              "internalType": "contract IYearnV2",
+              "name": "fromVault",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IYearn4626",
+              "name": "toVault",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "sharesOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "multicall",
+          "selector": "0xac9650d8",
+          "inputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "data",
+              "type": "bytes[]"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "results",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "pullToken",
+          "selector": "0x73d15414",
+          "inputs": [
+            {
+              "internalType": "contract ERC20",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "redeem",
+          "selector": "0x1e9a6950",
+          "inputs": [
+            {
+              "internalType": "contract IYearn4626",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxLoss",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "redeem",
+          "selector": "0x2b83cccd",
+          "inputs": [
+            {
+              "internalType": "contract IYearn4626",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxLoss",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "redeem",
+          "selector": "0x95a2251f",
+          "inputs": [
+            {
+              "internalType": "contract IYearn4626",
+              "name": "vault",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "redeemDefault",
+          "selector": "0x5b9a66ee",
+          "inputs": [
+            {
+              "internalType": "contract IYearn4626",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minAmountOut",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "refundETH",
+          "selector": "0x12210e8a",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "selfPermit",
+          "selector": "0xf3995c67",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "selfPermitAllowed",
+          "selector": "0x4659a494",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "expiry",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "selfPermitAllowedIfNecessary",
+          "selector": "0xa4a78f0c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "expiry",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "selfPermitIfNecessary",
+          "selector": "0xc2e3140a",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "sweepToken",
+          "selector": "0xdf2ab5bb",
+          "inputs": [
+            {
+              "internalType": "contract ERC20",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountMinimum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "unwrapWETH9",
+          "selector": "0x49404b7c",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountMinimum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawDefault",
+          "selector": "0x6f63427e",
+          "inputs": [
+            {
+              "internalType": "contract IYearn4626",
+              "name": "vault",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "maxSharesOut",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "sharesOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "wrapWETH9",
+          "selector": "0x3f50fd1f",
+          "inputs": [],
+          "stateMutability": "payable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "depositToVault(address,uint256,address,uint256)": {
+        "intent": "Deposit to Yearn V3 vault",
+        "interpolatedIntent": "Deposit {amount} to Yearn V3 vault {vault} for {to}",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "minSharesOut",
+            "label": "Min Shares Out",
+            "format": "raw"
+          }
+        ]
+      },
+      "withdraw(address,uint256,address,uint256)": {
+        "intent": "Withdraw from Yearn V3 vault",
+        "interpolatedIntent": "Withdraw {amount} from Yearn V3 vault {vault} to {to}",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "maxLoss",
+            "label": "Max Loss",
+            "format": "raw"
+          }
+        ]
+      },
+      "redeem(address,uint256,address,uint256)": {
+        "intent": "Redeem Yearn V3 vault shares",
+        "interpolatedIntent": "Redeem {shares} shares from Yearn V3 vault {vault} to {to}",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "addressName"
+          },
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "maxLoss",
+            "label": "Max Loss",
+            "format": "raw"
+          }
+        ]
+      },
+      "mint(address,uint256,address,uint256)": {
+        "intent": "Mint Yearn V3 vault shares",
+        "interpolatedIntent": "Mint {shares} shares from Yearn V3 vault {vault} for {to}",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "addressName"
+          },
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "maxAmountIn",
+            "label": "Max Amount In",
+            "format": "raw"
+          }
+        ]
+      },
+      "migrate(address,address,uint256,address,uint256)": {
+        "intent": "Migrate between Yearn V3 vaults",
+        "interpolatedIntent": "Migrate {shares} shares from {fromVault} to {toVault} for {to}",
+        "fields": [
+          {
+            "path": "fromVault",
+            "label": "From Vault",
+            "format": "addressName"
+          },
+          {
+            "path": "toVault",
+            "label": "To Vault",
+            "format": "addressName"
+          },
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "minSharesOut",
+            "label": "Min Shares Out",
+            "format": "raw"
+          }
+        ]
+      },
+      "approve(address,address,uint256)": {
+        "intent": "Review Approve transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "deposit(address,uint256,address,uint256)": {
+        "intent": "Review Deposit transaction",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "minSharesOut",
+            "label": "Min Shares Out",
+            "format": "raw"
+          }
+        ]
+      },
+      "depositToVault(address,uint256)": {
+        "intent": "Review Deposit To Vault transaction",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "address"
+          },
+          {
+            "path": "minSharesOut",
+            "label": "Min Shares Out",
+            "format": "raw"
+          }
+        ]
+      },
+      "depositToVault(address,uint256,uint256)": {
+        "intent": "Review Deposit To Vault transaction",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "minSharesOut",
+            "label": "Min Shares Out",
+            "format": "raw"
+          }
+        ]
+      },
+      "depositToVault(address)": {
+        "intent": "Review Deposit To Vault transaction",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "address"
+          }
+        ]
+      },
+      "migrate(address,address)": {
+        "intent": "Review Migrate transaction",
+        "fields": [
+          {
+            "path": "fromVault",
+            "label": "From Vault",
+            "format": "address"
+          },
+          {
+            "path": "toVault",
+            "label": "To Vault",
+            "format": "address"
+          }
+        ]
+      },
+      "migrate(address,address,uint256,uint256)": {
+        "intent": "Review Migrate transaction",
+        "fields": [
+          {
+            "path": "fromVault",
+            "label": "From Vault",
+            "format": "address"
+          },
+          {
+            "path": "toVault",
+            "label": "To Vault",
+            "format": "address"
+          },
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "minSharesOut",
+            "label": "Min Shares Out",
+            "format": "raw"
+          }
+        ]
+      },
+      "migrate(address,address,uint256)": {
+        "intent": "Review Migrate transaction",
+        "fields": [
+          {
+            "path": "fromVault",
+            "label": "From Vault",
+            "format": "address"
+          },
+          {
+            "path": "toVault",
+            "label": "To Vault",
+            "format": "address"
+          },
+          {
+            "path": "minSharesOut",
+            "label": "Min Shares Out",
+            "format": "raw"
+          }
+        ]
+      },
+      "migrateFromV2(address,address,uint256,address,uint256)": {
+        "intent": "Review Migrate From V2 transaction",
+        "fields": [
+          {
+            "path": "fromVault",
+            "label": "From Vault",
+            "format": "address"
+          },
+          {
+            "path": "toVault",
+            "label": "To Vault",
+            "format": "address"
+          },
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "minSharesOut",
+            "label": "Min Shares Out",
+            "format": "raw"
+          }
+        ]
+      },
+      "migrateFromV2(address,address,uint256,uint256)": {
+        "intent": "Review Migrate From V2 transaction",
+        "fields": [
+          {
+            "path": "fromVault",
+            "label": "From Vault",
+            "format": "address"
+          },
+          {
+            "path": "toVault",
+            "label": "To Vault",
+            "format": "address"
+          },
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "minSharesOut",
+            "label": "Min Shares Out",
+            "format": "raw"
+          }
+        ]
+      },
+      "migrateFromV2(address,address,uint256)": {
+        "intent": "Review Migrate From V2 transaction",
+        "fields": [
+          {
+            "path": "fromVault",
+            "label": "From Vault",
+            "format": "address"
+          },
+          {
+            "path": "toVault",
+            "label": "To Vault",
+            "format": "address"
+          },
+          {
+            "path": "minSharesOut",
+            "label": "Min Shares Out",
+            "format": "raw"
+          }
+        ]
+      },
+      "migrateFromV2(address,address)": {
+        "intent": "Review Migrate From V2 transaction",
+        "fields": [
+          {
+            "path": "fromVault",
+            "label": "From Vault",
+            "format": "address"
+          },
+          {
+            "path": "toVault",
+            "label": "To Vault",
+            "format": "address"
+          }
+        ]
+      },
+      "multicall(bytes[])": {
+        "intent": "Review Multicall transaction",
+        "fields": [
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "pullToken(address,uint256,address)": {
+        "intent": "Review Pull Token transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "redeem(address,uint256)": {
+        "intent": "Review Redeem transaction",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "address"
+          },
+          {
+            "path": "maxLoss",
+            "label": "Max Loss",
+            "format": "raw"
+          }
+        ]
+      },
+      "redeem(address,uint256,uint256)": {
+        "intent": "Review Redeem transaction",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "address"
+          },
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "maxLoss",
+            "label": "Max Loss",
+            "format": "raw"
+          }
+        ]
+      },
+      "redeem(address)": {
+        "intent": "Review Redeem transaction",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "address"
+          }
+        ]
+      },
+      "redeemDefault(address,uint256,address,uint256)": {
+        "intent": "Review Redeem Default transaction",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "address"
+          },
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "minAmountOut",
+            "label": "Min Amount Out",
+            "format": "raw"
+          }
+        ]
+      },
+      "refundETH()": {
+        "intent": "Review Refund ETH transaction",
+        "fields": []
+      },
+      "selfPermit(address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Self Permit transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "selfPermitAllowed(address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Self Permit Allowed transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "nonce",
+            "label": "Nonce",
+            "format": "raw"
+          },
+          {
+            "path": "expiry",
+            "label": "Expiry",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "selfPermitAllowedIfNecessary(address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Self Permit Allowed If Necessary transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "nonce",
+            "label": "Nonce",
+            "format": "raw"
+          },
+          {
+            "path": "expiry",
+            "label": "Expiry",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "selfPermitIfNecessary(address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Self Permit If Necessary transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "sweepToken(address,uint256,address)": {
+        "intent": "Review Sweep Token transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "amountMinimum",
+            "label": "Amount Minimum",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "unwrapWETH9(uint256,address)": {
+        "intent": "Review Unwrap WETH9 transaction",
+        "fields": [
+          {
+            "path": "amountMinimum",
+            "label": "Amount Minimum",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "withdrawDefault(address,uint256,address,uint256)": {
+        "intent": "Review Withdraw Default transaction",
+        "fields": [
+          {
+            "path": "vault",
+            "label": "Vault",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "maxSharesOut",
+            "label": "Max Shares Out",
+            "format": "raw"
+          }
+        ]
+      },
+      "wrapWETH9()": {
+        "intent": "Review Wrap WETH9 transaction",
+        "fields": []
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Yearn Finance",
+    "info": {
+      "url": "https://yearn.fi/",
+      "legalName": "Yearn Finance",
+      "lastUpdate": "2026-04-03"
+    }
+  }
+}

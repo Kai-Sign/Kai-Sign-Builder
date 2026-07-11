@@ -1,0 +1,422 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x32400084c286cf3e17e7b677ea9583e60a000324",
+      "chainId": 1,
+      "name": "zkSync Era L1 Bridge Diamond",
+      "abi": [
+        {
+          "type": "function",
+          "name": "requestL2Transaction",
+          "selector": "0xeb672419",
+          "inputs": [
+            {
+              "name": "_contractL2",
+              "type": "address"
+            },
+            {
+              "name": "_l2Value",
+              "type": "uint256"
+            },
+            {
+              "name": "_calldata",
+              "type": "bytes"
+            },
+            {
+              "name": "_l2GasLimit",
+              "type": "uint256"
+            },
+            {
+              "name": "_l2GasPerPubdataByteLimit",
+              "type": "uint256"
+            },
+            {
+              "name": "_factoryDeps",
+              "type": "bytes[]"
+            },
+            {
+              "name": "_refundRecipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "finalizeEthWithdrawal",
+          "selector": "0x6c0960f9",
+          "inputs": [
+            {
+              "name": "_l2BatchNumber",
+              "type": "uint256"
+            },
+            {
+              "name": "_l2MessageIndex",
+              "type": "uint256"
+            },
+            {
+              "name": "_l2TxNumberInBatch",
+              "type": "uint16"
+            },
+            {
+              "name": "_message",
+              "type": "bytes"
+            },
+            {
+              "name": "_merkleProof",
+              "type": "bytes32[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "bridgehubRequestL2Transaction",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "sender",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "contractL2",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "mintValue",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "l2Value",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "l2Calldata",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "l2GasLimit",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "l2GasPerPubdataByteLimit",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes[]",
+                  "name": "factoryDeps",
+                  "type": "bytes[]"
+                },
+                {
+                  "internalType": "address",
+                  "name": "refundRecipient",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct BridgehubL2TransactionRequest",
+              "name": "_request",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x12f43dab",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "canonicalTxHash",
+              "type": "bytes32"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "requestL2TransactionToGatewayMailbox",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_chainId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "_canonicalTxHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint64",
+              "name": "_expirationTimestamp",
+              "type": "uint64"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xd0772551",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "canonicalTxHash",
+              "type": "bytes32"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "requestL2ServiceTransaction",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_contractL2",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_l2Calldata",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xd07b90d1",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "canonicalTxHash",
+              "type": "bytes32"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "bridgehubRequestL2TransactionOnGateway",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "_canonicalTxHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint64",
+              "name": "_expirationTimestamp",
+              "type": "uint64"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xddcc9eec"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "requestL2Transaction(address,uint256,bytes,uint256,uint256,bytes[],address)": {
+        "intent": "Deposit ETH or call contract on zkSync Era L2",
+        "interpolatedIntent": "Send {_l2Value} ETH to {_contractL2} on zkSync Era",
+        "fields": [
+          {
+            "path": "_contractL2",
+            "label": "L2 Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "_l2Value",
+            "label": "ETH Value (L2)",
+            "format": "ethAmount"
+          },
+          {
+            "path": "_l2GasLimit",
+            "label": "L2 Gas Limit",
+            "format": "raw"
+          },
+          {
+            "path": "_refundRecipient",
+            "label": "Fee Refund Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "finalizeEthWithdrawal(uint256,uint256,uint16,bytes,bytes32[])": {
+        "intent": "Claim ETH withdrawal from zkSync Era to Ethereum",
+        "interpolatedIntent": "Finalize ETH withdrawal from zkSync Era batch #{_l2BatchNumber}",
+        "fields": [
+          {
+            "path": "_l2BatchNumber",
+            "label": "L2 Batch Number",
+            "format": "raw"
+          },
+          {
+            "path": "_l2MessageIndex",
+            "label": "Message Index",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Matter Labs",
+    "info": {
+      "url": "https://portal.zksync.io/bridge/",
+      "legalName": "Matter Labs",
+      "lastUpdate": "2026-03-27"
+    }
+  },
+  "x-ksSelectorExclusions": [
+    {
+      "selector": "0x0b6db820",
+      "signature": "precommitSharedBridge(address,uint256,bytes)",
+      "category": "operator",
+      "reason": "shared bridge batch lifecycle/operator call; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0x0db9eb87",
+      "signature": "commitBatchesSharedBridge(address,uint256,uint256,bytes)",
+      "category": "operator",
+      "reason": "shared bridge batch lifecycle/operator call; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0x0e18b681",
+      "signature": "acceptAdmin()",
+      "category": "admin",
+      "reason": "admin handoff acceptance; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0x17338945",
+      "signature": "unfreezeDiamond()",
+      "category": "admin",
+      "reason": "zkSync diamond unfreeze/admin control; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0x1cc5d103",
+      "signature": "setPorterAvailability(bool)",
+      "category": "admin",
+      "reason": "zkSync protocol availability configuration; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0x21f603d7",
+      "signature": "setTransactionFilterer(address)",
+      "category": "admin",
+      "reason": "transaction filterer administration; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0x235d9eb5",
+      "signature": "setTokenMultiplier(uint128,uint128)",
+      "category": "admin",
+      "reason": "zkSync diamond governance/admin parameter update; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0x27ae4c16",
+      "signature": "freezeDiamond()",
+      "category": "admin",
+      "reason": "zkSync diamond freeze/admin control; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0x2878fe74",
+      "signature": "genesisUpgrade(address,address,bytes,bytes[])",
+      "category": "admin",
+      "reason": "zkSync chain upgrade/genesis operation; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0x3f42d5dd",
+      "signature": "forwardedBridgeMint(bytes,bool)",
+      "category": "system",
+      "reason": "forwarded bridge system call; not direct wallet user bridge entrypoint"
+    },
+    {
+      "selector": "0x4623c91d",
+      "signature": "setValidator(address,bool)",
+      "category": "admin",
+      "reason": "validator administration; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0x4dd18bf5",
+      "signature": "setPendingAdmin(address)",
+      "category": "admin",
+      "reason": "admin handoff control; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0x5b898748",
+      "signature": "allowEvmEmulation()",
+      "category": "admin",
+      "reason": "zkSync protocol configuration; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0x6223258e",
+      "signature": "setDAValidatorPair(address,address)",
+      "category": "admin",
+      "reason": "DA validator administration; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0x64b554ad",
+      "signature": "forwardedBridgeBurn(address,address,bytes)",
+      "category": "system",
+      "reason": "forwarded bridge system call; not direct wallet user bridge entrypoint"
+    },
+    {
+      "selector": "0x64bf8d66",
+      "signature": "changeFeeParams((uint8,uint32,uint32,uint32,uint32,uint64))",
+      "category": "admin",
+      "reason": "fee parameter administration; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0x6e762e98",
+      "signature": "makePermanentRollup()",
+      "category": "admin",
+      "reason": "rollup lifecycle administration; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0x7ca4eff7",
+      "signature": "revertBatchesSharedBridge(address,uint256)",
+      "category": "operator",
+      "reason": "shared bridge batch lifecycle/operator call; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0x9271e450",
+      "signature": "proveBatchesSharedBridge(address,uint256,uint256,bytes)",
+      "category": "operator",
+      "reason": "shared bridge batch lifecycle/operator call; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0xa085344d",
+      "signature": "executeBatchesSharedBridge(address,uint256,uint256,bytes)",
+      "category": "operator",
+      "reason": "shared bridge batch lifecycle/operator call; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0xa9f6d941",
+      "signature": "executeUpgrade(((address,uint8,bool,bytes4[])[],address,bytes))",
+      "category": "admin",
+      "reason": "diamond upgrade execution; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0xb7846107",
+      "signature": "forwardedBridgeRecoverFailedTransfer(uint256,bytes32,address,bytes)",
+      "category": "system",
+      "reason": "forwarded bridge recovery system call; not direct wallet user bridge entrypoint"
+    },
+    {
+      "selector": "0xbe6f11cf",
+      "signature": "setPriorityTxMaxGasLimit(uint256)",
+      "category": "admin",
+      "reason": "priority transaction gas limit administration; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0xe76db865",
+      "signature": "setPubdataPricingMode(uint8)",
+      "category": "admin",
+      "reason": "pubdata pricing administration; not normal wallet user bridge flow"
+    },
+    {
+      "selector": "0xfc57565f",
+      "signature": "upgradeChainFromVersion(uint256,((address,uint8,bool,bytes4[])[],address,bytes))",
+      "category": "admin",
+      "reason": "chain upgrade administration; not normal wallet user bridge flow"
+    }
+  ]
+}

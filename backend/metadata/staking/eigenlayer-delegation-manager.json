@@ -1,0 +1,550 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x39053d51b77dc0d36036fc1fcc8cb819df8ef37a"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "queueWithdrawals",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "contract IStrategy[]",
+                  "name": "strategies",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "depositShares",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "address",
+                  "name": "__deprecated_withdrawer",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct IDelegationManagerTypes.QueuedWithdrawalParams[]",
+              "name": "params",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x0dd8dd02",
+          "outputs": [
+            {
+              "internalType": "bytes32[]",
+              "name": "",
+              "type": "bytes32[]"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "pause",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newPausedStatus",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x136439dd"
+        },
+        {
+          "type": "function",
+          "name": "registerAsOperator",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "initDelegationApprover",
+              "type": "address"
+            },
+            {
+              "internalType": "uint32",
+              "name": "allocationDelay",
+              "type": "uint32"
+            },
+            {
+              "internalType": "string",
+              "name": "metadataURI",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x2aa6d888"
+        },
+        {
+          "type": "function",
+          "name": "increaseDelegatedShares",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "staker",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IStrategy",
+              "name": "strategy",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "prevDepositShares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "addedShares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x3c651cf2"
+        },
+        {
+          "type": "function",
+          "name": "modifyOperatorDetails",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "operator",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "newDelegationApprover",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x54b7c96c"
+        },
+        {
+          "type": "function",
+          "name": "pauseAll",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x595c6a67"
+        },
+        {
+          "type": "function",
+          "name": "slashOperatorShares",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "operator",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "avs",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint32",
+                  "name": "id",
+                  "type": "uint32"
+                }
+              ],
+              "internalType": "struct OperatorSet",
+              "name": "operatorSet",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint256",
+              "name": "slashId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "contract IStrategy",
+              "name": "strategy",
+              "type": "address"
+            },
+            {
+              "internalType": "uint64",
+              "name": "prevMaxMagnitude",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "newMaxMagnitude",
+              "type": "uint64"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x5ae679a7",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "totalDepositSharesToSlash",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "decreaseDelegatedShares",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "staker",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "curDepositShares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint64",
+              "name": "beaconChainSlashingFactorDecrease",
+              "type": "uint64"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x60a0d1ce"
+        },
+        {
+          "type": "function",
+          "name": "updateOperatorMetadataURI",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "operator",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "metadataURI",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x78296ec5"
+        },
+        {
+          "type": "function",
+          "name": "completeQueuedWithdrawals",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "staker",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "delegatedTo",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "withdrawer",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint32",
+                  "name": "startBlock",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "contract IStrategy[]",
+                  "name": "strategies",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "scaledShares",
+                  "type": "uint256[]"
+                }
+              ],
+              "internalType": "struct IDelegationManagerTypes.Withdrawal[]",
+              "name": "withdrawals",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "contract IERC20[][]",
+              "name": "tokens",
+              "type": "address[][]"
+            },
+            {
+              "internalType": "bool[]",
+              "name": "receiveAsTokens",
+              "type": "bool[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x9435bb43"
+        },
+        {
+          "type": "function",
+          "name": "redelegate",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOperator",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "expiry",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ISignatureUtilsMixinTypes.SignatureWithExpiry",
+              "name": "newOperatorApproverSig",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "approverSalt",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xa33a3433",
+          "outputs": [
+            {
+              "internalType": "bytes32[]",
+              "name": "withdrawalRoots",
+              "type": "bytes32[]"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "undelegate",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "staker",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xda8be864",
+          "outputs": [
+            {
+              "internalType": "bytes32[]",
+              "name": "withdrawalRoots",
+              "type": "bytes32[]"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "completeQueuedWithdrawal",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "staker",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "delegatedTo",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "withdrawer",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint32",
+                  "name": "startBlock",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "contract IStrategy[]",
+                  "name": "strategies",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "scaledShares",
+                  "type": "uint256[]"
+                }
+              ],
+              "internalType": "struct IDelegationManagerTypes.Withdrawal",
+              "name": "withdrawal",
+              "type": "tuple"
+            },
+            {
+              "internalType": "contract IERC20[]",
+              "name": "tokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "bool",
+              "name": "receiveAsTokens",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xe4cc3f90"
+        },
+        {
+          "type": "function",
+          "name": "delegateTo",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "operator",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "expiry",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ISignatureUtilsMixinTypes.SignatureWithExpiry",
+              "name": "approverSignatureAndExpiry",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "approverSalt",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xeea9064b"
+        },
+        {
+          "type": "function",
+          "name": "unpause",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newPausedStatus",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xfabc1cbc"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "initialPausedStatus",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xfe4b84df"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Eigen Labs",
+    "contractName": "EigenLayer DelegationManager"
+  },
+  "display": {
+    "formats": {
+      "delegateTo(address operator,(bytes,uint256) approverSignatureAndExpiry,bytes32 approverSalt)": {
+        "intent": "Delegate to EigenLayer operator",
+        "interpolatedIntent": "Delegate all restaked assets to operator {operator}",
+        "fields": [
+          {
+            "path": "operator",
+            "label": "Operator",
+            "format": "addressName"
+          }
+        ]
+      },
+      "undelegate(address staker)": {
+        "intent": "Undelegate from EigenLayer operator",
+        "interpolatedIntent": "Undelegate {staker} from current operator and queue withdrawals",
+        "fields": [
+          {
+            "path": "staker",
+            "label": "Staker",
+            "format": "addressName"
+          }
+        ]
+      },
+      "redelegate(address newOperator,(bytes,uint256) newOperatorApproverSig,bytes32 approverSalt)": {
+        "intent": "Redelegate to new EigenLayer operator",
+        "interpolatedIntent": "Redelegate all restaked assets to new operator {newOperator}",
+        "fields": [
+          {
+            "path": "newOperator",
+            "label": "New Operator",
+            "format": "addressName"
+          }
+        ]
+      },
+      "queueWithdrawals((address[],uint256[],address)[] queuedWithdrawalParams)": {
+        "intent": "Queue EigenLayer withdrawals",
+        "interpolatedIntent": "Queue withdrawal of restaked shares from EigenLayer",
+        "fields": [
+          {
+            "path": "queuedWithdrawalParams",
+            "label": "Withdrawal Parameters",
+            "format": "raw"
+          }
+        ]
+      },
+      "completeQueuedWithdrawal((address,address,address,uint256,uint32,address[],uint256[]) withdrawal,address[] tokens,uint256 middlewareTimesIndex,bool receiveAsTokens)": {
+        "intent": "Complete EigenLayer withdrawal",
+        "interpolatedIntent": "Complete queued EigenLayer withdrawal",
+        "fields": [
+          {
+            "path": "withdrawal",
+            "label": "Withdrawal",
+            "format": "raw"
+          },
+          {
+            "path": "receiveAsTokens",
+            "label": "Receive as Tokens",
+            "format": "integer"
+          }
+        ]
+      }
+    }
+  }
+}

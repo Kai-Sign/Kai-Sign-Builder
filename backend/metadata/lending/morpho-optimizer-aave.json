@@ -1,0 +1,134 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "MorphoOptimizerAave",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x777777c9898d384f785ee44acfe945efdff5f3e0" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/morpho/abis/0x777777c9898d384f785ee44acfe945efdff5f3e0.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "Morpho Labs",
+    "info": {
+      "legalName": "Morpho Labs",
+      "url": "https://morpho.org"
+    },
+    "constants": {
+      "WETHaddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
+      "USDCaddress": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+      "stETHaddress": "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84"
+    }
+  },
+  "display": {
+    "formats": {
+      "supply(address,uint256,uint256,address)": {
+        "intent": "Supply to Morpho-Aave",
+        "fields": [
+          {
+            "path": "#.underlying",
+            "label": "Asset",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null }
+          },
+          {
+            "path": "#.amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": { "token": "#.underlying" }
+          },
+          {
+            "path": "#.maxGasForMatching",
+            "label": "Max Gas For Matching",
+            "format": "raw"
+          },
+          {
+            "path": "#.onBehalf",
+            "label": "On Behalf Of",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] }
+          }
+        ],
+        "required": ["#.underlying", "#.amount", "#.maxGasForMatching", "#.onBehalf"]
+      },
+      "borrow(address,uint256,uint256,uint256,address)": {
+        "intent": "Borrow from Morpho-Aave",
+        "fields": [
+          {
+            "path": "#.underlying",
+            "label": "Asset",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null }
+          },
+          {
+            "path": "#.amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": { "token": "#.underlying" }
+          },
+          {
+            "path": "#.maxGasForMatching",
+            "label": "Max Gas For Matching",
+            "format": "raw"
+          },
+          {
+            "path": "#.receiver",
+            "label": "Receiver",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] }
+          }
+        ],
+        "required": ["#.underlying", "#.amount", "#.maxGasForMatching", "#.receiver"]
+      },
+      "repay(address,uint256,uint256,address)": {
+        "intent": "Repay Morpho-Aave borrow",
+        "fields": [
+          {
+            "path": "#.underlying",
+            "label": "Asset",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null }
+          },
+          {
+            "path": "#.amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": { "token": "#.underlying" }
+          },
+          {
+            "path": "#.onBehalf",
+            "label": "On Behalf Of",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] }
+          }
+        ],
+        "required": ["#.underlying", "#.amount", "#.onBehalf"]
+      },
+      "withdraw(address,uint256,uint256,uint256,address)": {
+        "intent": "Withdraw from Morpho-Aave",
+        "fields": [
+          {
+            "path": "#.underlying",
+            "label": "Asset",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null }
+          },
+          {
+            "path": "#.amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": { "token": "#.underlying" }
+          },
+          {
+            "path": "#.receiver",
+            "label": "Receiver",
+            "format": "addressName",
+            "params": { "types": ["wallet", "eoa"], "sources": ["local", "ens"] }
+          }
+        ],
+        "required": ["#.underlying", "#.amount", "#.receiver"]
+      }
+    }
+  }
+}

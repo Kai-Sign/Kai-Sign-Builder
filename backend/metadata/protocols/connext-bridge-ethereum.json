@@ -1,0 +1,715 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x8898b472c54c31894e3b9bb83cea802a5d0e63c6",
+      "chainId": 1,
+      "name": "Connext Bridge (Ethereum)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "xcall",
+          "selector": "0xa0c57e8f",
+          "inputs": [
+            {
+              "name": "_destination",
+              "type": "uint32"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_asset",
+              "type": "address"
+            },
+            {
+              "name": "_delegate",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_slippage",
+              "type": "uint256"
+            },
+            {
+              "name": "_callData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "xcallIntoLocal",
+          "selector": "0x386ba4f8",
+          "inputs": [
+            {
+              "name": "_destination",
+              "type": "uint32"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_asset",
+              "type": "address"
+            },
+            {
+              "name": "_delegate",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_slippage",
+              "type": "uint256"
+            },
+            {
+              "name": "_callData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "bumpTransfer",
+          "selector": "0x54164cba",
+          "inputs": [
+            {
+              "name": "_transferId",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "addStableSwapPool",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "domain",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "id",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct TokenId",
+              "name": "_canonical",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "_stableSwapPool",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x1506e463"
+        },
+        {
+          "type": "function",
+          "name": "removeAssetId",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "domain",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "id",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct TokenId",
+              "name": "_canonical",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "_adoptedAssetId",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_representation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x5a2164e5"
+        },
+        {
+          "type": "function",
+          "name": "removeAssetId",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "_key",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "_adoptedAssetId",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_representation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xa1b19301"
+        },
+        {
+          "type": "function",
+          "name": "setupAsset",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "domain",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "id",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct TokenId",
+              "name": "_canonical",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint8",
+              "name": "_canonicalDecimals",
+              "type": "uint8"
+            },
+            {
+              "internalType": "string",
+              "name": "_representationName",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "_representationSymbol",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "_adoptedAssetId",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_stableSwapPool",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_cap",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xb64a5e07",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "_local",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "updateDetails",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "domain",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "id",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct TokenId",
+              "name": "_canonical",
+              "type": "tuple"
+            },
+            {
+              "internalType": "string",
+              "name": "_name",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "_symbol",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xc4058429"
+        },
+        {
+          "type": "function",
+          "name": "setupAssetWithDeployedRepresentation",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "domain",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "id",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct TokenId",
+              "name": "_canonical",
+              "type": "tuple"
+            },
+            {
+              "internalType": "address",
+              "name": "_representation",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_adoptedAssetId",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_stableSwapPool",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xe1cb3958",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "updateLiquidityCap",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "domain",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "id",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct TokenId",
+              "name": "_canonical",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_updated",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xe9d7bcec"
+        },
+        {
+          "type": "function",
+          "name": "unapproveRouterForPortal",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_router",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x04376ff4"
+        },
+        {
+          "type": "function",
+          "name": "acceptProposedRouterOwner",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_router",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x09935b8f"
+        },
+        {
+          "type": "function",
+          "name": "proposeRouterOwner",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_router",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_proposed",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x22a3c007"
+        },
+        {
+          "type": "function",
+          "name": "addRouterLiquidityFor",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_local",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_router",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x2d3f9ef6"
+        },
+        {
+          "type": "function",
+          "name": "addRouterLiquidity",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_local",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x54064594"
+        },
+        {
+          "type": "function",
+          "name": "setLiquidityFeeNumerator",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_numerator",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x582c78d2"
+        },
+        {
+          "type": "function",
+          "name": "setMaxRoutersPerTransfer",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_newMaxRouters",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x82904716"
+        },
+        {
+          "type": "function",
+          "name": "unapproveRouter",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_router",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x911b8ee2"
+        },
+        {
+          "type": "function",
+          "name": "initializeRouter",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xb214c901"
+        },
+        {
+          "type": "function",
+          "name": "approveRouterForPortal",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_router",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xda3a892f"
+        },
+        {
+          "type": "function",
+          "name": "approveRouter",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_router",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf259cd27"
+        },
+        {
+          "type": "function",
+          "name": "removeRouterLiquidity",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "domain",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "id",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct TokenId",
+              "name": "_canonical",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable",
+              "name": "_to",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf72c5048"
+        },
+        {
+          "type": "function",
+          "name": "removeRouterLiquidityFor",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "domain",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "id",
+                  "type": "bytes32"
+                }
+              ],
+              "internalType": "struct TokenId",
+              "name": "_canonical",
+              "type": "tuple"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_router",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xfd5bd5fe"
+        },
+        {
+          "type": "function",
+          "name": "setRouterRecipient",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_router",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xffaf3f1a"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "xcall(uint32,address,address,address,uint256,uint256,bytes)": {
+        "intent": "Bridge tokens via Connext to another chain",
+        "interpolatedIntent": "Bridge {_amount} {_asset} to chain {_destination} via Connext to {_to}",
+        "fields": [
+          {
+            "path": "_asset",
+            "label": "Asset",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_asset"
+            }
+          },
+          {
+            "path": "_destination",
+            "label": "Destination Domain",
+            "format": "raw"
+          },
+          {
+            "path": "_to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "_slippage",
+            "label": "Max Slippage (bps)",
+            "format": "raw"
+          },
+          {
+            "path": "_delegate",
+            "label": "Delegate",
+            "format": "addressName"
+          }
+        ]
+      },
+      "xcallIntoLocal(uint32,address,address,address,uint256,uint256,bytes)": {
+        "intent": "Bridge tokens via Connext (receive local asset)",
+        "interpolatedIntent": "Bridge {_amount} {_asset} to chain {_destination} as local asset via Connext",
+        "fields": [
+          {
+            "path": "_asset",
+            "label": "Asset",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_asset"
+            }
+          },
+          {
+            "path": "_destination",
+            "label": "Destination Domain",
+            "format": "raw"
+          },
+          {
+            "path": "_to",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "_slippage",
+            "label": "Max Slippage (bps)",
+            "format": "raw"
+          }
+        ]
+      },
+      "bumpTransfer(bytes32)": {
+        "intent": "Add additional relayer fee to Connext transfer",
+        "interpolatedIntent": "Bump relayer fee for Connext transfer {_transferId}",
+        "fields": [
+          {
+            "path": "_transferId",
+            "label": "Transfer ID",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Connext",
+    "info": {
+      "url": "https://connext.network/",
+      "legalName": "Connext Protocol",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

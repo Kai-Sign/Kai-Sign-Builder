@@ -1,0 +1,628 @@
+{
+  "context": {
+    "contract": {
+      "address": "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84",
+      "chainId": 1,
+      "name": "Lido stETH",
+      "abi": [
+        {
+          "type": "function",
+          "name": "submit",
+          "selector": "0xa1903eab",
+          "inputs": [
+            {
+              "name": "_referral",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "_recipient",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "_sender",
+              "type": "address"
+            },
+            {
+              "name": "_recipient",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "resume",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x046f7da2"
+        },
+        {
+          "type": "function",
+          "name": "mintExternalShares",
+          "inputs": [
+            {
+              "name": "_recipient",
+              "type": "address"
+            },
+            {
+              "name": "_amountOfShares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x06f187a4"
+        },
+        {
+          "type": "function",
+          "name": "stop",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x07da68f5"
+        },
+        {
+          "type": "function",
+          "name": "emitTokenRebase",
+          "inputs": [
+            {
+              "name": "_reportTimestamp",
+              "type": "uint256"
+            },
+            {
+              "name": "_timeElapsed",
+              "type": "uint256"
+            },
+            {
+              "name": "_preTotalShares",
+              "type": "uint256"
+            },
+            {
+              "name": "_preTotalEther",
+              "type": "uint256"
+            },
+            {
+              "name": "_postTotalShares",
+              "type": "uint256"
+            },
+            {
+              "name": "_postTotalEther",
+              "type": "uint256"
+            },
+            {
+              "name": "_postInternalShares",
+              "type": "uint256"
+            },
+            {
+              "name": "_postInternalEther",
+              "type": "uint256"
+            },
+            {
+              "name": "_sharesMintedAsFees",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x1b250097"
+        },
+        {
+          "type": "function",
+          "name": "setStakingLimit",
+          "inputs": [
+            {
+              "name": "_maxStakeLimit",
+              "type": "uint256"
+            },
+            {
+              "name": "_stakeLimitIncreasePerBlock",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x2cb5f784"
+        },
+        {
+          "type": "function",
+          "name": "unsafeChangeDepositedValidators",
+          "inputs": [
+            {
+              "name": "_newDepositedValidators",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x38998624"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowance",
+          "inputs": [
+            {
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "name": "_addedValue",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x39509351",
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [
+            {
+              "name": "_lidoLocator",
+              "type": "address"
+            },
+            {
+              "name": "_eip712StETH",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x485cc955"
+        },
+        {
+          "type": "function",
+          "name": "receiveELRewards",
+          "inputs": [],
+          "stateMutability": "payable",
+          "selector": "0x4ad509b2"
+        },
+        {
+          "type": "function",
+          "name": "mintShares",
+          "inputs": [
+            {
+              "name": "_recipient",
+              "type": "address"
+            },
+            {
+              "name": "_amountOfShares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x528c198a"
+        },
+        {
+          "type": "function",
+          "name": "processClStateUpdate",
+          "inputs": [
+            {
+              "name": "_reportTimestamp",
+              "type": "uint256"
+            },
+            {
+              "name": "_preClValidators",
+              "type": "uint256"
+            },
+            {
+              "name": "_reportClValidators",
+              "type": "uint256"
+            },
+            {
+              "name": "_reportClBalance",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x603540cd"
+        },
+        {
+          "type": "function",
+          "name": "internalizeExternalBadDebt",
+          "inputs": [
+            {
+              "name": "_amountOfShares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x648c51e7"
+        },
+        {
+          "type": "function",
+          "name": "transferSharesFrom",
+          "inputs": [
+            {
+              "name": "_sender",
+              "type": "address"
+            },
+            {
+              "name": "_recipient",
+              "type": "address"
+            },
+            {
+              "name": "_sharesAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x6d780459",
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "burnExternalShares",
+          "inputs": [
+            {
+              "name": "_amountOfShares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x72e62e56"
+        },
+        {
+          "type": "function",
+          "name": "resumeStaking",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x7475f913"
+        },
+        {
+          "type": "function",
+          "name": "receiveWithdrawals",
+          "inputs": [],
+          "stateMutability": "payable",
+          "selector": "0x78ffcfe2"
+        },
+        {
+          "type": "function",
+          "name": "rebalanceExternalEtherToInternal",
+          "inputs": [
+            {
+              "name": "_amountOfShares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x7c8d9e38"
+        },
+        {
+          "type": "function",
+          "name": "burnShares",
+          "inputs": [
+            {
+              "name": "_amountOfShares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x853c637d"
+        },
+        {
+          "type": "function",
+          "name": "finalizeUpgrade_v3",
+          "inputs": [
+            {
+              "name": "_oldBurner",
+              "type": "address"
+            },
+            {
+              "name": "_contractsWithBurnerAllowances",
+              "type": "address[]"
+            },
+            {
+              "name": "_initialMaxExternalRatioBP",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x878a209c"
+        },
+        {
+          "type": "function",
+          "name": "transferShares",
+          "inputs": [
+            {
+              "name": "_recipient",
+              "type": "address"
+            },
+            {
+              "name": "_sharesAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x8fcb4e5b",
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "collectRewardsAndProcessWithdrawals",
+          "inputs": [
+            {
+              "name": "_reportTimestamp",
+              "type": "uint256"
+            },
+            {
+              "name": "_reportClBalance",
+              "type": "uint256"
+            },
+            {
+              "name": "_principalCLBalance",
+              "type": "uint256"
+            },
+            {
+              "name": "_withdrawalsToWithdraw",
+              "type": "uint256"
+            },
+            {
+              "name": "_elRewardsToWithdraw",
+              "type": "uint256"
+            },
+            {
+              "name": "_lastWithdrawalRequestToFinalize",
+              "type": "uint256"
+            },
+            {
+              "name": "_withdrawalsShareRate",
+              "type": "uint256"
+            },
+            {
+              "name": "_etherToLockOnWithdrawalQueue",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x9271e3e6"
+        },
+        {
+          "type": "function",
+          "name": "transferToVault",
+          "inputs": [
+            {
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x9d4941d8"
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowance",
+          "inputs": [
+            {
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "name": "_subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xa457c2d7",
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "inputs": [
+            {
+              "name": "_maxDepositsCount",
+              "type": "uint256"
+            },
+            {
+              "name": "_stakingModuleId",
+              "type": "uint256"
+            },
+            {
+              "name": "_depositCalldata",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xaa0b7db7"
+        },
+        {
+          "type": "function",
+          "name": "removeStakingLimit",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0xb3320d9a"
+        },
+        {
+          "type": "function",
+          "name": "permit",
+          "inputs": [
+            {
+              "name": "_owner",
+              "type": "address"
+            },
+            {
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "name": "_value",
+              "type": "uint256"
+            },
+            {
+              "name": "_deadline",
+              "type": "uint256"
+            },
+            {
+              "name": "_v",
+              "type": "uint8"
+            },
+            {
+              "name": "_r",
+              "type": "bytes32"
+            },
+            {
+              "name": "_s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xd505accf"
+        },
+        {
+          "type": "function",
+          "name": "setMaxExternalRatioBP",
+          "inputs": [
+            {
+              "name": "_maxExternalRatioBP",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf352e17e"
+        },
+        {
+          "type": "function",
+          "name": "pauseStaking",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0xf999c506"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "submit(address)": {
+        "intent": "Stake ETH via Lido",
+        "interpolatedIntent": "Stake ETH via Lido (referral: {_referral})",
+        "fields": [
+          {
+            "path": "_referral",
+            "label": "Referral",
+            "format": "addressName"
+          }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Approve stETH spending",
+        "interpolatedIntent": "Approve {_spender} to spend {_amount} stETH",
+        "fields": [
+          {
+            "path": "_spender",
+            "label": "Spender",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "stETH"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer stETH",
+        "interpolatedIntent": "Transfer {_amount} stETH to {_recipient}",
+        "fields": [
+          {
+            "path": "_recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "stETH"
+            }
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Transfer stETH on behalf of sender",
+        "interpolatedIntent": "Transfer {_amount} stETH from {_sender} to {_recipient}",
+        "fields": [
+          {
+            "path": "_sender",
+            "label": "From",
+            "format": "addressName"
+          },
+          {
+            "path": "_recipient",
+            "label": "To",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "stETH"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

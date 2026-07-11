@@ -1,0 +1,270 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x0000002d6db27c52e3c11c1cf24072004ac75cba",
+      "chainId": 1,
+      "name": "Biconomy Nexus Smart Account",
+      "abi": [
+        {
+          "type": "function",
+          "name": "execute",
+          "selector": "0x6b4f19f5",
+          "inputs": [
+            {
+              "name": "mode",
+              "type": "bytes32"
+            },
+            {
+              "name": "executionCalldata",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "executeBatch",
+          "selector": "0x5b73aa0d",
+          "inputs": [
+            {
+              "name": "mode",
+              "type": "bytes32"
+            },
+            {
+              "name": "executionCalldata",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "installModule",
+          "selector": "0x1d045024",
+          "inputs": [
+            {
+              "name": "moduleTypeId",
+              "type": "uint256"
+            },
+            {
+              "name": "module",
+              "type": "address"
+            },
+            {
+              "name": "initData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "uninstallModule",
+          "selector": "0xb6e3d9cb",
+          "inputs": [
+            {
+              "name": "moduleTypeId",
+              "type": "uint256"
+            },
+            {
+              "name": "module",
+              "type": "address"
+            },
+            {
+              "name": "deInitData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addSafeSender",
+          "selector": "0x5c81ca68",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "onInstall",
+          "selector": "0x6d61fe70",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "onUninstall",
+          "selector": "0x8a91b0e3",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removeSafeSender",
+          "selector": "0xe824b568",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "execute(bytes32,bytes)": {
+        "intent": "Execute transaction via Biconomy Nexus smart account",
+        "interpolatedIntent": "Execute smart account transaction",
+        "fields": [
+          {
+            "path": "mode",
+            "label": "Execution Mode",
+            "format": "raw"
+          },
+          {
+            "path": "executionCalldata",
+            "label": "Calldata",
+            "format": "raw"
+          }
+        ]
+      },
+      "executeBatch(bytes32,bytes[])": {
+        "intent": "Execute batch transactions via Biconomy Nexus",
+        "interpolatedIntent": "Execute batch of smart account transactions",
+        "fields": [
+          {
+            "path": "mode",
+            "label": "Execution Mode",
+            "format": "raw"
+          }
+        ]
+      },
+      "installModule(uint256,address,bytes)": {
+        "intent": "Install module on Biconomy Nexus smart account",
+        "interpolatedIntent": "Install module {module} (type {moduleTypeId}) on smart account",
+        "fields": [
+          {
+            "path": "moduleTypeId",
+            "label": "Module Type",
+            "format": "raw"
+          },
+          {
+            "path": "module",
+            "label": "Module Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "uninstallModule(uint256,address,bytes)": {
+        "intent": "Uninstall module from Biconomy Nexus smart account",
+        "interpolatedIntent": "Uninstall module {module} (type {moduleTypeId}) from smart account",
+        "fields": [
+          {
+            "path": "moduleTypeId",
+            "label": "Module Type",
+            "format": "raw"
+          },
+          {
+            "path": "module",
+            "label": "Module Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "addSafeSender(address)": {
+        "intent": "Review Add Safe Sender transaction",
+        "fields": [
+          {
+            "path": "sender",
+            "label": "Sender",
+            "format": "address"
+          }
+        ]
+      },
+      "onInstall(bytes)": {
+        "intent": "Review On Install transaction",
+        "fields": [
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "onUninstall(bytes)": {
+        "intent": "Review On Uninstall transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "hex"
+          }
+        ]
+      },
+      "removeSafeSender(address)": {
+        "intent": "Review Remove Safe Sender transaction",
+        "fields": [
+          {
+            "path": "sender",
+            "label": "Sender",
+            "format": "address"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Biconomy",
+    "info": {
+      "url": "https://biconomy.io/",
+      "legalName": "Biconomy Protocol",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

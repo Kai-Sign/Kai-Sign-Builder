@@ -1,0 +1,641 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x4e15361fd6b4bb609fa63c81a2be19d873717870",
+      "chainId": 1,
+      "name": "Fantom",
+      "symbol": "FTM",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "removeAdmin",
+          "selector": "0x1785f53c",
+          "inputs": [
+            {
+              "name": "_a",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintTokensLocked",
+          "selector": "0x4104044b",
+          "inputs": [
+            {
+              "name": "_mint_type",
+              "type": "uint256"
+            },
+            {
+              "name": "_account",
+              "type": "address"
+            },
+            {
+              "name": "_tokens",
+              "type": "uint256"
+            },
+            {
+              "name": "_term",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintTokensLockedMultiple",
+          "selector": "0x43e7e4da",
+          "inputs": [
+            {
+              "name": "_mint_type",
+              "type": "uint256"
+            },
+            {
+              "name": "_accounts",
+              "type": "address[]"
+            },
+            {
+              "name": "_tokens",
+              "type": "uint256[]"
+            },
+            {
+              "name": "_terms",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "openMigrationPhase",
+          "selector": "0x5f538fd4",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addAdmin",
+          "selector": "0x70480275",
+          "inputs": [
+            {
+              "name": "_a",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "acceptOwnership",
+          "selector": "0x79ba5097",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "requestTokenExchange",
+          "selector": "0x837b68c8",
+          "inputs": [
+            {
+              "name": "_tokens",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setDateMainEnd",
+          "selector": "0x897e47f5",
+          "inputs": [
+            {
+              "name": "_unixts",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintTokens",
+          "selector": "0x8d6819be",
+          "inputs": [
+            {
+              "name": "_mint_type",
+              "type": "uint256"
+            },
+            {
+              "name": "_account",
+              "type": "address"
+            },
+            {
+              "name": "_tokens",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addToWhitelistMultiple",
+          "selector": "0x8fe6677d",
+          "inputs": [
+            {
+              "name": "_addresses",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "requestTokenExchangeMax",
+          "selector": "0x9981bd61",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateTokensPerEth",
+          "selector": "0x9ea407be",
+          "inputs": [
+            {
+              "name": "_tokens_per_eth",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "makeTradeable",
+          "selector": "0xa03fb4c0",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferMultiple",
+          "selector": "0xa05fccef",
+          "inputs": [
+            {
+              "name": "_addresses",
+              "type": "address[]"
+            },
+            {
+              "name": "_amounts",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setDateMainStart",
+          "selector": "0xad401842",
+          "inputs": [
+            {
+              "name": "_unixts",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintTokensMultiple",
+          "selector": "0xc1b728b5",
+          "inputs": [
+            {
+              "name": "_mint_type",
+              "type": "uint256"
+            },
+            {
+              "name": "_accounts",
+              "type": "address[]"
+            },
+            {
+              "name": "_tokens",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferAnyERC20Token",
+          "selector": "0xdc39d06d",
+          "inputs": [
+            {
+              "name": "_token_address",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setWallet",
+          "selector": "0xdeaa59df",
+          "inputs": [
+            {
+              "name": "_wallet",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addToWhitelist",
+          "selector": "0xe43252d7",
+          "inputs": [
+            {
+              "name": "_account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "name": "_newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} FTM",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "FTM"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} FTM",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "FTM"
+            }
+          }
+        ]
+      },
+      "removeAdmin(address)": {
+        "intent": "Review Remove Admin transaction",
+        "fields": [
+          {
+            "path": "_a",
+            "label": " a",
+            "format": "address"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "mintTokensLocked(uint256,address,uint256,uint256)": {
+        "intent": "Review Mint Tokens Locked transaction",
+        "fields": [
+          {
+            "path": "_mint_type",
+            "label": " mint type",
+            "format": "raw"
+          },
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          },
+          {
+            "path": "_tokens",
+            "label": " tokens",
+            "format": "raw"
+          },
+          {
+            "path": "_term",
+            "label": " term",
+            "format": "raw"
+          }
+        ]
+      },
+      "mintTokensLockedMultiple(uint256,address[],uint256[],uint256[])": {
+        "intent": "Review Mint Tokens Locked Multiple transaction",
+        "fields": [
+          {
+            "path": "_mint_type",
+            "label": " mint type",
+            "format": "raw"
+          },
+          {
+            "path": "_accounts",
+            "label": " accounts",
+            "format": "raw"
+          },
+          {
+            "path": "_tokens",
+            "label": " tokens",
+            "format": "raw"
+          },
+          {
+            "path": "_terms",
+            "label": " terms",
+            "format": "raw"
+          }
+        ]
+      },
+      "openMigrationPhase()": {
+        "intent": "Review Open Migration Phase transaction",
+        "fields": []
+      },
+      "addAdmin(address)": {
+        "intent": "Review Add Admin transaction",
+        "fields": [
+          {
+            "path": "_a",
+            "label": " a",
+            "format": "address"
+          }
+        ]
+      },
+      "acceptOwnership()": {
+        "intent": "Review Accept Ownership transaction",
+        "fields": []
+      },
+      "requestTokenExchange(uint256)": {
+        "intent": "Review Request Token Exchange transaction",
+        "fields": [
+          {
+            "path": "_tokens",
+            "label": " tokens",
+            "format": "raw"
+          }
+        ]
+      },
+      "setDateMainEnd(uint256)": {
+        "intent": "Review Set Date Main End transaction",
+        "fields": [
+          {
+            "path": "_unixts",
+            "label": " unixts",
+            "format": "raw"
+          }
+        ]
+      },
+      "mintTokens(uint256,address,uint256)": {
+        "intent": "Review Mint Tokens transaction",
+        "fields": [
+          {
+            "path": "_mint_type",
+            "label": " mint type",
+            "format": "raw"
+          },
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          },
+          {
+            "path": "_tokens",
+            "label": " tokens",
+            "format": "raw"
+          }
+        ]
+      },
+      "addToWhitelistMultiple(address[])": {
+        "intent": "Review Add To Whitelist Multiple transaction",
+        "fields": [
+          {
+            "path": "_addresses",
+            "label": " addresses",
+            "format": "raw"
+          }
+        ]
+      },
+      "requestTokenExchangeMax()": {
+        "intent": "Review Request Token Exchange Max transaction",
+        "fields": []
+      },
+      "updateTokensPerEth(uint256)": {
+        "intent": "Review Update Tokens Per Eth transaction",
+        "fields": [
+          {
+            "path": "_tokens_per_eth",
+            "label": " tokens per eth",
+            "format": "raw"
+          }
+        ]
+      },
+      "makeTradeable()": {
+        "intent": "Review Make Tradeable transaction",
+        "fields": []
+      },
+      "transferMultiple(address[],uint256[])": {
+        "intent": "Review Transfer Multiple transaction",
+        "fields": [
+          {
+            "path": "_addresses",
+            "label": " addresses",
+            "format": "raw"
+          },
+          {
+            "path": "_amounts",
+            "label": " amounts",
+            "format": "raw"
+          }
+        ]
+      },
+      "setDateMainStart(uint256)": {
+        "intent": "Review Set Date Main Start transaction",
+        "fields": [
+          {
+            "path": "_unixts",
+            "label": " unixts",
+            "format": "raw"
+          }
+        ]
+      },
+      "mintTokensMultiple(uint256,address[],uint256[])": {
+        "intent": "Review Mint Tokens Multiple transaction",
+        "fields": [
+          {
+            "path": "_mint_type",
+            "label": " mint type",
+            "format": "raw"
+          },
+          {
+            "path": "_accounts",
+            "label": " accounts",
+            "format": "raw"
+          },
+          {
+            "path": "_tokens",
+            "label": " tokens",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferAnyERC20Token(address,uint256)": {
+        "intent": "Review Transfer Any ERC20 Token transaction",
+        "fields": [
+          {
+            "path": "_token_address",
+            "label": " token address",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "setWallet(address)": {
+        "intent": "Review Set Wallet transaction",
+        "fields": [
+          {
+            "path": "_wallet",
+            "label": " wallet",
+            "format": "address"
+          }
+        ]
+      },
+      "addToWhitelist(address)": {
+        "intent": "Review Add To Whitelist transaction",
+        "fields": [
+          {
+            "path": "_account",
+            "label": " account",
+            "format": "address"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "_newOwner",
+            "label": " new Owner",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  }
+}

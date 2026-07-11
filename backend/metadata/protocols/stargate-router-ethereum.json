@@ -1,0 +1,1791 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x8731d54e9d02c286767d56ac03e8037c07e01e98",
+      "chainId": 1,
+      "name": "Stargate Router (Ethereum)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "swap",
+          "selector": "0x8731d54e",
+          "inputs": [
+            {
+              "name": "_dstChainId",
+              "type": "uint16"
+            },
+            {
+              "name": "_srcPoolId",
+              "type": "uint256"
+            },
+            {
+              "name": "_dstPoolId",
+              "type": "uint256"
+            },
+            {
+              "name": "_refundAddress",
+              "type": "address"
+            },
+            {
+              "name": "_amountLD",
+              "type": "uint256"
+            },
+            {
+              "name": "_minAmountLD",
+              "type": "uint256"
+            },
+            {
+              "name": "_lzTxParams",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "dstGasForCall",
+                  "type": "uint256"
+                },
+                {
+                  "name": "dstNativeAmount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "dstNativeAddr",
+                  "type": "bytes"
+                }
+              ]
+            },
+            {
+              "name": "_to",
+              "type": "bytes"
+            },
+            {
+              "name": "_payload",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "addLiquidity",
+          "selector": "0x8720316d",
+          "inputs": [
+            {
+              "name": "_poolId",
+              "type": "uint256"
+            },
+            {
+              "name": "_amountLD",
+              "type": "uint256"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "instantRedeemLocal",
+          "selector": "0xf56021f5",
+          "inputs": [
+            {
+              "name": "_srcPoolId",
+              "type": "uint16"
+            },
+            {
+              "name": "_amountLP",
+              "type": "uint256"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "activateChainPath",
+          "selector": "0xc7d968e3",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_poolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint16",
+              "name": "_dstChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_dstPoolId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addLiquidity",
+          "selector": "0x87b21efc",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_poolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amountLD",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "callDelta",
+          "selector": "0xfba6e280",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_poolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "_fullMode",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "clearCachedSwap",
+          "selector": "0x403a9f7a",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_srcChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_srcAddress",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_nonce",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "createChainPath",
+          "selector": "0x16fb60f5",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_poolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint16",
+              "name": "_dstChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_dstPoolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_weight",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "createPool",
+          "selector": "0x7af935a1",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_poolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint8",
+              "name": "_sharedDecimals",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "_localDecimals",
+              "type": "uint8"
+            },
+            {
+              "internalType": "string",
+              "name": "_name",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "_symbol",
+              "type": "string"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "creditChainPath",
+          "selector": "0xa18fa804",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_dstChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_dstPoolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_srcPoolId",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "credits",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "idealBalance",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Pool.CreditObj",
+              "name": "_c",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "instantRedeemLocal",
+          "selector": "0xc4de93a5",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_srcPoolId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amountLP",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountSD",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redeemLocal",
+          "selector": "0x8f2e1d18",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_dstChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_srcPoolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_dstPoolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable",
+              "name": "_refundAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amountLP",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_to",
+              "type": "bytes"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "dstGasForCall",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "dstNativeAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "dstNativeAddr",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct IStargateRouter.lzTxObj",
+              "name": "_lzTxParams",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "redeemLocalCallback",
+          "selector": "0x7f721298",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_srcChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_srcAddress",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_srcPoolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_dstPoolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amountSD",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_mintAmountSD",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redeemLocalCheckOnRemote",
+          "selector": "0x0403bce5",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_srcChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_srcAddress",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_srcPoolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_dstPoolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amountSD",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_to",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redeemRemote",
+          "selector": "0x84d0dba3",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_dstChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_srcPoolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_dstPoolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable",
+              "name": "_refundAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amountLP",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_minAmountLD",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_to",
+              "type": "bytes"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "dstGasForCall",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "dstNativeAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "dstNativeAddr",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct IStargateRouter.lzTxObj",
+              "name": "_lzTxParams",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "retryRevert",
+          "selector": "0x60a3b95c",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_srcChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_srcAddress",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_nonce",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "revertRedeemLocal",
+          "selector": "0x6a7982da",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_dstChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_srcAddress",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable",
+              "name": "_refundAddress",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "dstGasForCall",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "dstNativeAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "dstNativeAddr",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct IStargateRouter.lzTxObj",
+              "name": "_lzTxParams",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "sendCredits",
+          "selector": "0x9ba3aa74",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_dstChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_srcPoolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_dstPoolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable",
+              "name": "_refundAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "setBridgeAndFactory",
+          "selector": "0x424c9119",
+          "inputs": [
+            {
+              "internalType": "contract Bridge",
+              "name": "_bridge",
+              "type": "address"
+            },
+            {
+              "internalType": "contract Factory",
+              "name": "_factory",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setDeltaParam",
+          "selector": "0x43a30630",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_poolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "_batched",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_swapDeltaBP",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_lpDeltaBP",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "_defaultSwapMode",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
+              "name": "_defaultLPMode",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFeeLibrary",
+          "selector": "0xc6a27624",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_poolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_feeLibraryAddr",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFees",
+          "selector": "0x0b78f9c0",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_poolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_mintFeeBP",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMintFeeOwner",
+          "selector": "0xcefbdde2",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setProtocolFeeOwner",
+          "selector": "0x34aba410",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setSwapStop",
+          "selector": "0x98e391a1",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_poolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "_swapStop",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setWeightForChainPath",
+          "selector": "0x7b84d287",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_poolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint16",
+              "name": "_dstChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_dstPoolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint16",
+              "name": "_weight",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swap",
+          "selector": "0x9fbf10fc",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_dstChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_srcPoolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_dstPoolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable",
+              "name": "_refundAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amountLD",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_minAmountLD",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "dstGasForCall",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "dstNativeAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "dstNativeAddr",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct IStargateRouter.lzTxObj",
+              "name": "_lzTxParams",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_to",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_payload",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swapRemote",
+          "selector": "0x2f925555",
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_srcChainId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_srcAddress",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_srcPoolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_dstPoolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_dstGasForCall",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "eqFee",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "eqReward",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "lpFee",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "protocolFee",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "lkbRemove",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Pool.SwapObj",
+              "name": "_s",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_payload",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawMintFee",
+          "selector": "0x5500585c",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_poolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "withdrawProtocolFee",
+          "selector": "0xc8adf12d",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_poolId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "swap(uint16,uint256,uint256,address,uint256,uint256,tuple,bytes,bytes)": {
+        "intent": "Bridge tokens via Stargate",
+        "interpolatedIntent": "Bridge {_amountLD} to chain {_dstChainId} via Stargate",
+        "fields": [
+          {
+            "path": "_dstChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "_srcPoolId",
+            "label": "Source Pool",
+            "format": "raw"
+          },
+          {
+            "path": "_dstPoolId",
+            "label": "Destination Pool",
+            "format": "raw"
+          },
+          {
+            "path": "_amountLD",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "_minAmountLD",
+            "label": "Min Amount",
+            "format": "raw"
+          },
+          {
+            "path": "_refundAddress",
+            "label": "Refund Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "addLiquidity(uint256,uint256,address)": {
+        "intent": "Add liquidity to Stargate pool",
+        "interpolatedIntent": "Add {_amountLD} to Stargate pool #{_poolId}",
+        "fields": [
+          {
+            "path": "_poolId",
+            "label": "Pool ID",
+            "format": "raw"
+          },
+          {
+            "path": "_amountLD",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "_to",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "instantRedeemLocal(uint16,uint256,address)": {
+        "intent": "Redeem Stargate LP tokens",
+        "interpolatedIntent": "Redeem {_amountLP} LP tokens from Stargate pool #{_srcPoolId}",
+        "fields": [
+          {
+            "path": "_srcPoolId",
+            "label": "Pool ID",
+            "format": "raw"
+          },
+          {
+            "path": "_amountLP",
+            "label": "LP Amount",
+            "format": "raw"
+          },
+          {
+            "path": "_to",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "activateChainPath(uint256,uint16,uint256)": {
+        "intent": "Review Activate Chain Path transaction",
+        "fields": [
+          {
+            "path": "_poolId",
+            "label": " pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_dstChainId",
+            "label": " dst Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_dstPoolId",
+            "label": " dst Pool Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "callDelta(uint256,bool)": {
+        "intent": "Review Call Delta transaction",
+        "fields": [
+          {
+            "path": "_poolId",
+            "label": " pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_fullMode",
+            "label": " full Mode",
+            "format": "boolean"
+          }
+        ]
+      },
+      "clearCachedSwap(uint16,bytes,uint256)": {
+        "intent": "Review Clear Cached Swap transaction",
+        "fields": [
+          {
+            "path": "_srcChainId",
+            "label": " src Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_srcAddress",
+            "label": " src Address",
+            "format": "hex"
+          },
+          {
+            "path": "_nonce",
+            "label": " nonce",
+            "format": "raw"
+          }
+        ]
+      },
+      "createChainPath(uint256,uint16,uint256,uint256)": {
+        "intent": "Review Create Chain Path transaction",
+        "fields": [
+          {
+            "path": "_poolId",
+            "label": " pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_dstChainId",
+            "label": " dst Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_dstPoolId",
+            "label": " dst Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_weight",
+            "label": " weight",
+            "format": "raw"
+          }
+        ]
+      },
+      "createPool(uint256,address,uint8,uint8,string,string)": {
+        "intent": "Review Create Pool transaction",
+        "fields": [
+          {
+            "path": "_poolId",
+            "label": " pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_token",
+            "label": " token",
+            "format": "address"
+          },
+          {
+            "path": "_sharedDecimals",
+            "label": " shared Decimals",
+            "format": "raw"
+          },
+          {
+            "path": "_localDecimals",
+            "label": " local Decimals",
+            "format": "raw"
+          },
+          {
+            "path": "_name",
+            "label": " name",
+            "format": "raw"
+          },
+          {
+            "path": "_symbol",
+            "label": " symbol",
+            "format": "raw"
+          }
+        ]
+      },
+      "creditChainPath(uint16,uint256,uint256,(uint256,uint256))": {
+        "intent": "Review Credit Chain Path transaction",
+        "fields": [
+          {
+            "path": "_dstChainId",
+            "label": " dst Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_dstPoolId",
+            "label": " dst Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_srcPoolId",
+            "label": " src Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_c",
+            "label": " c",
+            "format": "raw"
+          }
+        ]
+      },
+      "redeemLocal(uint16,uint256,uint256,address,uint256,bytes,(uint256,uint256,bytes))": {
+        "intent": "Review Redeem Local transaction",
+        "fields": [
+          {
+            "path": "_dstChainId",
+            "label": " dst Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_srcPoolId",
+            "label": " src Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_dstPoolId",
+            "label": " dst Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_refundAddress",
+            "label": " refund Address",
+            "format": "address"
+          },
+          {
+            "path": "_amountLP",
+            "label": " amount LP",
+            "format": "raw"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "hex"
+          },
+          {
+            "path": "_lzTxParams",
+            "label": " lz Tx Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "redeemLocalCallback(uint16,bytes,uint256,uint256,uint256,address,uint256,uint256)": {
+        "intent": "Review Redeem Local Callback transaction",
+        "fields": [
+          {
+            "path": "_srcChainId",
+            "label": " src Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_srcAddress",
+            "label": " src Address",
+            "format": "hex"
+          },
+          {
+            "path": "_nonce",
+            "label": " nonce",
+            "format": "raw"
+          },
+          {
+            "path": "_srcPoolId",
+            "label": " src Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_dstPoolId",
+            "label": " dst Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_amountSD",
+            "label": " amount SD",
+            "format": "raw"
+          },
+          {
+            "path": "_mintAmountSD",
+            "label": " mint Amount SD",
+            "format": "raw"
+          }
+        ]
+      },
+      "redeemLocalCheckOnRemote(uint16,bytes,uint256,uint256,uint256,uint256,bytes)": {
+        "intent": "Review Redeem Local Check On Remote transaction",
+        "fields": [
+          {
+            "path": "_srcChainId",
+            "label": " src Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_srcAddress",
+            "label": " src Address",
+            "format": "hex"
+          },
+          {
+            "path": "_nonce",
+            "label": " nonce",
+            "format": "raw"
+          },
+          {
+            "path": "_srcPoolId",
+            "label": " src Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_dstPoolId",
+            "label": " dst Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_amountSD",
+            "label": " amount SD",
+            "format": "raw"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "hex"
+          }
+        ]
+      },
+      "redeemRemote(uint16,uint256,uint256,address,uint256,uint256,bytes,(uint256,uint256,bytes))": {
+        "intent": "Review Redeem Remote transaction",
+        "fields": [
+          {
+            "path": "_dstChainId",
+            "label": " dst Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_srcPoolId",
+            "label": " src Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_dstPoolId",
+            "label": " dst Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_refundAddress",
+            "label": " refund Address",
+            "format": "address"
+          },
+          {
+            "path": "_amountLP",
+            "label": " amount LP",
+            "format": "raw"
+          },
+          {
+            "path": "_minAmountLD",
+            "label": " min Amount LD",
+            "format": "raw"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "hex"
+          },
+          {
+            "path": "_lzTxParams",
+            "label": " lz Tx Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "retryRevert(uint16,bytes,uint256)": {
+        "intent": "Review Retry Revert transaction",
+        "fields": [
+          {
+            "path": "_srcChainId",
+            "label": " src Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_srcAddress",
+            "label": " src Address",
+            "format": "hex"
+          },
+          {
+            "path": "_nonce",
+            "label": " nonce",
+            "format": "raw"
+          }
+        ]
+      },
+      "revertRedeemLocal(uint16,bytes,uint256,address,(uint256,uint256,bytes))": {
+        "intent": "Review Revert Redeem Local transaction",
+        "fields": [
+          {
+            "path": "_dstChainId",
+            "label": " dst Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_srcAddress",
+            "label": " src Address",
+            "format": "hex"
+          },
+          {
+            "path": "_nonce",
+            "label": " nonce",
+            "format": "raw"
+          },
+          {
+            "path": "_refundAddress",
+            "label": " refund Address",
+            "format": "address"
+          },
+          {
+            "path": "_lzTxParams",
+            "label": " lz Tx Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "sendCredits(uint16,uint256,uint256,address)": {
+        "intent": "Review Send Credits transaction",
+        "fields": [
+          {
+            "path": "_dstChainId",
+            "label": " dst Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_srcPoolId",
+            "label": " src Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_dstPoolId",
+            "label": " dst Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_refundAddress",
+            "label": " refund Address",
+            "format": "address"
+          }
+        ]
+      },
+      "setBridgeAndFactory(address,address)": {
+        "intent": "Review Set Bridge And Factory transaction",
+        "fields": [
+          {
+            "path": "_bridge",
+            "label": " bridge",
+            "format": "address"
+          },
+          {
+            "path": "_factory",
+            "label": " factory",
+            "format": "address"
+          }
+        ]
+      },
+      "setDeltaParam(uint256,bool,uint256,uint256,bool,bool)": {
+        "intent": "Review Set Delta Param transaction",
+        "fields": [
+          {
+            "path": "_poolId",
+            "label": " pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_batched",
+            "label": " batched",
+            "format": "boolean"
+          },
+          {
+            "path": "_swapDeltaBP",
+            "label": " swap Delta BP",
+            "format": "raw"
+          },
+          {
+            "path": "_lpDeltaBP",
+            "label": " lp Delta BP",
+            "format": "raw"
+          },
+          {
+            "path": "_defaultSwapMode",
+            "label": " default Swap Mode",
+            "format": "boolean"
+          },
+          {
+            "path": "_defaultLPMode",
+            "label": " default LPMode",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setFeeLibrary(uint256,address)": {
+        "intent": "Review Set Fee Library transaction",
+        "fields": [
+          {
+            "path": "_poolId",
+            "label": " pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_feeLibraryAddr",
+            "label": " fee Library Addr",
+            "format": "address"
+          }
+        ]
+      },
+      "setFees(uint256,uint256)": {
+        "intent": "Review Set Fees transaction",
+        "fields": [
+          {
+            "path": "_poolId",
+            "label": " pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_mintFeeBP",
+            "label": " mint Fee BP",
+            "format": "raw"
+          }
+        ]
+      },
+      "setMintFeeOwner(address)": {
+        "intent": "Review Set Mint Fee Owner transaction",
+        "fields": [
+          {
+            "path": "_owner",
+            "label": " owner",
+            "format": "address"
+          }
+        ]
+      },
+      "setProtocolFeeOwner(address)": {
+        "intent": "Review Set Protocol Fee Owner transaction",
+        "fields": [
+          {
+            "path": "_owner",
+            "label": " owner",
+            "format": "address"
+          }
+        ]
+      },
+      "setSwapStop(uint256,bool)": {
+        "intent": "Review Set Swap Stop transaction",
+        "fields": [
+          {
+            "path": "_poolId",
+            "label": " pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_swapStop",
+            "label": " swap Stop",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setWeightForChainPath(uint256,uint16,uint256,uint16)": {
+        "intent": "Review Set Weight For Chain Path transaction",
+        "fields": [
+          {
+            "path": "_poolId",
+            "label": " pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_dstChainId",
+            "label": " dst Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_dstPoolId",
+            "label": " dst Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_weight",
+            "label": " weight",
+            "format": "raw"
+          }
+        ]
+      },
+      "swap(uint16,uint256,uint256,address,uint256,uint256,(uint256,uint256,bytes),bytes,bytes)": {
+        "intent": "Review Swap transaction",
+        "fields": [
+          {
+            "path": "_dstChainId",
+            "label": " dst Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_srcPoolId",
+            "label": " src Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_dstPoolId",
+            "label": " dst Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_refundAddress",
+            "label": " refund Address",
+            "format": "address"
+          },
+          {
+            "path": "_amountLD",
+            "label": " amount LD",
+            "format": "raw"
+          },
+          {
+            "path": "_minAmountLD",
+            "label": " min Amount LD",
+            "format": "raw"
+          },
+          {
+            "path": "_lzTxParams",
+            "label": " lz Tx Params",
+            "format": "raw"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "hex"
+          },
+          {
+            "path": "_payload",
+            "label": " payload",
+            "format": "hex"
+          }
+        ]
+      },
+      "swapRemote(uint16,bytes,uint256,uint256,uint256,uint256,address,(uint256,uint256,uint256,uint256,uint256,uint256),bytes)": {
+        "intent": "Review Swap Remote transaction",
+        "fields": [
+          {
+            "path": "_srcChainId",
+            "label": " src Chain Id",
+            "format": "raw"
+          },
+          {
+            "path": "_srcAddress",
+            "label": " src Address",
+            "format": "hex"
+          },
+          {
+            "path": "_nonce",
+            "label": " nonce",
+            "format": "raw"
+          },
+          {
+            "path": "_srcPoolId",
+            "label": " src Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_dstPoolId",
+            "label": " dst Pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_dstGasForCall",
+            "label": " dst Gas For Call",
+            "format": "raw"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_s",
+            "label": " s",
+            "format": "raw"
+          },
+          {
+            "path": "_payload",
+            "label": " payload",
+            "format": "hex"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "withdrawMintFee(uint256,address)": {
+        "intent": "Review Withdraw Mint Fee transaction",
+        "fields": [
+          {
+            "path": "_poolId",
+            "label": " pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          }
+        ]
+      },
+      "withdrawProtocolFee(uint256,address)": {
+        "intent": "Review Withdraw Protocol Fee transaction",
+        "fields": [
+          {
+            "path": "_poolId",
+            "label": " pool Id",
+            "format": "raw"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "LayerZero Labs",
+    "info": {
+      "url": "https://stargate.finance/",
+      "legalName": "Stargate Finance",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

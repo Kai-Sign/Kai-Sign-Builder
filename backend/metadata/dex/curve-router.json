@@ -1,0 +1,583 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x99a58482bd75cbab83b27ec03ca68ff489b5788f",
+      "chainId": 1,
+      "name": "Curve Registry Exchange (Router)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "exchange_with_best_rate",
+          "selector": "0x9f69a6a6",
+          "inputs": [
+            {
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_expected",
+              "type": "uint256"
+            },
+            {
+              "name": "_receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "exchange",
+          "selector": "0x1a4c1ca3",
+          "inputs": [
+            {
+              "name": "_pool",
+              "type": "address"
+            },
+            {
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_expected",
+              "type": "uint256"
+            },
+            {
+              "name": "_receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "exchange_multiple",
+          "selector": "0x0651cb35",
+          "inputs": [
+            {
+              "name": "_route",
+              "type": "address[9]"
+            },
+            {
+              "name": "_swap_params",
+              "type": "uint256[3][4]"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_expected",
+              "type": "uint256"
+            },
+            {
+              "name": "_pools",
+              "type": "address[4]"
+            },
+            {
+              "name": "_receiver",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "exchange_with_best_rate",
+          "selector": "0x10e5e303",
+          "inputs": [
+            {
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_expected",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "exchange",
+          "selector": "0x4798ce5b",
+          "inputs": [
+            {
+              "name": "_pool",
+              "type": "address"
+            },
+            {
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_expected",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "exchange_multiple",
+          "selector": "0x353ca424",
+          "inputs": [
+            {
+              "name": "_route",
+              "type": "address[9]"
+            },
+            {
+              "name": "_swap_params",
+              "type": "uint256[3][4]"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_expected",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "exchange_multiple",
+          "selector": "0x9db4f7aa",
+          "inputs": [
+            {
+              "name": "_route",
+              "type": "address[9]"
+            },
+            {
+              "name": "_swap_params",
+              "type": "uint256[3][4]"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_expected",
+              "type": "uint256"
+            },
+            {
+              "name": "_pools",
+              "type": "address[4]"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "update_registry_address",
+          "selector": "0x4bbc5b1f",
+          "inputs": [],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "set_calculator",
+          "selector": "0x188c7ee5",
+          "inputs": [
+            {
+              "name": "_pool",
+              "type": "address"
+            },
+            {
+              "name": "_calculator",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "set_default_calculator",
+          "selector": "0xda3fb2ab",
+          "inputs": [
+            {
+              "name": "_calculator",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claim_balance",
+          "selector": "0x752d53c6",
+          "inputs": [
+            {
+              "name": "_token",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "set_killed",
+          "selector": "0x90b22997",
+          "inputs": [
+            {
+              "name": "_is_killed",
+              "type": "bool"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "exchange_with_best_rate(address,address,uint256,uint256,address)": {
+        "intent": "Swap via Curve (best rate)",
+        "interpolatedIntent": "Swap {_amount} for at least {_expected} via Curve best rate",
+        "fields": [
+          {
+            "path": "_from",
+            "label": "From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "_to",
+            "label": "To Token",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_from"
+            }
+          },
+          {
+            "path": "_expected",
+            "label": "Minimum Output",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_to"
+            }
+          },
+          {
+            "path": "_receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          }
+        ]
+      },
+      "exchange(address,address,address,uint256,uint256,address)": {
+        "intent": "Swap via Curve pool",
+        "interpolatedIntent": "Swap {_amount} for at least {_expected} via Curve pool",
+        "fields": [
+          {
+            "path": "_pool",
+            "label": "Pool",
+            "format": "addressName"
+          },
+          {
+            "path": "_from",
+            "label": "From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "_to",
+            "label": "To Token",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_from"
+            }
+          },
+          {
+            "path": "_expected",
+            "label": "Minimum Output",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_to"
+            }
+          },
+          {
+            "path": "_receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          }
+        ]
+      },
+      "exchange_multiple(address[9],uint256[3][4],uint256,uint256,address[4],address)": {
+        "intent": "Multi-hop swap via Curve",
+        "interpolatedIntent": "Swap {_amount} for at least {_expected} via Curve multi-hop route",
+        "fields": [
+          {
+            "path": "_amount",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "_expected",
+            "label": "Minimum Output",
+            "format": "raw"
+          },
+          {
+            "path": "_receiver",
+            "label": "Receiver",
+            "format": "addressName"
+          }
+        ]
+      },
+      "exchange_with_best_rate(address,address,uint256,uint256)": {
+        "intent": "Review Exchange with best rate transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "_expected",
+            "label": " expected",
+            "format": "raw"
+          }
+        ]
+      },
+      "exchange(address,address,address,uint256,uint256)": {
+        "intent": "Review Exchange transaction",
+        "fields": [
+          {
+            "path": "_pool",
+            "label": " pool",
+            "format": "address"
+          },
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "_expected",
+            "label": " expected",
+            "format": "raw"
+          }
+        ]
+      },
+      "exchange_multiple(address[9],uint256[3][4],uint256,uint256)": {
+        "intent": "Review Exchange multiple transaction",
+        "fields": [
+          {
+            "path": "_route",
+            "label": " route",
+            "format": "raw"
+          },
+          {
+            "path": "_swap_params",
+            "label": " swap params",
+            "format": "raw"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "_expected",
+            "label": " expected",
+            "format": "raw"
+          }
+        ]
+      },
+      "exchange_multiple(address[9],uint256[3][4],uint256,uint256,address[4])": {
+        "intent": "Review Exchange multiple transaction",
+        "fields": [
+          {
+            "path": "_route",
+            "label": " route",
+            "format": "raw"
+          },
+          {
+            "path": "_swap_params",
+            "label": " swap params",
+            "format": "raw"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "_expected",
+            "label": " expected",
+            "format": "raw"
+          },
+          {
+            "path": "_pools",
+            "label": " pools",
+            "format": "raw"
+          }
+        ]
+      },
+      "update_registry_address()": {
+        "intent": "Review Update registry address transaction",
+        "fields": []
+      },
+      "set_calculator(address,address)": {
+        "intent": "Review Set calculator transaction",
+        "fields": [
+          {
+            "path": "_pool",
+            "label": " pool",
+            "format": "address"
+          },
+          {
+            "path": "_calculator",
+            "label": " calculator",
+            "format": "address"
+          }
+        ]
+      },
+      "set_default_calculator(address)": {
+        "intent": "Review Set default calculator transaction",
+        "fields": [
+          {
+            "path": "_calculator",
+            "label": " calculator",
+            "format": "address"
+          }
+        ]
+      },
+      "claim_balance(address)": {
+        "intent": "Review Claim balance transaction",
+        "fields": [
+          {
+            "path": "_token",
+            "label": " token",
+            "format": "address"
+          }
+        ]
+      },
+      "set_killed(bool)": {
+        "intent": "Review Set killed transaction",
+        "fields": [
+          {
+            "path": "_is_killed",
+            "label": " is killed",
+            "format": "boolean"
+          }
+        ]
+      }
+    }
+  }
+}

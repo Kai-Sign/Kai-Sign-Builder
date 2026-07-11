@@ -1,0 +1,1899 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x13f4ea83d0bd40e75c8222255bc855a974568dd4",
+      "chainId": 56,
+      "name": "PancakeSwap V3 SmartRouter (BSC)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "exactInputSingle",
+          "selector": "0x414bf389",
+          "inputs": [
+            {
+              "name": "params",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "name": "tokenOut",
+                  "type": "address"
+                },
+                {
+                  "name": "fee",
+                  "type": "uint24"
+                },
+                {
+                  "name": "recipient",
+                  "type": "address"
+                },
+                {
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amountOutMinimum",
+                  "type": "uint256"
+                },
+                {
+                  "name": "sqrtPriceLimitX96",
+                  "type": "uint160"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "exactOutputSingle",
+          "selector": "0xdb3e2198",
+          "inputs": [
+            {
+              "name": "params",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "name": "tokenOut",
+                  "type": "address"
+                },
+                {
+                  "name": "fee",
+                  "type": "uint24"
+                },
+                {
+                  "name": "recipient",
+                  "type": "address"
+                },
+                {
+                  "name": "amountOut",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amountInMaximum",
+                  "type": "uint256"
+                },
+                {
+                  "name": "sqrtPriceLimitX96",
+                  "type": "uint160"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "exactInput",
+          "selector": "0xb858183f",
+          "inputs": [
+            {
+              "name": "params",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "path",
+                  "type": "bytes"
+                },
+                {
+                  "name": "recipient",
+                  "type": "address"
+                },
+                {
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amountOutMinimum",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "exactOutput",
+          "selector": "0x09b81346",
+          "inputs": [
+            {
+              "name": "params",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "path",
+                  "type": "bytes"
+                },
+                {
+                  "name": "recipient",
+                  "type": "address"
+                },
+                {
+                  "name": "amountOut",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amountInMaximum",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "approveMax",
+          "selector": "0x571ac8b0",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "approveMaxMinusOne",
+          "selector": "0xcab372ce",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "approveZeroThenMax",
+          "selector": "0x639d71a9",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "approveZeroThenMaxMinusOne",
+          "selector": "0xab3fdd50",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "callPositionManager",
+          "selector": "0xb3a2af13",
+          "inputs": [
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "result",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "exactInputSingle",
+          "selector": "0x04e45aaf",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenOut",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint24",
+                  "name": "fee",
+                  "type": "uint24"
+                },
+                {
+                  "internalType": "address",
+                  "name": "recipient",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountOutMinimum",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint160",
+                  "name": "sqrtPriceLimitX96",
+                  "type": "uint160"
+                }
+              ],
+              "internalType": "struct IV3SwapRouter.ExactInputSingleParams",
+              "name": "params",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "exactInputStableSwap",
+          "selector": "0xb4554231",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "path",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "flag",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOutMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "exactOutputSingle",
+          "selector": "0x5023b4df",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "tokenIn",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "tokenOut",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint24",
+                  "name": "fee",
+                  "type": "uint24"
+                },
+                {
+                  "internalType": "address",
+                  "name": "recipient",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountOut",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountInMaximum",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint160",
+                  "name": "sqrtPriceLimitX96",
+                  "type": "uint160"
+                }
+              ],
+              "internalType": "struct IV3SwapRouter.ExactOutputSingleParams",
+              "name": "params",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "exactOutputStableSwap",
+          "selector": "0xb4c4e555",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "path",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "flag",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountInMax",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "getApprovalType",
+          "selector": "0xdee00f35",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "enum IApproveAndCall.ApprovalType",
+              "name": "",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseLiquidity",
+          "selector": "0xf100b205",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "token0",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "token1",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "tokenId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount0Min",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount1Min",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IApproveAndCall.IncreaseLiquidityParams",
+              "name": "params",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "result",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x11ed56c9",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "token0",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "token1",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint24",
+                  "name": "fee",
+                  "type": "uint24"
+                },
+                {
+                  "internalType": "int24",
+                  "name": "tickLower",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "int24",
+                  "name": "tickUpper",
+                  "type": "int24"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount0Min",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount1Min",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "recipient",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct IApproveAndCall.MintParams",
+              "name": "params",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "result",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "multicall",
+          "selector": "0x1f0464d1",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "previousBlockhash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "data",
+              "type": "bytes[]"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "multicall",
+          "selector": "0x5ae401dc",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "data",
+              "type": "bytes[]"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "multicall",
+          "selector": "0xac9650d8",
+          "inputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "data",
+              "type": "bytes[]"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "results",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "pancakeV3SwapCallback",
+          "selector": "0x23a69e75",
+          "inputs": [
+            {
+              "internalType": "int256",
+              "name": "amount0Delta",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "amount1Delta",
+              "type": "int256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pull",
+          "selector": "0xf2d5d56b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "refundETH",
+          "selector": "0x12210e8a",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "selfPermit",
+          "selector": "0xf3995c67",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "selfPermitAllowed",
+          "selector": "0x4659a494",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "expiry",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "selfPermitAllowedIfNecessary",
+          "selector": "0xa4a78f0c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "nonce",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "expiry",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "selfPermitIfNecessary",
+          "selector": "0xc2e3140a",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "setStableSwap",
+          "selector": "0x24dec034",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_factory",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_info",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapExactTokensForTokens",
+          "selector": "0x472b43f3",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountOutMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address[]",
+              "name": "path",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swapTokensForExactTokens",
+          "selector": "0x42712a67",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountInMax",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address[]",
+              "name": "path",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountIn",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "sweepToken",
+          "selector": "0xdf2ab5bb",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountMinimum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "sweepToken",
+          "selector": "0xe90a182f",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountMinimum",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "sweepTokenWithFee",
+          "selector": "0x3068c554",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountMinimum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "feeBips",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "feeRecipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "sweepTokenWithFee",
+          "selector": "0xe0e189a0",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amountMinimum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "feeBips",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "feeRecipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unwrapWETH9",
+          "selector": "0x49404b7c",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountMinimum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "unwrapWETH9WithFee",
+          "selector": "0x9b2c0a37",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountMinimum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "feeBips",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "feeRecipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "unwrapWETH9WithFee",
+          "selector": "0xd4ef38de",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountMinimum",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "feeBips",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "feeRecipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "wrapETH",
+          "selector": "0x1c58db4f",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "exactInputSingle(tuple)": {
+        "intent": "Swap exact input via PancakeSwap V3 (single hop)",
+        "interpolatedIntent": "Swap {params.amountIn} {params.tokenIn} for min {params.amountOutMinimum} {params.tokenOut} on PancakeSwap V3",
+        "fields": [
+          {
+            "path": "params.tokenIn",
+            "label": "Token In",
+            "format": "addressName"
+          },
+          {
+            "path": "params.tokenOut",
+            "label": "Token Out",
+            "format": "addressName"
+          },
+          {
+            "path": "params.amountIn",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "params.tokenIn"
+            }
+          },
+          {
+            "path": "params.amountOutMinimum",
+            "label": "Min Amount Out",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "params.tokenOut"
+            }
+          },
+          {
+            "path": "params.fee",
+            "label": "Pool Fee (bps)",
+            "format": "raw"
+          },
+          {
+            "path": "params.recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "exactOutputSingle(tuple)": {
+        "intent": "Swap for exact output via PancakeSwap V3 (single hop)",
+        "interpolatedIntent": "Swap max {params.amountInMaximum} {params.tokenIn} for {params.amountOut} {params.tokenOut} on PancakeSwap V3",
+        "fields": [
+          {
+            "path": "params.tokenIn",
+            "label": "Token In",
+            "format": "addressName"
+          },
+          {
+            "path": "params.tokenOut",
+            "label": "Token Out",
+            "format": "addressName"
+          },
+          {
+            "path": "params.amountOut",
+            "label": "Amount Out",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "params.tokenOut"
+            }
+          },
+          {
+            "path": "params.amountInMaximum",
+            "label": "Max Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "params.tokenIn"
+            }
+          },
+          {
+            "path": "params.fee",
+            "label": "Pool Fee (bps)",
+            "format": "raw"
+          },
+          {
+            "path": "params.recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "exactInput(tuple)": {
+        "intent": "Swap exact input via PancakeSwap V3 (multi-hop)",
+        "interpolatedIntent": "Swap {params.amountIn} for min {params.amountOutMinimum} on PancakeSwap V3",
+        "fields": [
+          {
+            "path": "params.amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "params.amountOutMinimum",
+            "label": "Min Amount Out",
+            "format": "raw"
+          },
+          {
+            "path": "params.recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "exactOutput(tuple)": {
+        "intent": "Swap for exact output via PancakeSwap V3 (multi-hop)",
+        "interpolatedIntent": "Swap max {params.amountInMaximum} for {params.amountOut} on PancakeSwap V3",
+        "fields": [
+          {
+            "path": "params.amountOut",
+            "label": "Amount Out",
+            "format": "raw"
+          },
+          {
+            "path": "params.amountInMaximum",
+            "label": "Max Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "params.recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "approveMax(address)": {
+        "intent": "Review Approve Max transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          }
+        ]
+      },
+      "approveMaxMinusOne(address)": {
+        "intent": "Review Approve Max Minus One transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          }
+        ]
+      },
+      "approveZeroThenMax(address)": {
+        "intent": "Review Approve Zero Then Max transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          }
+        ]
+      },
+      "approveZeroThenMaxMinusOne(address)": {
+        "intent": "Review Approve Zero Then Max Minus One transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          }
+        ]
+      },
+      "callPositionManager(bytes)": {
+        "intent": "Review Call Position Manager transaction",
+        "fields": [
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "exactInputSingle((address,address,uint24,address,uint256,uint256,uint160))": {
+        "intent": "Review Exact Input Single transaction",
+        "fields": [
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "exactInputStableSwap(address[],uint256[],uint256,uint256,address)": {
+        "intent": "Review Exact Input Stable Swap transaction",
+        "fields": [
+          {
+            "path": "path",
+            "label": "Path",
+            "format": "raw"
+          },
+          {
+            "path": "flag",
+            "label": "Flag",
+            "format": "raw"
+          },
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "amountOutMin",
+            "label": "Amount Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          }
+        ]
+      },
+      "exactOutputSingle((address,address,uint24,address,uint256,uint256,uint160))": {
+        "intent": "Review Exact Output Single transaction",
+        "fields": [
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "exactOutputStableSwap(address[],uint256[],uint256,uint256,address)": {
+        "intent": "Review Exact Output Stable Swap transaction",
+        "fields": [
+          {
+            "path": "path",
+            "label": "Path",
+            "format": "raw"
+          },
+          {
+            "path": "flag",
+            "label": "Flag",
+            "format": "raw"
+          },
+          {
+            "path": "amountOut",
+            "label": "Amount Out",
+            "format": "raw"
+          },
+          {
+            "path": "amountInMax",
+            "label": "Amount In Max",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          }
+        ]
+      },
+      "getApprovalType(address,uint256)": {
+        "intent": "Review Get Approval Type transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "increaseLiquidity((address,address,uint256,uint256,uint256))": {
+        "intent": "Review Increase Liquidity transaction",
+        "fields": [
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "mint((address,address,uint24,int24,int24,uint256,uint256,address))": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "multicall(bytes32,bytes[])": {
+        "intent": "Review Multicall transaction",
+        "fields": [
+          {
+            "path": "previousBlockhash",
+            "label": "Previous Blockhash",
+            "format": "hex"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "multicall(uint256,bytes[])": {
+        "intent": "Review Multicall transaction",
+        "fields": [
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "multicall(bytes[])": {
+        "intent": "Review Multicall transaction",
+        "fields": [
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "pancakeV3SwapCallback(int256,int256,bytes)": {
+        "intent": "Review Pancake V3 Swap Callback transaction",
+        "fields": [
+          {
+            "path": "amount0Delta",
+            "label": "Amount0 Delta",
+            "format": "raw"
+          },
+          {
+            "path": "amount1Delta",
+            "label": "Amount1 Delta",
+            "format": "raw"
+          },
+          {
+            "path": "_data",
+            "label": " data",
+            "format": "hex"
+          }
+        ]
+      },
+      "pull(address,uint256)": {
+        "intent": "Review Pull transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "refundETH()": {
+        "intent": "Review Refund ETH transaction",
+        "fields": []
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "selfPermit(address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Self Permit transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "selfPermitAllowed(address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Self Permit Allowed transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "nonce",
+            "label": "Nonce",
+            "format": "raw"
+          },
+          {
+            "path": "expiry",
+            "label": "Expiry",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "selfPermitAllowedIfNecessary(address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Self Permit Allowed If Necessary transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "nonce",
+            "label": "Nonce",
+            "format": "raw"
+          },
+          {
+            "path": "expiry",
+            "label": "Expiry",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "selfPermitIfNecessary(address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Self Permit If Necessary transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "setStableSwap(address,address)": {
+        "intent": "Review Set Stable Swap transaction",
+        "fields": [
+          {
+            "path": "_factory",
+            "label": " factory",
+            "format": "address"
+          },
+          {
+            "path": "_info",
+            "label": " info",
+            "format": "address"
+          }
+        ]
+      },
+      "swapExactTokensForTokens(uint256,uint256,address[],address)": {
+        "intent": "Review Swap Exact Tokens For Tokens transaction",
+        "fields": [
+          {
+            "path": "amountIn",
+            "label": "Amount In",
+            "format": "raw"
+          },
+          {
+            "path": "amountOutMin",
+            "label": "Amount Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "path",
+            "label": "Path",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          }
+        ]
+      },
+      "swapTokensForExactTokens(uint256,uint256,address[],address)": {
+        "intent": "Review Swap Tokens For Exact Tokens transaction",
+        "fields": [
+          {
+            "path": "amountOut",
+            "label": "Amount Out",
+            "format": "raw"
+          },
+          {
+            "path": "amountInMax",
+            "label": "Amount In Max",
+            "format": "raw"
+          },
+          {
+            "path": "path",
+            "label": "Path",
+            "format": "raw"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          }
+        ]
+      },
+      "sweepToken(address,uint256,address)": {
+        "intent": "Review Sweep Token transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "amountMinimum",
+            "label": "Amount Minimum",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "sweepToken(address,uint256)": {
+        "intent": "Review Sweep Token transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "amountMinimum",
+            "label": "Amount Minimum",
+            "format": "raw"
+          }
+        ]
+      },
+      "sweepTokenWithFee(address,uint256,uint256,address)": {
+        "intent": "Review Sweep Token With Fee transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "amountMinimum",
+            "label": "Amount Minimum",
+            "format": "raw"
+          },
+          {
+            "path": "feeBips",
+            "label": "Fee Bips",
+            "format": "raw"
+          },
+          {
+            "path": "feeRecipient",
+            "label": "Fee Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "sweepTokenWithFee(address,uint256,address,uint256,address)": {
+        "intent": "Review Sweep Token With Fee transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "amountMinimum",
+            "label": "Amount Minimum",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "feeBips",
+            "label": "Fee Bips",
+            "format": "raw"
+          },
+          {
+            "path": "feeRecipient",
+            "label": "Fee Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "unwrapWETH9(uint256,address)": {
+        "intent": "Review Unwrap WETH9 transaction",
+        "fields": [
+          {
+            "path": "amountMinimum",
+            "label": "Amount Minimum",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "unwrapWETH9WithFee(uint256,address,uint256,address)": {
+        "intent": "Review Unwrap WETH9 With Fee transaction",
+        "fields": [
+          {
+            "path": "amountMinimum",
+            "label": "Amount Minimum",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "feeBips",
+            "label": "Fee Bips",
+            "format": "raw"
+          },
+          {
+            "path": "feeRecipient",
+            "label": "Fee Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "unwrapWETH9WithFee(uint256,uint256,address)": {
+        "intent": "Review Unwrap WETH9 With Fee transaction",
+        "fields": [
+          {
+            "path": "amountMinimum",
+            "label": "Amount Minimum",
+            "format": "raw"
+          },
+          {
+            "path": "feeBips",
+            "label": "Fee Bips",
+            "format": "raw"
+          },
+          {
+            "path": "feeRecipient",
+            "label": "Fee Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "wrapETH(uint256)": {
+        "intent": "Review Wrap ETH transaction",
+        "fields": [
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "exactInput((bytes,address,uint256,uint256))": {
+        "intent": "Review Exact Input transaction",
+        "fields": [
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "raw"
+          }
+        ]
+      },
+      "exactOutput((bytes,address,uint256,uint256))": {
+        "intent": "Review Exact Output transaction",
+        "fields": [
+          {
+            "path": "params",
+            "label": "Params",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "PancakeSwap",
+    "info": {
+      "url": "https://pancakeswap.finance/",
+      "legalName": "PancakeSwap",
+      "lastUpdate": "2026-03-27"
+    }
+  }
+}

@@ -1,0 +1,647 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x777777722d078c97c6ad07d9f36801e653e356ae",
+      "chainId": 1,
+      "name": "Zora 1155 Creator",
+      "abi": [
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x731133e9",
+          "inputs": [
+            {
+              "name": "minter",
+              "type": "address"
+            },
+            {
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "name": "quantity",
+              "type": "uint256"
+            },
+            {
+              "name": "rewardsRecipients",
+              "type": "address[]"
+            },
+            {
+              "name": "minterArguments",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "adminMint",
+          "selector": "0xc238d1ee",
+          "inputs": [
+            {
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "name": "quantity",
+              "type": "uint256"
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTokenURI",
+          "selector": "0x162094c4",
+          "inputs": [
+            {
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "name": "uri",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "callSale",
+          "selector": "0x3f34f5b1",
+          "inputs": [
+            {
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "name": "salesConfig",
+              "type": "address"
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "acceptOwnership",
+          "selector": "0x79ba5097",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xf8c8765e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_defaultOwner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_zoraRewardRecipient",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_erc20zImpl",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IProtocolRewards",
+              "name": "_protocolRewards",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "launchMarket",
+          "selector": "0x3f4e74b7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "collection",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0xa836f32f",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "mintTo",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "quantity",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "collection",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "mintReferral",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "comment",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setSale",
+          "selector": "0x642436e3",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint64",
+                  "name": "saleStart",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "saleEnd",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "string",
+                  "name": "name",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "symbol",
+                  "type": "string"
+                }
+              ],
+              "internalType": "struct IZoraTimedSaleStrategy.SalesConfig",
+              "name": "salesConfig",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setSaleV2",
+          "selector": "0x957c4eec",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint64",
+                  "name": "saleStart",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "uint64",
+                  "name": "marketCountdown",
+                  "type": "uint64"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minimumMarketEth",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "string",
+                  "name": "name",
+                  "type": "string"
+                },
+                {
+                  "internalType": "string",
+                  "name": "symbol",
+                  "type": "string"
+                }
+              ],
+              "internalType": "struct IZoraTimedSaleStrategy.SalesConfigV2",
+              "name": "salesConfig",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setZoraRewardRecipient",
+          "selector": "0x0deab73c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "uniswapV3SwapCallback",
+          "selector": "0xfa461e33",
+          "inputs": [
+            {
+              "internalType": "int256",
+              "name": "amount0Delta",
+              "type": "int256"
+            },
+            {
+              "internalType": "int256",
+              "name": "amount1Delta",
+              "type": "int256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateSale",
+          "selector": "0x8842d6d9",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint64",
+              "name": "newStartTime",
+              "type": "uint64"
+            },
+            {
+              "internalType": "uint64",
+              "name": "newMarketCountdown",
+              "type": "uint64"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "mint(address,uint256,uint256,address[],bytes)": {
+        "intent": "Mint Zora 1155 tokens",
+        "interpolatedIntent": "Mint {quantity} of token #{tokenId} via Zora",
+        "fields": [
+          {
+            "path": "tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          },
+          {
+            "path": "quantity",
+            "label": "Quantity",
+            "format": "raw"
+          },
+          {
+            "path": "minter",
+            "label": "Minter",
+            "format": "addressName"
+          }
+        ]
+      },
+      "adminMint(address,uint256,uint256,bytes)": {
+        "intent": "Admin mint Zora 1155 tokens",
+        "interpolatedIntent": "Admin mint {quantity} of token #{tokenId} to {recipient}",
+        "fields": [
+          {
+            "path": "tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          },
+          {
+            "path": "quantity",
+            "label": "Quantity",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "setTokenURI(uint256,string)": {
+        "intent": "Set Zora 1155 token metadata URI",
+        "interpolatedIntent": "Set metadata URI for token #{tokenId}",
+        "fields": [
+          {
+            "path": "tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          },
+          {
+            "path": "uri",
+            "label": "URI",
+            "format": "raw"
+          }
+        ]
+      },
+      "callSale(uint256,address,bytes)": {
+        "intent": "Interact with Zora sale strategy",
+        "interpolatedIntent": "Configure sale strategy for token #{tokenId}",
+        "fields": [
+          {
+            "path": "tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          },
+          {
+            "path": "salesConfig",
+            "label": "Sale Strategy",
+            "format": "addressName"
+          }
+        ]
+      },
+      "acceptOwnership()": {
+        "intent": "Review Accept Ownership transaction",
+        "fields": []
+      },
+      "initialize(address,address,address,address)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_defaultOwner",
+            "label": " default Owner",
+            "format": "address"
+          },
+          {
+            "path": "_zoraRewardRecipient",
+            "label": " zora Reward Recipient",
+            "format": "address"
+          },
+          {
+            "path": "_erc20zImpl",
+            "label": " erc20z Impl",
+            "format": "address"
+          },
+          {
+            "path": "_protocolRewards",
+            "label": " protocol Rewards",
+            "format": "address"
+          }
+        ]
+      },
+      "launchMarket(address,uint256)": {
+        "intent": "Review Launch Market transaction",
+        "fields": [
+          {
+            "path": "collection",
+            "label": "Collection",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "mint(address,uint256,address,uint256,address,string)": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "mintTo",
+            "label": "Mint To",
+            "format": "address"
+          },
+          {
+            "path": "quantity",
+            "label": "Quantity",
+            "format": "raw"
+          },
+          {
+            "path": "collection",
+            "label": "Collection",
+            "format": "address"
+          },
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          },
+          {
+            "path": "mintReferral",
+            "label": "Mint Referral",
+            "format": "address"
+          },
+          {
+            "path": "comment",
+            "label": "Comment",
+            "format": "raw"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "setSale(uint256,(uint64,uint64,string,string))": {
+        "intent": "Review Set Sale transaction",
+        "fields": [
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          },
+          {
+            "path": "salesConfig",
+            "label": "Sales Config",
+            "format": "raw"
+          }
+        ]
+      },
+      "setSaleV2(uint256,(uint64,uint64,uint256,string,string))": {
+        "intent": "Review Set Sale V2 transaction",
+        "fields": [
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          },
+          {
+            "path": "salesConfig",
+            "label": "Sales Config",
+            "format": "raw"
+          }
+        ]
+      },
+      "setZoraRewardRecipient(address)": {
+        "intent": "Review Set Zora Reward Recipient transaction",
+        "fields": [
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "uniswapV3SwapCallback(int256,int256,bytes)": {
+        "intent": "Review Uniswap V3 Swap Callback transaction",
+        "fields": [
+          {
+            "path": "amount0Delta",
+            "label": "Amount0 Delta",
+            "format": "raw"
+          },
+          {
+            "path": "amount1Delta",
+            "label": "Amount1 Delta",
+            "format": "raw"
+          },
+          {
+            "path": "param2",
+            "label": "Param2",
+            "format": "hex"
+          }
+        ]
+      },
+      "updateSale(uint256,uint64,uint64)": {
+        "intent": "Review Update Sale transaction",
+        "fields": [
+          {
+            "path": "tokenId",
+            "label": "Token Id",
+            "format": "raw"
+          },
+          {
+            "path": "newStartTime",
+            "label": "New Start Time",
+            "format": "raw"
+          },
+          {
+            "path": "newMarketCountdown",
+            "label": "New Market Countdown",
+            "format": "raw"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Zora",
+    "info": {
+      "url": "https://zora.co/",
+      "legalName": "Zora Protocol",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

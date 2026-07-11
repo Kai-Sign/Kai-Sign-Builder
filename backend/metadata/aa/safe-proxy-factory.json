@@ -10,9 +10,18 @@
           "name": "createProxyWithNonce",
           "selector": "0x1688f0b9",
           "inputs": [
-            { "name": "_singleton", "type": "address" },
-            { "name": "initializer", "type": "bytes" },
-            { "name": "saltNonce", "type": "uint256" }
+            {
+              "name": "_singleton",
+              "type": "address"
+            },
+            {
+              "name": "initializer",
+              "type": "bytes"
+            },
+            {
+              "name": "saltNonce",
+              "type": "uint256"
+            }
           ]
         },
         {
@@ -20,11 +29,53 @@
           "name": "createProxyWithCallback",
           "selector": "0xd18af54d",
           "inputs": [
-            { "name": "_singleton", "type": "address" },
-            { "name": "initializer", "type": "bytes" },
-            { "name": "saltNonce", "type": "uint256" },
-            { "name": "callback", "type": "address" }
+            {
+              "name": "_singleton",
+              "type": "address"
+            },
+            {
+              "name": "initializer",
+              "type": "bytes"
+            },
+            {
+              "name": "saltNonce",
+              "type": "uint256"
+            },
+            {
+              "name": "callback",
+              "type": "address"
+            }
           ]
+        },
+        {
+          "type": "function",
+          "name": "createChainSpecificProxyWithNonce",
+          "selector": "0xec9e80bb",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_singleton",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "initializer",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint256",
+              "name": "saltNonce",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "contract SafeProxy",
+              "name": "proxy",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
         }
       ]
     }
@@ -34,28 +85,72 @@
       "createProxyWithNonce(address,bytes,uint256)": {
         "intent": "Create Safe Wallet",
         "fields": [
-          { "path": "_singleton", "label": "Singleton", "format": "address" },
+          {
+            "path": "_singleton",
+            "label": "Singleton",
+            "format": "address"
+          },
           {
             "path": "initializer",
             "label": "Initializer Data",
             "format": "calldata",
-            "params": { "calleePath": "_singleton" }
+            "params": {
+              "calleePath": "_singleton"
+            }
           },
-          { "path": "saltNonce", "label": "Salt Nonce", "format": "number" }
+          {
+            "path": "saltNonce",
+            "label": "Salt Nonce",
+            "format": "number"
+          }
         ]
       },
       "createProxyWithCallback(address,bytes,uint256,address)": {
         "intent": "Create Safe Wallet with Callback",
         "fields": [
-          { "path": "_singleton", "label": "Singleton", "format": "address" },
+          {
+            "path": "_singleton",
+            "label": "Singleton",
+            "format": "address"
+          },
           {
             "path": "initializer",
             "label": "Initializer Data",
             "format": "calldata",
-            "params": { "calleePath": "_singleton" }
+            "params": {
+              "calleePath": "_singleton"
+            }
           },
-          { "path": "saltNonce", "label": "Salt Nonce", "format": "number" },
-          { "path": "callback", "label": "Callback", "format": "address" }
+          {
+            "path": "saltNonce",
+            "label": "Salt Nonce",
+            "format": "number"
+          },
+          {
+            "path": "callback",
+            "label": "Callback",
+            "format": "address"
+          }
+        ]
+      },
+      "createChainSpecificProxyWithNonce(address,bytes,uint256)": {
+        "intent": "Review Create Chain Specific Proxy With Nonce transaction",
+        "fields": [
+          {
+            "path": "_singleton",
+            "label": " singleton",
+            "format": "address"
+          },
+          {
+            "path": "initializer",
+            "label": "Initializer",
+            "format": "hex"
+          },
+          {
+            "path": "saltNonce",
+            "label": "Salt Nonce",
+            "format": "raw"
+          }
         ]
       }
     }

@@ -1,0 +1,1020 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xcf5540fffcdc3d510b18bfca6d2b9987b0772559",
+      "chainId": 1,
+      "name": "Odos Router V2",
+      "abi": [
+        {
+          "type": "function",
+          "name": "swap",
+          "selector": "0x83bd37f9",
+          "inputs": [
+            {
+              "name": "inputs",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "tokenAddress",
+                  "type": "address"
+                },
+                {
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "permit",
+                  "type": "bytes"
+                }
+              ]
+            },
+            {
+              "name": "outputs",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "tokenAddress",
+                  "type": "address"
+                },
+                {
+                  "name": "relativeValue",
+                  "type": "uint256"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                }
+              ]
+            },
+            {
+              "name": "valueOutMin",
+              "type": "uint256"
+            },
+            {
+              "name": "pathDefinition",
+              "type": "bytes"
+            },
+            {
+              "name": "executor",
+              "type": "address"
+            },
+            {
+              "name": "referralCode",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swapMulti",
+          "selector": "0x4d2c78f2",
+          "inputs": [
+            {
+              "name": "inputs",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "tokenAddress",
+                  "type": "address"
+                },
+                {
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                },
+                {
+                  "name": "permit",
+                  "type": "bytes"
+                }
+              ]
+            },
+            {
+              "name": "outputs",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "name": "tokenAddress",
+                  "type": "address"
+                },
+                {
+                  "name": "relativeValue",
+                  "type": "uint256"
+                },
+                {
+                  "name": "receiver",
+                  "type": "address"
+                }
+              ]
+            },
+            {
+              "name": "valueOutMin",
+              "type": "uint256"
+            },
+            {
+              "name": "pathDefinition",
+              "type": "bytes"
+            },
+            {
+              "name": "executor",
+              "type": "address"
+            },
+            {
+              "name": "referralCode",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "registerReferralCode",
+          "selector": "0xe10895f9",
+          "inputs": [
+            {
+              "internalType": "uint32",
+              "name": "_referralCode",
+              "type": "uint32"
+            },
+            {
+              "internalType": "uint64",
+              "name": "_referralFee",
+              "type": "uint64"
+            },
+            {
+              "internalType": "address",
+              "name": "_beneficiary",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setSwapMultiFee",
+          "selector": "0x9286b93d",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_swapMultiFee",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swap",
+          "selector": "0x3b635ce4",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "inputToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "inputAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "inputReceiver",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "outputToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "outputQuote",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "outputMin",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "outputReceiver",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct OdosRouterV2.swapTokenInfo",
+              "name": "tokenInfo",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "pathDefinition",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "executor",
+              "type": "address"
+            },
+            {
+              "internalType": "uint32",
+              "name": "referralCode",
+              "type": "uint32"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swapMulti",
+          "selector": "0x7bf2d6d4",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "tokenAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "receiver",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct OdosRouterV2.inputTokenInfo[]",
+              "name": "inputs",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "tokenAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "relativeValue",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "receiver",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct OdosRouterV2.outputTokenInfo[]",
+              "name": "outputs",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "valueOutMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "pathDefinition",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "executor",
+              "type": "address"
+            },
+            {
+              "internalType": "uint32",
+              "name": "referralCode",
+              "type": "uint32"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "amountsOut",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swapMultiCompact",
+          "selector": "0x84a7f3dd",
+          "inputs": [],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "amountsOut",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swapMultiPermit2",
+          "selector": "0x080c25b3",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "contractAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct OdosRouterV2.permit2Info",
+              "name": "permit2",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "tokenAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "receiver",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct OdosRouterV2.inputTokenInfo[]",
+              "name": "inputs",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "tokenAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "relativeValue",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "receiver",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct OdosRouterV2.outputTokenInfo[]",
+              "name": "outputs",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "valueOutMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "pathDefinition",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "executor",
+              "type": "address"
+            },
+            {
+              "internalType": "uint32",
+              "name": "referralCode",
+              "type": "uint32"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "amountsOut",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "swapPermit2",
+          "selector": "0x87b621b5",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "contractAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "deadline",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct OdosRouterV2.permit2Info",
+              "name": "permit2",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "inputToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "inputAmount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "inputReceiver",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "outputToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "outputQuote",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "outputMin",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "outputReceiver",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct OdosRouterV2.swapTokenInfo",
+              "name": "tokenInfo",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes",
+              "name": "pathDefinition",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "executor",
+              "type": "address"
+            },
+            {
+              "internalType": "uint32",
+              "name": "referralCode",
+              "type": "uint32"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "amountOut",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapRouterFunds",
+          "selector": "0x28be42f4",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "tokenAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amountIn",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "receiver",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct OdosRouterV2.inputTokenInfo[]",
+              "name": "inputs",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "tokenAddress",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "relativeValue",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "receiver",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct OdosRouterV2.outputTokenInfo[]",
+              "name": "outputs",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "valueOutMin",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "pathDefinition",
+              "type": "bytes"
+            },
+            {
+              "internalType": "address",
+              "name": "executor",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "amountsOut",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferRouterFunds",
+          "selector": "0x174da621",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "tokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "address",
+              "name": "dest",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "writeAddressList",
+          "selector": "0x3596f9a2",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "addresses",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapCompact",
+          "inputs": [],
+          "stateMutability": "payable",
+          "selector": "0x83bd37f9",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "swap(tuple,tuple,uint256,bytes,address,uint32)": {
+        "intent": "Swap via Odos",
+        "interpolatedIntent": "Swap {inputs.amountIn} {inputs.tokenAddress} via Odos",
+        "fields": [
+          {
+            "path": "inputs.tokenAddress",
+            "label": "From Token",
+            "format": "addressName"
+          },
+          {
+            "path": "inputs.amountIn",
+            "label": "Amount In",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "inputs.tokenAddress"
+            }
+          },
+          {
+            "path": "outputs.tokenAddress",
+            "label": "To Token",
+            "format": "addressName"
+          },
+          {
+            "path": "valueOutMin",
+            "label": "Min Value Out",
+            "format": "raw"
+          },
+          {
+            "path": "inputs.receiver",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "swapMulti(tuple[],tuple[],uint256,bytes,address,uint32)": {
+        "intent": "Multi-token swap via Odos",
+        "interpolatedIntent": "Swap multiple tokens via Odos",
+        "fields": [
+          {
+            "path": "valueOutMin",
+            "label": "Min Value Out",
+            "format": "raw"
+          }
+        ]
+      },
+      "registerReferralCode(uint32,uint64,address)": {
+        "intent": "Review Register Referral Code transaction",
+        "fields": [
+          {
+            "path": "_referralCode",
+            "label": " referral Code",
+            "format": "raw"
+          },
+          {
+            "path": "_referralFee",
+            "label": " referral Fee",
+            "format": "raw"
+          },
+          {
+            "path": "_beneficiary",
+            "label": " beneficiary",
+            "format": "address"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "setSwapMultiFee(uint256)": {
+        "intent": "Review Set Swap Multi Fee transaction",
+        "fields": [
+          {
+            "path": "_swapMultiFee",
+            "label": " swap Multi Fee",
+            "format": "raw"
+          }
+        ]
+      },
+      "swap((address,uint256,address,address,uint256,uint256,address),bytes,address,uint32)": {
+        "intent": "Review Swap transaction",
+        "fields": [
+          {
+            "path": "tokenInfo",
+            "label": "Token Info",
+            "format": "raw"
+          },
+          {
+            "path": "pathDefinition",
+            "label": "Path Definition",
+            "format": "hex"
+          },
+          {
+            "path": "executor",
+            "label": "Executor",
+            "format": "address"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapMulti((address,uint256,address)[],(address,uint256,address)[],uint256,bytes,address,uint32)": {
+        "intent": "Review Swap Multi transaction",
+        "fields": [
+          {
+            "path": "inputs",
+            "label": "Inputs",
+            "format": "raw"
+          },
+          {
+            "path": "outputs",
+            "label": "Outputs",
+            "format": "raw"
+          },
+          {
+            "path": "valueOutMin",
+            "label": "Value Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "pathDefinition",
+            "label": "Path Definition",
+            "format": "hex"
+          },
+          {
+            "path": "executor",
+            "label": "Executor",
+            "format": "address"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapMultiCompact()": {
+        "intent": "Review Swap Multi Compact transaction",
+        "fields": []
+      },
+      "swapMultiPermit2((address,uint256,uint256,bytes),(address,uint256,address)[],(address,uint256,address)[],uint256,bytes,address,uint32)": {
+        "intent": "Review Swap Multi Permit2 transaction",
+        "fields": [
+          {
+            "path": "permit2",
+            "label": "Permit2",
+            "format": "raw"
+          },
+          {
+            "path": "inputs",
+            "label": "Inputs",
+            "format": "raw"
+          },
+          {
+            "path": "outputs",
+            "label": "Outputs",
+            "format": "raw"
+          },
+          {
+            "path": "valueOutMin",
+            "label": "Value Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "pathDefinition",
+            "label": "Path Definition",
+            "format": "hex"
+          },
+          {
+            "path": "executor",
+            "label": "Executor",
+            "format": "address"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapPermit2((address,uint256,uint256,bytes),(address,uint256,address,address,uint256,uint256,address),bytes,address,uint32)": {
+        "intent": "Review Swap Permit2 transaction",
+        "fields": [
+          {
+            "path": "permit2",
+            "label": "Permit2",
+            "format": "raw"
+          },
+          {
+            "path": "tokenInfo",
+            "label": "Token Info",
+            "format": "raw"
+          },
+          {
+            "path": "pathDefinition",
+            "label": "Path Definition",
+            "format": "hex"
+          },
+          {
+            "path": "executor",
+            "label": "Executor",
+            "format": "address"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "raw"
+          }
+        ]
+      },
+      "swapRouterFunds((address,uint256,address)[],(address,uint256,address)[],uint256,bytes,address)": {
+        "intent": "Review Swap Router Funds transaction",
+        "fields": [
+          {
+            "path": "inputs",
+            "label": "Inputs",
+            "format": "raw"
+          },
+          {
+            "path": "outputs",
+            "label": "Outputs",
+            "format": "raw"
+          },
+          {
+            "path": "valueOutMin",
+            "label": "Value Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "pathDefinition",
+            "label": "Path Definition",
+            "format": "hex"
+          },
+          {
+            "path": "executor",
+            "label": "Executor",
+            "format": "address"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "transferRouterFunds(address[],uint256[],address)": {
+        "intent": "Review Transfer Router Funds transaction",
+        "fields": [
+          {
+            "path": "tokens",
+            "label": "Tokens",
+            "format": "raw"
+          },
+          {
+            "path": "amounts",
+            "label": "Amounts",
+            "format": "raw"
+          },
+          {
+            "path": "dest",
+            "label": "Dest",
+            "format": "address"
+          }
+        ]
+      },
+      "writeAddressList(address[])": {
+        "intent": "Review Write Address List transaction",
+        "fields": [
+          {
+            "path": "addresses",
+            "label": "Addresses",
+            "format": "raw"
+          }
+        ]
+      },
+      "swap((address,uint256,address,bytes),(address,uint256,address),uint256,bytes,address,uint32)": {
+        "intent": "Review Swap transaction",
+        "fields": [
+          {
+            "path": "inputs",
+            "label": "Inputs",
+            "format": "raw"
+          },
+          {
+            "path": "outputs",
+            "label": "Outputs",
+            "format": "raw"
+          },
+          {
+            "path": "valueOutMin",
+            "label": "Value Out Min",
+            "format": "raw"
+          },
+          {
+            "path": "pathDefinition",
+            "label": "Path Definition",
+            "format": "hex"
+          },
+          {
+            "path": "executor",
+            "label": "Executor",
+            "format": "address"
+          },
+          {
+            "path": "referralCode",
+            "label": "Referral Code",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Odos",
+    "info": {
+      "url": "https://app.odos.xyz/",
+      "legalName": "Odos Protocol",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

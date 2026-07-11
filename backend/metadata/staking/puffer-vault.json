@@ -1,0 +1,941 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0xd9a442856c234a39a81a089c06451ebaa4306a72",
+      "chainId": 1,
+      "name": "Puffer Finance Vault",
+      "abi": [
+        {
+          "type": "function",
+          "name": "depositETH",
+          "selector": "0x0efe6a8b",
+          "inputs": [
+            {
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "depositStETH",
+          "selector": "0xc8b68b8f",
+          "inputs": [
+            {
+              "name": "stETHShareAmount",
+              "type": "uint256"
+            },
+            {
+              "name": "recipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initiateRedemption",
+          "selector": "0x2d42e3e1",
+          "inputs": [
+            {
+              "name": "pufETHAmount",
+              "type": "uint256"
+            },
+            {
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "name": "useStETH",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "selector": "0x42966c68",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimWithdrawalsFromLido",
+          "selector": "0x677a11e9",
+          "inputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "requestIds",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "deposit",
+          "selector": "0x6e553f65",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "assets",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "depositETH",
+          "selector": "0x2d2da806",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "depositRewards",
+          "selector": "0x152111f7",
+          "inputs": [],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "depositStETH",
+          "selector": "0xf6dbd16f",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "stETHSharesAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xc4d66de8",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "accessManager",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initiateETHWithdrawalsFromLido",
+          "selector": "0x593961de",
+          "inputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256[]",
+              "name": "requestIds",
+              "type": "uint256[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mint",
+          "selector": "0x94bf804d",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "mintRewards",
+          "selector": "0x4828ced9",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "rewardsAmount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "ethToPufETHRate",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "pufETHAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "onERC721Received",
+          "selector": "0x150b7a02",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes4",
+              "name": "",
+              "type": "bytes4"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "permit",
+          "selector": "0xd505accf",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "deadline",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "redeem",
+          "selector": "0xba087652",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revertMintRewards",
+          "selector": "0xe7fc6f73",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "pufETHAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "ethAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setAuthority",
+          "selector": "0x7a9e5e4b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAuthority",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setExitFeeBasisPoints",
+          "selector": "0x5b63b05c",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newExitFeeBasisPoints",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTreasuryExitFeeBasisPoints",
+          "selector": "0xbe049dd7",
+          "inputs": [
+            {
+              "internalType": "uint96",
+              "name": "newTreasuryExitFeeBasisPoints",
+              "type": "uint96"
+            },
+            {
+              "internalType": "address",
+              "name": "newTreasury",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferETH",
+          "selector": "0x7b1a4909",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "ethAmount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "withdraw",
+          "selector": "0xb460af94",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "assets",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiver",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "depositETH(address)": {
+        "intent": "Deposit ETH for pufETH via Puffer Finance",
+        "interpolatedIntent": "Stake ETH to receive pufETH, sent to {recipient}",
+        "fields": [
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "depositStETH(uint256,address)": {
+        "intent": "Deposit stETH for pufETH via Puffer Finance",
+        "interpolatedIntent": "Deposit {stETHShareAmount} stETH shares to receive pufETH, sent to {recipient}",
+        "fields": [
+          {
+            "path": "stETHShareAmount",
+            "label": "stETH Share Amount",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          }
+        ]
+      },
+      "initiateRedemption(uint256,address,bool)": {
+        "intent": "Request withdrawal of ETH from Puffer Finance",
+        "interpolatedIntent": "Redeem {pufETHAmount} pufETH for ETH, sent to {recipient}",
+        "fields": [
+          {
+            "path": "pufETHAmount",
+            "label": "pufETH Amount",
+            "format": "raw"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "addressName"
+          },
+          {
+            "path": "useStETH",
+            "label": "Receive as stETH",
+            "format": "raw"
+          }
+        ]
+      },
+      "approve(address,uint256)": {
+        "intent": "Review Approve transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "burn(uint256)": {
+        "intent": "Review Burn transaction",
+        "fields": [
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          }
+        ]
+      },
+      "claimWithdrawalsFromLido(uint256[])": {
+        "intent": "Review Claim Withdrawals From Lido transaction",
+        "fields": [
+          {
+            "path": "requestIds",
+            "label": "Request Ids",
+            "format": "raw"
+          }
+        ]
+      },
+      "deposit(uint256,address)": {
+        "intent": "Review Deposit transaction",
+        "fields": [
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "depositRewards()": {
+        "intent": "Review Deposit Rewards transaction",
+        "fields": []
+      },
+      "initialize(address)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "accessManager",
+            "label": "Access Manager",
+            "format": "address"
+          }
+        ]
+      },
+      "initiateETHWithdrawalsFromLido(uint256[])": {
+        "intent": "Review Initiate ETHWithdrawals From Lido transaction",
+        "fields": [
+          {
+            "path": "amounts",
+            "label": "Amounts",
+            "format": "raw"
+          }
+        ]
+      },
+      "mint(uint256,address)": {
+        "intent": "Review Mint transaction",
+        "fields": [
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          }
+        ]
+      },
+      "mintRewards(uint256)": {
+        "intent": "Review Mint Rewards transaction",
+        "fields": [
+          {
+            "path": "rewardsAmount",
+            "label": "Rewards Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "onERC721Received(address,address,uint256,bytes)": {
+        "intent": "Review On ERC721 Received transaction",
+        "fields": [
+          {
+            "path": "param0",
+            "label": "Param0",
+            "format": "address"
+          },
+          {
+            "path": "param1",
+            "label": "Param1",
+            "format": "address"
+          },
+          {
+            "path": "param2",
+            "label": "Param2",
+            "format": "raw"
+          },
+          {
+            "path": "param3",
+            "label": "Param3",
+            "format": "hex"
+          }
+        ]
+      },
+      "permit(address,address,uint256,uint256,uint8,bytes32,bytes32)": {
+        "intent": "Review Permit transaction",
+        "fields": [
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          },
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          },
+          {
+            "path": "deadline",
+            "label": "Deadline",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "redeem(uint256,address,address)": {
+        "intent": "Review Redeem transaction",
+        "fields": [
+          {
+            "path": "shares",
+            "label": "Shares",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "revertMintRewards(uint256,uint256)": {
+        "intent": "Review Revert Mint Rewards transaction",
+        "fields": [
+          {
+            "path": "pufETHAmount",
+            "label": "Puf ETHAmount",
+            "format": "raw"
+          },
+          {
+            "path": "ethAmount",
+            "label": "Eth Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "setAuthority(address)": {
+        "intent": "Review Set Authority transaction",
+        "fields": [
+          {
+            "path": "newAuthority",
+            "label": "New Authority",
+            "format": "address"
+          }
+        ]
+      },
+      "setExitFeeBasisPoints(uint256)": {
+        "intent": "Review Set Exit Fee Basis Points transaction",
+        "fields": [
+          {
+            "path": "newExitFeeBasisPoints",
+            "label": "New Exit Fee Basis Points",
+            "format": "raw"
+          }
+        ]
+      },
+      "setTreasuryExitFeeBasisPoints(uint96,address)": {
+        "intent": "Review Set Treasury Exit Fee Basis Points transaction",
+        "fields": [
+          {
+            "path": "newTreasuryExitFeeBasisPoints",
+            "label": "New Treasury Exit Fee Basis Points",
+            "format": "raw"
+          },
+          {
+            "path": "newTreasury",
+            "label": "New Treasury",
+            "format": "address"
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Review Transfer transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferETH(address,uint256)": {
+        "intent": "Review Transfer ETH transaction",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "ethAmount",
+            "label": "Eth Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "from",
+            "label": "From",
+            "format": "address"
+          },
+          {
+            "path": "to",
+            "label": "To",
+            "format": "address"
+          },
+          {
+            "path": "value",
+            "label": "Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "withdraw(uint256,address,address)": {
+        "intent": "Review Withdraw transaction",
+        "fields": [
+          {
+            "path": "assets",
+            "label": "Assets",
+            "format": "raw"
+          },
+          {
+            "path": "receiver",
+            "label": "Receiver",
+            "format": "address"
+          },
+          {
+            "path": "owner",
+            "label": "Owner",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Puffer Finance",
+    "info": {
+      "url": "https://www.puffer.fi/",
+      "legalName": "Puffer Finance",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

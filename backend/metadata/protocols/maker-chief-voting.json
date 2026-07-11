@@ -1,0 +1,303 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x0a3f6849f78076aefadf113f5bed87720274ddc0"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "launch",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x01339c21"
+        },
+        {
+          "type": "function",
+          "name": "setOwner",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x13af4035"
+        },
+        {
+          "type": "function",
+          "name": "lift",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "whom",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x3c278bd5"
+        },
+        {
+          "type": "function",
+          "name": "etch",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "yays",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x5123e1fa",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "slate",
+              "type": "bytes32"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setUserRole",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "who",
+              "type": "address"
+            },
+            {
+              "internalType": "uint8",
+              "name": "role",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bool",
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x67aff484"
+        },
+        {
+          "type": "function",
+          "name": "setAuthority",
+          "inputs": [
+            {
+              "internalType": "contract DSAuthority",
+              "name": "authority_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x7a9e5e4b"
+        },
+        {
+          "type": "function",
+          "name": "setRoleCapability",
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "role",
+              "type": "uint8"
+            },
+            {
+              "internalType": "address",
+              "name": "code",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes4",
+              "name": "sig",
+              "type": "bytes4"
+            },
+            {
+              "internalType": "bool",
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x7d40583d"
+        },
+        {
+          "type": "function",
+          "name": "vote",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "slate",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xa69beaba"
+        },
+        {
+          "type": "function",
+          "name": "setPublicCapability",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "code",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes4",
+              "name": "sig",
+              "type": "bytes4"
+            },
+            {
+              "internalType": "bool",
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xc6b0263e"
+        },
+        {
+          "type": "function",
+          "name": "setRootUser",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "who",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "enabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xd381ba7c"
+        },
+        {
+          "type": "function",
+          "name": "free",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xd8ccd0f3"
+        },
+        {
+          "type": "function",
+          "name": "lock",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "wad",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xdd467064"
+        },
+        {
+          "type": "function",
+          "name": "vote",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "yays",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xed081329",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "MakerDAO",
+    "contractName": "MakerDAO Chief (MKR Executive Vote)"
+  },
+  "display": {
+    "formats": {
+      "vote(bytes32 slate)": {
+        "intent": "Vote on MakerDAO executive proposal (by slate)",
+        "interpolatedIntent": "Vote for executive slate {slate} in MakerDAO",
+        "fields": [
+          {
+            "path": "slate",
+            "label": "Slate Hash",
+            "format": "raw"
+          }
+        ]
+      },
+      "vote(address[] yays)": {
+        "intent": "Vote on MakerDAO executive proposal (by addresses)",
+        "interpolatedIntent": "Vote for MakerDAO executive proposal",
+        "fields": [
+          {
+            "path": "yays",
+            "label": "Proposal Addresses",
+            "format": "raw"
+          }
+        ]
+      },
+      "lift(address whom)": {
+        "intent": "Lift MakerDAO executive hat",
+        "interpolatedIntent": "Lift {whom} as the new MakerDAO executive hat",
+        "fields": [
+          {
+            "path": "whom",
+            "label": "Hat Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "lock(uint256 wad)": {
+        "intent": "Lock MKR for governance voting",
+        "interpolatedIntent": "Lock {wad} MKR to participate in MakerDAO governance",
+        "fields": [
+          {
+            "path": "wad",
+            "label": "MKR to Lock",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "MKR"
+            }
+          }
+        ]
+      },
+      "free(uint256 wad)": {
+        "intent": "Unlock MKR from governance",
+        "interpolatedIntent": "Unlock {wad} MKR from MakerDAO governance",
+        "fields": [
+          {
+            "path": "wad",
+            "label": "MKR to Unlock",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "MKR"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

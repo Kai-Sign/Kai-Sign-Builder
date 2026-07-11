@@ -1,0 +1,137 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0xc2c862322e9c97d6244a3506655da95f05246fd8"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "executeWithAmountCheck",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "module",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "data",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "value",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ReservoirV6_0_1.ExecutionInfo[]",
+              "name": "executionInfos",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "target",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "data",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "threshold",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ReservoirV6_0_1.AmountCheckInfo",
+              "name": "amountCheckInfo",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x04871891"
+        },
+        {
+          "type": "function",
+          "name": "execute",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "module",
+                  "type": "address"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "data",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "value",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ReservoirV6_0_1.ExecutionInfo[]",
+              "name": "executionInfos",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x760f2a0b"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Reservoir",
+    "contractName": "Reservoir V6.0.1 Router"
+  },
+  "display": {
+    "formats": {
+      "execute((address,bytes,uint256)[] executionInfos)": {
+        "intent": "Execute NFT trade via Reservoir",
+        "interpolatedIntent": "Execute batched NFT marketplace operations via Reservoir",
+        "fields": [
+          {
+            "path": "executionInfos",
+            "label": "Execution Data",
+            "format": "raw"
+          }
+        ]
+      },
+      "executeWithAmountCheck((address,bytes,uint256)[] executionInfos,(address,bytes,uint256) amountCheckInfo)": {
+        "intent": "Execute NFT trade via Reservoir with slippage check",
+        "interpolatedIntent": "Execute NFT trade via Reservoir with minimum amount check",
+        "fields": [
+          {
+            "path": "executionInfos",
+            "label": "Execution Data",
+            "format": "raw"
+          },
+          {
+            "path": "amountCheckInfo.target",
+            "label": "Amount Check Target",
+            "format": "addressName"
+          },
+          {
+            "path": "amountCheckInfo.threshold",
+            "label": "Minimum Amount",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

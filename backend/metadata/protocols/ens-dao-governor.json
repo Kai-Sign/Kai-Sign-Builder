@@ -1,0 +1,315 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x323a76393544d5ecca80cd6ef2a560c6a395b7e3",
+      "chainId": 1,
+      "name": "ENS DAO Governor",
+      "abi": [
+        {
+          "type": "function",
+          "name": "castVote",
+          "selector": "0x56781388",
+          "inputs": [
+            {
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "name": "support",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "castVoteWithReason",
+          "selector": "0x7b3c71d3",
+          "inputs": [
+            {
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "name": "support",
+              "type": "uint8"
+            },
+            {
+              "name": "reason",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "propose",
+          "selector": "0x7d5e81e2",
+          "inputs": [
+            {
+              "name": "targets",
+              "type": "address[]"
+            },
+            {
+              "name": "values",
+              "type": "uint256[]"
+            },
+            {
+              "name": "calldatas",
+              "type": "bytes[]"
+            },
+            {
+              "name": "description",
+              "type": "string"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "queue",
+          "selector": "0x160cbed7",
+          "inputs": [
+            {
+              "name": "targets",
+              "type": "address[]"
+            },
+            {
+              "name": "values",
+              "type": "uint256[]"
+            },
+            {
+              "name": "calldatas",
+              "type": "bytes[]"
+            },
+            {
+              "name": "descriptionHash",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "execute",
+          "selector": "0x2656227d",
+          "inputs": [
+            {
+              "name": "targets",
+              "type": "address[]"
+            },
+            {
+              "name": "values",
+              "type": "uint256[]"
+            },
+            {
+              "name": "calldatas",
+              "type": "bytes[]"
+            },
+            {
+              "name": "descriptionHash",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "castVoteBySig",
+          "selector": "0x3bccf4fd",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint8",
+              "name": "support",
+              "type": "uint8"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateQuorumNumerator",
+          "selector": "0x06f3f9e6",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "newQuorumNumerator",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "updateTimelock",
+          "selector": "0xa890c910",
+          "inputs": [
+            {
+              "internalType": "contract TimelockController",
+              "name": "newTimelock",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "castVote(uint256,uint8)": {
+        "intent": "Vote on ENS DAO proposal",
+        "interpolatedIntent": "Vote {support} on ENS DAO proposal #{proposalId}",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal ID",
+            "format": "raw"
+          },
+          {
+            "path": "support",
+            "label": "Vote (0=Against, 1=For, 2=Abstain)",
+            "format": "raw"
+          }
+        ]
+      },
+      "castVoteWithReason(uint256,uint8,string)": {
+        "intent": "Vote on ENS DAO proposal with reason",
+        "interpolatedIntent": "Vote {support} on ENS DAO proposal #{proposalId}",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal ID",
+            "format": "raw"
+          },
+          {
+            "path": "support",
+            "label": "Vote (0=Against, 1=For, 2=Abstain)",
+            "format": "raw"
+          },
+          {
+            "path": "reason",
+            "label": "Reason",
+            "format": "raw"
+          }
+        ]
+      },
+      "propose(address[],uint256[],bytes[],string)": {
+        "intent": "Create ENS DAO governance proposal",
+        "fields": [
+          {
+            "path": "description",
+            "label": "Description",
+            "format": "raw"
+          }
+        ]
+      },
+      "queue(address[],uint256[],bytes[],bytes32)": {
+        "intent": "Queue ENS DAO proposal for execution",
+        "fields": [
+          {
+            "path": "descriptionHash",
+            "label": "Description Hash",
+            "format": "raw"
+          }
+        ]
+      },
+      "execute(address[],uint256[],bytes[],bytes32)": {
+        "intent": "Execute ENS DAO proposal",
+        "fields": [
+          {
+            "path": "descriptionHash",
+            "label": "Description Hash",
+            "format": "raw"
+          }
+        ]
+      },
+      "castVoteBySig(uint256,uint8,uint8,bytes32,bytes32)": {
+        "intent": "Review Cast Vote By Sig transaction",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal Id",
+            "format": "raw"
+          },
+          {
+            "path": "support",
+            "label": "Support",
+            "format": "raw"
+          },
+          {
+            "path": "v",
+            "label": "V",
+            "format": "raw"
+          },
+          {
+            "path": "r",
+            "label": "R",
+            "format": "hex"
+          },
+          {
+            "path": "s",
+            "label": "S",
+            "format": "hex"
+          }
+        ]
+      },
+      "updateQuorumNumerator(uint256)": {
+        "intent": "Review Update Quorum Numerator transaction",
+        "fields": [
+          {
+            "path": "newQuorumNumerator",
+            "label": "New Quorum Numerator",
+            "format": "raw"
+          }
+        ]
+      },
+      "updateTimelock(address)": {
+        "intent": "Review Update Timelock transaction",
+        "fields": [
+          {
+            "path": "newTimelock",
+            "label": "New Timelock",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "ENS DAO",
+    "info": {
+      "url": "https://www.tally.xyz/gov/ens",
+      "legalName": "ENS DAO",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

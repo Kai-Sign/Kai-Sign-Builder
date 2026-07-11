@@ -1,0 +1,267 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0x2f39d218133AFaB8F2B819B1066c7E434Ad94E9e"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "setPoolImpl",
+          "selector": "0x0d01e9a8",
+          "inputs": [
+            {
+              "name": "newPoolImpl",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setPoolConfiguratorImpl",
+          "selector": "0x02a2f01f",
+          "inputs": [
+            {
+              "name": "newConfiguratorImpl",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setAddress",
+          "selector": "0xca446dd9",
+          "inputs": [
+            {
+              "name": "id",
+              "type": "bytes32"
+            },
+            {
+              "name": "newAddress",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setAddressAsProxy",
+          "selector": "0x90bb7f8c",
+          "inputs": [
+            {
+              "name": "id",
+              "type": "bytes32"
+            },
+            {
+              "name": "newAddress",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setMarketId",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "newMarketId",
+              "type": "string"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setACLManager",
+          "selector": "0x7073c072",
+          "inputs": [
+            {
+              "name": "newAclManager",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setACLAdmin",
+          "selector": "0x7f3355c8",
+          "inputs": [
+            {
+              "name": "newAclAdmin",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setPriceOracle",
+          "selector": "0xf50a46b6",
+          "inputs": [
+            {
+              "name": "newPriceOracle",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setPoolDataProvider",
+          "selector": "0x06884484",
+          "inputs": [
+            {
+              "name": "newDataProvider",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x715018a6"
+        },
+        {
+          "type": "function",
+          "name": "setPriceOracleSentinel",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newPriceOracleSentinel",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x74944cec"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf2fde38b"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave V3 PoolAddressesProvider",
+    "info": {
+      "website": "https://aave.com",
+      "docs": "https://docs.aave.com/developers/core/pooladdressesprovider"
+    }
+  },
+  "display": {
+    "formats": {
+      "setPoolImpl(address)": {
+        "intent": "Set Pool Implementation",
+        "fields": [
+          {
+            "path": "newPoolImpl",
+            "label": "New Pool Impl",
+            "format": "addressName"
+          }
+        ]
+      },
+      "setPoolConfiguratorImpl(address)": {
+        "intent": "Set Pool Configurator Implementation",
+        "fields": [
+          {
+            "path": "newConfiguratorImpl",
+            "label": "New Configurator Impl",
+            "format": "addressName"
+          }
+        ]
+      },
+      "setAddress(bytes32,address)": {
+        "intent": "Set Protocol Address",
+        "fields": [
+          {
+            "path": "id",
+            "label": "Address ID",
+            "format": "raw"
+          },
+          {
+            "path": "newAddress",
+            "label": "New Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "setAddressAsProxy(bytes32,address)": {
+        "intent": "Set Proxy Address",
+        "fields": [
+          {
+            "path": "id",
+            "label": "Address ID",
+            "format": "raw"
+          },
+          {
+            "path": "newAddress",
+            "label": "New Proxy Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "setMarketId(string)": {
+        "intent": "Set Market ID",
+        "fields": [
+          {
+            "path": "newMarketId",
+            "label": "New Market ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "setACLManager(address)": {
+        "intent": "Set ACL Manager",
+        "fields": [
+          {
+            "path": "newAclManager",
+            "label": "New ACL Manager",
+            "format": "addressName"
+          }
+        ]
+      },
+      "setACLAdmin(address)": {
+        "intent": "Set ACL Admin",
+        "fields": [
+          {
+            "path": "newAclAdmin",
+            "label": "New ACL Admin",
+            "format": "addressName"
+          }
+        ]
+      },
+      "setPriceOracle(address)": {
+        "intent": "Set Price Oracle",
+        "fields": [
+          {
+            "path": "newPriceOracle",
+            "label": "New Price Oracle",
+            "format": "addressName"
+          }
+        ]
+      },
+      "setPoolDataProvider(address)": {
+        "intent": "Set Pool Data Provider",
+        "fields": [
+          {
+            "path": "newDataProvider",
+            "label": "New Data Provider",
+            "format": "addressName"
+          }
+        ]
+      }
+    }
+  }
+}

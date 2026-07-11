@@ -1,0 +1,279 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x75cf11467937ce3f2f357ce24ffc3dbf8fd5c226",
+      "chainId": 1,
+      "name": "Safe 4337 Module",
+      "abi": [
+        {
+          "type": "function",
+          "name": "executeUserOp",
+          "selector": "0x541d63c8",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            },
+            {
+              "name": "operation",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "executeUserOpWithErrorString",
+          "selector": "0xb5c44614",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            },
+            {
+              "name": "operation",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "executeUserOp",
+          "selector": "0x7bb37428",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "value",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            },
+            {
+              "internalType": "uint8",
+              "name": "operation",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "simulate",
+          "selector": "0xbd61951d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "targetContract",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "calldataPayload",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "response",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "validateUserOp",
+          "selector": "0x19822f7c",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "sender",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "initCode",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "accountGasLimits",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "preVerificationGas",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "gasFees",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "paymasterAndData",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct PackedUserOperation",
+              "name": "userOp",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "missingAccountFunds",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "validationData",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "executeUserOp(address,uint256,bytes,uint8)": {
+        "intent": "Execute ERC-4337 UserOp via Safe",
+        "interpolatedIntent": "Execute UserOp to {to} via Safe 4337 module",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "addressName"
+          },
+          {
+            "path": "value",
+            "label": "Value (ETH)",
+            "format": "ethAmount"
+          },
+          {
+            "path": "operation",
+            "label": "Operation (0=Call,1=DelegateCall)",
+            "format": "raw"
+          }
+        ]
+      },
+      "executeUserOpWithErrorString(address,uint256,bytes,uint8)": {
+        "intent": "Execute ERC-4337 UserOp via Safe (with error string)",
+        "interpolatedIntent": "Execute UserOp to {to} via Safe 4337 module",
+        "fields": [
+          {
+            "path": "to",
+            "label": "To",
+            "format": "addressName"
+          },
+          {
+            "path": "value",
+            "label": "Value (ETH)",
+            "format": "ethAmount"
+          },
+          {
+            "path": "operation",
+            "label": "Operation (0=Call,1=DelegateCall)",
+            "format": "raw"
+          }
+        ]
+      },
+      "simulate(address,bytes)": {
+        "intent": "Review Simulate transaction",
+        "fields": [
+          {
+            "path": "targetContract",
+            "label": "Target Contract",
+            "format": "address"
+          },
+          {
+            "path": "calldataPayload",
+            "label": "Calldata Payload",
+            "format": "hex"
+          }
+        ]
+      },
+      "validateUserOp((address,uint256,bytes,bytes,bytes32,uint256,bytes32,bytes,bytes),bytes32,uint256)": {
+        "intent": "Review Validate User Op transaction",
+        "fields": [
+          {
+            "path": "userOp",
+            "label": "User Op",
+            "format": "raw"
+          },
+          {
+            "path": "param1",
+            "label": "Param1",
+            "format": "hex"
+          },
+          {
+            "path": "missingAccountFunds",
+            "label": "Missing Account Funds",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Safe",
+    "info": {
+      "url": "https://safe.global/",
+      "legalName": "Safe Ecosystem Foundation",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

@@ -1,0 +1,611 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x94F097E1ebEB4ecA3AAE54cabb08905B239A7D27",
+      "chainId": 1,
+      "name": "ZeroDev Kernel V3",
+      "abi": [
+        {
+          "type": "function",
+          "name": "execute",
+          "selector": "0x6b4f19f5",
+          "inputs": [
+            {
+              "name": "execMode",
+              "type": "bytes32"
+            },
+            {
+              "name": "executionCalldata",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "installModule",
+          "selector": "0x1d045024",
+          "inputs": [
+            {
+              "name": "moduleTypeId",
+              "type": "uint256"
+            },
+            {
+              "name": "module",
+              "type": "address"
+            },
+            {
+              "name": "initData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "uninstallModule",
+          "selector": "0xb6e3d9cb",
+          "inputs": [
+            {
+              "name": "moduleTypeId",
+              "type": "uint256"
+            },
+            {
+              "name": "module",
+              "type": "address"
+            },
+            {
+              "name": "deInitData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "execute",
+          "selector": "0xe9ae5c53",
+          "inputs": [
+            {
+              "internalType": "ExecMode",
+              "name": "execMode",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "executionCalldata",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "executeFromExecutor",
+          "selector": "0xd691c964",
+          "inputs": [
+            {
+              "internalType": "ExecMode",
+              "name": "execMode",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "executionCalldata",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes[]",
+              "name": "returnData",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "executeUserOp",
+          "selector": "0x8dd7712f",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "sender",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "initCode",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "accountGasLimits",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "preVerificationGas",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "gasFees",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "paymasterAndData",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct PackedUserOperation",
+              "name": "userOp",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "userOpHash",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0x12af322c",
+          "inputs": [
+            {
+              "internalType": "ValidationId",
+              "name": "_rootValidator",
+              "type": "bytes21"
+            },
+            {
+              "internalType": "contract IHook",
+              "name": "hook",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "validatorData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "hookData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "installModule",
+          "selector": "0x9517e29f",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "moduleType",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "module",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "initData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "installValidations",
+          "selector": "0x9198bdf5",
+          "inputs": [
+            {
+              "internalType": "ValidationId[]",
+              "name": "vIds",
+              "type": "bytes21[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "nonce",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "contract IHook",
+                  "name": "hook",
+                  "type": "address"
+                }
+              ],
+              "internalType": "struct ValidationManager.ValidationConfig[]",
+              "name": "configs",
+              "type": "tuple[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "validationData",
+              "type": "bytes[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "hookData",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "invalidateNonce",
+          "selector": "0x1f1b92e3",
+          "inputs": [
+            {
+              "internalType": "uint32",
+              "name": "nonce",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "uninstallModule",
+          "selector": "0xa71763a8",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "moduleType",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "module",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "deInitData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "uninstallValidation",
+          "selector": "0xe6f3d50a",
+          "inputs": [
+            {
+              "internalType": "ValidationId",
+              "name": "vId",
+              "type": "bytes21"
+            },
+            {
+              "internalType": "bytes",
+              "name": "deinitData",
+              "type": "bytes"
+            },
+            {
+              "internalType": "bytes",
+              "name": "hookDeinitData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x3659cfe6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "validateUserOp",
+          "selector": "0x19822f7c",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "sender",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "nonce",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "initCode",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "callData",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "accountGasLimits",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "preVerificationGas",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "gasFees",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "paymasterAndData",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "signature",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct PackedUserOperation",
+              "name": "userOp",
+              "type": "tuple"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "userOpHash",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "uint256",
+              "name": "missingAccountFunds",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "ValidationData",
+              "name": "validationData",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "execute(bytes32,bytes)": {
+        "intent": "Execute call from ZeroDev Kernel",
+        "interpolatedIntent": "Execute call via ZeroDev Kernel smart account",
+        "fields": [
+          {
+            "path": "execMode",
+            "label": "Execution Mode",
+            "format": "raw"
+          }
+        ]
+      },
+      "installModule(uint256,address,bytes)": {
+        "intent": "Install module on ZeroDev Kernel",
+        "interpolatedIntent": "Install module {module} (type {moduleTypeId}) on Kernel",
+        "fields": [
+          {
+            "path": "moduleTypeId",
+            "label": "Module Type",
+            "format": "raw"
+          },
+          {
+            "path": "module",
+            "label": "Module",
+            "format": "addressName"
+          }
+        ]
+      },
+      "uninstallModule(uint256,address,bytes)": {
+        "intent": "Uninstall module from ZeroDev Kernel",
+        "interpolatedIntent": "Remove module {module} (type {moduleTypeId}) from Kernel",
+        "fields": [
+          {
+            "path": "moduleTypeId",
+            "label": "Module Type",
+            "format": "raw"
+          },
+          {
+            "path": "module",
+            "label": "Module",
+            "format": "addressName"
+          }
+        ]
+      },
+      "executeFromExecutor(bytes32,bytes)": {
+        "intent": "Review Execute From Executor transaction",
+        "fields": [
+          {
+            "path": "execMode",
+            "label": "Exec Mode",
+            "format": "hex"
+          },
+          {
+            "path": "executionCalldata",
+            "label": "Execution Calldata",
+            "format": "hex"
+          }
+        ]
+      },
+      "executeUserOp((address,uint256,bytes,bytes,bytes32,uint256,bytes32,bytes,bytes),bytes32)": {
+        "intent": "Review Execute User Op transaction",
+        "fields": [
+          {
+            "path": "userOp",
+            "label": "User Op",
+            "format": "raw"
+          },
+          {
+            "path": "userOpHash",
+            "label": "User Op Hash",
+            "format": "hex"
+          }
+        ]
+      },
+      "initialize(bytes21,address,bytes,bytes)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_rootValidator",
+            "label": " root Validator",
+            "format": "hex"
+          },
+          {
+            "path": "hook",
+            "label": "Hook",
+            "format": "address"
+          },
+          {
+            "path": "validatorData",
+            "label": "Validator Data",
+            "format": "hex"
+          },
+          {
+            "path": "hookData",
+            "label": "Hook Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "installValidations(bytes21[],(uint32,address)[],bytes[],bytes[])": {
+        "intent": "Review Install Validations transaction",
+        "fields": [
+          {
+            "path": "vIds",
+            "label": "V Ids",
+            "format": "hex"
+          },
+          {
+            "path": "configs",
+            "label": "Configs",
+            "format": "raw"
+          },
+          {
+            "path": "validationData",
+            "label": "Validation Data",
+            "format": "hex"
+          },
+          {
+            "path": "hookData",
+            "label": "Hook Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "invalidateNonce(uint32)": {
+        "intent": "Review Invalidate Nonce transaction",
+        "fields": [
+          {
+            "path": "nonce",
+            "label": "Nonce",
+            "format": "raw"
+          }
+        ]
+      },
+      "uninstallValidation(bytes21,bytes,bytes)": {
+        "intent": "Review Uninstall Validation transaction",
+        "fields": [
+          {
+            "path": "vId",
+            "label": "V Id",
+            "format": "hex"
+          },
+          {
+            "path": "deinitData",
+            "label": "Deinit Data",
+            "format": "hex"
+          },
+          {
+            "path": "hookDeinitData",
+            "label": "Hook Deinit Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "upgradeTo(address)": {
+        "intent": "Review Upgrade To transaction",
+        "fields": [
+          {
+            "path": "_newImplementation",
+            "label": " new Implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "validateUserOp((address,uint256,bytes,bytes,bytes32,uint256,bytes32,bytes,bytes),bytes32,uint256)": {
+        "intent": "Review Validate User Op transaction",
+        "fields": [
+          {
+            "path": "userOp",
+            "label": "User Op",
+            "format": "raw"
+          },
+          {
+            "path": "userOpHash",
+            "label": "User Op Hash",
+            "format": "hex"
+          },
+          {
+            "path": "missingAccountFunds",
+            "label": "Missing Account Funds",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "ZeroDev",
+    "info": {
+      "url": "https://zerodev.app/",
+      "legalName": "ZeroDev",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

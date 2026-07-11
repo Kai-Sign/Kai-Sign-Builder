@@ -1,0 +1,724 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x3a23f943181408eac424116af7b7790c94cb97a5",
+      "chainId": 1,
+      "name": "Socket Gateway (Ethereum)",
+      "abi": [
+        {
+          "type": "function",
+          "name": "bridgeERC20To",
+          "selector": "0xbc9855e5",
+          "inputs": [
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "msgGasLimit",
+              "type": "uint256"
+            },
+            {
+              "name": "connector",
+              "type": "address"
+            },
+            {
+              "name": "execPayload",
+              "type": "bytes"
+            },
+            {
+              "name": "options",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "outbound",
+          "selector": "0x7db3a0cc",
+          "inputs": [
+            {
+              "name": "siblingChainSlug",
+              "type": "uint32"
+            },
+            {
+              "name": "msgGasLimit",
+              "type": "uint256"
+            },
+            {
+              "name": "payload",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "bridge",
+          "selector": "0x3c2b9a7d",
+          "inputs": [
+            {
+              "name": "receiverAddress",
+              "type": "address"
+            },
+            {
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "name": "toChainId",
+              "type": "uint256"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "bridgeRouteId",
+              "type": "uint256"
+            },
+            {
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "addController",
+          "selector": "0xa7fc7a07",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "controllerAddress",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint32",
+              "name": "",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "addRoute",
+          "selector": "0x8c95ff1e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "routeAddress",
+              "type": "address"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "uint32",
+              "name": "",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "claimOwner",
+          "selector": "0x3bd1adec",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "disableController",
+          "selector": "0x734427c8",
+          "inputs": [
+            {
+              "internalType": "uint32",
+              "name": "controllerId",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "disableRoute",
+          "selector": "0x9e0bbd9f",
+          "inputs": [
+            {
+              "internalType": "uint32",
+              "name": "routeId",
+              "type": "uint32"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "executeController",
+          "selector": "0x37c6145a",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "controllerId",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "data",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct ISocketGateway.SocketControllerRequest",
+              "name": "socketControllerRequest",
+              "type": "tuple"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "executeControllers",
+          "selector": "0x5dbd8f6b",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "controllerId",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "data",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct ISocketGateway.SocketControllerRequest[]",
+              "name": "controllerRequests",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "executeRoute",
+          "selector": "0x1028c2bd",
+          "inputs": [
+            {
+              "internalType": "uint32",
+              "name": "routeId",
+              "type": "uint32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "routeData",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bytes",
+              "name": "",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "executeRoutes",
+          "selector": "0xc3540448",
+          "inputs": [
+            {
+              "internalType": "uint32[]",
+              "name": "routeIds",
+              "type": "uint32[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "dataItems",
+              "type": "bytes[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "nominateOwner",
+          "selector": "0x5b94db27",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "nominee_",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "rescueEther",
+          "selector": "0xe42e0ea9",
+          "inputs": [
+            {
+              "internalType": "address payable",
+              "name": "userAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "rescueFunds",
+          "selector": "0x6ccae054",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "userAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setApprovalForRouters",
+          "selector": "0x82230446",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "routeAddresses",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokenAddresses",
+              "type": "address[]"
+            },
+            {
+              "internalType": "bool",
+              "name": "isMax",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "swapAndMultiBridge",
+          "selector": "0x96f4130c",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "uint32",
+                  "name": "swapRouteId",
+                  "type": "uint32"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "swapImplData",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "uint32[]",
+                  "name": "bridgeRouteIds",
+                  "type": "uint32[]"
+                },
+                {
+                  "internalType": "bytes[]",
+                  "name": "bridgeImplDataItems",
+                  "type": "bytes[]"
+                },
+                {
+                  "internalType": "uint256[]",
+                  "name": "bridgeRatios",
+                  "type": "uint256[]"
+                },
+                {
+                  "internalType": "bytes[]",
+                  "name": "eventDataItems",
+                  "type": "bytes[]"
+                }
+              ],
+              "internalType": "struct ISocketRequest.SwapMultiBridgeRequest",
+              "name": "swapMultiBridgeRequest",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "performAction",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "fromToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "toToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "receiverAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "metadata",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "swapExtraData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x7899f9ed",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "performActionWithIn",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "fromToken",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "toToken",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "metadata",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes",
+              "name": "swapExtraData",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0xee8f0b86",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "bridgeERC20To(uint256,uint256,address,bytes,bytes)": {
+        "intent": "Bridge ERC-20 tokens via Socket Gateway",
+        "interpolatedIntent": "Bridge {amount} via Socket Gateway connector {connector}",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "connector",
+            "label": "Bridge Connector",
+            "format": "addressName"
+          }
+        ]
+      },
+      "outbound(uint32,uint256,bytes)": {
+        "intent": "Send cross-chain message via Socket",
+        "interpolatedIntent": "Send message to chain {siblingChainSlug} via Socket",
+        "fields": [
+          {
+            "path": "siblingChainSlug",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "msgGasLimit",
+            "label": "Gas Limit",
+            "format": "raw"
+          }
+        ]
+      },
+      "bridge(address,address,uint256,uint256,uint256,bytes)": {
+        "intent": "Bridge tokens via Socket Gateway route",
+        "interpolatedIntent": "Bridge {amount} {token} to chain {toChainId} via Socket",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "token"
+            }
+          },
+          {
+            "path": "toChainId",
+            "label": "Destination Chain",
+            "format": "raw"
+          },
+          {
+            "path": "receiverAddress",
+            "label": "Receiver",
+            "format": "addressName"
+          },
+          {
+            "path": "bridgeRouteId",
+            "label": "Route ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "addController(address)": {
+        "intent": "Review Add Controller transaction",
+        "fields": [
+          {
+            "path": "controllerAddress",
+            "label": "Controller Address",
+            "format": "address"
+          }
+        ]
+      },
+      "addRoute(address)": {
+        "intent": "Review Add Route transaction",
+        "fields": [
+          {
+            "path": "routeAddress",
+            "label": "Route Address",
+            "format": "address"
+          }
+        ]
+      },
+      "claimOwner()": {
+        "intent": "Review Claim Owner transaction",
+        "fields": []
+      },
+      "disableController(uint32)": {
+        "intent": "Review Disable Controller transaction",
+        "fields": [
+          {
+            "path": "controllerId",
+            "label": "Controller Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "disableRoute(uint32)": {
+        "intent": "Review Disable Route transaction",
+        "fields": [
+          {
+            "path": "routeId",
+            "label": "Route Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "executeController((uint32,bytes))": {
+        "intent": "Review Execute Controller transaction",
+        "fields": [
+          {
+            "path": "socketControllerRequest",
+            "label": "Socket Controller Request",
+            "format": "raw"
+          }
+        ]
+      },
+      "executeControllers((uint32,bytes)[])": {
+        "intent": "Review Execute Controllers transaction",
+        "fields": [
+          {
+            "path": "controllerRequests",
+            "label": "Controller Requests",
+            "format": "raw"
+          }
+        ]
+      },
+      "executeRoute(uint32,bytes)": {
+        "intent": "Review Execute Route transaction",
+        "fields": [
+          {
+            "path": "routeId",
+            "label": "Route Id",
+            "format": "raw"
+          },
+          {
+            "path": "routeData",
+            "label": "Route Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "executeRoutes(uint32[],bytes[])": {
+        "intent": "Review Execute Routes transaction",
+        "fields": [
+          {
+            "path": "routeIds",
+            "label": "Route Ids",
+            "format": "raw"
+          },
+          {
+            "path": "dataItems",
+            "label": "Data Items",
+            "format": "hex"
+          }
+        ]
+      },
+      "nominateOwner(address)": {
+        "intent": "Review Nominate Owner transaction",
+        "fields": [
+          {
+            "path": "nominee_",
+            "label": "Nominee ",
+            "format": "address"
+          }
+        ]
+      },
+      "rescueEther(address,uint256)": {
+        "intent": "Review Rescue Ether transaction",
+        "fields": [
+          {
+            "path": "userAddress",
+            "label": "User Address",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "rescueFunds(address,address,uint256)": {
+        "intent": "Review Rescue Funds transaction",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "address"
+          },
+          {
+            "path": "userAddress",
+            "label": "User Address",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "setApprovalForRouters(address[],address[],bool)": {
+        "intent": "Review Set Approval For Routers transaction",
+        "fields": [
+          {
+            "path": "routeAddresses",
+            "label": "Route Addresses",
+            "format": "raw"
+          },
+          {
+            "path": "tokenAddresses",
+            "label": "Token Addresses",
+            "format": "raw"
+          },
+          {
+            "path": "isMax",
+            "label": "Is Max",
+            "format": "boolean"
+          }
+        ]
+      },
+      "swapAndMultiBridge((uint32,bytes,uint32[],bytes[],uint256[],bytes[]))": {
+        "intent": "Review Swap And Multi Bridge transaction",
+        "fields": [
+          {
+            "path": "swapMultiBridgeRequest",
+            "label": "Swap Multi Bridge Request",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Socket Tech",
+    "info": {
+      "url": "https://socket.tech/",
+      "legalName": "Socket Tech",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

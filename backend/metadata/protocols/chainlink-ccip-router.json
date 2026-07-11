@@ -1,0 +1,45 @@
+{
+  "$schema": "../../specs/erc7730-v2.schema.json",
+  "context": {
+    "$id": "ChainlinkCCIPRouter",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x80226fc0ee2b096224eeac085bb9a8cba1146f7d" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/chainlink/abis/0x80226fc0ee2b096224eeac085bb9a8cba1146f7d.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "Chainlink",
+    "contractName": "Chainlink CCIP Router",
+    "info": { "url": "https://chain.link/cross-chain" }
+  },
+  "display": {
+    "formats": {
+      "ccipSend(uint64,(address,bytes,(address,uint256)[],address,bytes))": {
+        "intent": "Send cross-chain message via Chainlink CCIP",
+        "fields": [
+          {
+            "path": "#.destinationChainSelector",
+            "label": "Destination Chain",
+            "format": "chainId",
+            "visible": "always"
+          },
+          {
+            "path": "#.message.receiver",
+            "label": "Receiver",
+            "format": "raw",
+            "visible": "always"
+          },
+          {
+            "path": "#.message.feeToken",
+            "label": "Fee Token",
+            "format": "addressName",
+            "params": { "types": ["token"], "sources": null },
+            "visible": "always"
+          }
+        ]
+      }
+    }
+  }
+}

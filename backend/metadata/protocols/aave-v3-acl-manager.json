@@ -1,0 +1,351 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0xc2aaCf6553D20d1e9d78E365AAba8032af9c85b0"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "addPoolAdmin",
+          "selector": "0x6458f5f9",
+          "inputs": [
+            {
+              "name": "admin",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "removePoolAdmin",
+          "selector": "0xcb622776",
+          "inputs": [
+            {
+              "name": "admin",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "addEmergencyAdmin",
+          "selector": "0xa7e94447",
+          "inputs": [
+            {
+              "name": "admin",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "removeEmergencyAdmin",
+          "selector": "0x9fefa81c",
+          "inputs": [
+            {
+              "name": "admin",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "addRiskAdmin",
+          "selector": "0xeb672c16",
+          "inputs": [
+            {
+              "name": "admin",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "removeRiskAdmin",
+          "selector": "0xa3850798",
+          "inputs": [
+            {
+              "name": "admin",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "addFlashBorrower",
+          "selector": "0x2c05d2c8",
+          "inputs": [
+            {
+              "name": "borrower",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "removeFlashBorrower",
+          "selector": "0xea6273c3",
+          "inputs": [
+            {
+              "name": "borrower",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "addAssetListingAdmin",
+          "selector": "0x5fd73aa9",
+          "inputs": [
+            {
+              "name": "admin",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "removeAssetListingAdmin",
+          "selector": "0xd066f86a",
+          "inputs": [
+            {
+              "name": "admin",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "addBridge",
+          "selector": "0x8e5693e3",
+          "inputs": [
+            {
+              "name": "bridge",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "removeBridge",
+          "selector": "0xce55c703",
+          "inputs": [
+            {
+              "name": "bridge",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "setRoleAdmin",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "adminRole",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x1e4e0091"
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x2f2ff15d"
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x36568abe"
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xd547741f"
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave V3 ACLManager",
+    "info": {
+      "website": "https://aave.com",
+      "docs": "https://docs.aave.com/developers/core/aclmanager"
+    }
+  },
+  "display": {
+    "formats": {
+      "addPoolAdmin(address)": {
+        "intent": "Add Pool Admin",
+        "fields": [
+          {
+            "path": "admin",
+            "label": "Admin Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "removePoolAdmin(address)": {
+        "intent": "Remove Pool Admin",
+        "fields": [
+          {
+            "path": "admin",
+            "label": "Admin Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "addEmergencyAdmin(address)": {
+        "intent": "Add Emergency Admin",
+        "fields": [
+          {
+            "path": "admin",
+            "label": "Admin Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "removeEmergencyAdmin(address)": {
+        "intent": "Remove Emergency Admin",
+        "fields": [
+          {
+            "path": "admin",
+            "label": "Admin Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "addRiskAdmin(address)": {
+        "intent": "Add Risk Admin",
+        "fields": [
+          {
+            "path": "admin",
+            "label": "Admin Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "removeRiskAdmin(address)": {
+        "intent": "Remove Risk Admin",
+        "fields": [
+          {
+            "path": "admin",
+            "label": "Admin Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "addFlashBorrower(address)": {
+        "intent": "Add Flash Borrower",
+        "fields": [
+          {
+            "path": "borrower",
+            "label": "Borrower Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "removeFlashBorrower(address)": {
+        "intent": "Remove Flash Borrower",
+        "fields": [
+          {
+            "path": "borrower",
+            "label": "Borrower Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "addAssetListingAdmin(address)": {
+        "intent": "Add Asset Listing Admin",
+        "fields": [
+          {
+            "path": "admin",
+            "label": "Admin Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "removeAssetListingAdmin(address)": {
+        "intent": "Remove Asset Listing Admin",
+        "fields": [
+          {
+            "path": "admin",
+            "label": "Admin Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "addBridge(address)": {
+        "intent": "Add Bridge",
+        "fields": [
+          {
+            "path": "bridge",
+            "label": "Bridge Address",
+            "format": "addressName"
+          }
+        ]
+      },
+      "removeBridge(address)": {
+        "intent": "Remove Bridge",
+        "fields": [
+          {
+            "path": "bridge",
+            "label": "Bridge Address",
+            "format": "addressName"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,357 @@
+{
+  "$schema": "https://eips.ethereum.org/assets/eip-7730/erc7730-v2.schema.json",
+  "context": {
+    "contract": {
+      "deployments": [
+        {
+          "chainId": 1,
+          "address": "0xEC568fffba86c094cf06b22134B23074DFE2252c"
+        }
+      ],
+      "abi": [
+        {
+          "type": "function",
+          "name": "submitVote",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "name": "support",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "create",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "executor",
+              "type": "address"
+            },
+            {
+              "name": "targets",
+              "type": "address[]"
+            },
+            {
+              "name": "values",
+              "type": "uint256[]"
+            },
+            {
+              "name": "signatures",
+              "type": "string[]"
+            },
+            {
+              "name": "calldatas",
+              "type": "bytes[]"
+            },
+            {
+              "name": "withDelegatecalls",
+              "type": "bool[]"
+            },
+            {
+              "name": "ipfsHash",
+              "type": "bytes"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "cancel",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "proposalId",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "queue",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "proposalId",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "execute",
+          "selector": "0x00000000",
+          "inputs": [
+            {
+              "name": "proposalId",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "unauthorizeExecutors",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "executors",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x1a1caf7f"
+        },
+        {
+          "type": "function",
+          "name": "authorizeExecutors",
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "executors",
+              "type": "address[]"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x64c786d9"
+        },
+        {
+          "type": "function",
+          "name": "setVotingDelay",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "votingDelay",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x70b0f660"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x715018a6"
+        },
+        {
+          "type": "function",
+          "name": "__abdicate",
+          "inputs": [],
+          "stateMutability": "nonpayable",
+          "selector": "0x760fbc13"
+        },
+        {
+          "type": "function",
+          "name": "setGovernanceStrategy",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "governanceStrategy",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x9aad6f6a"
+        },
+        {
+          "type": "function",
+          "name": "submitVoteBySignature",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "proposalId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "support",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint8",
+              "name": "v",
+              "type": "uint8"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "r",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "s",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xaf1e0bd3"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf2fde38b"
+        },
+        {
+          "type": "function",
+          "name": "create",
+          "inputs": [
+            {
+              "internalType": "contract IExecutorWithTimelock",
+              "name": "executor",
+              "type": "address"
+            },
+            {
+              "internalType": "address[]",
+              "name": "targets",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "values",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "string[]",
+              "name": "signatures",
+              "type": "string[]"
+            },
+            {
+              "internalType": "bytes[]",
+              "name": "calldatas",
+              "type": "bytes[]"
+            },
+            {
+              "internalType": "bool[]",
+              "name": "withDelegatecalls",
+              "type": "bool[]"
+            },
+            {
+              "internalType": "bytes32",
+              "name": "ipfsHash",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0xf8741a9c",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "owner": "Aave",
+    "contractName": "Aave Governance V2",
+    "info": {
+      "website": "https://aave.com",
+      "docs": "https://docs.aave.com/governance"
+    }
+  },
+  "display": {
+    "formats": {
+      "submitVote(uint256,bool)": {
+        "intent": "{support,select,true{Vote FOR} other{Vote AGAINST}} Proposal #{proposalId}",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal ID",
+            "format": "raw"
+          },
+          {
+            "path": "support",
+            "label": "Support",
+            "format": "raw"
+          }
+        ]
+      },
+      "create(address,address[],uint256[],string[],bytes[],bool[],bytes)": {
+        "intent": "Create Governance Proposal",
+        "fields": [
+          {
+            "path": "executor",
+            "label": "Executor",
+            "format": "addressName"
+          },
+          {
+            "path": "targets",
+            "label": "Targets",
+            "format": "raw"
+          },
+          {
+            "path": "values",
+            "label": "ETH Values",
+            "format": "raw"
+          },
+          {
+            "path": "signatures",
+            "label": "Signatures",
+            "format": "raw"
+          },
+          {
+            "path": "calldatas",
+            "label": "Calldatas",
+            "format": "raw"
+          },
+          {
+            "path": "withDelegatecalls",
+            "label": "Delegatecalls",
+            "format": "raw"
+          },
+          {
+            "path": "ipfsHash",
+            "label": "IPFS Hash",
+            "format": "raw"
+          }
+        ]
+      },
+      "cancel(uint256)": {
+        "intent": "Cancel Proposal #{proposalId}",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "queue(uint256)": {
+        "intent": "Queue Proposal #{proposalId}",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "execute(uint256)": {
+        "intent": "Execute Proposal #{proposalId}",
+        "fields": [
+          {
+            "path": "proposalId",
+            "label": "Proposal ID",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

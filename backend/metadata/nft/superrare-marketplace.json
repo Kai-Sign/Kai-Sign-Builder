@@ -1,0 +1,1401 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x6D7c44773C52D396F43c2D511B81aa168E9a7a42",
+      "chainId": 1,
+      "name": "SuperRare Marketplace",
+      "abi": [
+        {
+          "type": "function",
+          "name": "buy",
+          "selector": "0xd96a094a",
+          "inputs": [
+            {
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "name": "_tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "setSalePrice",
+          "selector": "0x3e5f3e7a",
+          "inputs": [
+            {
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_currencyAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "cancelSalePrice",
+          "selector": "0x3f4b3ca5",
+          "inputs": [
+            {
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "name": "_tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "offer",
+          "selector": "0x1b6e7b17",
+          "inputs": [
+            {
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "name": "_currencyAddress",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_convertTo",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "acceptOffer",
+          "selector": "0x4c0dda8b",
+          "inputs": [
+            {
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "name": "_currencyAddress",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "acceptOffer",
+          "selector": "0x534665e9",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_currencyAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable[]",
+              "name": "_splitAddresses",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint8[]",
+              "name": "_splitRatios",
+              "type": "uint8[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "bid",
+          "selector": "0xb5678588",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_currencyAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "buy",
+          "selector": "0xb3ffb760",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_currencyAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "cancelAuction",
+          "selector": "0x859b97fe",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "cancelOffer",
+          "selector": "0xe92f94d1",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_currencyAddress",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "configureAuction",
+          "selector": "0x9041a0ec",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "_auctionType",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_startingAmount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_currencyAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_lengthOfAuction",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_startTime",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable[]",
+              "name": "_splitAddresses",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint8[]",
+              "name": "_splitRatios",
+              "type": "uint8[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "convertOfferToAuction",
+          "selector": "0x060d9eeb",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_currencyAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_lengthOfAuction",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address payable[]",
+              "name": "_splitAddresses",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint8[]",
+              "name": "_splitRatios",
+              "type": "uint8[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xc306b378",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_marketplaceSettings",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_royaltyRegistry",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_royaltyEngine",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_superRareMarketplace",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_superRareAuctionHouse",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_spaceOperatorRegistry",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_approvedTokenRegistry",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_payments",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_stakingRegistry",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_networkBeneficiary",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "offer",
+          "selector": "0x0f2b2532",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_currencyAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "_convertible",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "removeSalePrice",
+          "selector": "0xf7cfaad0",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_target",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setApprovedTokenRegistry",
+          "selector": "0xe4e87e3b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_approvedTokenRegistry",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setAuctionLengthExtension",
+          "selector": "0x10f79789",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_auctionLengthExtension",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMarketplaceSettings",
+          "selector": "0x176ab440",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_marketplaceSettings",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMaxAuctionLength",
+          "selector": "0xdce96bf5",
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "_maxAuctionLength",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMinimumBidIncreasePercentage",
+          "selector": "0x48626b90",
+          "inputs": [
+            {
+              "internalType": "uint8",
+              "name": "_minimumBidIncreasePercentage",
+              "type": "uint8"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setNetworkBeneficiary",
+          "selector": "0x3492e5a8",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_networkBeneficiary",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setOfferCancelationDelay",
+          "selector": "0x7a544792",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_offerCancelationDelay",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setPayments",
+          "selector": "0xaf231a58",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_payments",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setRoyaltyEngine",
+          "selector": "0x21ede032",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_royaltyEngine",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setRoyaltyRegistry",
+          "selector": "0x84a608e2",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_royaltyRegistry",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setSalePrice",
+          "selector": "0xc8f94f4e",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_currencyAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_listPrice",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "_target",
+              "type": "address"
+            },
+            {
+              "internalType": "address payable[]",
+              "name": "_splitAddresses",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint8[]",
+              "name": "_splitRatios",
+              "type": "uint8[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setSpaceOperatorRegistry",
+          "selector": "0x7f358230",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_spaceOperatorRegistry",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setStakingRegistry",
+          "selector": "0x2c740844",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_stakingRegistry",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setSuperRareAuctionHouse",
+          "selector": "0x2a2a326c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_superRareAuctionHouse",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setSuperRareMarketplace",
+          "selector": "0x9c883af2",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_superRareMarketplace",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "settleAuction",
+          "selector": "0x5138b08c",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_originContract",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_marketplaceSettings",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_royaltyEngine",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_royaltyRegistry",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_spaceOperatorRegistry",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_approvedTokenRegistry",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_payments",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_stakingRegistry",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_networkBeneficiary",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "selector": "0x8a29e2de"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "buy(address,uint256)": {
+        "intent": "Buy NFT on SuperRare",
+        "interpolatedIntent": "Buy token #{_tokenId} from {_originContract} on SuperRare",
+        "fields": [
+          {
+            "path": "_originContract",
+            "label": "NFT Contract",
+            "format": "addressName"
+          },
+          {
+            "path": "_tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "setSalePrice(address,uint256,uint256,address)": {
+        "intent": "List NFT for sale on SuperRare",
+        "interpolatedIntent": "List token #{_tokenId} from {_originContract} for {_amount} {_currencyAddress} on SuperRare",
+        "fields": [
+          {
+            "path": "_originContract",
+            "label": "NFT Contract",
+            "format": "addressName"
+          },
+          {
+            "path": "_tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          },
+          {
+            "path": "_currencyAddress",
+            "label": "Currency",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Sale Price",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_currencyAddress"
+            }
+          }
+        ]
+      },
+      "cancelSalePrice(address,uint256)": {
+        "intent": "Cancel NFT listing on SuperRare",
+        "interpolatedIntent": "Cancel sale of token #{_tokenId} from {_originContract} on SuperRare",
+        "fields": [
+          {
+            "path": "_originContract",
+            "label": "NFT Contract",
+            "format": "addressName"
+          },
+          {
+            "path": "_tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          }
+        ]
+      },
+      "offer(address,uint256,address,uint256,bool)": {
+        "intent": "Make offer on SuperRare NFT",
+        "interpolatedIntent": "Offer {_amount} {_currencyAddress} for token #{_tokenId} from {_originContract} on SuperRare",
+        "fields": [
+          {
+            "path": "_originContract",
+            "label": "NFT Contract",
+            "format": "addressName"
+          },
+          {
+            "path": "_tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          },
+          {
+            "path": "_currencyAddress",
+            "label": "Currency",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Offer Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_currencyAddress"
+            }
+          }
+        ]
+      },
+      "acceptOffer(address,uint256,address,uint256)": {
+        "intent": "Accept offer for SuperRare NFT",
+        "interpolatedIntent": "Accept {_amount} {_currencyAddress} offer for token #{_tokenId} on SuperRare",
+        "fields": [
+          {
+            "path": "_originContract",
+            "label": "NFT Contract",
+            "format": "addressName"
+          },
+          {
+            "path": "_tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          },
+          {
+            "path": "_currencyAddress",
+            "label": "Currency",
+            "format": "addressName"
+          },
+          {
+            "path": "_amount",
+            "label": "Accepted Offer Amount",
+            "format": "tokenAmount",
+            "params": {
+              "tokenPath": "_currencyAddress"
+            }
+          }
+        ]
+      },
+      "acceptOffer(address,uint256,address,uint256,address[],uint8[])": {
+        "intent": "Review Accept Offer transaction",
+        "fields": [
+          {
+            "path": "_originContract",
+            "label": " origin Contract",
+            "format": "address"
+          },
+          {
+            "path": "_tokenId",
+            "label": " token Id",
+            "format": "raw"
+          },
+          {
+            "path": "_currencyAddress",
+            "label": " currency Address",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "_splitAddresses",
+            "label": " split Addresses",
+            "format": "raw"
+          },
+          {
+            "path": "_splitRatios",
+            "label": " split Ratios",
+            "format": "raw"
+          }
+        ]
+      },
+      "bid(address,uint256,address,uint256)": {
+        "intent": "Review Bid transaction",
+        "fields": [
+          {
+            "path": "_originContract",
+            "label": " origin Contract",
+            "format": "address"
+          },
+          {
+            "path": "_tokenId",
+            "label": " token Id",
+            "format": "raw"
+          },
+          {
+            "path": "_currencyAddress",
+            "label": " currency Address",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "buy(address,uint256,address,uint256)": {
+        "intent": "Review Buy transaction",
+        "fields": [
+          {
+            "path": "_originContract",
+            "label": " origin Contract",
+            "format": "address"
+          },
+          {
+            "path": "_tokenId",
+            "label": " token Id",
+            "format": "raw"
+          },
+          {
+            "path": "_currencyAddress",
+            "label": " currency Address",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "cancelAuction(address,uint256)": {
+        "intent": "Review Cancel Auction transaction",
+        "fields": [
+          {
+            "path": "_originContract",
+            "label": " origin Contract",
+            "format": "address"
+          },
+          {
+            "path": "_tokenId",
+            "label": " token Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "cancelOffer(address,uint256,address)": {
+        "intent": "Review Cancel Offer transaction",
+        "fields": [
+          {
+            "path": "_originContract",
+            "label": " origin Contract",
+            "format": "address"
+          },
+          {
+            "path": "_tokenId",
+            "label": " token Id",
+            "format": "raw"
+          },
+          {
+            "path": "_currencyAddress",
+            "label": " currency Address",
+            "format": "address"
+          }
+        ]
+      },
+      "configureAuction(bytes32,address,uint256,uint256,address,uint256,uint256,address[],uint8[])": {
+        "intent": "Review Configure Auction transaction",
+        "fields": [
+          {
+            "path": "_auctionType",
+            "label": " auction Type",
+            "format": "hex"
+          },
+          {
+            "path": "_originContract",
+            "label": " origin Contract",
+            "format": "address"
+          },
+          {
+            "path": "_tokenId",
+            "label": " token Id",
+            "format": "raw"
+          },
+          {
+            "path": "_startingAmount",
+            "label": " starting Amount",
+            "format": "raw"
+          },
+          {
+            "path": "_currencyAddress",
+            "label": " currency Address",
+            "format": "address"
+          },
+          {
+            "path": "_lengthOfAuction",
+            "label": " length Of Auction",
+            "format": "raw"
+          },
+          {
+            "path": "_startTime",
+            "label": " start Time",
+            "format": "raw"
+          },
+          {
+            "path": "_splitAddresses",
+            "label": " split Addresses",
+            "format": "raw"
+          },
+          {
+            "path": "_splitRatios",
+            "label": " split Ratios",
+            "format": "raw"
+          }
+        ]
+      },
+      "convertOfferToAuction(address,uint256,address,uint256,uint256,address[],uint8[])": {
+        "intent": "Review Convert Offer To Auction transaction",
+        "fields": [
+          {
+            "path": "_originContract",
+            "label": " origin Contract",
+            "format": "address"
+          },
+          {
+            "path": "_tokenId",
+            "label": " token Id",
+            "format": "raw"
+          },
+          {
+            "path": "_currencyAddress",
+            "label": " currency Address",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "_lengthOfAuction",
+            "label": " length Of Auction",
+            "format": "raw"
+          },
+          {
+            "path": "_splitAddresses",
+            "label": " split Addresses",
+            "format": "raw"
+          },
+          {
+            "path": "_splitRatios",
+            "label": " split Ratios",
+            "format": "raw"
+          }
+        ]
+      },
+      "initialize(address,address,address,address,address,address,address,address,address,address)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_marketplaceSettings",
+            "label": " marketplace Settings",
+            "format": "address"
+          },
+          {
+            "path": "_royaltyRegistry",
+            "label": " royalty Registry",
+            "format": "address"
+          },
+          {
+            "path": "_royaltyEngine",
+            "label": " royalty Engine",
+            "format": "address"
+          },
+          {
+            "path": "_superRareMarketplace",
+            "label": " super Rare Marketplace",
+            "format": "address"
+          },
+          {
+            "path": "_superRareAuctionHouse",
+            "label": " super Rare Auction House",
+            "format": "address"
+          },
+          {
+            "path": "_spaceOperatorRegistry",
+            "label": " space Operator Registry",
+            "format": "address"
+          },
+          {
+            "path": "_approvedTokenRegistry",
+            "label": " approved Token Registry",
+            "format": "address"
+          },
+          {
+            "path": "_payments",
+            "label": " payments",
+            "format": "address"
+          },
+          {
+            "path": "_stakingRegistry",
+            "label": " staking Registry",
+            "format": "address"
+          },
+          {
+            "path": "_networkBeneficiary",
+            "label": " network Beneficiary",
+            "format": "address"
+          }
+        ]
+      },
+      "removeSalePrice(address,uint256,address)": {
+        "intent": "Review Remove Sale Price transaction",
+        "fields": [
+          {
+            "path": "_originContract",
+            "label": " origin Contract",
+            "format": "address"
+          },
+          {
+            "path": "_tokenId",
+            "label": " token Id",
+            "format": "raw"
+          },
+          {
+            "path": "_target",
+            "label": " target",
+            "format": "address"
+          }
+        ]
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "setApprovedTokenRegistry(address)": {
+        "intent": "Review Set Approved Token Registry transaction",
+        "fields": [
+          {
+            "path": "_approvedTokenRegistry",
+            "label": " approved Token Registry",
+            "format": "address"
+          }
+        ]
+      },
+      "setAuctionLengthExtension(uint256)": {
+        "intent": "Review Set Auction Length Extension transaction",
+        "fields": [
+          {
+            "path": "_auctionLengthExtension",
+            "label": " auction Length Extension",
+            "format": "raw"
+          }
+        ]
+      },
+      "setMarketplaceSettings(address)": {
+        "intent": "Review Set Marketplace Settings transaction",
+        "fields": [
+          {
+            "path": "_marketplaceSettings",
+            "label": " marketplace Settings",
+            "format": "address"
+          }
+        ]
+      },
+      "setMaxAuctionLength(uint8)": {
+        "intent": "Review Set Max Auction Length transaction",
+        "fields": [
+          {
+            "path": "_maxAuctionLength",
+            "label": " max Auction Length",
+            "format": "raw"
+          }
+        ]
+      },
+      "setMinimumBidIncreasePercentage(uint8)": {
+        "intent": "Review Set Minimum Bid Increase Percentage transaction",
+        "fields": [
+          {
+            "path": "_minimumBidIncreasePercentage",
+            "label": " minimum Bid Increase Percentage",
+            "format": "raw"
+          }
+        ]
+      },
+      "setNetworkBeneficiary(address)": {
+        "intent": "Review Set Network Beneficiary transaction",
+        "fields": [
+          {
+            "path": "_networkBeneficiary",
+            "label": " network Beneficiary",
+            "format": "address"
+          }
+        ]
+      },
+      "setOfferCancelationDelay(uint256)": {
+        "intent": "Review Set Offer Cancelation Delay transaction",
+        "fields": [
+          {
+            "path": "_offerCancelationDelay",
+            "label": " offer Cancelation Delay",
+            "format": "raw"
+          }
+        ]
+      },
+      "setPayments(address)": {
+        "intent": "Review Set Payments transaction",
+        "fields": [
+          {
+            "path": "_payments",
+            "label": " payments",
+            "format": "address"
+          }
+        ]
+      },
+      "setRoyaltyEngine(address)": {
+        "intent": "Review Set Royalty Engine transaction",
+        "fields": [
+          {
+            "path": "_royaltyEngine",
+            "label": " royalty Engine",
+            "format": "address"
+          }
+        ]
+      },
+      "setRoyaltyRegistry(address)": {
+        "intent": "Review Set Royalty Registry transaction",
+        "fields": [
+          {
+            "path": "_royaltyRegistry",
+            "label": " royalty Registry",
+            "format": "address"
+          }
+        ]
+      },
+      "setSalePrice(address,uint256,address,uint256,address,address[],uint8[])": {
+        "intent": "Review Set Sale Price transaction",
+        "fields": [
+          {
+            "path": "_originContract",
+            "label": " origin Contract",
+            "format": "address"
+          },
+          {
+            "path": "_tokenId",
+            "label": " token Id",
+            "format": "raw"
+          },
+          {
+            "path": "_currencyAddress",
+            "label": " currency Address",
+            "format": "address"
+          },
+          {
+            "path": "_listPrice",
+            "label": " list Price",
+            "format": "raw"
+          },
+          {
+            "path": "_target",
+            "label": " target",
+            "format": "address"
+          },
+          {
+            "path": "_splitAddresses",
+            "label": " split Addresses",
+            "format": "raw"
+          },
+          {
+            "path": "_splitRatios",
+            "label": " split Ratios",
+            "format": "raw"
+          }
+        ]
+      },
+      "setSpaceOperatorRegistry(address)": {
+        "intent": "Review Set Space Operator Registry transaction",
+        "fields": [
+          {
+            "path": "_spaceOperatorRegistry",
+            "label": " space Operator Registry",
+            "format": "address"
+          }
+        ]
+      },
+      "setStakingRegistry(address)": {
+        "intent": "Review Set Staking Registry transaction",
+        "fields": [
+          {
+            "path": "_stakingRegistry",
+            "label": " staking Registry",
+            "format": "address"
+          }
+        ]
+      },
+      "setSuperRareAuctionHouse(address)": {
+        "intent": "Review Set Super Rare Auction House transaction",
+        "fields": [
+          {
+            "path": "_superRareAuctionHouse",
+            "label": " super Rare Auction House",
+            "format": "address"
+          }
+        ]
+      },
+      "setSuperRareMarketplace(address)": {
+        "intent": "Review Set Super Rare Marketplace transaction",
+        "fields": [
+          {
+            "path": "_superRareMarketplace",
+            "label": " super Rare Marketplace",
+            "format": "address"
+          }
+        ]
+      },
+      "settleAuction(address,uint256)": {
+        "intent": "Review Settle Auction transaction",
+        "fields": [
+          {
+            "path": "_originContract",
+            "label": " origin Contract",
+            "format": "address"
+          },
+          {
+            "path": "_tokenId",
+            "label": " token Id",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "SuperRare",
+    "info": {
+      "url": "https://superrare.com/",
+      "legalName": "SuperRare Labs",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

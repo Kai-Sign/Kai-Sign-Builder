@@ -1,0 +1,359 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x2af5d2ad76741191d15dfe7bf6ac92d4bd912ca3",
+      "chainId": 1,
+      "name": "UNUS SED LEO",
+      "symbol": "LEO",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "changeController",
+          "selector": "0x3cebb823",
+          "inputs": [
+            {
+              "name": "_newController",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "createCloneToken",
+          "selector": "0x6638c087",
+          "inputs": [
+            {
+              "name": "_cloneTokenName",
+              "type": "string"
+            },
+            {
+              "name": "_cloneDecimalUnits",
+              "type": "uint8"
+            },
+            {
+              "name": "_cloneTokenSymbol",
+              "type": "string"
+            },
+            {
+              "name": "_snapshotBlock",
+              "type": "uint256"
+            },
+            {
+              "name": "_transfersEnabled",
+              "type": "bool"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "generateTokens",
+          "selector": "0x827f32c0",
+          "inputs": [
+            {
+              "name": "_owner",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "approveAndCall",
+          "selector": "0xcae9ca51",
+          "inputs": [
+            {
+              "name": "_spender",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            },
+            {
+              "name": "_extraData",
+              "type": "bytes"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "success",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "destroyTokens",
+          "selector": "0xd3ce77fe",
+          "inputs": [
+            {
+              "name": "_owner",
+              "type": "address"
+            },
+            {
+              "name": "_amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "enableTransfers",
+          "selector": "0xf41e60c5",
+          "inputs": [
+            {
+              "name": "_transfersEnabled",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} LEO",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "LEO"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} LEO",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "LEO"
+            }
+          }
+        ]
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "_from",
+            "label": " from",
+            "format": "address"
+          },
+          {
+            "path": "_to",
+            "label": " to",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "changeController(address)": {
+        "intent": "Review Change Controller transaction",
+        "fields": [
+          {
+            "path": "_newController",
+            "label": " new Controller",
+            "format": "address"
+          }
+        ]
+      },
+      "createCloneToken(string,uint8,string,uint256,bool)": {
+        "intent": "Review Create Clone Token transaction",
+        "fields": [
+          {
+            "path": "_cloneTokenName",
+            "label": " clone Token Name",
+            "format": "raw"
+          },
+          {
+            "path": "_cloneDecimalUnits",
+            "label": " clone Decimal Units",
+            "format": "raw"
+          },
+          {
+            "path": "_cloneTokenSymbol",
+            "label": " clone Token Symbol",
+            "format": "raw"
+          },
+          {
+            "path": "_snapshotBlock",
+            "label": " snapshot Block",
+            "format": "raw"
+          },
+          {
+            "path": "_transfersEnabled",
+            "label": " transfers Enabled",
+            "format": "boolean"
+          }
+        ]
+      },
+      "generateTokens(address,uint256)": {
+        "intent": "Review Generate Tokens transaction",
+        "fields": [
+          {
+            "path": "_owner",
+            "label": " owner",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "approveAndCall(address,uint256,bytes)": {
+        "intent": "Review Approve And Call transaction",
+        "fields": [
+          {
+            "path": "_spender",
+            "label": " spender",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "_extraData",
+            "label": " extra Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "destroyTokens(address,uint256)": {
+        "intent": "Review Destroy Tokens transaction",
+        "fields": [
+          {
+            "path": "_owner",
+            "label": " owner",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "enableTransfers(bool)": {
+        "intent": "Review Enable Transfers transaction",
+        "fields": [
+          {
+            "path": "_transfersEnabled",
+            "label": " transfers Enabled",
+            "format": "boolean"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,1655 @@
+{
+  "$schema": "../../erc7730-v1.schema.json",
+  "context": {
+    "contract": {
+      "address": "0x000000000000ad05ccc4f10045630fb830b95127",
+      "chainId": 1,
+      "name": "Blur Exchange",
+      "abi": [
+        {
+          "type": "function",
+          "name": "execute",
+          "selector": "0x9a1fc3a7",
+          "inputs": [
+            {
+              "name": "sell",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "order",
+                  "type": "tuple",
+                  "components": [
+                    {
+                      "name": "trader",
+                      "type": "address"
+                    },
+                    {
+                      "name": "side",
+                      "type": "uint8"
+                    },
+                    {
+                      "name": "matchingPolicy",
+                      "type": "address"
+                    },
+                    {
+                      "name": "collection",
+                      "type": "address"
+                    },
+                    {
+                      "name": "tokenId",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "amount",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "paymentToken",
+                      "type": "address"
+                    },
+                    {
+                      "name": "price",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "listingTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "expirationTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "salt",
+                      "type": "uint256"
+                    }
+                  ]
+                },
+                {
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "s",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "extraSignature",
+                  "type": "bytes"
+                },
+                {
+                  "name": "signatureVersion",
+                  "type": "uint8"
+                },
+                {
+                  "name": "blockNumber",
+                  "type": "uint256"
+                }
+              ]
+            },
+            {
+              "name": "buy",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "order",
+                  "type": "tuple",
+                  "components": [
+                    {
+                      "name": "trader",
+                      "type": "address"
+                    },
+                    {
+                      "name": "side",
+                      "type": "uint8"
+                    },
+                    {
+                      "name": "matchingPolicy",
+                      "type": "address"
+                    },
+                    {
+                      "name": "collection",
+                      "type": "address"
+                    },
+                    {
+                      "name": "tokenId",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "amount",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "paymentToken",
+                      "type": "address"
+                    },
+                    {
+                      "name": "price",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "listingTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "expirationTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "name": "salt",
+                      "type": "uint256"
+                    }
+                  ]
+                },
+                {
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "s",
+                  "type": "bytes32"
+                },
+                {
+                  "name": "extraSignature",
+                  "type": "bytes"
+                },
+                {
+                  "name": "signatureVersion",
+                  "type": "uint8"
+                },
+                {
+                  "name": "blockNumber",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "cancelOrder",
+          "selector": "0x5b34b966",
+          "inputs": [
+            {
+              "name": "order",
+              "type": "tuple",
+              "components": [
+                {
+                  "name": "trader",
+                  "type": "address"
+                },
+                {
+                  "name": "side",
+                  "type": "uint8"
+                },
+                {
+                  "name": "matchingPolicy",
+                  "type": "address"
+                },
+                {
+                  "name": "collection",
+                  "type": "address"
+                },
+                {
+                  "name": "tokenId",
+                  "type": "uint256"
+                },
+                {
+                  "name": "amount",
+                  "type": "uint256"
+                },
+                {
+                  "name": "paymentToken",
+                  "type": "address"
+                },
+                {
+                  "name": "price",
+                  "type": "uint256"
+                },
+                {
+                  "name": "listingTime",
+                  "type": "uint256"
+                },
+                {
+                  "name": "expirationTime",
+                  "type": "uint256"
+                },
+                {
+                  "name": "salt",
+                  "type": "uint256"
+                }
+              ]
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "_execute",
+          "selector": "0xe04d94ae",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "trader",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "enum Side",
+                      "name": "side",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "matchingPolicy",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "collection",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "tokenId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "paymentToken",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "price",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "listingTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "expirationTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint16",
+                          "name": "rate",
+                          "type": "uint16"
+                        },
+                        {
+                          "internalType": "address payable",
+                          "name": "recipient",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct Fee[]",
+                      "name": "fees",
+                      "type": "tuple[]"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "salt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraParams",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct Order",
+                  "name": "order",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "s",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraSignature",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "enum SignatureVersion",
+                  "name": "signatureVersion",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "blockNumber",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Input",
+              "name": "sell",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "trader",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "enum Side",
+                      "name": "side",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "matchingPolicy",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "collection",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "tokenId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "paymentToken",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "price",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "listingTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "expirationTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint16",
+                          "name": "rate",
+                          "type": "uint16"
+                        },
+                        {
+                          "internalType": "address payable",
+                          "name": "recipient",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct Fee[]",
+                      "name": "fees",
+                      "type": "tuple[]"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "salt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraParams",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct Order",
+                  "name": "order",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "s",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraSignature",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "enum SignatureVersion",
+                  "name": "signatureVersion",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "blockNumber",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Input",
+              "name": "buy",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "bulkExecute",
+          "selector": "0xb3be57f8",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "components": [
+                        {
+                          "internalType": "address",
+                          "name": "trader",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "enum Side",
+                          "name": "side",
+                          "type": "uint8"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "matchingPolicy",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "collection",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "tokenId",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "paymentToken",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "price",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "listingTime",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "expirationTime",
+                          "type": "uint256"
+                        },
+                        {
+                          "components": [
+                            {
+                              "internalType": "uint16",
+                              "name": "rate",
+                              "type": "uint16"
+                            },
+                            {
+                              "internalType": "address payable",
+                              "name": "recipient",
+                              "type": "address"
+                            }
+                          ],
+                          "internalType": "struct Fee[]",
+                          "name": "fees",
+                          "type": "tuple[]"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "salt",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "bytes",
+                          "name": "extraParams",
+                          "type": "bytes"
+                        }
+                      ],
+                      "internalType": "struct Order",
+                      "name": "order",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "uint8",
+                      "name": "v",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "bytes32",
+                      "name": "r",
+                      "type": "bytes32"
+                    },
+                    {
+                      "internalType": "bytes32",
+                      "name": "s",
+                      "type": "bytes32"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraSignature",
+                      "type": "bytes"
+                    },
+                    {
+                      "internalType": "enum SignatureVersion",
+                      "name": "signatureVersion",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "blockNumber",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Input",
+                  "name": "sell",
+                  "type": "tuple"
+                },
+                {
+                  "components": [
+                    {
+                      "components": [
+                        {
+                          "internalType": "address",
+                          "name": "trader",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "enum Side",
+                          "name": "side",
+                          "type": "uint8"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "matchingPolicy",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "collection",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "tokenId",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "amount",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "address",
+                          "name": "paymentToken",
+                          "type": "address"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "price",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "listingTime",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "expirationTime",
+                          "type": "uint256"
+                        },
+                        {
+                          "components": [
+                            {
+                              "internalType": "uint16",
+                              "name": "rate",
+                              "type": "uint16"
+                            },
+                            {
+                              "internalType": "address payable",
+                              "name": "recipient",
+                              "type": "address"
+                            }
+                          ],
+                          "internalType": "struct Fee[]",
+                          "name": "fees",
+                          "type": "tuple[]"
+                        },
+                        {
+                          "internalType": "uint256",
+                          "name": "salt",
+                          "type": "uint256"
+                        },
+                        {
+                          "internalType": "bytes",
+                          "name": "extraParams",
+                          "type": "bytes"
+                        }
+                      ],
+                      "internalType": "struct Order",
+                      "name": "order",
+                      "type": "tuple"
+                    },
+                    {
+                      "internalType": "uint8",
+                      "name": "v",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "bytes32",
+                      "name": "r",
+                      "type": "bytes32"
+                    },
+                    {
+                      "internalType": "bytes32",
+                      "name": "s",
+                      "type": "bytes32"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraSignature",
+                      "type": "bytes"
+                    },
+                    {
+                      "internalType": "enum SignatureVersion",
+                      "name": "signatureVersion",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "blockNumber",
+                      "type": "uint256"
+                    }
+                  ],
+                  "internalType": "struct Input",
+                  "name": "buy",
+                  "type": "tuple"
+                }
+              ],
+              "internalType": "struct Execution[]",
+              "name": "executions",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "cancelOrder",
+          "selector": "0xf4acd740",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "trader",
+                  "type": "address"
+                },
+                {
+                  "internalType": "enum Side",
+                  "name": "side",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "address",
+                  "name": "matchingPolicy",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "collection",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "tokenId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "paymentToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "price",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "listingTime",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "expirationTime",
+                  "type": "uint256"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint16",
+                      "name": "rate",
+                      "type": "uint16"
+                    },
+                    {
+                      "internalType": "address payable",
+                      "name": "recipient",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Fee[]",
+                  "name": "fees",
+                  "type": "tuple[]"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "salt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraParams",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct Order",
+              "name": "order",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "cancelOrders",
+          "selector": "0xab7e8cba",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "internalType": "address",
+                  "name": "trader",
+                  "type": "address"
+                },
+                {
+                  "internalType": "enum Side",
+                  "name": "side",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "address",
+                  "name": "matchingPolicy",
+                  "type": "address"
+                },
+                {
+                  "internalType": "address",
+                  "name": "collection",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "tokenId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "amount",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "paymentToken",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "price",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "listingTime",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "expirationTime",
+                  "type": "uint256"
+                },
+                {
+                  "components": [
+                    {
+                      "internalType": "uint16",
+                      "name": "rate",
+                      "type": "uint16"
+                    },
+                    {
+                      "internalType": "address payable",
+                      "name": "recipient",
+                      "type": "address"
+                    }
+                  ],
+                  "internalType": "struct Fee[]",
+                  "name": "fees",
+                  "type": "tuple[]"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "salt",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraParams",
+                  "type": "bytes"
+                }
+              ],
+              "internalType": "struct Order[]",
+              "name": "orders",
+              "type": "tuple[]"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "close",
+          "selector": "0x43d726d6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "incrementNonce",
+          "selector": "0x627cdcb9",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "initialize",
+          "selector": "0xcf756fdf",
+          "inputs": [
+            {
+              "internalType": "contract IExecutionDelegate",
+              "name": "_executionDelegate",
+              "type": "address"
+            },
+            {
+              "internalType": "contract IPolicyManager",
+              "name": "_policyManager",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_oracle",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_blockRange",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "open",
+          "selector": "0xfcfff16f",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceOwnership",
+          "selector": "0x715018a6",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setBlockRange",
+          "selector": "0x6992aa36",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_blockRange",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setExecutionDelegate",
+          "selector": "0x037c9be2",
+          "inputs": [
+            {
+              "internalType": "contract IExecutionDelegate",
+              "name": "_executionDelegate",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFeeRate",
+          "selector": "0x45596e2e",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_feeRate",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFeeRecipient",
+          "selector": "0xe74b981b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_feeRecipient",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setGovernor",
+          "selector": "0xc42cf535",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_governor",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setOracle",
+          "selector": "0x7adbf973",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_oracle",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setPolicyManager",
+          "selector": "0xadde41e1",
+          "inputs": [
+            {
+              "internalType": "contract IPolicyManager",
+              "name": "_policyManager",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferOwnership",
+          "selector": "0xf2fde38b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeTo",
+          "selector": "0x3659cfe6",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "upgradeToAndCall",
+          "selector": "0x4f1ef286",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newImplementation",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "payable"
+        },
+        {
+          "type": "function",
+          "name": "execute",
+          "inputs": [
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "trader",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "enum Side",
+                      "name": "side",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "matchingPolicy",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "collection",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "tokenId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "paymentToken",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "price",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "listingTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "expirationTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint16",
+                          "name": "rate",
+                          "type": "uint16"
+                        },
+                        {
+                          "internalType": "address payable",
+                          "name": "recipient",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct Fee[]",
+                      "name": "fees",
+                      "type": "tuple[]"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "salt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraParams",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct Order",
+                  "name": "order",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "s",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraSignature",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "enum SignatureVersion",
+                  "name": "signatureVersion",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "blockNumber",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Input",
+              "name": "sell",
+              "type": "tuple"
+            },
+            {
+              "components": [
+                {
+                  "components": [
+                    {
+                      "internalType": "address",
+                      "name": "trader",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "enum Side",
+                      "name": "side",
+                      "type": "uint8"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "matchingPolicy",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "collection",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "tokenId",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "amount",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "address",
+                      "name": "paymentToken",
+                      "type": "address"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "price",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "listingTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "expirationTime",
+                      "type": "uint256"
+                    },
+                    {
+                      "components": [
+                        {
+                          "internalType": "uint16",
+                          "name": "rate",
+                          "type": "uint16"
+                        },
+                        {
+                          "internalType": "address payable",
+                          "name": "recipient",
+                          "type": "address"
+                        }
+                      ],
+                      "internalType": "struct Fee[]",
+                      "name": "fees",
+                      "type": "tuple[]"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "salt",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "bytes",
+                      "name": "extraParams",
+                      "type": "bytes"
+                    }
+                  ],
+                  "internalType": "struct Order",
+                  "name": "order",
+                  "type": "tuple"
+                },
+                {
+                  "internalType": "uint8",
+                  "name": "v",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "r",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes32",
+                  "name": "s",
+                  "type": "bytes32"
+                },
+                {
+                  "internalType": "bytes",
+                  "name": "extraSignature",
+                  "type": "bytes"
+                },
+                {
+                  "internalType": "enum SignatureVersion",
+                  "name": "signatureVersion",
+                  "type": "uint8"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "blockNumber",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct Input",
+              "name": "buy",
+              "type": "tuple"
+            }
+          ],
+          "stateMutability": "payable",
+          "selector": "0x9a1fc3a7"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "execute(tuple,tuple)": {
+        "intent": "Execute NFT trade on Blur",
+        "interpolatedIntent": "Trade NFT token {sell.order.tokenId} from collection {sell.order.collection}",
+        "fields": [
+          {
+            "path": "sell.order.collection",
+            "label": "Collection",
+            "format": "addressName"
+          },
+          {
+            "path": "sell.order.tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          },
+          {
+            "path": "sell.order.price",
+            "label": "Price",
+            "format": "raw"
+          },
+          {
+            "path": "sell.order.paymentToken",
+            "label": "Payment Token",
+            "format": "addressName"
+          },
+          {
+            "path": "sell.order.trader",
+            "label": "Seller",
+            "format": "addressName"
+          },
+          {
+            "path": "buy.order.trader",
+            "label": "Buyer",
+            "format": "addressName"
+          },
+          {
+            "path": "sell.order.expirationTime",
+            "label": "Expires",
+            "format": "timestamp"
+          }
+        ]
+      },
+      "cancelOrder(tuple)": {
+        "intent": "Cancel Blur NFT order",
+        "interpolatedIntent": "Cancel order for NFT {order.tokenId} from {order.collection}",
+        "fields": [
+          {
+            "path": "order.collection",
+            "label": "Collection",
+            "format": "addressName"
+          },
+          {
+            "path": "order.tokenId",
+            "label": "Token ID",
+            "format": "raw"
+          },
+          {
+            "path": "order.price",
+            "label": "Price",
+            "format": "raw"
+          },
+          {
+            "path": "order.expirationTime",
+            "label": "Expiration",
+            "format": "timestamp"
+          }
+        ]
+      },
+      "_execute(((address,uint8,address,address,uint256,uint256,address,uint256,uint256,uint256,(uint16,address)[],uint256,bytes),uint8,bytes32,bytes32,bytes,uint8,uint256),((address,uint8,address,address,uint256,uint256,address,uint256,uint256,uint256,(uint16,address)[],uint256,bytes),uint8,bytes32,bytes32,bytes,uint8,uint256))": {
+        "intent": "Review execute transaction",
+        "fields": [
+          {
+            "path": "sell",
+            "label": "Sell",
+            "format": "raw"
+          },
+          {
+            "path": "buy",
+            "label": "Buy",
+            "format": "raw"
+          }
+        ]
+      },
+      "bulkExecute((((address,uint8,address,address,uint256,uint256,address,uint256,uint256,uint256,(uint16,address)[],uint256,bytes),uint8,bytes32,bytes32,bytes,uint8,uint256),((address,uint8,address,address,uint256,uint256,address,uint256,uint256,uint256,(uint16,address)[],uint256,bytes),uint8,bytes32,bytes32,bytes,uint8,uint256))[])": {
+        "intent": "Review Bulk Execute transaction",
+        "fields": [
+          {
+            "path": "executions",
+            "label": "Executions",
+            "format": "raw"
+          }
+        ]
+      },
+      "cancelOrder((address,uint8,address,address,uint256,uint256,address,uint256,uint256,uint256,(uint16,address)[],uint256,bytes))": {
+        "intent": "Review Cancel Order transaction",
+        "fields": [
+          {
+            "path": "order",
+            "label": "Order",
+            "format": "raw"
+          }
+        ]
+      },
+      "cancelOrders((address,uint8,address,address,uint256,uint256,address,uint256,uint256,uint256,(uint16,address)[],uint256,bytes)[])": {
+        "intent": "Review Cancel Orders transaction",
+        "fields": [
+          {
+            "path": "orders",
+            "label": "Orders",
+            "format": "raw"
+          }
+        ]
+      },
+      "close()": {
+        "intent": "Review Close transaction",
+        "fields": []
+      },
+      "incrementNonce()": {
+        "intent": "Review Increment Nonce transaction",
+        "fields": []
+      },
+      "initialize(address,address,address,uint256)": {
+        "intent": "Review Initialize transaction",
+        "fields": [
+          {
+            "path": "_executionDelegate",
+            "label": " execution Delegate",
+            "format": "address"
+          },
+          {
+            "path": "_policyManager",
+            "label": " policy Manager",
+            "format": "address"
+          },
+          {
+            "path": "_oracle",
+            "label": " oracle",
+            "format": "address"
+          },
+          {
+            "path": "_blockRange",
+            "label": " block Range",
+            "format": "raw"
+          }
+        ]
+      },
+      "open()": {
+        "intent": "Review Open transaction",
+        "fields": []
+      },
+      "renounceOwnership()": {
+        "intent": "Review Renounce Ownership transaction",
+        "fields": []
+      },
+      "setBlockRange(uint256)": {
+        "intent": "Review Set Block Range transaction",
+        "fields": [
+          {
+            "path": "_blockRange",
+            "label": " block Range",
+            "format": "raw"
+          }
+        ]
+      },
+      "setExecutionDelegate(address)": {
+        "intent": "Review Set Execution Delegate transaction",
+        "fields": [
+          {
+            "path": "_executionDelegate",
+            "label": " execution Delegate",
+            "format": "address"
+          }
+        ]
+      },
+      "setFeeRate(uint256)": {
+        "intent": "Review Set Fee Rate transaction",
+        "fields": [
+          {
+            "path": "_feeRate",
+            "label": " fee Rate",
+            "format": "raw"
+          }
+        ]
+      },
+      "setFeeRecipient(address)": {
+        "intent": "Review Set Fee Recipient transaction",
+        "fields": [
+          {
+            "path": "_feeRecipient",
+            "label": " fee Recipient",
+            "format": "address"
+          }
+        ]
+      },
+      "setGovernor(address)": {
+        "intent": "Review Set Governor transaction",
+        "fields": [
+          {
+            "path": "_governor",
+            "label": " governor",
+            "format": "address"
+          }
+        ]
+      },
+      "setOracle(address)": {
+        "intent": "Review Set Oracle transaction",
+        "fields": [
+          {
+            "path": "_oracle",
+            "label": " oracle",
+            "format": "address"
+          }
+        ]
+      },
+      "setPolicyManager(address)": {
+        "intent": "Review Set Policy Manager transaction",
+        "fields": [
+          {
+            "path": "_policyManager",
+            "label": " policy Manager",
+            "format": "address"
+          }
+        ]
+      },
+      "transferOwnership(address)": {
+        "intent": "Review Transfer Ownership transaction",
+        "fields": [
+          {
+            "path": "newOwner",
+            "label": "New Owner",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeTo(address)": {
+        "intent": "Review Upgrade To transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          }
+        ]
+      },
+      "upgradeToAndCall(address,bytes)": {
+        "intent": "Review Upgrade To And Call transaction",
+        "fields": [
+          {
+            "path": "newImplementation",
+            "label": "New Implementation",
+            "format": "address"
+          },
+          {
+            "path": "data",
+            "label": "Data",
+            "format": "hex"
+          }
+        ]
+      },
+      "execute(((address,uint8,address,address,uint256,uint256,address,uint256,uint256,uint256,uint256),uint8,bytes32,bytes32,bytes,uint8,uint256),((address,uint8,address,address,uint256,uint256,address,uint256,uint256,uint256,uint256),uint8,bytes32,bytes32,bytes,uint8,uint256))": {
+        "intent": "Review Execute transaction",
+        "fields": [
+          {
+            "path": "sell",
+            "label": "Sell",
+            "format": "raw"
+          },
+          {
+            "path": "buy",
+            "label": "Buy",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  },
+  "metadata": {
+    "owner": "Blur",
+    "info": {
+      "url": "https://blur.io/",
+      "legalName": "Blur NFT Marketplace",
+      "lastUpdate": "2026-03-25"
+    }
+  }
+}

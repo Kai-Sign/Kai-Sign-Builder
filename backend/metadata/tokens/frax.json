@@ -1,0 +1,823 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x853d955acef822db058eb8505911ed77f175b99e",
+      "chainId": 1,
+      "name": "Frax",
+      "symbol": "FRAX",
+      "decimals": 18,
+      "abi": [
+        {
+          "type": "function",
+          "name": "approve",
+          "selector": "0x095ea7b3",
+          "inputs": [
+            {
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "transfer",
+          "selector": "0xa9059cbb",
+          "inputs": [
+            {
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "type": "function",
+          "name": "addPool",
+          "selector": "0xd914cd4b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "pool_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burn",
+          "selector": "0x42966c68",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "burnFrom",
+          "selector": "0x79cc6790",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "decreaseAllowance",
+          "selector": "0xa457c2d7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "subtractedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "selector": "0x2f2ff15d",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "increaseAllowance",
+          "selector": "0x39509351",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "addedValue",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pool_burn_from",
+          "selector": "0xa8a778ae",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "b_address",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "b_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pool_mint",
+          "selector": "0xb4f56b26",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "m_address",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "m_amount",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "refreshCollateralRatio",
+          "selector": "0x4013124a",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "removePool",
+          "selector": "0x3b7d0946",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "pool_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "selector": "0x36568abe",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "selector": "0xd547741f",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setController",
+          "selector": "0x92eefe9b",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_controller_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setETHUSDOracle",
+          "selector": "0x741d3c18",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_eth_usd_consumer_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFRAXEthOracle",
+          "selector": "0xe223e9a9",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_frax_oracle_addr",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_weth_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFXSAddress",
+          "selector": "0xc3bc8910",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_fxs_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFXSEthOracle",
+          "selector": "0xafe92c1a",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_fxs_oracle_addr",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_weth_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setFraxStep",
+          "selector": "0xad9f6eec",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_new_step",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setMintingFee",
+          "selector": "0x238a4709",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "min_fee",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setOwner",
+          "selector": "0x13af4035",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_owner_address",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setPriceBand",
+          "selector": "0x6140133b",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_price_band",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setPriceTarget",
+          "selector": "0x408ab10f",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_new_price_target",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setRedemptionFee",
+          "selector": "0x7dbc1df0",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "red_fee",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setRefreshCooldown",
+          "selector": "0x1c5df1e5",
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "_new_cooldown",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setTimelock",
+          "selector": "0xbdacb303",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "new_timelock",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "toggleCollateralRatio",
+          "selector": "0xbef40ec8",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferFrom",
+          "selector": "0x23b872dd",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "recipient",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256"
+            }
+          ],
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "approve(address,uint256)": {
+        "intent": "Approve {amount} FRAX",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "FRAX"
+            }
+          }
+        ]
+      },
+      "transfer(address,uint256)": {
+        "intent": "Transfer {amount} FRAX",
+        "fields": [
+          {
+            "path": "to",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "amount",
+            "params": {
+              "decimals": 18,
+              "symbol": "FRAX"
+            }
+          }
+        ]
+      },
+      "addPool(address)": {
+        "intent": "Review Add Pool transaction",
+        "fields": [
+          {
+            "path": "pool_address",
+            "label": "Pool address",
+            "format": "address"
+          }
+        ]
+      },
+      "burn(uint256)": {
+        "intent": "Review Burn transaction",
+        "fields": [
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "burnFrom(address,uint256)": {
+        "intent": "Review Burn From transaction",
+        "fields": [
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "decreaseAllowance(address,uint256)": {
+        "intent": "Review Decrease Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "subtractedValue",
+            "label": "Subtracted Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "grantRole(bytes32,address)": {
+        "intent": "Review Grant Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "increaseAllowance(address,uint256)": {
+        "intent": "Review Increase Allowance transaction",
+        "fields": [
+          {
+            "path": "spender",
+            "label": "Spender",
+            "format": "address"
+          },
+          {
+            "path": "addedValue",
+            "label": "Added Value",
+            "format": "raw"
+          }
+        ]
+      },
+      "pool_burn_from(address,uint256)": {
+        "intent": "Review Pool burn from transaction",
+        "fields": [
+          {
+            "path": "b_address",
+            "label": "B address",
+            "format": "address"
+          },
+          {
+            "path": "b_amount",
+            "label": "B amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "pool_mint(address,uint256)": {
+        "intent": "Review Pool mint transaction",
+        "fields": [
+          {
+            "path": "m_address",
+            "label": "M address",
+            "format": "address"
+          },
+          {
+            "path": "m_amount",
+            "label": "M amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "refreshCollateralRatio()": {
+        "intent": "Review Refresh Collateral Ratio transaction",
+        "fields": []
+      },
+      "removePool(address)": {
+        "intent": "Review Remove Pool transaction",
+        "fields": [
+          {
+            "path": "pool_address",
+            "label": "Pool address",
+            "format": "address"
+          }
+        ]
+      },
+      "renounceRole(bytes32,address)": {
+        "intent": "Review Renounce Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "revokeRole(bytes32,address)": {
+        "intent": "Review Revoke Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "setController(address)": {
+        "intent": "Review Set Controller transaction",
+        "fields": [
+          {
+            "path": "_controller_address",
+            "label": " controller address",
+            "format": "address"
+          }
+        ]
+      },
+      "setETHUSDOracle(address)": {
+        "intent": "Review Set ETHUSDOracle transaction",
+        "fields": [
+          {
+            "path": "_eth_usd_consumer_address",
+            "label": " eth usd consumer address",
+            "format": "address"
+          }
+        ]
+      },
+      "setFRAXEthOracle(address,address)": {
+        "intent": "Review Set FRAXEth Oracle transaction",
+        "fields": [
+          {
+            "path": "_frax_oracle_addr",
+            "label": " frax oracle addr",
+            "format": "address"
+          },
+          {
+            "path": "_weth_address",
+            "label": " weth address",
+            "format": "address"
+          }
+        ]
+      },
+      "setFXSAddress(address)": {
+        "intent": "Review Set FXSAddress transaction",
+        "fields": [
+          {
+            "path": "_fxs_address",
+            "label": " fxs address",
+            "format": "address"
+          }
+        ]
+      },
+      "setFXSEthOracle(address,address)": {
+        "intent": "Review Set FXSEth Oracle transaction",
+        "fields": [
+          {
+            "path": "_fxs_oracle_addr",
+            "label": " fxs oracle addr",
+            "format": "address"
+          },
+          {
+            "path": "_weth_address",
+            "label": " weth address",
+            "format": "address"
+          }
+        ]
+      },
+      "setFraxStep(uint256)": {
+        "intent": "Review Set Frax Step transaction",
+        "fields": [
+          {
+            "path": "_new_step",
+            "label": " new step",
+            "format": "raw"
+          }
+        ]
+      },
+      "setMintingFee(uint256)": {
+        "intent": "Review Set Minting Fee transaction",
+        "fields": [
+          {
+            "path": "min_fee",
+            "label": "Min fee",
+            "format": "raw"
+          }
+        ]
+      },
+      "setOwner(address)": {
+        "intent": "Review Set Owner transaction",
+        "fields": [
+          {
+            "path": "_owner_address",
+            "label": " owner address",
+            "format": "address"
+          }
+        ]
+      },
+      "setPriceBand(uint256)": {
+        "intent": "Review Set Price Band transaction",
+        "fields": [
+          {
+            "path": "_price_band",
+            "label": " price band",
+            "format": "raw"
+          }
+        ]
+      },
+      "setPriceTarget(uint256)": {
+        "intent": "Review Set Price Target transaction",
+        "fields": [
+          {
+            "path": "_new_price_target",
+            "label": " new price target",
+            "format": "raw"
+          }
+        ]
+      },
+      "setRedemptionFee(uint256)": {
+        "intent": "Review Set Redemption Fee transaction",
+        "fields": [
+          {
+            "path": "red_fee",
+            "label": "Red fee",
+            "format": "raw"
+          }
+        ]
+      },
+      "setRefreshCooldown(uint256)": {
+        "intent": "Review Set Refresh Cooldown transaction",
+        "fields": [
+          {
+            "path": "_new_cooldown",
+            "label": " new cooldown",
+            "format": "raw"
+          }
+        ]
+      },
+      "setTimelock(address)": {
+        "intent": "Review Set Timelock transaction",
+        "fields": [
+          {
+            "path": "new_timelock",
+            "label": "New timelock",
+            "format": "address"
+          }
+        ]
+      },
+      "toggleCollateralRatio()": {
+        "intent": "Review Toggle Collateral Ratio transaction",
+        "fields": []
+      },
+      "transferFrom(address,address,uint256)": {
+        "intent": "Review Transfer From transaction",
+        "fields": [
+          {
+            "path": "sender",
+            "label": "Sender",
+            "format": "address"
+          },
+          {
+            "path": "recipient",
+            "label": "Recipient",
+            "format": "address"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          }
+        ]
+      }
+    }
+  }
+}

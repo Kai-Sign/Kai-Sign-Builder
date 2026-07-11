@@ -1,0 +1,102 @@
+{
+  "$schema": "../../specs/erc7730-v1.schema.json",
+  "context": {
+    "$id": "UniswapGovernanceTimelock",
+    "contract": {
+      "deployments": [
+        { "chainId": 1, "address": "0x1a9c8182c09f50c8318d769245bea52c32be35bc" }
+      ],
+      "abi": "https://github.com/LedgerHQ/ledger-asset-dapps/blob/main/ethereum/uniswap/abis/0x1a9c8182c09f50c8318d769245bea52c32be35bc.abi.json"
+    }
+  },
+  "metadata": {
+    "owner": "Uniswap Labs",
+    "info": {
+      "legalName": "Uniswap Labs",
+      "url": "https://uniswap.org"
+    }
+  },
+  "display": {
+    "formats": {
+      "queueTransaction(address,uint256,string,bytes,uint256)": {
+        "intent": "Queue timelock transaction",
+        "fields": [
+          {
+            "path": "#.target",
+            "label": "Target Contract",
+            "format": "addressName",
+            "params": { "types": ["contract"], "sources": ["local"] }
+          },
+          {
+            "path": "#.value",
+            "label": "ETH Value",
+            "format": "raw"
+          },
+          {
+            "path": "#.signature",
+            "label": "Signature",
+            "format": "raw"
+          },
+          {
+            "path": "#.eta",
+            "label": "Execute After",
+            "format": "date",
+            "params": { "encoding": "timestamp" }
+          }
+        ],
+        "required": ["#.target", "#.value", "#.signature", "#.eta"]
+      },
+      "cancelTransaction(address,uint256,string,bytes,uint256)": {
+        "intent": "Cancel timelock transaction",
+        "fields": [
+          {
+            "path": "#.target",
+            "label": "Target Contract",
+            "format": "addressName",
+            "params": { "types": ["contract"], "sources": ["local"] }
+          },
+          {
+            "path": "#.signature",
+            "label": "Signature",
+            "format": "raw"
+          },
+          {
+            "path": "#.eta",
+            "label": "Execute After",
+            "format": "date",
+            "params": { "encoding": "timestamp" }
+          }
+        ],
+        "required": ["#.target", "#.signature", "#.eta"]
+      },
+      "executeTransaction(address,uint256,string,bytes,uint256)": {
+        "intent": "Execute timelock transaction",
+        "fields": [
+          {
+            "path": "#.target",
+            "label": "Target Contract",
+            "format": "addressName",
+            "params": { "types": ["contract"], "sources": ["local"] }
+          },
+          {
+            "path": "#.value",
+            "label": "ETH Value",
+            "format": "raw"
+          },
+          {
+            "path": "#.signature",
+            "label": "Signature",
+            "format": "raw"
+          },
+          {
+            "path": "#.eta",
+            "label": "Execute After",
+            "format": "date",
+            "params": { "encoding": "timestamp" }
+          }
+        ],
+        "required": ["#.target", "#.value", "#.signature", "#.eta"]
+      }
+    }
+  }
+}

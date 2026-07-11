@@ -1,0 +1,547 @@
+{
+  "context": {
+    "contract": {
+      "address": "0x99161ba892ecae335616624c84faa418f64ff9a6",
+      "chainId": 1,
+      "name": "Neutrl Asset Lock",
+      "abi": [
+        {
+          "type": "function",
+          "name": "lock",
+          "selector": "0xe2ab691d",
+          "inputs": [
+            {
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256"
+            },
+            {
+              "name": "duration",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unlock",
+          "selector": "0x6198e339",
+          "inputs": [
+            {
+              "name": "lockId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "extendLock",
+          "selector": "0x070d66bf",
+          "inputs": [
+            {
+              "name": "lockId",
+              "type": "uint256"
+            },
+            {
+              "name": "additionalDuration",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "acceptAdmin",
+          "selector": "0x0e18b681",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "grantRole",
+          "selector": "0x2f2ff15d",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "lockAsset",
+          "selector": "0xf294d3b7",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint128",
+              "name": "_amount",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint128",
+              "name": "_lockDuration",
+              "type": "uint128"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "lockAssetOnBehalf",
+          "selector": "0xdebc4aca",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint128",
+              "name": "_amount",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint128",
+              "name": "_lockDuration",
+              "type": "uint128"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "pause",
+          "selector": "0x8456cb59",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "renounceRole",
+          "selector": "0x36568abe",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "revokeRole",
+          "selector": "0xd547741f",
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setAssetInfo",
+          "selector": "0xe6ec7e6f",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_asset",
+              "type": "address"
+            },
+            {
+              "internalType": "bool",
+              "name": "_isSupported",
+              "type": "bool"
+            },
+            {
+              "internalType": "uint128",
+              "name": "_maxLockCapacity",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint96",
+              "name": "_minLockAmount",
+              "type": "uint96"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setEnforceLock",
+          "selector": "0xc34b697e",
+          "inputs": [
+            {
+              "internalType": "bool",
+              "name": "_enforceLock",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "setLockDuration",
+          "selector": "0x3df32c16",
+          "inputs": [
+            {
+              "internalType": "uint128",
+              "name": "_minDuration",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint128",
+              "name": "_maxDuration",
+              "type": "uint128"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "transferAdmin",
+          "selector": "0x75829def",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "newAdmin",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unlockAsset",
+          "selector": "0x5e7db13d",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_lockIndex",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unlockAssetOnBehalf",
+          "selector": "0x8edce3e3",
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_user",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_asset",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_lockIndex",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable"
+        },
+        {
+          "type": "function",
+          "name": "unpause",
+          "selector": "0x3f4ba83a",
+          "inputs": [],
+          "stateMutability": "nonpayable"
+        }
+      ]
+    }
+  },
+  "display": {
+    "formats": {
+      "lock(address,uint256,uint256)": {
+        "intent": "Lock tokens in Neutrl",
+        "interpolatedIntent": "Lock {amount} tokens for {duration} seconds",
+        "fields": [
+          {
+            "path": "token",
+            "label": "Token",
+            "format": "addressName"
+          },
+          {
+            "path": "amount",
+            "label": "Amount",
+            "format": "raw"
+          },
+          {
+            "path": "duration",
+            "label": "Duration (seconds)",
+            "format": "integer"
+          }
+        ]
+      },
+      "unlock(uint256)": {
+        "intent": "Unlock tokens from Neutrl",
+        "interpolatedIntent": "Unlock lock #{lockId}",
+        "fields": [
+          {
+            "path": "lockId",
+            "label": "Lock ID",
+            "format": "integer"
+          }
+        ]
+      },
+      "extendLock(uint256,uint256)": {
+        "intent": "Extend Neutrl lock duration",
+        "interpolatedIntent": "Extend lock #{lockId} by {additionalDuration} seconds",
+        "fields": [
+          {
+            "path": "lockId",
+            "label": "Lock ID",
+            "format": "integer"
+          },
+          {
+            "path": "additionalDuration",
+            "label": "Additional Duration (seconds)",
+            "format": "integer"
+          }
+        ]
+      },
+      "acceptAdmin()": {
+        "intent": "Review Accept Admin transaction",
+        "fields": []
+      },
+      "grantRole(bytes32,address)": {
+        "intent": "Review Grant Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "lockAsset(address,uint128,uint128)": {
+        "intent": "Review Lock Asset transaction",
+        "fields": [
+          {
+            "path": "_asset",
+            "label": " asset",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "_lockDuration",
+            "label": " lock Duration",
+            "format": "raw"
+          }
+        ]
+      },
+      "lockAssetOnBehalf(address,address,uint128,uint128)": {
+        "intent": "Review Lock Asset On Behalf transaction",
+        "fields": [
+          {
+            "path": "_user",
+            "label": " user",
+            "format": "address"
+          },
+          {
+            "path": "_asset",
+            "label": " asset",
+            "format": "address"
+          },
+          {
+            "path": "_amount",
+            "label": " amount",
+            "format": "raw"
+          },
+          {
+            "path": "_lockDuration",
+            "label": " lock Duration",
+            "format": "raw"
+          }
+        ]
+      },
+      "pause()": {
+        "intent": "Review Pause transaction",
+        "fields": []
+      },
+      "renounceRole(bytes32,address)": {
+        "intent": "Review Renounce Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "revokeRole(bytes32,address)": {
+        "intent": "Review Revoke Role transaction",
+        "fields": [
+          {
+            "path": "role",
+            "label": "Role",
+            "format": "hex"
+          },
+          {
+            "path": "account",
+            "label": "Account",
+            "format": "address"
+          }
+        ]
+      },
+      "setAssetInfo(address,bool,uint128,uint96)": {
+        "intent": "Review Set Asset Info transaction",
+        "fields": [
+          {
+            "path": "_asset",
+            "label": " asset",
+            "format": "address"
+          },
+          {
+            "path": "_isSupported",
+            "label": " is Supported",
+            "format": "boolean"
+          },
+          {
+            "path": "_maxLockCapacity",
+            "label": " max Lock Capacity",
+            "format": "raw"
+          },
+          {
+            "path": "_minLockAmount",
+            "label": " min Lock Amount",
+            "format": "raw"
+          }
+        ]
+      },
+      "setEnforceLock(bool)": {
+        "intent": "Review Set Enforce Lock transaction",
+        "fields": [
+          {
+            "path": "_enforceLock",
+            "label": " enforce Lock",
+            "format": "boolean"
+          }
+        ]
+      },
+      "setLockDuration(uint128,uint128)": {
+        "intent": "Review Set Lock Duration transaction",
+        "fields": [
+          {
+            "path": "_minDuration",
+            "label": " min Duration",
+            "format": "raw"
+          },
+          {
+            "path": "_maxDuration",
+            "label": " max Duration",
+            "format": "raw"
+          }
+        ]
+      },
+      "transferAdmin(address)": {
+        "intent": "Review Transfer Admin transaction",
+        "fields": [
+          {
+            "path": "newAdmin",
+            "label": "New Admin",
+            "format": "address"
+          }
+        ]
+      },
+      "unlockAsset(address,uint256)": {
+        "intent": "Review Unlock Asset transaction",
+        "fields": [
+          {
+            "path": "_asset",
+            "label": " asset",
+            "format": "address"
+          },
+          {
+            "path": "_lockIndex",
+            "label": " lock Index",
+            "format": "raw"
+          }
+        ]
+      },
+      "unlockAssetOnBehalf(address,address,uint256)": {
+        "intent": "Review Unlock Asset On Behalf transaction",
+        "fields": [
+          {
+            "path": "_user",
+            "label": " user",
+            "format": "address"
+          },
+          {
+            "path": "_asset",
+            "label": " asset",
+            "format": "address"
+          },
+          {
+            "path": "_lockIndex",
+            "label": " lock Index",
+            "format": "raw"
+          }
+        ]
+      },
+      "unpause()": {
+        "intent": "Review Unpause transaction",
+        "fields": []
+      }
+    }
+  }
+}
