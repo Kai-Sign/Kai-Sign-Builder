@@ -70,3 +70,13 @@ frontend/.next
 
 .claude/
 **/.claude/
+
+# scratch plans/docs and local tx fixtures
+*.txt
+*-transaction.json
+blur-transaction.json
+paste-this-transaction.json
+
+# one-off local scripts/prototypes
+scripts/
+llm/
