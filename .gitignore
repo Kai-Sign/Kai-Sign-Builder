@@ -67,3 +67,6 @@ secrets/
 .idea
 frontend/.next
 frontend/.next
+
+.claude/
+**/.claude/
